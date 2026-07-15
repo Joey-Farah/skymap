@@ -26,6 +26,22 @@ const CLOSED = "#a5adbd";
 const ROUTE = "#e08a00";
 const INK = "#17243a";
 
+/** Isochrone bands, nearest to farthest. Shared with the sheet legend. */
+export const REACH_BANDS = [
+  { maxMinutes: 5, color: "#17356e" },
+  { maxMinutes: 10, color: "#2f66d0" },
+  { maxMinutes: 15, color: "#8fb0ea" },
+] as const;
+const REACH_COLORS_EXPR: maplibregl.ExpressionSpecification = [
+  "step",
+  ["get", "minutes"],
+  REACH_BANDS[0].color,
+  REACH_BANDS[0].maxMinutes,
+  REACH_BANDS[1].color,
+  REACH_BANDS[1].maxMinutes,
+  REACH_BANDS[2].color,
+];
+
 /** Use the remote basemap when reachable, else the local fallback. */
 export async function resolveStyle(): Promise<string | maplibregl.StyleSpecification> {
   try {
@@ -165,6 +181,10 @@ export class SkymapView {
     this.map.addSource("skyway-buildings", { type: "geojson", data: buildingsFC(this.data, this.when) });
     this.map.addSource("skyway-route", { type: "geojson", data: lineFC([]) });
     this.map.addSource("skyway-walker", { type: "geojson", data: pointFC(null) });
+    this.map.addSource("skyway-reach", {
+      type: "geojson",
+      data: { type: "FeatureCollection", features: [] } satisfies FC,
+    });
 
     this.map.addLayer({
       id: "skyway-buildings-fill",
@@ -183,6 +203,17 @@ export class SkymapView {
         "line-color": ["case", ["get", "open"], NETWORK, CLOSED],
         "line-width": ["case", ["get", "open"], 1.6, 1],
         "line-opacity": 0.7,
+      },
+    });
+
+    // Reach bands paint over building fills when an isochrone is active.
+    this.map.addLayer({
+      id: "skyway-reach-fill",
+      type: "fill",
+      source: "skyway-reach",
+      paint: {
+        "fill-color": REACH_COLORS_EXPR,
+        "fill-opacity": 0.55,
       },
     });
 
@@ -323,5 +354,33 @@ export class SkymapView {
 
   focusBuilding(b: Building) {
     this.map.flyTo({ center: [b.lon, b.lat], zoom: 16 });
+  }
+
+  /** Shade reachable buildings by minutes band; null clears the overlay. */
+  setReach(entries: { building: Building; minutes: number }[] | null) {
+    const apply = () => {
+      const fc: FC = {
+        type: "FeatureCollection",
+        features: (entries ?? []).map((e) => ({
+          type: "Feature",
+          properties: { minutes: e.minutes },
+          geometry: { type: "Polygon", coordinates: [e.building.footprint] },
+        })),
+      };
+      (this.map.getSource("skyway-reach") as maplibregl.GeoJSONSource)?.setData(fc);
+      if (entries && entries.length > 1) {
+        const lons = entries.flatMap((e) => e.building.footprint.map((c) => c[0]));
+        const lats = entries.flatMap((e) => e.building.footprint.map((c) => c[1]));
+        this.map.fitBounds(
+          [
+            [Math.min(...lons), Math.min(...lats)],
+            [Math.max(...lons), Math.max(...lats)],
+          ],
+          { padding: { top: 80, bottom: 260, left: 60, right: 60 }, maxZoom: 15.5 },
+        );
+      }
+    };
+    if (this.ready) apply();
+    else this.map.once("load", apply);
   }
 }

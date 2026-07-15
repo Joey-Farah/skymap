@@ -216,6 +216,10 @@ body {
   margin-top: 10px;
 }
 
+.scrubber[hidden] {
+  display: none;
+}
+
 .day-chips {
   display: flex;
   gap: 4px;
@@ -399,6 +403,49 @@ body {
   background: var(--blue);
   border-color: var(--blue);
   color: #fff;
+}
+
+.reach-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--amber);
+  background: #fff;
+  color: var(--amber);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.legend {
+  list-style: none;
+  margin: 8px 0 4px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.legend-count {
+  margin-left: auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* --- Disclaimer ---------------------------------------------------------- */

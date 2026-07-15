@@ -85,6 +85,40 @@ export class SkywayRouter {
   }
 
   /**
+   * Every building reachable from `fromId` within `maxMinutes`, mapped to
+   * walking minutes (same cost model as routes). Buildings closed at `when`
+   * are not traversable; pass null for hours-blind reach.
+   */
+  reachable(fromId: string, when: Date | null, maxMinutes: number): Map<string, number> {
+    const minutes = new Map<string, number>([[fromId, 0]]);
+    if (!this.buildings.has(fromId)) return new Map();
+    const open = new Set<string>([fromId]);
+    while (open.size > 0) {
+      let current = "";
+      let best = Infinity;
+      for (const id of open) {
+        const m = minutes.get(id) ?? Infinity;
+        if (m < best) {
+          best = m;
+          current = id;
+        }
+      }
+      open.delete(current);
+      for (const edge of this.adjacency.get(current) ?? []) {
+        const b = this.buildings.get(edge.to)!;
+        if (when && edge.to !== fromId && !isOpenAt(b, when)) continue;
+        const transit = current === fromId ? 0 : BUILDING_TRANSIT_MIN;
+        const tentative = best + transit + edge.meters / WALK_METERS_PER_MIN;
+        if (tentative <= maxMinutes && tentative < (minutes.get(edge.to) ?? Infinity)) {
+          minutes.set(edge.to, tentative);
+          open.add(edge.to);
+        }
+      }
+    }
+    return minutes;
+  }
+
+  /**
    * A* shortest path. When `when` is set, buildings closed at that time are
    * not traversable (origin and destination are exempt so you can still
    * route "to the door"). Falls back to hours-blind routing when no open

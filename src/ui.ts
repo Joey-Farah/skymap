@@ -1,5 +1,5 @@
 import type { Building, RouteResult } from "./types.ts";
-import { closingSoonWarnings, formatWeeklyHours, statusAt } from "./hours.ts";
+import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
@@ -111,7 +111,7 @@ export class Sheet {
   showBuilding(
     b: Building,
     when: Date,
-    actions: { onFrom: () => void; onTo: () => void },
+    actions: { onFrom: () => void; onTo: () => void; onReach: () => void },
   ) {
     const status = statusAt(b, when);
     this.content.innerHTML = "";
@@ -130,7 +130,45 @@ export class Sheet {
     toBtn.addEventListener("click", actions.onTo);
     actionsRow.append(fromBtn, toBtn);
 
-    this.content.append(h2, meta, badge, hours, note, actionsRow);
+    const reachBtn = el("button", "What's within 15 minutes?", "reach-btn");
+    reachBtn.addEventListener("click", actions.onReach);
+
+    this.content.append(h2, meta, badge, hours, note, actionsRow, reachBtn);
+    this.show();
+  }
+
+  /** Isochrone legend for the reach overlay. */
+  showReach(
+    origin: Building,
+    when: Date,
+    bands: readonly { maxMinutes: number; color: string }[],
+    counts: number[],
+    onClear: () => void,
+  ) {
+    this.content.innerHTML = "";
+    this.content.append(el("h2", `Within reach of ${origin.name}`));
+    this.content.append(el("div", `Leaving ${formatWhen(when)} · entirely indoors`, "meta"));
+
+    const legend = document.createElement("ul");
+    legend.className = "legend";
+    let prev = 0;
+    bands.forEach((band, i) => {
+      const li = document.createElement("li");
+      const dot = el("span", "", "legend-dot");
+      dot.style.background = band.color;
+      li.append(
+        dot,
+        el("span", `${prev}–${band.maxMinutes} min`),
+        el("span", `${counts[i]} building${counts[i] === 1 ? "" : "s"}`, "legend-count"),
+      );
+      legend.appendChild(li);
+      prev = band.maxMinutes;
+    });
+    this.content.append(legend);
+
+    const clear = el("button", "Clear reach map", "reach-btn");
+    clear.addEventListener("click", onClear);
+    this.content.append(clear);
     this.show();
   }
 

@@ -162,6 +162,26 @@ test("nextOccurrence finds the coming weekday at a minute-of-day", () => {
   assert.equal(sunday.getDate(), 19, "next Sunday");
 });
 
+test("reachable() maps buildings to walking minutes within a budget", () => {
+  const reach = router.reachable("ids-center", TUE_10AM, 10);
+  assert.equal(reach.get("ids-center"), 0);
+  assert.ok(reach.has("gaviidae-common"), "adjacent building is inside 10 min");
+  assert.ok(reach.get("gaviidae-common") > 0 && reach.get("gaviidae-common") < 5);
+  for (const minutes of reach.values()) assert.ok(minutes <= 10);
+
+  const tiny = router.reachable("ids-center", TUE_10AM, 3);
+  assert.ok(!tiny.has("us-bank-stadium"), "stadium is beyond 3 minutes");
+  assert.ok(tiny.size < reach.size, "smaller budget reaches fewer buildings");
+
+  // Hours-blind with a huge budget covers the whole (connected) fixture.
+  const all = router.reachable("ids-center", null, 10_000);
+  assert.equal(all.size, data.buildings.length);
+
+  // Sunday 5am: nothing beyond the origin is open.
+  const SUN_5AM = new Date(2026, 6, 12, 5, 0);
+  assert.equal(router.reachable("ids-center", SUN_5AM, 60).size, 1);
+});
+
 test("route state round-trips through the URL", () => {
   const when = new Date(2026, 6, 14, 10, 0);
   const qs = encodeRouteState({ fromId: "ids-center", toId: "hilton", when });

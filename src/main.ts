@@ -1,7 +1,7 @@
 import "./styles.css";
 import type { Building, SkymapData } from "./types.ts";
 import { SkywayRouter } from "./router.ts";
-import { SkymapView, resolveStyle } from "./map.ts";
+import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
 import { formatMinute, nextOccurrence } from "./hours.ts";
@@ -109,6 +109,7 @@ async function boot() {
       );
       return;
     }
+    view.setReach(null);
     view.setRoute(route);
     sheet.showRoute(route, when);
     // Make the address bar shareable: the URL always describes this route.
@@ -137,6 +138,28 @@ async function boot() {
     sheet.showBuilding(b, selectedTime(), {
       onFrom: () => comboFrom.select(b),
       onTo: () => comboTo.select(b),
+      onReach: () => showReach(b),
+    });
+  }
+
+  function showReach(b: Building) {
+    const when = selectedTime();
+    const maxBand = REACH_BANDS[REACH_BANDS.length - 1].maxMinutes;
+    const reach = router.reachable(b.id, when, maxBand);
+    const entries = [...reach.entries()]
+      .filter(([id]) => id !== b.id)
+      .map(([id, minutes]) => ({ building: router.building(id)!, minutes }));
+    const counts = REACH_BANDS.map(
+      (band, i) =>
+        entries.filter(
+          (e) => e.minutes <= band.maxMinutes && (i === 0 || e.minutes > REACH_BANDS[i - 1].maxMinutes),
+        ).length,
+    );
+    view.setRoute(null);
+    view.setReach(entries);
+    sheet.showReach(b, when, REACH_BANDS, counts, () => {
+      view.setReach(null);
+      sheet.hide();
     });
   }
 

@@ -17,6 +17,11 @@ export function formatMinute(min: number): string {
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+/** e.g. "Tue 12:15pm" */
+export function formatWhen(d: Date): string {
+  return `${DAY_NAMES[d.getDay()]} ${formatMinute(d.getHours() * 60 + d.getMinutes())}`;
+}
+
 /** Compact weekly hours summary, grouping consecutive identical days. */
 export function formatWeeklyHours(hours: DayHours[]): string {
   // Walk Monday-first for natural reading order.
