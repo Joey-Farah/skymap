@@ -218,6 +218,20 @@ test("googleMapsUrl builds a search deep link", () => {
   assert.match(url, /Minneapolis/);
 });
 
+test("poi grouping and building categories", async () => {
+  const { groupFor, buildingCategory } = await import("../src/poi.ts");
+  assert.equal(groupFor("amenity", "cafe"), "food");
+  assert.equal(groupFor("shop", "clothes"), "shop");
+  assert.equal(groupFor("amenity", "bank"), "service");
+  assert.equal(groupFor("amenity", "toilets"), "restroom");
+  assert.equal(groupFor("tourism", "museum"), "landmark");
+  assert.equal(groupFor("transit", "bus_stop"), "transit");
+  assert.equal(buildingCategory({ building: "parking" }), "parking");
+  assert.equal(buildingCategory({ building: "yes", amenity: "parking" }), "parking");
+  assert.equal(buildingCategory({ building: "hotel" }), "hotel");
+  assert.equal(buildingCategory({ building: "yes" }), "office");
+});
+
 test("live POIs reference real buildings", () => {
   assert.ok(live.pois.length > 50, `expected a real business set, got ${live.pois.length}`);
   const ids = new Set(live.buildings.map((b) => b.id));

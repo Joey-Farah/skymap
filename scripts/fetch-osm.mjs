@@ -29,6 +29,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildingCategory, groupFor } from "../src/poi.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APPLY = process.argv.includes("--apply");
@@ -61,11 +62,19 @@ way["building"]["name"](${BBOX});
 out body;
 >;
 out skel qt;
-node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|bank|pharmacy|clinic|dentist|post_office|theatre|cinema)$"]["name"](${BBOX});
+node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|bank|pharmacy|clinic|dentist|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship)$"]["name"](${BBOX});
 out body;
 node["shop"]["name"](${BBOX});
 out body;
 node["leisure"~"^(fitness_centre|bowling_alley)$"]["name"](${BBOX});
+out body;
+node["amenity"="toilets"](${BBOX});
+out body;
+node["tourism"~"^(attraction|museum|artwork|gallery|viewpoint)$"]["name"](${BBOX});
+out body;
+node["highway"="bus_stop"]["name"](${BBOX});
+out body;
+node["railway"~"^(station|tram_stop)$"]["name"](${BBOX});
 out body;
 `;
 
@@ -146,10 +155,16 @@ function main(osm) {
   const buildingsRaw = [];
   const poiNodes = [];
 
+  const transitNodes = [];
   for (const el of osm.elements) {
     if (el.type === "node") {
       nodes.set(el.id, { lat: el.lat, lon: el.lon });
-      if (el.tags?.name && (el.tags.amenity || el.tags.shop || el.tags.leisure)) poiNodes.push(el);
+      const t = el.tags ?? {};
+      if (t.highway === "bus_stop" || t.railway === "station" || t.railway === "tram_stop") {
+        if (t.name) transitNodes.push(el);
+      } else if (t.amenity === "toilets" || (t.name && (t.amenity || t.shop || t.leisure || t.tourism))) {
+        poiNodes.push(el);
+      }
     } else if (el.type === "way" && el.tags?.building && el.tags?.name) buildingsRaw.push(el);
     else if (el.type === "way" && el.tags?.highway) ways.push(el);
   }
@@ -168,7 +183,7 @@ function main(osm) {
         id: `${slugify(w.tags.name)}-${w.id}`,
         name: w.tags.name,
         address: [w.tags["addr:housenumber"], w.tags["addr:street"]].filter(Boolean).join(" ") || "Minneapolis",
-        category: "office",
+        category: buildingCategory(w.tags),
         lat: +c.lat.toFixed(6),
         lon: +c.lon.toFixed(6),
         footprint: fp,
@@ -257,17 +272,19 @@ function main(osm) {
     (e) => mainComponent.has(e.from) && mainComponent.has(e.to),
   );
 
-  // Businesses inside network buildings (point-in-polygon on footprints).
+  // Businesses/features inside network buildings (point-in-polygon).
   const pois = [];
   for (const n of poiNodes) {
     const host = finalBuildings.find((b) => pointInRing(n.lon, n.lat, b.footprint));
     if (!host) continue;
-    const kind = n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : "leisure";
+    const kind = n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : "leisure";
+    const category = n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.leisure;
     pois.push({
       id: `poi-${n.id}`,
-      name: n.tags.name,
-      category: n.tags.amenity ?? n.tags.shop ?? n.tags.leisure,
+      name: n.tags.name ?? (category === "toilets" ? "Public restroom" : category),
+      category,
       kind,
+      group: groupFor(kind, category),
       lat: +n.lat.toFixed(6),
       lon: +n.lon.toFixed(6),
       buildingId: host.id,
@@ -275,7 +292,38 @@ function main(osm) {
       ...(n.tags.opening_hours ? { openingHours: n.tags.opening_hours } : {}),
     });
   }
-  console.log(`POIs inside the network: ${pois.length}.`);
+
+  // Transit stops: street-level, attached to the nearest network building
+  // within 120 m; deduped by name (route variants share a pole).
+  const seenStops = new Set();
+  for (const n of transitNodes) {
+    if (seenStops.has(n.tags.name)) continue;
+    let host = null;
+    let best = 120;
+    for (const b of finalBuildings) {
+      const d = haversine(n.lat, n.lon, b.lat, b.lon);
+      if (d < best) {
+        best = d;
+        host = b;
+      }
+    }
+    if (!host) continue;
+    seenStops.add(n.tags.name);
+    pois.push({
+      id: `poi-${n.id}`,
+      name: n.tags.name,
+      category: n.tags.railway ?? "bus_stop",
+      kind: "transit",
+      group: "transit",
+      lat: +n.lat.toFixed(6),
+      lon: +n.lon.toFixed(6),
+      buildingId: host.id,
+      exterior: true,
+    });
+  }
+  console.log(
+    `POIs: ${pois.filter((p) => !p.exterior).length} inside the network, ${pois.filter((p) => p.exterior).length} transit stops nearby.`,
+  );
 
   const data = {
     meta: {

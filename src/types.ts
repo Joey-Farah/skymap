@@ -31,17 +31,23 @@ export interface Edge {
   geometry?: [number, number][];
 }
 
-/** A business/amenity inside a skyway-connected building. */
+import type { PoiGroup } from "./poi.ts";
+
+/** A business/amenity inside (or, for transit, right outside) a skyway building. */
 export interface Poi {
   id: string;
   name: string;
-  /** OSM value: "cafe", "restaurant", "clothes", "hairdresser", … */
+  /** OSM value: "cafe", "restaurant", "clothes", "bus_stop", … */
   category: string;
-  /** Which side of the tags it came from. */
-  kind: "amenity" | "shop" | "leisure";
+  /** Which tag family it came from: "amenity", "shop", "leisure", "tourism", "transit". */
+  kind: string;
+  /** Display/styling group, derived from kind+category at extraction. */
+  group: PoiGroup;
   lat: number;
   lon: number;
   buildingId: string;
+  /** True for street-level features attached to their nearest building (transit). */
+  exterior?: boolean;
   /** Raw OSM level tag when present ("1", "0-1", …); "1" is the skyway level. */
   level?: string;
   /** Raw OSM opening_hours when present. */

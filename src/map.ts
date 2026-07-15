@@ -117,14 +117,27 @@ function lineFC(coordinates: [number, number][]): FC {
   };
 }
 
-export const FOOD_CATEGORY = /^(cafe|restaurant|fast_food|bar|pub|ice_cream|bakery|coffee|confectionery|deli)$/;
+/** Dot color per POI group (transit gets its own layer). */
+const GROUP_COLORS: Record<string, string> = {
+  food: "#e08a00",
+  shop: "#17356e",
+  service: "#5b6b84",
+  restroom: "#0d9488",
+  landmark: "#7c3aed",
+  transit: "#178740",
+};
 
 function poisFC(pois: Poi[]): FC {
   return {
     type: "FeatureCollection",
     features: pois.map((p) => ({
       type: "Feature",
-      properties: { id: p.id, name: p.name, food: FOOD_CATEGORY.test(p.category) },
+      properties: {
+        id: p.id,
+        name: p.name,
+        group: p.group,
+        color: GROUP_COLORS[p.group] ?? INK,
+      },
       geometry: { type: "Point", coordinates: [p.lon, p.lat] },
     })),
   };
@@ -284,14 +297,29 @@ export class SkymapView {
     });
 
     // Businesses appear as you zoom in: dots first, names closer.
+    // Transit stops wait for a deeper zoom — 121 of them would swamp the map.
     this.map.addLayer({
       id: "skyway-pois",
       type: "circle",
       source: "skyway-pois",
       minzoom: 14.8,
+      filter: ["!=", ["get", "group"], "transit"],
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 14.8, 2.5, 17, 5],
-        "circle-color": ["case", ["get", "food"], ROUTE, NETWORK_DEEP],
+        "circle-color": ["get", "color"],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 1.5,
+      },
+    });
+    this.map.addLayer({
+      id: "skyway-pois-transit",
+      type: "circle",
+      source: "skyway-pois",
+      minzoom: 16.2,
+      filter: ["==", ["get", "group"], "transit"],
+      paint: {
+        "circle-radius": 4,
+        "circle-color": ["get", "color"],
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": 1.5,
       },
@@ -301,6 +329,7 @@ export class SkymapView {
       type: "symbol",
       source: "skyway-pois",
       minzoom: 15.8,
+      filter: ["!=", ["get", "group"], "transit"],
       layout: {
         "text-field": ["get", "name"],
         "text-size": 10.5,
@@ -311,7 +340,7 @@ export class SkymapView {
         "text-optional": true,
       },
       paint: {
-        "text-color": ["case", ["get", "food"], "#9a5f00", INK],
+        "text-color": ["get", "color"],
         "text-halo-color": "rgba(255,255,255,0.92)",
         "text-halo-width": 1.3,
       },

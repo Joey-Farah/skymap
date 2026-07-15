@@ -1,5 +1,7 @@
 import type { Building, Poi, RouteResult } from "./types.ts";
 import { googleMapsUrl } from "./share.ts";
+import { CATEGORY_LABELS, GROUP_LABELS, type PoiGroup } from "./poi.ts";
+import { haversineMeters } from "./router.ts";
 import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
@@ -119,7 +121,8 @@ export class Sheet {
     this.content.innerHTML = "";
 
     const h2 = el("h2", b.name);
-    const meta = el("div", b.address, "meta");
+    const kind = CATEGORY_LABELS[b.category];
+    const meta = el("div", kind ? `${kind} · ${b.address}` : b.address, "meta");
     const badge = el("span", status.open ? status.label : status.label, `badge ${status.open ? "open" : "closed"}`);
     const hours = el("div", `Skyway hours: ${formatWeeklyHours(b.hours)}`, "hours-line");
     const note = el("div", b.hoursNote, "meta");
@@ -137,25 +140,50 @@ export class Sheet {
 
     this.content.append(h2, meta, badge, hours, note, actionsRow, reachBtn);
 
-    if (pois.length > 0) {
-      this.content.append(el("h3", `Inside (${pois.length})`, "poi-heading"));
+    const interior = pois.filter((p) => !p.exterior);
+    const transit = pois.filter((p) => p.exterior);
+    const order: PoiGroup[] = ["food", "shop", "service", "restroom", "landmark"];
+    for (const group of order) {
+      const members = interior.filter((p) => p.group === group);
+      if (members.length === 0) continue;
+      this.content.append(el("h3", `${GROUP_LABELS[group]} (${members.length})`, "poi-heading"));
+      this.content.append(this.poiList(members));
+    }
+    if (transit.length > 0) {
+      this.content.append(el("h3", GROUP_LABELS.transit, "poi-heading"));
       const list = document.createElement("ul");
       list.className = "poi-list";
-      for (const p of [...pois].sort((a, b) => a.name.localeCompare(b.name))) {
+      for (const p of transit.slice(0, 4)) {
         const li = document.createElement("li");
-        li.append(el("span", p.name), el("span", humanCategory(p.category), "poi-cat"));
-        const link = document.createElement("a");
-        link.href = googleMapsUrl(p);
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.className = "poi-gmaps";
-        link.textContent = "Maps ↗";
-        li.append(link);
+        const ft = Math.round(haversineMeters(p.lat, p.lon, b.lat, b.lon) * 3.28084);
+        li.append(
+          el("span", p.name),
+          el("span", p.category === "bus_stop" ? "Bus" : "Light rail", "poi-cat"),
+          el("span", `${ft} ft`, "poi-gmaps"),
+        );
         list.appendChild(li);
       }
       this.content.append(list);
     }
     this.show();
+  }
+
+  private poiList(pois: Poi[]): HTMLElement {
+    const list = document.createElement("ul");
+    list.className = "poi-list";
+    for (const p of [...pois].sort((a, b) => a.name.localeCompare(b.name))) {
+      const li = document.createElement("li");
+      li.append(el("span", p.name), el("span", humanCategory(p.category), "poi-cat"));
+      const link = document.createElement("a");
+      link.href = googleMapsUrl(p);
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.className = "poi-gmaps";
+      link.textContent = "Maps ↗";
+      li.append(link);
+      list.appendChild(li);
+    }
+    return list;
   }
 
   /** Card for a single business tapped on the map. */
