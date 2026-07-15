@@ -208,6 +208,10 @@ test("live dataset is internally consistent", () => {
   }
   for (const b of live.buildings) {
     assert.equal(b.hours.length, 7, `${b.id} must have 7 days of hours`);
+    if (b.image) {
+      assert.ok(b.image.url && b.image.attribution && b.image.sourceUrl, `${b.id} has an incomplete image record`);
+      assert.match(b.image.attribution, /·/, `${b.id} image is missing a license in its attribution`);
+    }
   }
 });
 

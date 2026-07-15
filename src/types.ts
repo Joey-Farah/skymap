@@ -21,6 +21,8 @@ export interface Building {
   /** Sunday-first weekly hours. */
   hours: DayHours[];
   hoursNote: string;
+  /** Landmark photo from Wikimedia Commons, via the building's OSM wikidata tag. */
+  image?: { url: string; attribution: string; sourceUrl: string };
 }
 
 export interface Edge {

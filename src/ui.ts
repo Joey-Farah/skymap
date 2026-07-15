@@ -182,6 +182,7 @@ export class Sheet {
     // Everything past the essentials collapses away in peek mode.
     const more = document.createElement("div");
     more.className = "sheet-collapsible";
+    if (b.image) more.append(this.landmarkPhoto(b.image));
     more.append(actionsRow, reachBtn);
 
     const interior = pois.filter((p) => !p.exterior);
@@ -211,6 +212,24 @@ export class Sheet {
     }
     this.content.append(h2, meta, badge, hours, note, more);
     this.show();
+  }
+
+  private landmarkPhoto(image: NonNullable<Building["image"]>): HTMLElement {
+    const wrap = document.createElement("figure");
+    wrap.className = "landmark-photo";
+    const img = document.createElement("img");
+    img.src = image.url;
+    img.loading = "lazy";
+    img.alt = "";
+    const caption = document.createElement("figcaption");
+    const link = document.createElement("a");
+    link.href = image.sourceUrl;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = `Photo: ${image.attribution}`;
+    caption.append(link);
+    wrap.append(img, caption);
+    return wrap;
   }
 
   private poiList(pois: Poi[]): HTMLElement {

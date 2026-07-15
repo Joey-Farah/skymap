@@ -149,7 +149,67 @@ function slugify(name) {
     .replace(/^-|-$/g, "");
 }
 
-function main(osm) {
+/**
+ * Landmark photos for buildings whose OSM way carries a wikidata tag —
+ * only well-known buildings get one, but it's real, freely-licensed
+ * imagery with proper attribution (vs. no images at all).
+ */
+async function fetchLandmarkImages(wikidataByBuildingId) {
+  const ids = [...wikidataByBuildingId.values()];
+  if (ids.length === 0) return new Map();
+  const headers = { "User-Agent": USER_AGENT };
+
+  const filenameByQid = new Map();
+  for (let i = 0; i < ids.length; i += 50) {
+    const batch = ids.slice(i, i + 50);
+    const res = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${batch.join("|")}&props=claims&format=json`,
+      { headers },
+    );
+    if (!res.ok) continue;
+    const data = await res.json();
+    for (const [qid, entity] of Object.entries(data.entities ?? {})) {
+      const file = entity.claims?.P18?.[0]?.mainsnak?.datavalue?.value;
+      if (file) filenameByQid.set(qid, file);
+    }
+  }
+  if (filenameByQid.size === 0) return new Map();
+
+  const attributionByFile = new Map();
+  const filenames = [...filenameByQid.values()];
+  for (let i = 0; i < filenames.length; i += 50) {
+    const batch = filenames.slice(i, i + 50).map((f) => `File:${f}`);
+    const res = await fetch(
+      `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(batch.join("|"))}&prop=imageinfo&iiprop=extmetadata&format=json`,
+      { headers },
+    );
+    if (!res.ok) continue;
+    const data = await res.json();
+    for (const page of Object.values(data.query?.pages ?? {})) {
+      const meta = page.imageinfo?.[0]?.extmetadata;
+      if (!meta) continue;
+      const artist = (meta.Artist?.value ?? "").replace(/<[^>]+>/g, "").trim() || "Unknown";
+      const license = meta.LicenseShortName?.value ?? "";
+      attributionByFile.set(page.title.replace(/^File:/, ""), `${artist}${license ? ` · ${license}` : ""}`);
+    }
+  }
+
+  const imageByBuildingId = new Map();
+  for (const [buildingId, qid] of wikidataByBuildingId) {
+    const file = filenameByQid.get(qid);
+    if (!file) continue;
+    const attribution = attributionByFile.get(file);
+    if (!attribution) continue; // no metadata = can't attribute = don't show it
+    imageByBuildingId.set(buildingId, {
+      url: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=640`,
+      attribution,
+      sourceUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file)}`,
+    });
+  }
+  return imageByBuildingId;
+}
+
+async function main(osm) {
   const nodes = new Map(); // id -> {lat, lon}
   const ways = [];
   const buildingsRaw = [];
@@ -173,14 +233,17 @@ function main(osm) {
   );
 
   // Building records with footprints.
+  const wikidataByBuildingId = new Map();
   const buildings = buildingsRaw
     .map((w) => {
       const ring = w.nodes.map((id) => nodes.get(id)).filter(Boolean);
       if (ring.length < 3) return null;
       const fp = ring.map((n) => [+n.lon.toFixed(6), +n.lat.toFixed(6)]);
       const c = centroid(fp);
+      const id = `${slugify(w.tags.name)}-${w.id}`;
+      if (w.tags.wikidata) wikidataByBuildingId.set(id, w.tags.wikidata);
       return {
-        id: `${slugify(w.tags.name)}-${w.id}`,
+        id,
         name: w.tags.name,
         address: [w.tags["addr:housenumber"], w.tags["addr:street"]].filter(Boolean).join(" ") || "Minneapolis",
         category: buildingCategory(w.tags),
@@ -271,6 +334,17 @@ function main(osm) {
   const finalEdges = [...edgeMap.values()].filter(
     (e) => mainComponent.has(e.from) && mainComponent.has(e.to),
   );
+
+  const relevantWikidata = new Map(
+    [...wikidataByBuildingId].filter(([id]) => mainComponent.has(id)),
+  );
+  console.log(`Fetching landmark photos for ${relevantWikidata.size} tagged buildings…`);
+  const imageByBuildingId = await fetchLandmarkImages(relevantWikidata);
+  for (const b of finalBuildings) {
+    const image = imageByBuildingId.get(b.id);
+    if (image) b.image = image;
+  }
+  console.log(`Landmark photos attached: ${imageByBuildingId.size}.`);
 
   // Businesses/features inside network buildings (point-in-polygon).
   const pois = [];

@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-15T22:21:19.492Z"
+  "generated": "2026-07-15T22:48:34.085Z"
  },
  "buildings": [
   {
@@ -11,8 +11,8 @@
    "name": "Park and Shop Ramp",
    "address": "24 South 8th Street",
    "category": "parking",
-   "lat": 44.977065,
-   "lon": -93.274637,
+   "lat": 44.977063,
+   "lon": -93.274625,
    "footprint": [
     [
      -93.274942,
@@ -33,6 +33,10 @@
     [
      -93.274565,
      44.976679
+    ],
+    [
+     -93.274286,
+     44.977004
     ],
     [
      -93.274252,
@@ -649,7 +653,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/33%20South%20Sixth%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:33%20South%20Sixth%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "midtown-parking-ramp-27346722",
@@ -1060,7 +1069,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Hennepin%20County%20Government%20Center%202018.jpg?width=640",
+    "attribution": "McGhiever · CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hennepin%20County%20Government%20Center%202018.jpg"
+   }
   },
   {
    "id": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
@@ -1871,11 +1885,16 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/AT%26T%20Tower%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:AT%26T%20Tower%20Minneapolis%201.jpg"
+   }
   },
   {
-   "id": "rand-tower-hotel-29080581",
-   "name": "Rand Tower Hotel",
+   "id": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
+   "name": "Rand Tower Hotel, Minneapolis, a Tribute Portfolio Hotel",
    "address": "527 Marquette Avenue",
    "category": "hotel",
    "lat": 44.977323,
@@ -2161,7 +2180,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Fifth%20Street%20Towers%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fifth%20Street%20Towers%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "lumber-exchange-30263208",
@@ -2258,35 +2282,48 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Lumber%20Exchange%20Bldg.jpg?width=640",
+    "attribution": "McGhiever · CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lumber%20Exchange%20Bldg.jpg"
+   }
   },
   {
-   "id": "mills-fleet-farm-parking-garage-40774167",
-   "name": "Mills Fleet Farm Parking Garage",
+   "id": "stadium-parking-ramp-40774167",
+   "name": "Stadium Parking Ramp",
    "address": "Minneapolis",
    "category": "parking",
-   "lat": 44.97575,
-   "lon": -93.259079,
+   "lat": 44.975799,
+   "lon": -93.259092,
    "footprint": [
     [
-     -93.258312,
-     44.9761
+     -93.25833,
+     44.976088
     ],
     [
-     -93.258696,
-     44.975644
+     -93.258514,
+     44.97587
     ],
     [
-     -93.258717,
-     44.97562
+     -93.258702,
+     44.975647
     ],
     [
-     -93.258736,
-     44.975597
+     -93.258723,
+     44.975622
+    ],
+    [
+     -93.258742,
+     44.9756
     ],
     [
      -93.258899,
-     44.975413
+     44.975414
+    ],
+    [
+     -93.258997,
+     44.975455
     ],
     [
      -93.259056,
@@ -2294,7 +2331,7 @@
     ],
     [
      -93.25907,
-     44.975462
+     44.975463
     ],
     [
      -93.259167,
@@ -2305,32 +2342,40 @@
      44.975522
     ],
     [
-     -93.259246,
+     -93.259247,
      44.975563
     ],
     [
-     -93.259167,
+     -93.259169,
      44.975655
     ],
     [
-     -93.259528,
-     44.975809
+     -93.259529,
+     44.975807
     ],
     [
-     -93.25991,
-     44.975972
+     -93.259917,
+     44.975971
     ],
     [
-     -93.259889,
-     44.975996
+     -93.259894,
+     44.975998
     ],
     [
-     -93.259403,
-     44.976566
+     -93.259726,
+     44.976197
     ],
     [
-     -93.258312,
-     44.9761
+     -93.259426,
+     44.976551
+    ],
+    [
+     -93.259255,
+     44.976479
+    ],
+    [
+     -93.25833,
+     44.976088
     ]
    ],
    "hours": [
@@ -2594,12 +2639,17 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Wells%20Fargo%20Center%20from%20Foshay.jpg?width=640",
+    "attribution": "No machine-readable author provided. Mulad assumed (based on copyright claims). · Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wells%20Fargo%20Center%20from%20Foshay.jpg"
+   }
   },
   {
    "id": "orpheum-theatre-41763764",
    "name": "Orpheum Theatre",
-   "address": "Minneapolis",
+   "address": "910 Hennepin Avenue",
    "category": "office",
    "lat": 44.976533,
    "lon": -93.277868,
@@ -2727,7 +2777,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Orpheum%20Theatre%20night.jpg?width=640",
+    "attribution": "McGhiever · CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Orpheum%20Theatre%20night.jpg"
+   }
   },
   {
    "id": "orchestra-hall-43607930",
@@ -2904,7 +2959,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Orchestra%20Hall%20Exterior.jpg?width=640",
+    "attribution": "Beast 0110 · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Orchestra%20Hall%20Exterior.jpg"
+   }
   },
   {
    "id": "centre-village-44164774",
@@ -3050,7 +3110,7 @@
   {
    "id": "sora-apartments-44164775",
    "name": "Sora Apartments",
-   "address": "Minneapolis",
+   "address": "600 5th Avenue South",
    "category": "residential",
    "lat": 44.974717,
    "lon": -93.265457,
@@ -3129,12 +3189,16 @@
    "name": "100 Washington Square",
    "address": "100 Washington Avenue South",
    "category": "office",
-   "lat": 44.981222,
-   "lon": -93.26574,
+   "lat": 44.981217,
+   "lon": -93.265801,
    "footprint": [
     [
      -93.266222,
      44.981225
+    ],
+    [
+     -93.265928,
+     44.9811
     ],
     [
      -93.265588,
@@ -3159,6 +3223,10 @@
     [
      -93.265972,
      44.981521
+    ],
+    [
+     -93.266164,
+     44.981293
     ],
     [
      -93.266222,
@@ -3195,7 +3263,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/100%20Washington%20Square%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:100%20Washington%20Square%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "two22-44684851",
@@ -3292,7 +3365,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Campbell%20Mithun%20Tower%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Campbell%20Mithun%20Tower%201.jpg"
+   }
   },
   {
    "id": "young-quinlan-building-44684854",
@@ -3361,12 +3439,17 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Quinlan%20Building.jpg?width=640",
+    "attribution": "Elkman · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Young%20Quinlan%20Building.jpg"
+   }
   },
   {
    "id": "united-states-courthouse-and-federal-building-44684856",
    "name": "United States Courthouse and Federal Building",
-   "address": "Minneapolis",
+   "address": "300 South 4th Street",
    "category": "government",
    "lat": 44.978275,
    "lon": -93.264625,
@@ -3643,7 +3726,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Accenture%20Tower%20Minneapolis%205.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Accenture%20Tower%20Minneapolis%205.jpg"
+   }
   },
   {
    "id": "330-south-second-45452108",
@@ -3790,7 +3878,7 @@
   {
    "id": "grain-exchange-main-building-45452111",
    "name": "Grain Exchange Main Building",
-   "address": "Minneapolis",
+   "address": "400 South 4th Street",
    "category": "office",
    "lat": 44.977564,
    "lon": -93.263641,
@@ -4140,12 +4228,16 @@
    "name": "Marquette Plaza",
    "address": "250 Marquette Avenue",
    "category": "office",
-   "lat": 44.980754,
-   "lon": -93.267569,
+   "lat": 44.980742,
+   "lon": -93.267551,
    "footprint": [
     [
      -93.267686,
      44.980353
+    ],
+    [
+     -93.267426,
+     44.980656
     ],
     [
      -93.267313,
@@ -4202,7 +4294,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/051907-011-MarquettePlaza.jpg?width=640",
+    "attribution": "Bobak Ha'Eri · CC BY 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:051907-011-MarquettePlaza.jpg"
+   }
   },
   {
    "id": "730-building-45581646",
@@ -4513,7 +4610,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Ameriprise%20Financial%20Center%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ameriprise%20Financial%20Center%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "fair-school-for-arts-45680534",
@@ -5593,7 +5695,7 @@
   {
    "id": "50-south-sixth-99714290",
    "name": "50 South Sixth",
-   "address": "Minneapolis",
+   "address": "50 South 6th Street",
    "category": "office",
    "lat": 44.978263,
    "lon": -93.271592,
@@ -5942,7 +6044,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/225%20South%20Sixth%20from%20street.jpg?width=640",
+    "attribution": "Unknown · Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:225%20South%20Sixth%20from%20street.jpg"
+   }
   },
   {
    "id": "us-bank-plaza-126015100",
@@ -6075,7 +6182,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/US%20Bank%20Plaza%201%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:US%20Bank%20Plaza%201%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "jerry-haaf-memorial-garage-126015101",
@@ -6990,9 +7102,9 @@
    "id": "gaviidae-common-156909893",
    "name": "Gaviidae Common",
    "address": "Minneapolis",
-   "category": "office",
-   "lat": 44.977164,
-   "lon": -93.271547,
+   "category": "retailHub",
+   "lat": 44.977178,
+   "lon": -93.271513,
    "footprint": [
     [
      -93.271367,
@@ -7005,6 +7117,10 @@
     [
      -93.271027,
      44.977567
+    ],
+    [
+     -93.270809,
+     44.977473
     ],
     [
      -93.270726,
@@ -7186,7 +7302,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Soo%20Line%20Building%20Minneapolis.jpg?width=640",
+    "attribution": "Unknown · Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Soo%20Line%20Building%20Minneapolis.jpg"
+   }
   },
   {
    "id": "plymouth-building-156909952",
@@ -7283,7 +7404,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Plymouth%20Building.jpg?width=640",
+    "attribution": "McGhiever · CC BY 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plymouth%20Building.jpg"
+   }
   },
   {
    "id": "minneapolis-club-156909955",
@@ -7408,7 +7534,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Minneapolis%20Club.jpg?width=640",
+    "attribution": "Gobonobo · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Minneapolis%20Club.jpg"
+   }
   },
   {
    "id": "minneapolis-club-parking-ramp-156909960",
@@ -7727,7 +7858,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Dain%20Rauscher%20Plaza%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dain%20Rauscher%20Plaza%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "flour-exchange-building-156909968",
@@ -7808,12 +7944,17 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flour%20Exchange%20Building.jpg?width=640",
+    "attribution": "McGhiever · CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Flour%20Exchange%20Building.jpg"
+   }
   },
   {
    "id": "state-theatre-156912879",
    "name": "State Theatre",
-   "address": "Minneapolis",
+   "address": "805 Hennepin Avenue",
    "category": "office",
    "lat": 44.97667,
    "lon": -93.275581,
@@ -7893,7 +8034,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/2015StateTheatreMPLS.jpg?width=640",
+    "attribution": "Jonathunder · GFDL 1.2",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:2015StateTheatreMPLS.jpg"
+   }
   },
   {
    "id": "old-republic-title-building-156912886",
@@ -8298,7 +8444,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/F%26M%20Bank%203.jpg?width=640",
+    "attribution": "Elkman · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:F%26M%20Bank%203.jpg"
+   }
   },
   {
    "id": "517-marquette-garage-156912894",
@@ -8444,7 +8595,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/1891%20Farmers%20and%20Mechanics%20Savings%20Bank.jpg?width=640",
+    "attribution": "McGhiever · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:1891%20Farmers%20and%20Mechanics%20Savings%20Bank.jpg"
+   }
   },
   {
    "id": "hampton-inn-suites-minneapolis-downtown-198988798",
@@ -8977,7 +9133,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Midwest%20Plaza%20Minneapolis.JPG?width=640",
+    "attribution": "Jim Winstead Jr., [2] · CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Midwest%20Plaza%20Minneapolis.JPG"
+   }
   },
   {
    "id": "811-lasalle-357279465",
@@ -9063,7 +9224,7 @@
   {
    "id": "wells-fargo-550-407613510",
    "name": "Wells Fargo 550",
-   "address": "Minneapolis",
+   "address": "550 South 4th Street",
    "category": "office",
    "lat": 44.976958,
    "lon": -93.261958,
@@ -9160,7 +9321,7 @@
   {
    "id": "wells-fargo-600-407613511",
    "name": "Wells Fargo 600",
-   "address": "Minneapolis",
+   "address": "600 South 4th Street",
    "category": "office",
    "lat": 44.976435,
    "lon": -93.260799,
@@ -9402,7 +9563,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Churchill%20Apartments%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Churchill%20Apartments%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "milliam-e-mcgee-building-461219669",
@@ -9468,7 +9634,7 @@
   {
    "id": "tritech-office-center-461219677",
    "name": "TriTech Office Center",
-   "address": "Minneapolis",
+   "address": "331 2nd Ave S",
    "category": "office",
    "lat": 44.978567,
    "lon": -93.266358,
@@ -9811,7 +9977,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/US%20Bancorp%20Center%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:US%20Bancorp%20Center%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "lasalle-apartments-461227722",
@@ -10085,7 +10256,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/LaSalle%20Plaza%20Minneapolis%201.jpg?width=640",
+    "attribution": "AlexiusHoratius · CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:LaSalle%20Plaza%20Minneapolis%201.jpg"
+   }
   },
   {
    "id": "15-building-461227729",
@@ -10480,7 +10656,12 @@
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Public%20library%20minneapolis%20exterior.jpg?width=640",
+    "attribution": "Zachary Korb · CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Public%20library%20minneapolis%20exterior.jpg"
+   }
   },
   {
    "id": "rbc-gateway-733105254",
@@ -11207,27 +11388,27 @@
    "address": "700 4th St S",
    "category": "residential",
    "lat": 44.975675,
-   "lon": -93.25954,
+   "lon": -93.259541,
    "footprint": [
     [
      -93.259303,
      44.975492
     ],
     [
-     -93.259246,
+     -93.259247,
      44.975563
     ],
     [
-     -93.259167,
+     -93.259169,
      44.975655
     ],
     [
-     -93.259528,
-     44.975809
+     -93.259529,
+     44.975807
     ],
     [
-     -93.25991,
-     44.975972
+     -93.259917,
+     44.975971
     ],
     [
      -93.260049,
@@ -11924,10 +12105,10 @@
   {
    "id": "the-crossings-1411646515",
    "name": "The Crossings",
-   "address": "Minneapolis",
+   "address": "121 Washington Avenue South",
    "category": "residential",
-   "lat": 44.980226,
-   "lon": -93.266249,
+   "lat": 44.980246,
+   "lon": -93.266204,
    "footprint": [
     [
      -93.266242,
@@ -11970,8 +12151,16 @@
      44.980557
     ],
     [
+     -93.265896,
+     44.980471
+    ],
+    [
      -93.265858,
      44.980358
+    ],
+    [
+     -93.265926,
+     44.980282
     ],
     [
      -93.265933,
@@ -13368,7 +13557,7 @@
   },
   {
    "from": "517-marquette-garage-156912894",
-   "to": "rand-tower-hotel-29080581",
+   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
@@ -13520,7 +13709,7 @@
   },
   {
    "from": "six-quebec-156912888",
-   "to": "rand-tower-hotel-29080581",
+   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
@@ -13749,44 +13938,17 @@
    ]
   },
   {
-   "from": "4th-park-1223123289",
+   "from": "stadium-parking-ramp-40774167",
    "to": "wells-fargo-600-407613511",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.259889,
-     44.975996
+     -93.259894,
+     44.975998
     ],
     [
      -93.260178,
      44.976096
-    ]
-   ]
-  },
-  {
-   "from": "mills-fleet-farm-parking-garage-40774167",
-   "to": "4th-park-1223123289",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.258717,
-     44.97562
-    ],
-    [
-     -93.258766,
-     44.975641
-    ],
-    [
-     -93.258849,
-     44.975545
-    ],
-    [
-     -93.259509,
-     44.975828
-    ],
-    [
-     -93.259889,
-     44.975996
     ]
    ]
   },
@@ -14164,6 +14326,21 @@
    ]
   },
   {
+   "from": "stadium-parking-ramp-40774167",
+   "to": "4th-park-1223123289",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.259509,
+     44.975828
+    ],
+    [
+     -93.259529,
+     44.975807
+    ]
+   ]
+  },
+  {
    "from": "millwright-building-40933926",
    "to": "wells-fargo-550-407613510",
    "crossing": "Minneapolis Skyway",
@@ -14309,7 +14486,7 @@
    ]
   },
   {
-   "from": "rand-tower-hotel-29080581",
+   "from": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "to": "canadian-pacific-plaza-62005000",
    "crossing": "Minneapolis Skyway",
    "geometry": [
@@ -14388,6 +14565,10 @@
     [
      -93.274334,
      44.977026
+    ],
+    [
+     -93.274286,
+     44.977004
     ],
     [
      -93.274023,
@@ -14568,7 +14749,7 @@
    "lon": -93.271416,
    "buildingId": "ids-center-1385236413",
    "level": "1",
-   "openingHours": "Mo-Fr 8:00-17:00"
+   "openingHours": "Mo-Fr 08:00-17:00"
   },
   {
    "id": "poi-5355792484",
@@ -14589,6 +14770,17 @@
    "group": "food",
    "lat": 44.976285,
    "lon": -93.271614,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5355792486",
+   "name": "Cardigan Donuts",
+   "category": "fast_food",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.976319,
+   "lon": -93.271665,
    "buildingId": "ids-center-1385236413",
    "level": "1"
   },
@@ -14670,7 +14862,7 @@
   {
    "id": "poi-5955577503",
    "name": "Freshii",
-   "category": "fast_food",
+   "category": "restaurant",
    "kind": "amenity",
    "group": "food",
    "lat": 44.977278,
@@ -14759,7 +14951,8 @@
    "lat": 44.981243,
    "lon": -93.266079,
    "buildingId": "100-washington-square-44164776",
-   "level": "0"
+   "level": "0",
+   "openingHours": "07:00-15:00"
   },
   {
    "id": "poi-10270382209",
@@ -14880,17 +15073,6 @@
    "level": "1"
   },
   {
-   "id": "poi-12753315918",
-   "name": "JR Thai Food & Such",
-   "category": "fast_food",
-   "kind": "amenity",
-   "group": "food",
-   "lat": 44.977337,
-   "lon": -93.267645,
-   "buildingId": "us-bank-plaza-126015100",
-   "level": "1"
-  },
-  {
    "id": "poi-12753315921",
    "name": "Green + The Grain",
    "category": "fast_food",
@@ -14968,17 +15150,6 @@
    "level": "1"
   },
   {
-   "id": "poi-12768849146",
-   "name": "Be Graceful Cafe",
-   "category": "fast_food",
-   "kind": "amenity",
-   "group": "food",
-   "lat": 44.976136,
-   "lon": -93.264833,
-   "buildingId": "minneapolis-public-service-building-746039475",
-   "level": "1"
-  },
-  {
    "id": "poi-12768849147",
    "name": "Einstein Bros Bagels",
    "category": "fast_food",
@@ -14999,7 +15170,7 @@
    "lon": -93.267546,
    "buildingId": "sps-tower-45447294",
    "level": "1",
-   "openingHours": "Mon-Fri 6:30AM - 6:00PM"
+   "openingHours": "Mo-Fr 06:30-18:00"
   },
   {
    "id": "poi-12786616349",
@@ -15025,14 +15196,15 @@
   },
   {
    "id": "poi-12825025520",
-   "name": "Noa",
+   "name": "noa",
    "category": "restaurant",
    "kind": "amenity",
    "group": "food",
    "lat": 44.976405,
    "lon": -93.27163,
    "buildingId": "ids-center-1385236413",
-   "level": "0"
+   "level": "0",
+   "openingHours": "Mo-Fr 11:00-21:00; Sa,Su off"
   },
   {
    "id": "poi-12825025521",
@@ -15059,7 +15231,7 @@
   {
    "id": "poi-12862806759",
    "name": "Bruegger's Bagels",
-   "category": "cafe",
+   "category": "fast_food",
    "kind": "amenity",
    "group": "food",
    "lat": 44.977465,
@@ -15080,14 +15252,15 @@
   },
   {
    "id": "poi-12862838543",
-   "name": "Savoure Vietnamese Eatery",
+   "name": "Savouré Vietnamese Eatery",
    "category": "fast_food",
    "kind": "amenity",
    "group": "food",
    "lat": 44.977005,
    "lon": -93.269958,
    "buildingId": "six-quebec-156912888",
-   "level": "1"
+   "level": "1",
+   "openingHours": "Mo-Fr 11:00-13:30; Sa-Su off"
   },
   {
    "id": "poi-12862838544",
@@ -15204,8 +15377,8 @@
    "category": "fast_food",
    "kind": "amenity",
    "group": "food",
-   "lat": 44.980392,
-   "lon": -93.266004,
+   "lat": 44.98021,
+   "lon": -93.266049,
    "buildingId": "the-crossings-1411646515",
    "level": "1"
   },
@@ -15215,14 +15388,14 @@
    "category": "fast_food",
    "kind": "amenity",
    "group": "food",
-   "lat": 44.980456,
-   "lon": -93.266007,
+   "lat": 44.98014,
+   "lon": -93.266237,
    "buildingId": "the-crossings-1411646515",
    "level": "1"
   },
   {
    "id": "poi-12971797978",
-   "name": "Jalapeno Mexican Grill",
+   "name": "Jalapeño Mexican Grill",
    "category": "fast_food",
    "kind": "amenity",
    "group": "food",
@@ -15282,7 +15455,7 @@
    "group": "service",
    "lat": 44.977379,
    "lon": -93.269705,
-   "buildingId": "rand-tower-hotel-29080581",
+   "buildingId": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "level": "1"
   },
   {
@@ -15293,7 +15466,7 @@
    "group": "food",
    "lat": 44.977289,
    "lon": -93.269491,
-   "buildingId": "rand-tower-hotel-29080581",
+   "buildingId": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "level": "1"
   },
   {
@@ -15318,7 +15491,7 @@
    "lon": -93.26838,
    "buildingId": "capella-tower-115559604",
    "level": "0",
-   "openingHours": "Tu-Th 8:00-15:00"
+   "openingHours": "Tu-Th 08:00-15:00"
   },
   {
    "id": "poi-13171572065",
@@ -15329,7 +15502,7 @@
    "lat": 44.976324,
    "lon": -93.26818,
    "buildingId": "capella-tower-115559604",
-   "openingHours": "Mon-Fri 10:00AM-3:00PM"
+   "openingHours": "Mo-Fr 10:00-15:00"
   },
   {
    "id": "poi-13174254376",
@@ -15685,6 +15858,64 @@
    "openingHours": "Mo-Fr 11:00-15:00"
   },
   {
+   "id": "poi-13965983651",
+   "name": "Skyway Pho",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.980174,
+   "lon": -93.266208,
+   "buildingId": "the-crossings-1411646515",
+   "level": "1"
+  },
+  {
+   "id": "poi-13965983652",
+   "name": "Eggflip",
+   "category": "fast_food",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.979506,
+   "lon": -93.266723,
+   "buildingId": "330-south-second-45452108",
+   "level": "1",
+   "openingHours": "Mo-Fr 08:00-14:00"
+  },
+  {
+   "id": "poi-13965983653",
+   "name": "Konbu Nori",
+   "category": "fast_food",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.979467,
+   "lon": -93.266753,
+   "buildingId": "330-south-second-45452108",
+   "level": "1",
+   "openingHours": "Mo-Fr 10:30-14:00"
+  },
+  {
+   "id": "poi-13993589138",
+   "name": "Bamboo Express",
+   "category": "fast_food",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.976923,
+   "lon": -93.269874,
+   "buildingId": "six-quebec-156912888",
+   "level": "1"
+  },
+  {
+   "id": "poi-14003692665",
+   "name": "Savouré",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.979414,
+   "lon": -93.266741,
+   "buildingId": "330-south-second-45452108",
+   "level": "0",
+   "openingHours": "Mo-Fr 11:00-13:30"
+  },
+  {
    "id": "poi-2093837739",
    "name": "Haskell's Wines",
    "category": "alcohol",
@@ -15725,18 +15956,8 @@
    "lat": 44.975819,
    "lon": -93.271825,
    "buildingId": "ids-center-1385236413",
-   "level": "1"
-  },
-  {
-   "id": "poi-5355792486",
-   "name": "Cardigan Donuts",
-   "category": "confectionery",
-   "kind": "shop",
-   "group": "food",
-   "lat": 44.976319,
-   "lon": -93.271665,
-   "buildingId": "ids-center-1385236413",
-   "level": "1"
+   "level": "1",
+   "openingHours": "Mo-Fr 07:30-13:30,14:00-17:00"
   },
   {
    "id": "poi-5955554287",
@@ -15801,7 +16022,7 @@
    "lat": 44.976032,
    "lon": -93.273707,
    "buildingId": "us-bancorp-center-461224219",
-   "openingHours": "Mo-Fr 7:00AM-3:00PM"
+   "openingHours": "Mo-Fr 07:00-15:00"
   },
   {
    "id": "poi-5955577504",
@@ -16208,6 +16429,49 @@
    "level": "0"
   },
   {
+   "id": "poi-13945489024",
+   "name": "State Theatre Box Office",
+   "category": "ticket",
+   "kind": "shop",
+   "group": "shop",
+   "lat": 44.976844,
+   "lon": -93.276065,
+   "buildingId": "state-theatre-156912879",
+   "openingHours": "Mo-Fr 12:00-17:00"
+  },
+  {
+   "id": "poi-13965983645",
+   "name": "Massage Envy",
+   "category": "massage",
+   "kind": "shop",
+   "group": "shop",
+   "lat": 44.979337,
+   "lon": -93.263174,
+   "buildingId": "cortland-mill-district-62006959"
+  },
+  {
+   "id": "poi-13965983654",
+   "name": "In-Dispensary",
+   "category": "cannabis",
+   "kind": "shop",
+   "group": "shop",
+   "lat": 44.980203,
+   "lon": -93.266176,
+   "buildingId": "the-crossings-1411646515",
+   "level": "1"
+  },
+  {
+   "id": "poi-13993589136",
+   "name": "Quick Eats Grille",
+   "category": "convenience",
+   "kind": "shop",
+   "group": "shop",
+   "lat": 44.976231,
+   "lon": -93.260338,
+   "buildingId": "wells-fargo-600-407613511",
+   "level": "1"
+  },
+  {
    "id": "poi-5955582354",
    "name": "Public restroom",
    "category": "toilets",
@@ -16226,6 +16490,17 @@
    "lat": 44.974158,
    "lon": -93.275843,
    "buildingId": "target-plaza-45452119"
+  },
+  {
+   "id": "poi-13993589139",
+   "name": "Public restroom",
+   "category": "toilets",
+   "kind": "amenity",
+   "group": "restroom",
+   "lat": 44.975708,
+   "lon": -93.265384,
+   "buildingId": "minneapolis-public-service-building-746039475",
+   "level": "1"
   },
   {
    "id": "poi-2499762597",
@@ -16894,7 +17169,7 @@
    "group": "transit",
    "lat": 44.976705,
    "lon": -93.259218,
-   "buildingId": "radisson-red-minneapolis-downtown-60613336",
+   "buildingId": "stadium-parking-ramp-40774167",
    "exterior": true
   },
   {
