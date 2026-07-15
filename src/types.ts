@@ -31,10 +31,28 @@ export interface Edge {
   geometry?: [number, number][];
 }
 
+/** A business/amenity inside a skyway-connected building. */
+export interface Poi {
+  id: string;
+  name: string;
+  /** OSM value: "cafe", "restaurant", "clothes", "hairdresser", … */
+  category: string;
+  /** Which side of the tags it came from. */
+  kind: "amenity" | "shop" | "leisure";
+  lat: number;
+  lon: number;
+  buildingId: string;
+  /** Raw OSM level tag when present ("1", "0-1", …); "1" is the skyway level. */
+  level?: string;
+  /** Raw OSM opening_hours when present. */
+  openingHours?: string;
+}
+
 export interface SkymapData {
   meta: { name: string; source: string; disclaimer: string; generated: string };
   buildings: Building[];
   edges: Edge[];
+  pois?: Poi[];
 }
 
 export interface RouteStep {

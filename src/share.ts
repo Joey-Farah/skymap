@@ -19,6 +19,15 @@ export function encodeRouteState(state: { fromId: string; toId: string; when: Da
   return `?${params.toString()}`;
 }
 
+/**
+ * Deep link to the business's card on Google Maps (ratings, photos, hours
+ * live there — Google's ToS doesn't allow rendering Places data on our map).
+ */
+export function googleMapsUrl(poi: { name: string; lat: number; lon: number }): string {
+  const params = new URLSearchParams({ api: "1", query: `${poi.name} Minneapolis` });
+  return `https://www.google.com/maps/search/?${params.toString()}`;
+}
+
 export function parseRouteState(search: string): RouteState {
   const params = new URLSearchParams(search);
   const at = params.get("at");

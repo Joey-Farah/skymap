@@ -1,5 +1,5 @@
 import "./styles.css";
-import type { Building, SkymapData } from "./types.ts";
+import type { Building, Poi, SkymapData } from "./types.ts";
 import { SkywayRouter } from "./router.ts";
 import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
@@ -17,7 +17,18 @@ async function boot() {
   const sheet = new Sheet(document.getElementById("sheet")!);
 
   const style = await resolveStyle();
-  const view = new SkymapView(document.getElementById("map")!, data, style, (b) => onBuildingTap(b));
+  const view = new SkymapView(
+    document.getElementById("map")!,
+    data,
+    style,
+    (b) => onBuildingTap(b),
+    (p) => onPoiTap(p),
+  );
+  const poisByBuilding = new Map<string, Poi[]>();
+  for (const p of data.pois ?? []) {
+    if (!poisByBuilding.has(p.buildingId)) poisByBuilding.set(p.buildingId, []);
+    poisByBuilding.get(p.buildingId)!.push(p);
+  }
 
   const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings);
   const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings);
@@ -135,10 +146,22 @@ async function boot() {
 
   function onBuildingTap(b: Building) {
     view.focusBuilding(b);
-    sheet.showBuilding(b, selectedTime(), {
-      onFrom: () => comboFrom.select(b),
-      onTo: () => comboTo.select(b),
-      onReach: () => showReach(b),
+    sheet.showBuilding(
+      b,
+      selectedTime(),
+      {
+        onFrom: () => comboFrom.select(b),
+        onTo: () => comboTo.select(b),
+        onReach: () => showReach(b),
+      },
+      poisByBuilding.get(b.id) ?? [],
+    );
+  }
+
+  function onPoiTap(p: Poi) {
+    const host = router.building(p.buildingId);
+    sheet.showPoi(p, host, () => {
+      if (host) comboTo.select(host);
     });
   }
 
@@ -182,6 +205,9 @@ async function boot() {
   if ("serviceWorker" in navigator && !import.meta.env.DEV) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   }
+
+  // Test/debug handle (drives E2E camera positioning).
+  (window as unknown as Record<string, unknown>).__skymap = { view, router, data };
 }
 
 boot().catch((err) => {

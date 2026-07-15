@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { SkywayRouter, haversineMeters, polylineMeters, sliceAlong } from "../src/router.ts";
 import { closingSoonWarnings, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
-import { encodeRouteState, parseRouteState } from "../src/share.ts";
+import { encodeRouteState, googleMapsUrl, parseRouteState } from "../src/share.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -208,6 +208,22 @@ test("live dataset is internally consistent", () => {
   }
   for (const b of live.buildings) {
     assert.equal(b.hours.length, 7, `${b.id} must have 7 days of hours`);
+  }
+});
+
+test("googleMapsUrl builds a search deep link", () => {
+  const url = googleMapsUrl({ name: "Cardigan Donuts", lat: 44.9762, lon: -93.2714 });
+  assert.ok(url.startsWith("https://www.google.com/maps/search/?api=1&query="));
+  assert.match(url, /Cardigan\+Donuts/);
+  assert.match(url, /Minneapolis/);
+});
+
+test("live POIs reference real buildings", () => {
+  assert.ok(live.pois.length > 50, `expected a real business set, got ${live.pois.length}`);
+  const ids = new Set(live.buildings.map((b) => b.id));
+  for (const p of live.pois) {
+    assert.ok(ids.has(p.buildingId), `POI ${p.name} points at missing building ${p.buildingId}`);
+    assert.ok(p.name && p.category);
   }
 });
 

@@ -1,4 +1,5 @@
-import type { Building, RouteResult } from "./types.ts";
+import type { Building, Poi, RouteResult } from "./types.ts";
+import { googleMapsUrl } from "./share.ts";
 import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
@@ -112,6 +113,7 @@ export class Sheet {
     b: Building,
     when: Date,
     actions: { onFrom: () => void; onTo: () => void; onReach: () => void },
+    pois: Poi[] = [],
   ) {
     const status = statusAt(b, when);
     this.content.innerHTML = "";
@@ -134,6 +136,49 @@ export class Sheet {
     reachBtn.addEventListener("click", actions.onReach);
 
     this.content.append(h2, meta, badge, hours, note, actionsRow, reachBtn);
+
+    if (pois.length > 0) {
+      this.content.append(el("h3", `Inside (${pois.length})`, "poi-heading"));
+      const list = document.createElement("ul");
+      list.className = "poi-list";
+      for (const p of [...pois].sort((a, b) => a.name.localeCompare(b.name))) {
+        const li = document.createElement("li");
+        li.append(el("span", p.name), el("span", humanCategory(p.category), "poi-cat"));
+        const link = document.createElement("a");
+        link.href = googleMapsUrl(p);
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.className = "poi-gmaps";
+        link.textContent = "Maps ↗";
+        li.append(link);
+        list.appendChild(li);
+      }
+      this.content.append(list);
+    }
+    this.show();
+  }
+
+  /** Card for a single business tapped on the map. */
+  showPoi(p: Poi, host: Building | undefined, onRouteTo: () => void) {
+    this.content.innerHTML = "";
+    this.content.append(el("h2", p.name));
+    const where = host ? `${humanCategory(p.category)} · ${host.name}` : humanCategory(p.category);
+    this.content.append(el("div", where, "meta"));
+    if (p.level === "1") this.content.append(el("span", "Skyway level", "badge open"));
+    if (p.openingHours) this.content.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
+
+    const actionsRow = document.createElement("div");
+    actionsRow.className = "actions";
+    const gmaps = document.createElement("a");
+    gmaps.href = googleMapsUrl(p);
+    gmaps.target = "_blank";
+    gmaps.rel = "noopener";
+    gmaps.className = "gmaps-btn";
+    gmaps.textContent = "Open in Google Maps ↗";
+    const toBtn = el("button", "Route here", "primary");
+    toBtn.addEventListener("click", onRouteTo);
+    actionsRow.append(gmaps, toBtn);
+    this.content.append(actionsRow);
     this.show();
   }
 
@@ -229,6 +274,12 @@ export class Sheet {
     this.content.append(el("h2", title), el("div", body, "meta"));
     this.show();
   }
+}
+
+/** "fast_food" -> "Fast food". */
+function humanCategory(cat: string): string {
+  const words = cat.replace(/_/g, " ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 function isOpenLabelOk(b: Building, when: Date): boolean {

@@ -61,6 +61,12 @@ way["building"]["name"](${BBOX});
 out body;
 >;
 out skel qt;
+node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|bank|pharmacy|clinic|dentist|post_office|theatre|cinema)$"]["name"](${BBOX});
+out body;
+node["shop"]["name"](${BBOX});
+out body;
+node["leisure"~"^(fitness_centre|bowling_alley)$"]["name"](${BBOX});
+out body;
 `;
 
 const DEFAULT_HOURS = [
@@ -138,13 +144,18 @@ function main(osm) {
   const nodes = new Map(); // id -> {lat, lon}
   const ways = [];
   const buildingsRaw = [];
+  const poiNodes = [];
 
   for (const el of osm.elements) {
-    if (el.type === "node") nodes.set(el.id, { lat: el.lat, lon: el.lon });
-    else if (el.type === "way" && el.tags?.building && el.tags?.name) buildingsRaw.push(el);
+    if (el.type === "node") {
+      nodes.set(el.id, { lat: el.lat, lon: el.lon });
+      if (el.tags?.name && (el.tags.amenity || el.tags.shop || el.tags.leisure)) poiNodes.push(el);
+    } else if (el.type === "way" && el.tags?.building && el.tags?.name) buildingsRaw.push(el);
     else if (el.type === "way" && el.tags?.highway) ways.push(el);
   }
-  console.log(`OSM: ${ways.length} skyway ways, ${buildingsRaw.length} named buildings.`);
+  console.log(
+    `OSM: ${ways.length} skyway ways, ${buildingsRaw.length} named buildings, ${poiNodes.length} POI nodes.`,
+  );
 
   // Building records with footprints.
   const buildings = buildingsRaw
@@ -246,6 +257,26 @@ function main(osm) {
     (e) => mainComponent.has(e.from) && mainComponent.has(e.to),
   );
 
+  // Businesses inside network buildings (point-in-polygon on footprints).
+  const pois = [];
+  for (const n of poiNodes) {
+    const host = finalBuildings.find((b) => pointInRing(n.lon, n.lat, b.footprint));
+    if (!host) continue;
+    const kind = n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : "leisure";
+    pois.push({
+      id: `poi-${n.id}`,
+      name: n.tags.name,
+      category: n.tags.amenity ?? n.tags.shop ?? n.tags.leisure,
+      kind,
+      lat: +n.lat.toFixed(6),
+      lon: +n.lon.toFixed(6),
+      buildingId: host.id,
+      ...(n.tags.level ? { level: n.tags.level } : {}),
+      ...(n.tags.opening_hours ? { openingHours: n.tags.opening_hours } : {}),
+    });
+  }
+  console.log(`POIs inside the network: ${pois.length}.`);
+
   const data = {
     meta: {
       name: "Minneapolis Skyway (OSM extraction)",
@@ -256,6 +287,7 @@ function main(osm) {
     },
     buildings: finalBuildings,
     edges: finalEdges,
+    pois,
   };
 
   const outPath = join(

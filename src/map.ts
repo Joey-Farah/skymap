@@ -1,6 +1,6 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import type { Building, RouteResult, SkymapData } from "./types.ts";
+import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isOpenAt } from "./hours.ts";
 import { polylineMeters, sliceAlong } from "./router.ts";
 
@@ -117,6 +117,19 @@ function lineFC(coordinates: [number, number][]): FC {
   };
 }
 
+export const FOOD_CATEGORY = /^(cafe|restaurant|fast_food|bar|pub|ice_cream|bakery|coffee|confectionery|deli)$/;
+
+function poisFC(pois: Poi[]): FC {
+  return {
+    type: "FeatureCollection",
+    features: pois.map((p) => ({
+      type: "Feature",
+      properties: { id: p.id, name: p.name, food: FOOD_CATEGORY.test(p.category) },
+      geometry: { type: "Point", coordinates: [p.lon, p.lat] },
+    })),
+  };
+}
+
 function pointFC(coord: [number, number] | null): FC {
   if (!coord) return { type: "FeatureCollection", features: [] };
   return {
@@ -138,6 +151,7 @@ export class SkymapView {
     data: SkymapData,
     style: string | maplibregl.StyleSpecification,
     onBuildingClick: (b: Building) => void,
+    onPoiClick?: (p: Poi) => void,
   ) {
     this.data = data;
     this.map = new maplibregl.Map({
@@ -164,16 +178,28 @@ export class SkymapView {
     });
 
     this.map.on("click", "skyway-buildings-fill", (e) => {
+      // Let a POI hit win over the building underneath it.
+      const poiHit = this.map
+        .queryRenderedFeatures(e.point, { layers: ["skyway-pois"] })
+        .length;
+      if (poiHit) return;
       const id = e.features?.[0]?.properties?.id as string | undefined;
       const b = this.data.buildings.find((x) => x.id === id);
       if (b) onBuildingClick(b);
     });
-    this.map.on("mouseenter", "skyway-buildings-fill", () => {
-      this.map.getCanvas().style.cursor = "pointer";
+    this.map.on("click", "skyway-pois", (e) => {
+      const id = e.features?.[0]?.properties?.id as string | undefined;
+      const p = this.data.pois?.find((x) => x.id === id);
+      if (p && onPoiClick) onPoiClick(p);
     });
-    this.map.on("mouseleave", "skyway-buildings-fill", () => {
-      this.map.getCanvas().style.cursor = "";
-    });
+    for (const layer of ["skyway-buildings-fill", "skyway-pois"]) {
+      this.map.on("mouseenter", layer, () => {
+        this.map.getCanvas().style.cursor = "pointer";
+      });
+      this.map.on("mouseleave", layer, () => {
+        this.map.getCanvas().style.cursor = "";
+      });
+    }
   }
 
   private addLayers() {
@@ -185,6 +211,7 @@ export class SkymapView {
       type: "geojson",
       data: { type: "FeatureCollection", features: [] } satisfies FC,
     });
+    this.map.addSource("skyway-pois", { type: "geojson", data: poisFC(this.data.pois ?? []) });
 
     this.map.addLayer({
       id: "skyway-buildings-fill",
@@ -253,6 +280,40 @@ export class SkymapView {
         "text-color": INK,
         "text-halo-color": "rgba(255,255,255,0.92)",
         "text-halo-width": 1.6,
+      },
+    });
+
+    // Businesses appear as you zoom in: dots first, names closer.
+    this.map.addLayer({
+      id: "skyway-pois",
+      type: "circle",
+      source: "skyway-pois",
+      minzoom: 14.8,
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 14.8, 2.5, 17, 5],
+        "circle-color": ["case", ["get", "food"], ROUTE, NETWORK_DEEP],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 1.5,
+      },
+    });
+    this.map.addLayer({
+      id: "skyway-pois-label",
+      type: "symbol",
+      source: "skyway-pois",
+      minzoom: 15.8,
+      layout: {
+        "text-field": ["get", "name"],
+        "text-size": 10.5,
+        "text-font": ["Noto Sans Regular"],
+        "text-max-width": 7,
+        "text-offset": [0, 0.9],
+        "text-anchor": "top",
+        "text-optional": true,
+      },
+      paint: {
+        "text-color": ["case", ["get", "food"], "#9a5f00", INK],
+        "text-halo-color": "rgba(255,255,255,0.92)",
+        "text-halo-width": 1.3,
       },
     });
 

@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-15T19:47:17.339Z"
+  "generated": "2026-07-15T22:03:37.860Z"
  },
  "buildings": [
   {
@@ -11,8 +11,8 @@
    "name": "Park and Shop Ramp",
    "address": "24 South 8th Street",
    "category": "office",
-   "lat": 44.977063,
-   "lon": -93.274625,
+   "lat": 44.977065,
+   "lon": -93.274637,
    "footprint": [
     [
      -93.274942,
@@ -33,10 +33,6 @@
     [
      -93.274565,
      44.976679
-    ],
-    [
-     -93.274286,
-     44.977004
     ],
     [
      -93.274252,
@@ -1878,8 +1874,8 @@
    "hoursNote": "Default skyway hours — unverified, from OSM extraction."
   },
   {
-   "id": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
-   "name": "Rand Tower Hotel, Minneapolis, a Tribute Portfolio Hotel",
+   "id": "rand-tower-hotel-29080581",
+   "name": "Rand Tower Hotel",
    "address": "527 Marquette Avenue",
    "category": "office",
    "lat": 44.977323,
@@ -2265,40 +2261,32 @@
    "hoursNote": "Default skyway hours — unverified, from OSM extraction."
   },
   {
-   "id": "stadium-parking-ramp-40774167",
-   "name": "Stadium Parking Ramp",
+   "id": "mills-fleet-farm-parking-garage-40774167",
+   "name": "Mills Fleet Farm Parking Garage",
    "address": "Minneapolis",
    "category": "office",
-   "lat": 44.975799,
-   "lon": -93.259092,
+   "lat": 44.97575,
+   "lon": -93.259079,
    "footprint": [
     [
-     -93.25833,
-     44.976088
+     -93.258312,
+     44.9761
     ],
     [
-     -93.258514,
-     44.97587
+     -93.258696,
+     44.975644
     ],
     [
-     -93.258702,
-     44.975647
+     -93.258717,
+     44.97562
     ],
     [
-     -93.258723,
-     44.975622
-    ],
-    [
-     -93.258742,
-     44.9756
+     -93.258736,
+     44.975597
     ],
     [
      -93.258899,
-     44.975414
-    ],
-    [
-     -93.258997,
-     44.975455
+     44.975413
     ],
     [
      -93.259056,
@@ -2306,7 +2294,7 @@
     ],
     [
      -93.25907,
-     44.975463
+     44.975462
     ],
     [
      -93.259167,
@@ -2317,40 +2305,32 @@
      44.975522
     ],
     [
-     -93.259247,
+     -93.259246,
      44.975563
     ],
     [
-     -93.259169,
+     -93.259167,
      44.975655
     ],
     [
-     -93.259529,
-     44.975807
+     -93.259528,
+     44.975809
     ],
     [
-     -93.259917,
-     44.975971
+     -93.25991,
+     44.975972
     ],
     [
-     -93.259894,
-     44.975998
+     -93.259889,
+     44.975996
     ],
     [
-     -93.259726,
-     44.976197
+     -93.259403,
+     44.976566
     ],
     [
-     -93.259426,
-     44.976551
-    ],
-    [
-     -93.259255,
-     44.976479
-    ],
-    [
-     -93.25833,
-     44.976088
+     -93.258312,
+     44.9761
     ]
    ],
    "hours": [
@@ -2619,7 +2599,7 @@
   {
    "id": "orpheum-theatre-41763764",
    "name": "Orpheum Theatre",
-   "address": "910 Hennepin Avenue",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.976533,
    "lon": -93.277868,
@@ -3070,7 +3050,7 @@
   {
    "id": "sora-apartments-44164775",
    "name": "Sora Apartments",
-   "address": "600 5th Avenue South",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.974717,
    "lon": -93.265457,
@@ -3149,16 +3129,12 @@
    "name": "100 Washington Square",
    "address": "100 Washington Avenue South",
    "category": "office",
-   "lat": 44.981217,
-   "lon": -93.265801,
+   "lat": 44.981222,
+   "lon": -93.26574,
    "footprint": [
     [
      -93.266222,
      44.981225
-    ],
-    [
-     -93.265928,
-     44.9811
     ],
     [
      -93.265588,
@@ -3183,10 +3159,6 @@
     [
      -93.265972,
      44.981521
-    ],
-    [
-     -93.266164,
-     44.981293
     ],
     [
      -93.266222,
@@ -3394,7 +3366,7 @@
   {
    "id": "united-states-courthouse-and-federal-building-44684856",
    "name": "United States Courthouse and Federal Building",
-   "address": "300 South 4th Street",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.978275,
    "lon": -93.264625,
@@ -3818,7 +3790,7 @@
   {
    "id": "grain-exchange-main-building-45452111",
    "name": "Grain Exchange Main Building",
-   "address": "400 South 4th Street",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.977564,
    "lon": -93.263641,
@@ -4168,16 +4140,12 @@
    "name": "Marquette Plaza",
    "address": "250 Marquette Avenue",
    "category": "office",
-   "lat": 44.980742,
-   "lon": -93.267551,
+   "lat": 44.980754,
+   "lon": -93.267569,
    "footprint": [
     [
      -93.267686,
      44.980353
-    ],
-    [
-     -93.267426,
-     44.980656
     ],
     [
      -93.267313,
@@ -5625,7 +5593,7 @@
   {
    "id": "50-south-sixth-99714290",
    "name": "50 South Sixth",
-   "address": "50 South 6th Street",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.978263,
    "lon": -93.271592,
@@ -7023,8 +6991,8 @@
    "name": "Gaviidae Common",
    "address": "Minneapolis",
    "category": "office",
-   "lat": 44.977178,
-   "lon": -93.271513,
+   "lat": 44.977164,
+   "lon": -93.271547,
    "footprint": [
     [
      -93.271367,
@@ -7037,10 +7005,6 @@
     [
      -93.271027,
      44.977567
-    ],
-    [
-     -93.270809,
-     44.977473
     ],
     [
      -93.270726,
@@ -7849,7 +7813,7 @@
   {
    "id": "state-theatre-156912879",
    "name": "State Theatre",
-   "address": "805 Hennepin Avenue",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.97667,
    "lon": -93.275581,
@@ -9099,7 +9063,7 @@
   {
    "id": "wells-fargo-550-407613510",
    "name": "Wells Fargo 550",
-   "address": "550 South 4th Street",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.976958,
    "lon": -93.261958,
@@ -9196,7 +9160,7 @@
   {
    "id": "wells-fargo-600-407613511",
    "name": "Wells Fargo 600",
-   "address": "600 South 4th Street",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.976435,
    "lon": -93.260799,
@@ -9504,7 +9468,7 @@
   {
    "id": "tritech-office-center-461219677",
    "name": "TriTech Office Center",
-   "address": "331 2nd Ave S",
+   "address": "Minneapolis",
    "category": "office",
    "lat": 44.978567,
    "lon": -93.266358,
@@ -11243,27 +11207,27 @@
    "address": "700 4th St S",
    "category": "office",
    "lat": 44.975675,
-   "lon": -93.259541,
+   "lon": -93.25954,
    "footprint": [
     [
      -93.259303,
      44.975492
     ],
     [
-     -93.259247,
+     -93.259246,
      44.975563
     ],
     [
-     -93.259169,
+     -93.259167,
      44.975655
     ],
     [
-     -93.259529,
-     44.975807
+     -93.259528,
+     44.975809
     ],
     [
-     -93.259917,
-     44.975971
+     -93.25991,
+     44.975972
     ],
     [
      -93.260049,
@@ -11960,10 +11924,10 @@
   {
    "id": "the-crossings-1411646515",
    "name": "The Crossings",
-   "address": "121 Washington Avenue South",
+   "address": "Minneapolis",
    "category": "office",
-   "lat": 44.980246,
-   "lon": -93.266204,
+   "lat": 44.980226,
+   "lon": -93.266249,
    "footprint": [
     [
      -93.266242,
@@ -12006,16 +11970,8 @@
      44.980557
     ],
     [
-     -93.265896,
-     44.980471
-    ],
-    [
      -93.265858,
      44.980358
-    ],
-    [
-     -93.265926,
-     44.980282
     ],
     [
      -93.265933,
@@ -13412,7 +13368,7 @@
   },
   {
    "from": "517-marquette-garage-156912894",
-   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
+   "to": "rand-tower-hotel-29080581",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
@@ -13564,7 +13520,7 @@
   },
   {
    "from": "six-quebec-156912888",
-   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
+   "to": "rand-tower-hotel-29080581",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
@@ -13793,17 +13749,44 @@
    ]
   },
   {
-   "from": "stadium-parking-ramp-40774167",
+   "from": "4th-park-1223123289",
    "to": "wells-fargo-600-407613511",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.259894,
-     44.975998
+     -93.259889,
+     44.975996
     ],
     [
      -93.260178,
      44.976096
+    ]
+   ]
+  },
+  {
+   "from": "mills-fleet-farm-parking-garage-40774167",
+   "to": "4th-park-1223123289",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.258717,
+     44.97562
+    ],
+    [
+     -93.258766,
+     44.975641
+    ],
+    [
+     -93.258849,
+     44.975545
+    ],
+    [
+     -93.259509,
+     44.975828
+    ],
+    [
+     -93.259889,
+     44.975996
     ]
    ]
   },
@@ -14181,21 +14164,6 @@
    ]
   },
   {
-   "from": "stadium-parking-ramp-40774167",
-   "to": "4th-park-1223123289",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.259509,
-     44.975828
-    ],
-    [
-     -93.259529,
-     44.975807
-    ]
-   ]
-  },
-  {
    "from": "millwright-building-40933926",
    "to": "wells-fargo-550-407613510",
    "crossing": "Minneapolis Skyway",
@@ -14341,7 +14309,7 @@
    ]
   },
   {
-   "from": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
+   "from": "rand-tower-hotel-29080581",
    "to": "canadian-pacific-plaza-62005000",
    "crossing": "Minneapolis Skyway",
    "geometry": [
@@ -14422,14 +14390,1647 @@
      44.977026
     ],
     [
-     -93.274286,
-     44.977004
-    ],
-    [
      -93.274023,
      44.976887
     ]
    ]
+  }
+ ],
+ "pois": [
+  {
+   "id": "poi-550953417",
+   "name": "The Oceanaire Seafood Room",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.978136,
+   "lon": -93.271715,
+   "buildingId": "50-south-sixth-99714290",
+   "level": "0"
+  },
+  {
+   "id": "poi-2093790846",
+   "name": "Ruth's Chris Steak House",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.973054,
+   "lon": -93.272209,
+   "buildingId": "forum-28525210"
+  },
+  {
+   "id": "poi-2387563249",
+   "name": "The Capital Grille",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.976895,
+   "lon": -93.275875,
+   "buildingId": "state-theatre-156912879"
+  },
+  {
+   "id": "poi-2427534130",
+   "name": "The Brother's Deli",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.978321,
+   "lon": -93.271823,
+   "buildingId": "50-south-sixth-99714290",
+   "level": "1"
+  },
+  {
+   "id": "poi-2704059060",
+   "name": "The Local",
+   "category": "pub",
+   "kind": "amenity",
+   "lat": 44.974082,
+   "lon": -93.274394,
+   "buildingId": "essex-building-461224211",
+   "openingHours": "Mo-Fr 11:00-02:00, Sa-Su 09:00-02:00"
+  },
+  {
+   "id": "poi-2927711419",
+   "name": "Hell's Kitchen",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.974838,
+   "lon": -93.272831,
+   "buildingId": "metro-apartments-156912887",
+   "openingHours": "Su-Th 08:00-21:00; Fr-Sa 08:00-22:00"
+  },
+  {
+   "id": "poi-3264590822",
+   "name": "Hen House Eatery",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.975061,
+   "lon": -93.27055,
+   "buildingId": "730-building-45581646",
+   "openingHours": "Mo-Fr 07:00-15:00; Sa,Su 07:30-14:00"
+  },
+  {
+   "id": "poi-3785700061",
+   "name": "Eato",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.979724,
+   "lon": -93.263955,
+   "buildingId": "cortland-mill-district-62006959"
+  },
+  {
+   "id": "poi-4041072789",
+   "name": "CRAVE",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.976382,
+   "lon": -93.276576,
+   "buildingId": "lasalle-plaza-461227727"
+  },
+  {
+   "id": "poi-4087475806",
+   "name": "Monello",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.971336,
+   "lon": -93.272908,
+   "buildingId": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035"
+  },
+  {
+   "id": "poi-5355792461",
+   "name": "Takatsu Sushi",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.975608,
+   "lon": -93.271202,
+   "buildingId": "733-building-126116972",
+   "level": "1",
+   "openingHours": "Mo-Th 10:30-14:45; Fr 10:30-14:30"
+  },
+  {
+   "id": "poi-5355792472",
+   "name": "Wells Fargo",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.975826,
+   "lon": -93.271949,
+   "buildingId": "ids-center-1385236413",
+   "level": "1",
+   "openingHours": "Mo-Fr 09:00-17:00"
+  },
+  {
+   "id": "poi-5355792474",
+   "name": "Bank of America",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.975723,
+   "lon": -93.271843,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5355792479",
+   "name": "Huntington Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.976057,
+   "lon": -93.271575,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5355792482",
+   "name": "Bremer Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.976139,
+   "lon": -93.271416,
+   "buildingId": "ids-center-1385236413",
+   "level": "1",
+   "openingHours": "Mo-Fr 8:00-17:00"
+  },
+  {
+   "id": "poi-5355792484",
+   "name": "Starbucks",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.976251,
+   "lon": -93.271564,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5355792485",
+   "name": "One Two Three Sushi",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976285,
+   "lon": -93.271614,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5355792488",
+   "name": "U.S. Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.976393,
+   "lon": -93.271769,
+   "buildingId": "ids-center-1385236413",
+   "level": "1",
+   "openingHours": "Mo-Fr 07:30-17:00"
+  },
+  {
+   "id": "poi-5620131612",
+   "name": "Starbucks",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.973855,
+   "lon": -93.264582,
+   "buildingId": "moment-apartments-1222145087"
+  },
+  {
+   "id": "poi-5646466920",
+   "name": "Dakota Jazz Club and Restaurant",
+   "category": "theatre",
+   "kind": "amenity",
+   "lat": 44.97376,
+   "lon": -93.275143,
+   "buildingId": "target-plaza-45452119"
+  },
+  {
+   "id": "poi-5955554286",
+   "name": "Potbelly",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976349,
+   "lon": -93.272266,
+   "buildingId": "ids-center-1385236413"
+  },
+  {
+   "id": "poi-5955554288",
+   "name": "Associated Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.976442,
+   "lon": -93.271955,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955554293",
+   "name": "Dunn Brothers Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.977261,
+   "lon": -93.271621,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955554295",
+   "name": "Subway",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.975363,
+   "lon": -93.274291,
+   "buildingId": "us-bancorp-center-461224219",
+   "openingHours": "Mo-Fr 09:00-16:00"
+  },
+  {
+   "id": "poi-5955577503",
+   "name": "Freshii",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977278,
+   "lon": -93.27115,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955577511",
+   "name": "Los Ocampo Express",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.977676,
+   "lon": -93.272785,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-5955577512",
+   "name": "Leeann Chin",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.977709,
+   "lon": -93.272891,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-5955582348",
+   "name": "Naf Naf Grill",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.977752,
+   "lon": -93.272987,
+   "buildingId": "city-center-27346720",
+   "openingHours": "Mo-Fr 08:00-16:00; Sa,Su off"
+  },
+  {
+   "id": "poi-5955582351",
+   "name": "The UPS Store",
+   "category": "post_office",
+   "kind": "amenity",
+   "lat": 44.978092,
+   "lon": -93.273465,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-5955586664",
+   "name": "CVS Pharmacy",
+   "category": "pharmacy",
+   "kind": "amenity",
+   "lat": 44.973408,
+   "lon": -93.276089,
+   "buildingId": "target-plaza-45452119"
+  },
+  {
+   "id": "poi-5955612513",
+   "name": "Chipotle",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.978345,
+   "lon": -93.271978,
+   "buildingId": "50-south-sixth-99714290",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955612516",
+   "name": "Starbucks",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.978144,
+   "lon": -93.272545,
+   "buildingId": "33-south-sixth-27346721"
+  },
+  {
+   "id": "poi-6423586980",
+   "name": "Rustica",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.981243,
+   "lon": -93.266079,
+   "buildingId": "100-washington-square-44164776",
+   "level": "0"
+  },
+  {
+   "id": "poi-10270382209",
+   "name": "Wood + Paddle Eatery",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.977253,
+   "lon": -93.273457,
+   "buildingId": "the-royal-sonesta-minneapolis-downtown-1393159125"
+  },
+  {
+   "id": "poi-10804548953",
+   "name": "8th Street Grill & Taphouse",
+   "category": "bar",
+   "kind": "amenity",
+   "lat": 44.975302,
+   "lon": -93.27203,
+   "buildingId": "rsm-plaza-357019983"
+  },
+  {
+   "id": "poi-11014986808",
+   "name": "Passport Health Minneapolis Travel Clinic",
+   "category": "clinic",
+   "kind": "amenity",
+   "lat": 44.977581,
+   "lon": -93.263688,
+   "buildingId": "grain-exchange-main-building-45452111"
+  },
+  {
+   "id": "poi-11036306005",
+   "name": "Corner Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.974715,
+   "lon": -93.273813,
+   "buildingId": "young-quinlan-building-44684854",
+   "openingHours": "Mo-Fr 07:00-17:00; Sa 08:00-17:00"
+  },
+  {
+   "id": "poi-12154494729",
+   "name": "OUIBar + KTCHN",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.977075,
+   "lon": -93.260743,
+   "buildingId": "radisson-red-minneapolis-downtown-60613336",
+   "openingHours": "Mo-Fr 06:30-09:30, Mo-Fr 17:00-22:00; Sa-Su 07:00-11:00; Sa 17:00-23:00"
+  },
+  {
+   "id": "poi-12349859504",
+   "name": "Boludo",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.976793,
+   "lon": -93.262177,
+   "buildingId": "edition-apartments-510-413691176",
+   "openingHours": "Mo-Su 11:00-21:00"
+  },
+  {
+   "id": "poi-12488390224",
+   "name": "Naf Naf Grill",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977124,
+   "lon": -93.267806,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "0",
+   "openingHours": "Mo-Fr 10:00-19:00; Sa, Su off"
+  },
+  {
+   "id": "poi-12569712465",
+   "name": "J&D Dental",
+   "category": "dentist",
+   "kind": "amenity",
+   "lat": 44.976007,
+   "lon": -93.270555,
+   "buildingId": "705-building-126116975",
+   "openingHours": "Mo-We 07:00-17:00; Th 07:00-15:30"
+  },
+  {
+   "id": "poi-12583034813",
+   "name": "Come Pho Soup",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.97521,
+   "lon": -93.273438,
+   "buildingId": "medical-arts-building-92905817",
+   "openingHours": "Mo-Fr 10:30-14:00"
+  },
+  {
+   "id": "poi-12645553576",
+   "name": "Melting Pot",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.974627,
+   "lon": -93.272658,
+   "buildingId": "metro-apartments-156912887"
+  },
+  {
+   "id": "poi-12753315917",
+   "name": "The Burger Place",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976623,
+   "lon": -93.267511,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "1"
+  },
+  {
+   "id": "poi-12753315918",
+   "name": "JR Thai Food & Such",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977337,
+   "lon": -93.267645,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "1"
+  },
+  {
+   "id": "poi-12753315921",
+   "name": "Green + The Grain",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977199,
+   "lon": -93.267437,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "1"
+  },
+  {
+   "id": "poi-12753315922",
+   "name": "Caribou Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.977104,
+   "lon": -93.267538,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "1"
+  },
+  {
+   "id": "poi-12753315923",
+   "name": "Jimmy John's",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977203,
+   "lon": -93.267761,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "1"
+  },
+  {
+   "id": "poi-12753315924",
+   "name": "Broadway Fast & Fresh",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977121,
+   "lon": -93.267926,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "1"
+  },
+  {
+   "id": "poi-12753315925",
+   "name": "Wave Sushi",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976991,
+   "lon": -93.267994,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "1"
+  },
+  {
+   "id": "poi-12753315926",
+   "name": "Chipotle",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976996,
+   "lon": -93.267924,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "0"
+  },
+  {
+   "id": "poi-12768849145",
+   "name": "Subway",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.974066,
+   "lon": -93.266976,
+   "buildingId": "701-building-126116979",
+   "level": "1"
+  },
+  {
+   "id": "poi-12768849146",
+   "name": "Be Graceful Cafe",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976136,
+   "lon": -93.264833,
+   "buildingId": "minneapolis-public-service-building-746039475",
+   "level": "1"
+  },
+  {
+   "id": "poi-12768849147",
+   "name": "Einstein Bros Bagels",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976849,
+   "lon": -93.261769,
+   "buildingId": "wells-fargo-550-407613510",
+   "level": "1"
+  },
+  {
+   "id": "poi-12768888510",
+   "name": "FRGMNT Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.974317,
+   "lon": -93.267546,
+   "buildingId": "sps-tower-45447294",
+   "level": "1",
+   "openingHours": "Mon-Fri 6:30AM - 6:00PM"
+  },
+  {
+   "id": "poi-12786616349",
+   "name": "Green + The Grain",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.975993,
+   "lon": -93.270552,
+   "buildingId": "705-building-126116975",
+   "level": "1"
+  },
+  {
+   "id": "poi-12786616351",
+   "name": "Afro Deli & Grill",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.975867,
+   "lon": -93.270513,
+   "buildingId": "705-building-126116975",
+   "level": "1"
+  },
+  {
+   "id": "poi-12825025520",
+   "name": "Noa",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.976405,
+   "lon": -93.27163,
+   "buildingId": "ids-center-1385236413",
+   "level": "0"
+  },
+  {
+   "id": "poi-12825025521",
+   "name": "People's Organic",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.975972,
+   "lon": -93.271641,
+   "buildingId": "ids-center-1385236413",
+   "level": "0"
+  },
+  {
+   "id": "poi-12825025522",
+   "name": "Roti",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.97602,
+   "lon": -93.271577,
+   "buildingId": "ids-center-1385236413",
+   "level": "0"
+  },
+  {
+   "id": "poi-12862806759",
+   "name": "Bruegger's Bagels",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.977465,
+   "lon": -93.270939,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "0"
+  },
+  {
+   "id": "poi-12862806760",
+   "name": "Planet Smoothie",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977278,
+   "lon": -93.271445,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "0"
+  },
+  {
+   "id": "poi-12862838543",
+   "name": "Savoure Vietnamese Eatery",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977005,
+   "lon": -93.269958,
+   "buildingId": "six-quebec-156912888",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862838544",
+   "name": "Kadai Indian Kitchen",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.97699,
+   "lon": -93.269855,
+   "buildingId": "six-quebec-156912888",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862838545",
+   "name": "Vitality Roasting",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.976791,
+   "lon": -93.270189,
+   "buildingId": "six-quebec-156912888",
+   "level": "1",
+   "openingHours": "Mo-Fr 07:00-16:00"
+  },
+  {
+   "id": "poi-12862838547",
+   "name": "MyBurger",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976849,
+   "lon": -93.269986,
+   "buildingId": "six-quebec-156912888",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862838548",
+   "name": "EggFlip",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976795,
+   "lon": -93.270037,
+   "buildingId": "six-quebec-156912888",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862838549",
+   "name": "Krona Cafe",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.976488,
+   "lon": -93.270142,
+   "buildingId": "northstar-west-45581647",
+   "level": "0"
+  },
+  {
+   "id": "poi-12862838551",
+   "name": "Walkin Dog",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976259,
+   "lon": -93.270161,
+   "buildingId": "northstar-west-45581647",
+   "level": "0"
+  },
+  {
+   "id": "poi-12862838552",
+   "name": "Northstar Cafeteria",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976262,
+   "lon": -93.270029,
+   "buildingId": "northstar-west-45581647",
+   "level": "0"
+  },
+  {
+   "id": "poi-12896972583",
+   "name": "Orchestra Hall Auditorium",
+   "category": "theatre",
+   "kind": "amenity",
+   "lat": 44.972128,
+   "lon": -93.274964,
+   "buildingId": "orchestra-hall-43607930"
+  },
+  {
+   "id": "poi-12903102562",
+   "name": "Chipotle",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.973457,
+   "lon": -93.275373,
+   "buildingId": "target-plaza-45452119",
+   "openingHours": "Mo-Sa 10:45-22:00"
+  },
+  {
+   "id": "poi-12903156872",
+   "name": "Devil's Advocate",
+   "category": "pub",
+   "kind": "amenity",
+   "lat": 44.973306,
+   "lon": -93.275505,
+   "buildingId": "target-plaza-45452119"
+  },
+  {
+   "id": "poi-12971774442",
+   "name": "Dagwood's",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.980392,
+   "lon": -93.266004,
+   "buildingId": "the-crossings-1411646515",
+   "level": "1"
+  },
+  {
+   "id": "poi-12971774443",
+   "name": "Skyway Wok",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.980456,
+   "lon": -93.266007,
+   "buildingId": "the-crossings-1411646515",
+   "level": "1"
+  },
+  {
+   "id": "poi-12971797978",
+   "name": "Jalapeno Mexican Grill",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.979585,
+   "lon": -93.266703,
+   "buildingId": "330-south-second-45452108",
+   "level": "1"
+  },
+  {
+   "id": "poi-12971797979",
+   "name": "Andrea Pizza",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.979546,
+   "lon": -93.2667,
+   "buildingId": "330-south-second-45452108",
+   "level": "1"
+  },
+  {
+   "id": "poi-12998345225",
+   "name": "Green + The Grain",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.973747,
+   "lon": -93.271944,
+   "buildingId": "forum-28525210"
+  },
+  {
+   "id": "poi-13030049620",
+   "name": "D Brian's",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977408,
+   "lon": -93.268921,
+   "buildingId": "canadian-pacific-plaza-62005000",
+   "level": "1"
+  },
+  {
+   "id": "poi-13030049622",
+   "name": "Asian Max",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977392,
+   "lon": -93.268783,
+   "buildingId": "canadian-pacific-plaza-62005000",
+   "level": "1"
+  },
+  {
+   "id": "poi-13030049626",
+   "name": "Wings Financial Credit Union",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.977379,
+   "lon": -93.269705,
+   "buildingId": "rand-tower-hotel-29080581",
+   "level": "1"
+  },
+  {
+   "id": "poi-13030049627",
+   "name": "Potbelly",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977289,
+   "lon": -93.269491,
+   "buildingId": "rand-tower-hotel-29080581",
+   "level": "1"
+  },
+  {
+   "id": "poi-13171473235",
+   "name": "Mother Dough Bakery",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.976299,
+   "lon": -93.268823,
+   "buildingId": "capella-tower-115559604",
+   "level": "1",
+   "openingHours": "Mo-Fr 07:00-15:00"
+  },
+  {
+   "id": "poi-13171544912",
+   "name": "Mother Dough",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.976284,
+   "lon": -93.26838,
+   "buildingId": "capella-tower-115559604",
+   "level": "0",
+   "openingHours": "Tu-Th 8:00-15:00"
+  },
+  {
+   "id": "poi-13171572065",
+   "name": "Andrea Pizza",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976324,
+   "lon": -93.26818,
+   "buildingId": "capella-tower-115559604",
+   "openingHours": "Mon-Fri 10:00AM-3:00PM"
+  },
+  {
+   "id": "poi-13174254376",
+   "name": "SK Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.978334,
+   "lon": -93.271325,
+   "buildingId": "50-south-sixth-99714290",
+   "level": "1",
+   "openingHours": "Mo-Su 07:00-15:00"
+  },
+  {
+   "id": "poi-13189788423",
+   "name": "Spicy Feta",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976239,
+   "lon": -93.268073,
+   "buildingId": "capella-tower-115559604",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265533199",
+   "name": "Ococo",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.975932,
+   "lon": -93.274754,
+   "buildingId": "811-lasalle-357279465",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552502",
+   "name": "Grayfox",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.976134,
+   "lon": -93.275342,
+   "buildingId": "lasalle-plaza-461227727",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552505",
+   "name": "The Salad Bar",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977683,
+   "lon": -93.272462,
+   "buildingId": "city-center-27346720",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552507",
+   "name": "Andrea Pizza",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.97625,
+   "lon": -93.274459,
+   "buildingId": "811-lasalle-357279465",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552508",
+   "name": "Green + The Grain",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.97624,
+   "lon": -93.275519,
+   "buildingId": "lasalle-plaza-461227727",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552512",
+   "name": "Bép Eatery",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.976082,
+   "lon": -93.27524,
+   "buildingId": "lasalle-plaza-461227727",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552513",
+   "name": "Park Dental",
+   "category": "dentist",
+   "kind": "amenity",
+   "lat": 44.976279,
+   "lon": -93.275027,
+   "buildingId": "lasalle-plaza-461227727",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756366",
+   "name": "Paper Boy",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.975588,
+   "lon": -93.271065,
+   "buildingId": "733-building-126116972",
+   "level": "1"
+  },
+  {
+   "id": "poi-13410756371",
+   "name": "801 Chophouse",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.975584,
+   "lon": -93.273088,
+   "buildingId": "rsm-plaza-357019983",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756377",
+   "name": "Zelo",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.975075,
+   "lon": -93.273522,
+   "buildingId": "medical-arts-building-92905817",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756379",
+   "name": "Jimmy John's",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.974821,
+   "lon": -93.272944,
+   "buildingId": "metro-apartments-156912887",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756385",
+   "name": "Grayfox",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.974634,
+   "lon": -93.271059,
+   "buildingId": "deluxe-plaza-1462073358",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756392",
+   "name": "Ginelli's Pizza",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.974353,
+   "lon": -93.27112,
+   "buildingId": "deluxe-plaza-1462073358",
+   "level": "1"
+  },
+  {
+   "id": "poi-13410756394",
+   "name": "Hibachi Daruma",
+   "category": "restaurant",
+   "kind": "amenity",
+   "lat": 44.974929,
+   "lon": -93.272524,
+   "buildingId": "metro-apartments-156912887",
+   "level": "0"
+  },
+  {
+   "id": "poi-13451748944",
+   "name": "Sushi Mi",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.977367,
+   "lon": -93.26911,
+   "buildingId": "canadian-pacific-plaza-62005000",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451748950",
+   "name": "Triesta Cafe",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.979516,
+   "lon": -93.271814,
+   "buildingId": "lumber-exchange-30263208",
+   "level": "0"
+  },
+  {
+   "id": "poi-13451748953",
+   "name": "Bell Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.977288,
+   "lon": -93.272511,
+   "buildingId": "city-center-27346720",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451748957",
+   "name": "Salad Slayer",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.97798,
+   "lon": -93.270511,
+   "buildingId": "60-south-sixth-156909966",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451748961",
+   "name": "USPS",
+   "category": "post_office",
+   "kind": "amenity",
+   "lat": 44.975955,
+   "lon": -93.274161,
+   "buildingId": "811-lasalle-357279465",
+   "level": "0"
+  },
+  {
+   "id": "poi-13451748963",
+   "name": "Starbucks",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.97788,
+   "lon": -93.270265,
+   "buildingId": "the-westin-minneapolis-156912892",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451748969",
+   "name": "Bridgewater Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.977856,
+   "lon": -93.270604,
+   "buildingId": "60-south-sixth-156909966",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451748978",
+   "name": "Sota",
+   "category": "cafe",
+   "kind": "amenity",
+   "lat": 44.977063,
+   "lon": -93.269907,
+   "buildingId": "six-quebec-156912888",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451748985",
+   "name": "Subway",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.97813,
+   "lon": -93.270363,
+   "buildingId": "60-south-sixth-156909966",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451748986",
+   "name": "Lyon's Pub",
+   "category": "pub",
+   "kind": "amenity",
+   "lat": 44.978614,
+   "lon": -93.272722,
+   "buildingId": "plymouth-building-156909952",
+   "level": "0"
+  },
+  {
+   "id": "poi-13451748990",
+   "name": "BMO",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.978276,
+   "lon": -93.271684,
+   "buildingId": "50-south-sixth-99714290",
+   "level": "1"
+  },
+  {
+   "id": "poi-13451749000",
+   "name": "Chase",
+   "category": "bank",
+   "kind": "amenity",
+   "lat": 44.977511,
+   "lon": -93.272276,
+   "buildingId": "city-center-27346720",
+   "level": "1"
+  },
+  {
+   "id": "poi-13512736097",
+   "name": "Classic Cookie Co.",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.978336,
+   "lon": -93.267041,
+   "buildingId": "emery-autograph-collection-62006964",
+   "openingHours": "Mo-Fr 11:00-16:00"
+  },
+  {
+   "id": "poi-13524599047",
+   "name": "Sorrento Cucina",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.978306,
+   "lon": -93.267067,
+   "buildingId": "emery-autograph-collection-62006964",
+   "openingHours": "Mo-Fr 11:00-15:00"
+  },
+  {
+   "id": "poi-13628540716",
+   "name": "Barrio",
+   "category": "bar",
+   "kind": "amenity",
+   "lat": 44.974023,
+   "lon": -93.274255,
+   "buildingId": "essex-building-461224211"
+  },
+  {
+   "id": "poi-13806722530",
+   "name": "Confetti Blossom",
+   "category": "fast_food",
+   "kind": "amenity",
+   "lat": 44.975886,
+   "lon": -93.274595,
+   "buildingId": "811-lasalle-357279465",
+   "level": "1",
+   "openingHours": "Mo-Fr 11:00-15:00"
+  },
+  {
+   "id": "poi-2093837739",
+   "name": "Haskell's Wines",
+   "category": "alcohol",
+   "kind": "shop",
+   "lat": 44.974541,
+   "lon": -93.273203,
+   "buildingId": "young-quinlan-building-44684854",
+   "openingHours": "Mo-Sa 09:00-19:00; Su 11:00-18:00"
+  },
+  {
+   "id": "poi-4679771192",
+   "name": "Sew Biz Tailoring",
+   "category": "tailor",
+   "kind": "shop",
+   "lat": 44.975589,
+   "lon": -93.269903,
+   "buildingId": "706-building-126116977"
+  },
+  {
+   "id": "poi-5355792471",
+   "name": "T-Mobile",
+   "category": "mobile_phone",
+   "kind": "shop",
+   "lat": 44.976124,
+   "lon": -93.272518,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5355792476",
+   "name": "St. Croix Cleaners",
+   "category": "dry_cleaning",
+   "kind": "shop",
+   "lat": 44.975819,
+   "lon": -93.271825,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5355792486",
+   "name": "Cardigan Donuts",
+   "category": "confectionery",
+   "kind": "shop",
+   "lat": 44.976319,
+   "lon": -93.271665,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955554287",
+   "name": "NY Jewelry",
+   "category": "jewelry",
+   "kind": "shop",
+   "lat": 44.976394,
+   "lon": -93.272115,
+   "buildingId": "ids-center-1385236413"
+  },
+  {
+   "id": "poi-5955554289",
+   "name": "Walgreens",
+   "category": "chemist",
+   "kind": "shop",
+   "lat": 44.977026,
+   "lon": -93.27161,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "0-1",
+   "openingHours": "Mo-Fr 07:00-18:00; Sa 09:00-17:00; Su 10:00-17:00"
+  },
+  {
+   "id": "poi-5955554294",
+   "name": "Ay Novo",
+   "category": "clothes",
+   "kind": "shop",
+   "lat": 44.977144,
+   "lon": -93.271268,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955554302",
+   "name": "Gent",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.975878,
+   "lon": -93.27392,
+   "buildingId": "us-bancorp-center-461224219"
+  },
+  {
+   "id": "poi-5955554303",
+   "name": "Downtown Eyes",
+   "category": "optician",
+   "kind": "shop",
+   "lat": 44.975972,
+   "lon": -93.273841,
+   "buildingId": "us-bancorp-center-461224219",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955554304",
+   "name": "Mother Dough Bakery",
+   "category": "bakery",
+   "kind": "shop",
+   "lat": 44.976032,
+   "lon": -93.273707,
+   "buildingId": "us-bancorp-center-461224219",
+   "openingHours": "Mo-Fr 7:00AM-3:00PM"
+  },
+  {
+   "id": "poi-5955577504",
+   "name": "Emerald City Day Spa",
+   "category": "beauty",
+   "kind": "shop",
+   "lat": 44.977455,
+   "lon": -93.270948,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1"
+  },
+  {
+   "id": "poi-5955577506",
+   "name": "H.W. Boutique",
+   "category": "shoes",
+   "kind": "shop",
+   "lat": 44.977489,
+   "lon": -93.271302,
+   "buildingId": "gaviidae-common-156909893"
+  },
+  {
+   "id": "poi-5955577508",
+   "name": "Ana's Apothecary",
+   "category": "gift",
+   "kind": "shop",
+   "lat": 44.977339,
+   "lon": -93.271598,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1",
+   "openingHours": "Mo-Fr 10:00-15:00"
+  },
+  {
+   "id": "poi-5955582349",
+   "name": "Cardigan Donuts",
+   "category": "bakery",
+   "kind": "shop",
+   "lat": 44.977792,
+   "lon": -93.273075,
+   "buildingId": "city-center-27346720",
+   "openingHours": "Mo-Fr 06:30-17:30; Sa 08:00-15:00"
+  },
+  {
+   "id": "poi-5955582351",
+   "name": "The UPS Store",
+   "category": "post_office",
+   "kind": "amenity",
+   "lat": 44.978092,
+   "lon": -93.273465,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-9219442092",
+   "name": "FedEx Office",
+   "category": "copyshop",
+   "kind": "shop",
+   "lat": 44.97585,
+   "lon": -93.271974,
+   "buildingId": "ids-center-1385236413",
+   "level": "0"
+  },
+  {
+   "id": "poi-12237975438",
+   "name": "Supreme Garage Door Repair",
+   "category": "repair",
+   "kind": "shop",
+   "lat": 44.978408,
+   "lon": -93.268737,
+   "buildingId": "fifth-street-towers-29080597",
+   "openingHours": "Mo-Su 07:00-21:00"
+  },
+  {
+   "id": "poi-12569712419",
+   "name": "Metro Transit Service Center",
+   "category": "ticket",
+   "kind": "shop",
+   "lat": 44.975855,
+   "lon": -93.271055,
+   "buildingId": "733-building-126116972",
+   "openingHours": "Mo-Fr 08:30-16:00"
+  },
+  {
+   "id": "poi-12569712436",
+   "name": "Edible Arrangements",
+   "category": "gift",
+   "kind": "shop",
+   "lat": 44.975335,
+   "lon": -93.271271,
+   "buildingId": "733-building-126116972",
+   "openingHours": "Mo-Sa 09:00-19:00; Su 09:00-15:00"
+  },
+  {
+   "id": "poi-12569712437",
+   "name": "Fastsigns",
+   "category": "printing",
+   "kind": "shop",
+   "lat": 44.97527,
+   "lon": -93.271112,
+   "buildingId": "733-building-126116972",
+   "openingHours": "Mo-Fr 08:00-16:30"
+  },
+  {
+   "id": "poi-12753315916",
+   "name": "Bill & Marty's Convenience Store",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.976806,
+   "lon": -93.267865,
+   "buildingId": "us-bank-plaza-126015100",
+   "level": "0"
+  },
+  {
+   "id": "poi-12768888509",
+   "name": "Thomas Joseph & Sons",
+   "category": "jewelry",
+   "kind": "shop",
+   "lat": 44.974272,
+   "lon": -93.267366,
+   "buildingId": "sps-tower-45447294",
+   "level": "1"
+  },
+  {
+   "id": "poi-12768888511",
+   "name": "Barkalows Too",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.974205,
+   "lon": -93.267395,
+   "buildingId": "sps-tower-45447294",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862806762",
+   "name": "City Market",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.977234,
+   "lon": -93.271049,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862806766",
+   "name": "Uniquely Global",
+   "category": "clothes",
+   "kind": "shop",
+   "lat": 44.977409,
+   "lon": -93.271352,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862806767",
+   "name": "Silber Fine Jewlery",
+   "category": "jewelry",
+   "kind": "shop",
+   "lat": 44.977292,
+   "lon": -93.271447,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862838542",
+   "name": "Gittelson Jewlers",
+   "category": "jewelry",
+   "kind": "shop",
+   "lat": 44.976847,
+   "lon": -93.270105,
+   "buildingId": "six-quebec-156912888",
+   "level": "1"
+  },
+  {
+   "id": "poi-12862838553",
+   "name": "General Store",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.976441,
+   "lon": -93.269876,
+   "buildingId": "northstar-west-45581647",
+   "level": "0"
+  },
+  {
+   "id": "poi-12921906730",
+   "name": "Centre Village Tobacco Store",
+   "category": "tobacco",
+   "kind": "shop",
+   "lat": 44.974006,
+   "lon": -93.266017,
+   "buildingId": "centre-village-44164774"
+  },
+  {
+   "id": "poi-12971774441",
+   "name": "KDIX",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.9801,
+   "lon": -93.266253,
+   "buildingId": "the-crossings-1411646515",
+   "level": "1"
+  },
+  {
+   "id": "poi-13030049624",
+   "name": "Madison & Co. Salons",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.977284,
+   "lon": -93.268518,
+   "buildingId": "canadian-pacific-plaza-62005000",
+   "level": "1"
+  },
+  {
+   "id": "poi-13168732018",
+   "name": "Solomon Optical",
+   "category": "optician",
+   "kind": "shop",
+   "lat": 44.977348,
+   "lon": -93.268666,
+   "buildingId": "canadian-pacific-plaza-62005000",
+   "level": "1"
+  },
+  {
+   "id": "poi-13189788424",
+   "name": "Cravings",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.97593,
+   "lon": -93.268231,
+   "buildingId": "capella-tower-115559604",
+   "level": "1"
+  },
+  {
+   "id": "poi-13189788425",
+   "name": "225 Barbers",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.975887,
+   "lon": -93.26815,
+   "buildingId": "capella-tower-115559604",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265533200",
+   "name": "Avant",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.976457,
+   "lon": -93.276075,
+   "buildingId": "lasalle-plaza-461227727",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552501",
+   "name": "AlphaGraphics",
+   "category": "printing",
+   "kind": "shop",
+   "lat": 44.975891,
+   "lon": -93.274466,
+   "buildingId": "811-lasalle-357279465",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552503",
+   "name": "Moss Optical",
+   "category": "optician",
+   "kind": "shop",
+   "lat": 44.976374,
+   "lon": -93.275314,
+   "buildingId": "lasalle-plaza-461227727",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552504",
+   "name": "The City Market",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.978131,
+   "lon": -93.273561,
+   "buildingId": "city-center-27346720",
+   "level": "1"
+  },
+  {
+   "id": "poi-13265552506",
+   "name": "Fresh Mart",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.976189,
+   "lon": -93.27542,
+   "buildingId": "lasalle-plaza-461227727",
+   "level": "1"
+  },
+  {
+   "id": "poi-13374666409",
+   "name": "1 Brett Petersen @225 barbers",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.975875,
+   "lon": -93.268164,
+   "buildingId": "capella-tower-115559604",
+   "openingHours": "Mo-Fr 07:00-18:00; Sa 08:30-16:00"
+  },
+  {
+   "id": "poi-13378495986",
+   "name": "Strive Bookstore",
+   "category": "books",
+   "kind": "shop",
+   "lat": 44.975113,
+   "lon": -93.272976,
+   "buildingId": "medical-arts-building-92905817",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756369",
+   "name": "Lovely's Sewing & Arts Collective",
+   "category": "tailor",
+   "kind": "shop",
+   "lat": 44.975877,
+   "lon": -93.271753,
+   "buildingId": "ids-center-1385236413",
+   "level": "1"
+  },
+  {
+   "id": "poi-13410756372",
+   "name": "By The Way Convenience Store",
+   "category": "convenience",
+   "kind": "shop",
+   "lat": 44.974443,
+   "lon": -93.271238,
+   "buildingId": "deluxe-plaza-1462073358"
+  },
+  {
+   "id": "poi-13410756376",
+   "name": "Feature Cut Barber",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.975112,
+   "lon": -93.2722,
+   "buildingId": "rsm-plaza-357019983",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756378",
+   "name": "Sew What!",
+   "category": "tailor",
+   "kind": "shop",
+   "lat": 44.974162,
+   "lon": -93.271408,
+   "buildingId": "deluxe-plaza-1462073358",
+   "level": "1"
+  },
+  {
+   "id": "poi-13410756383",
+   "name": "Meye Salon",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.975088,
+   "lon": -93.273134,
+   "buildingId": "medical-arts-building-92905817",
+   "level": "0"
+  },
+  {
+   "id": "poi-13410756391",
+   "name": "Appearances Salon",
+   "category": "hairdresser",
+   "kind": "shop",
+   "lat": 44.975301,
+   "lon": -93.272775,
+   "buildingId": "rsm-plaza-357019983",
+   "level": "0"
   }
  ]
 }
