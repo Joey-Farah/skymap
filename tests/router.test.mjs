@@ -4,7 +4,14 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SkywayRouter, haversineMeters, nearestBuilding, polylineMeters, sliceAlong } from "../src/router.ts";
+import {
+  SkywayRouter,
+  haversineMeters,
+  nearestBuilding,
+  polylineMeters,
+  routeStepIndex,
+  sliceAlong,
+} from "../src/router.ts";
 import { closingSoonWarnings, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
 import { encodeRouteState, googleMapsUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
 
@@ -143,6 +150,20 @@ test("route steps surface stairs when the bridge crossing has them", () => {
 
   const flat = new SkywayRouter({ ...mini, edges: [{ from: "a", to: "b", crossing: "skyway" }] });
   assert.equal(flat.route("a", "b", null).steps[1].hasSteps, undefined);
+});
+
+test("routeStepIndex finds the nearest step to a live position", () => {
+  const r = router.route("ids-center", "us-bank-stadium", TUE_10AM);
+  // Right on top of the origin: step 0.
+  assert.equal(routeStepIndex(r, r.steps[0].building.lat, r.steps[0].building.lon), 0);
+  // Right on top of an interior step: that step's index.
+  const midIdx = Math.floor(r.steps.length / 2);
+  assert.equal(
+    routeStepIndex(r, r.steps[midIdx].building.lat, r.steps[midIdx].building.lon),
+    midIdx,
+  );
+  // Right on top of the destination: last step.
+  assert.equal(routeStepIndex(r, r.steps.at(-1).building.lat, r.steps.at(-1).building.lon), r.steps.length - 1);
 });
 
 test("route steps carry cumulative arrival minutes", () => {

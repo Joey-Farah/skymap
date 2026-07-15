@@ -1,6 +1,6 @@
 import "./styles.css";
-import type { Building, Poi, SkymapData } from "./types.ts";
-import { SkywayRouter, nearestBuilding } from "./router.ts";
+import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
+import { SkywayRouter, nearestBuilding, routeStepIndex } from "./router.ts";
 import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
@@ -119,11 +119,14 @@ async function boot() {
   slider.addEventListener("input", refreshTimeStyling);
   slider.addEventListener("change", () => routeIfReady());
 
+  let activeRoute: RouteResult | null = null;
+
   function routeIfReady() {
     const fromId = comboFrom.value;
     const toId = comboTo.value;
     if (!fromId || !toId) return;
     if (fromId === toId) {
+      activeRoute = null;
       expandSearch();
       sheet.showMessage("Same building", "Origin and destination are the same place.");
       return;
@@ -131,6 +134,7 @@ async function boot() {
     const when = selectedTime();
     const route = router.route(fromId, toId, when);
     if (!route) {
+      activeRoute = null;
       expandSearch();
       view.setRoute(null);
       sheet.showMessage(
@@ -139,6 +143,7 @@ async function boot() {
       );
       return;
     }
+    activeRoute = route;
     view.setReach(null);
     view.setRoute(route);
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
@@ -167,6 +172,7 @@ async function boot() {
   });
 
   function onBuildingTap(b: Building) {
+    activeRoute = null;
     view.focusBuilding(b);
     sheet.showBuilding(
       b,
@@ -181,6 +187,7 @@ async function boot() {
   }
 
   function onPoiTap(p: Poi) {
+    activeRoute = null;
     const host = router.building(p.buildingId);
     sheet.showPoi(p, host, () => {
       if (host) comboTo.select(host);
@@ -206,9 +213,13 @@ async function boot() {
     } else {
       nearYou.hidden = true;
     }
+    if (activeRoute) {
+      sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
+    }
   }
 
   function showReach(b: Building) {
+    activeRoute = null;
     const when = selectedTime();
     const maxBand = REACH_BANDS[REACH_BANDS.length - 1].maxMinutes;
     const reach = router.reachable(b.id, when, maxBand);
@@ -250,7 +261,7 @@ async function boot() {
   }
 
   // Test/debug handle (drives E2E camera positioning).
-  (window as unknown as Record<string, unknown>).__skymap = { view, router, data };
+  (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition };
 }
 
 boot().catch((err) => {

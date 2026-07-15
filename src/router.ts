@@ -69,6 +69,24 @@ export function nearestBuilding(
   return best;
 }
 
+/**
+ * Which step of an active route a live GPS fix is closest to — building
+ * granularity, not polyline projection, since "you're at building X" is
+ * what a turn-by-turn prompt needs.
+ */
+export function routeStepIndex(route: RouteResult, lat: number, lon: number): number {
+  let best = 0;
+  let bestDist = Infinity;
+  route.steps.forEach((step, i) => {
+    const d = haversineMeters(lat, lon, step.building.lat, step.building.lon);
+    if (d < bestDist) {
+      bestDist = d;
+      best = i;
+    }
+  });
+  return best;
+}
+
 interface GraphEdge {
   to: string;
   meters: number;

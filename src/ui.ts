@@ -106,6 +106,9 @@ export class BuildingCombo {
 export class Sheet {
   private root: HTMLElement;
   private content: HTMLElement;
+  private stepsListEl: HTMLUListElement | null = null;
+  private progressPromptEl: HTMLElement | null = null;
+  private activeRoute: RouteResult | null = null;
   private dragStartY = 0;
   private dragStartExpanded = true;
   private dragging = false;
@@ -145,6 +148,39 @@ export class Sheet {
 
   hide() {
     this.root.hidden = true;
+    this.clearRouteProgress();
+  }
+
+  private clearRouteProgress() {
+    this.stepsListEl = null;
+    this.progressPromptEl = null;
+    this.activeRoute = null;
+  }
+
+  /**
+   * Called on every live position update while a route is showing: moves
+   * the "current step" highlight and swaps the prompt to the next crossing.
+   * No-op once the sheet has moved on to something else.
+   */
+  updateRouteProgress(stepIndex: number) {
+    if (!this.stepsListEl || !this.progressPromptEl || !this.activeRoute) return;
+    this.stepsListEl.querySelectorAll("li").forEach((li, i) => {
+      li.classList.toggle("current", i === stepIndex);
+    });
+    const next = this.activeRoute.steps[stepIndex + 1];
+    if (!next) {
+      this.progressPromptEl.textContent = "You've arrived";
+    } else {
+      const crossing = next.viaCrossing ?? "";
+      const generic = /^(minneapolis )?skyway$/i.test(crossing.trim());
+      const verb = next.hasSteps
+        ? "Take the stairs into"
+        : generic || !crossing
+          ? "Head into"
+          : `Cross over ${crossing} into`;
+      this.progressPromptEl.textContent = `${verb} ${next.building.name}`;
+    }
+    this.progressPromptEl.hidden = false;
   }
 
   private show(expanded = true) {
@@ -160,6 +196,7 @@ export class Sheet {
   ) {
     const status = statusAt(b, when);
     this.content.innerHTML = "";
+    this.clearRouteProgress();
 
     const h2 = el("h2", b.name);
     const kind = CATEGORY_LABELS[b.category];
@@ -262,6 +299,7 @@ export class Sheet {
   /** Card for a single business tapped on the map. */
   showPoi(p: Poi, host: Building | undefined, onRouteTo: () => void) {
     this.content.innerHTML = "";
+    this.clearRouteProgress();
     this.content.append(el("h2", p.name));
     const where = host ? `${humanCategory(p.category)} · ${host.name}` : humanCategory(p.category);
     this.content.append(el("div", where, "meta"));
@@ -292,6 +330,7 @@ export class Sheet {
     onClear: () => void,
   ) {
     this.content.innerHTML = "";
+    this.clearRouteProgress();
     this.content.append(el("h2", `Within reach of ${origin.name}`));
     this.content.append(el("div", `Leaving ${formatWhen(when)} · entirely indoors`, "meta"));
 
@@ -358,6 +397,12 @@ export class Sheet {
     );
     this.content.append(summary);
 
+    // Filled in by updateRouteProgress() once live position updates arrive;
+    // stays empty/hidden for a route you're just previewing.
+    const prompt = el("div", "", "progress-prompt");
+    prompt.hidden = true;
+    this.content.append(prompt);
+
     const ol = document.createElement("ul");
     ol.className = "steps sheet-collapsible";
     for (const step of route.steps) {
@@ -374,6 +419,9 @@ export class Sheet {
       ol.appendChild(li);
     }
     this.content.append(ol);
+    this.stepsListEl = ol;
+    this.progressPromptEl = prompt;
+    this.activeRoute = route;
     // Peek: the summary line is the win, the full turn list can crowd out
     // the map it's describing — drag the handle up (or tap it) for that.
     this.show(false);
@@ -381,6 +429,7 @@ export class Sheet {
 
   showMessage(title: string, body: string) {
     this.content.innerHTML = "";
+    this.clearRouteProgress();
     this.content.append(el("h2", title), el("div", body, "meta"));
     this.show();
   }
