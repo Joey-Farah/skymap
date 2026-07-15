@@ -63,9 +63,18 @@
             aria-label="Time of day"
           />
         </div>
+        <div class="trip-strip" id="trip-strip" hidden>
+          <span class="dot dot-from"></span>
+          <span class="trip-label" id="trip-from"></span>
+          <span class="trip-arrow">→</span>
+          <span class="dot dot-to"></span>
+          <span class="trip-label" id="trip-to"></span>
+          <button class="trip-edit" id="trip-edit">Edit</button>
+        </div>
       </header>
 
       <section class="panel sheet" id="sheet" hidden>
+        <button class="sheet-handle" id="sheet-handle" aria-label="Show more / less"><span class="grip"></span></button>
         <button class="sheet-close" id="sheet-close" aria-label="Close">×</button>
         <div id="sheet-content"></div>
       </section>

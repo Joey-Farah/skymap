@@ -51,6 +51,51 @@ body {
   right: auto;
   width: min(400px, calc(100vw - 20px));
   padding: 12px 14px;
+  transition: padding 0.2s ease;
+}
+
+/* Once a trip is set, the full form gives way to a one-line strip —
+   the map (and the route drawn on it) get the room back. */
+.search-panel.trip-active .field-row,
+.search-panel.trip-active .time-row,
+.search-panel.trip-active .scrubber {
+  display: none;
+}
+
+.trip-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.trip-strip[hidden] {
+  display: none;
+}
+
+.trip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40%;
+}
+
+.trip-arrow {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.trip-edit {
+  margin-left: auto;
+  border: 0;
+  background: #eff6ff;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .brand {
@@ -258,9 +303,43 @@ body {
   bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
   max-width: 480px;
   margin: 0 auto;
-  padding: 14px 16px;
+  padding: 22px 16px 14px;
   max-height: 46vh;
   overflow-y: auto;
+  transition: max-height 0.22s ease;
+}
+
+/* Peek: just the essentials, so the route drawn behind it stays visible.
+   Drag the handle up, or tap it, to see everything. */
+.sheet.peek {
+  max-height: 132px;
+  overflow: hidden;
+}
+
+.sheet-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheet-handle .grip {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #d1d5db;
+}
+
+.sheet.peek .sheet-collapsible {
+  display: none;
 }
 
 .sheet-close {

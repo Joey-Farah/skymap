@@ -106,19 +106,50 @@ export class BuildingCombo {
 export class Sheet {
   private root: HTMLElement;
   private content: HTMLElement;
+  private dragStartY = 0;
+  private dragStartExpanded = true;
+  private dragging = false;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.content = root.querySelector("#sheet-content")!;
     root.querySelector("#sheet-close")!.addEventListener("click", () => this.hide());
+
+    const handle = root.querySelector<HTMLElement>("#sheet-handle")!;
+    handle.addEventListener("pointerdown", (e) => {
+      this.dragging = true;
+      this.dragStartY = e.clientY;
+      this.dragStartExpanded = this.root.classList.contains("expanded");
+      handle.setPointerCapture(e.pointerId);
+    });
+    handle.addEventListener("pointermove", (e) => {
+      if (!this.dragging) return;
+      // Drag up expands, drag down collapses — a live preview via a class
+      // toggle at the halfway point feels responsive without a full
+      // continuous-resize implementation.
+      const delta = this.dragStartY - e.clientY;
+      if (Math.abs(delta) > 20) this.setExpanded(delta > 0);
+    });
+    handle.addEventListener("pointerup", (e) => {
+      const moved = Math.abs(this.dragStartY - e.clientY) > 8;
+      this.dragging = false;
+      if (!moved) this.setExpanded(!this.dragStartExpanded);
+    });
+  }
+
+  /** Peek shows just the summary; expanded shows full content. Always togglable via the handle. */
+  private setExpanded(expanded: boolean) {
+    this.root.classList.toggle("expanded", expanded);
+    this.root.classList.toggle("peek", !expanded);
   }
 
   hide() {
     this.root.hidden = true;
   }
 
-  private show() {
+  private show(expanded = true) {
     this.root.hidden = false;
+    this.setExpanded(expanded);
   }
 
   showBuilding(
@@ -148,7 +179,10 @@ export class Sheet {
     const reachBtn = el("button", "What's within 15 minutes?", "reach-btn");
     reachBtn.addEventListener("click", actions.onReach);
 
-    this.content.append(h2, meta, badge, hours, note, actionsRow, reachBtn);
+    // Everything past the essentials collapses away in peek mode.
+    const more = document.createElement("div");
+    more.className = "sheet-collapsible";
+    more.append(actionsRow, reachBtn);
 
     const interior = pois.filter((p) => !p.exterior);
     const transit = pois.filter((p) => p.exterior);
@@ -156,11 +190,11 @@ export class Sheet {
     for (const group of order) {
       const members = interior.filter((p) => p.group === group);
       if (members.length === 0) continue;
-      this.content.append(el("h3", `${GROUP_LABELS[group]} (${members.length})`, "poi-heading"));
-      this.content.append(this.poiList(members));
+      more.append(el("h3", `${GROUP_LABELS[group]} (${members.length})`, "poi-heading"));
+      more.append(this.poiList(members));
     }
     if (transit.length > 0) {
-      this.content.append(el("h3", GROUP_LABELS.transit, "poi-heading"));
+      more.append(el("h3", GROUP_LABELS.transit, "poi-heading"));
       const list = document.createElement("ul");
       list.className = "poi-list";
       for (const p of transit.slice(0, 4)) {
@@ -173,8 +207,9 @@ export class Sheet {
         );
         list.appendChild(li);
       }
-      this.content.append(list);
+      more.append(list);
     }
+    this.content.append(h2, meta, badge, hours, note, more);
     this.show();
   }
 
@@ -290,7 +325,7 @@ export class Sheet {
     this.content.append(summary);
 
     const ol = document.createElement("ul");
-    ol.className = "steps";
+    ol.className = "steps sheet-collapsible";
     for (const step of route.steps) {
       const li = document.createElement("li");
       const closedHere = !isOpenLabelOk(step.building, when);
@@ -304,7 +339,9 @@ export class Sheet {
       ol.appendChild(li);
     }
     this.content.append(ol);
-    this.show();
+    // Peek: the summary line is the win, the full turn list can crowd out
+    // the map it's describing — drag the handle up (or tap it) for that.
+    this.show(false);
   }
 
   showMessage(title: string, body: string) {

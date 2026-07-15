@@ -15,6 +15,22 @@ async function boot() {
   const disclaimer = document.getElementById("disclaimer");
   if (disclaimer && data.meta.disclaimer) disclaimer.textContent = data.meta.disclaimer;
   const sheet = new Sheet(document.getElementById("sheet")!);
+  const searchPanel = document.getElementById("search-panel")!;
+  const tripStrip = document.getElementById("trip-strip") as HTMLElement;
+  const tripFrom = document.getElementById("trip-from")!;
+  const tripTo = document.getElementById("trip-to")!;
+
+  function collapseSearch(fromLabel: string, toLabel: string) {
+    tripFrom.textContent = fromLabel;
+    tripTo.textContent = toLabel;
+    tripStrip.hidden = false;
+    searchPanel.classList.add("trip-active");
+  }
+  function expandSearch() {
+    tripStrip.hidden = true;
+    searchPanel.classList.remove("trip-active");
+  }
+  document.getElementById("trip-edit")!.addEventListener("click", expandSearch);
 
   const style = await resolveStyle();
   const view = new SkymapView(
@@ -107,12 +123,14 @@ async function boot() {
     const toId = comboTo.value;
     if (!fromId || !toId) return;
     if (fromId === toId) {
+      expandSearch();
       sheet.showMessage("Same building", "Origin and destination are the same place.");
       return;
     }
     const when = selectedTime();
     const route = router.route(fromId, toId, when);
     if (!route) {
+      expandSearch();
       view.setRoute(null);
       sheet.showMessage(
         "No route found",
@@ -122,7 +140,10 @@ async function boot() {
     }
     view.setReach(null);
     view.setRoute(route);
-    sheet.showRoute(route, when, { from: comboFrom.label ?? undefined, to: comboTo.label ?? undefined });
+    const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
+    const toLabel = comboTo.label ?? router.building(toId)!.name;
+    sheet.showRoute(route, when, { from: fromLabel, to: toLabel });
+    collapseSearch(fromLabel, toLabel);
     // Make the address bar shareable: the URL always describes this route.
     history.replaceState(
       null,
