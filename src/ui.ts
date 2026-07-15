@@ -1,5 +1,5 @@
 import type { Building, Poi, RouteResult } from "./types.ts";
-import { googleMapsUrl } from "./share.ts";
+import { googleMapsUrl, reportIssueUrl } from "./share.ts";
 import { CATEGORY_LABELS, GROUP_LABELS, type PoiGroup } from "./poi.ts";
 import { haversineMeters } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
@@ -210,8 +210,17 @@ export class Sheet {
       }
       more.append(list);
     }
+    more.append(this.reportLink({ name: b.name, id: b.id }));
     this.content.append(h2, meta, badge, hours, note, more);
     this.show();
+  }
+
+  private reportLink(target: { name: string; id: string }): HTMLElement {
+    const link = document.createElement("a");
+    link.href = reportIssueUrl(target);
+    link.className = "report-link";
+    link.textContent = "Something wrong here? Report it";
+    return link;
   }
 
   private landmarkPhoto(image: NonNullable<Building["image"]>): HTMLElement {
@@ -270,7 +279,7 @@ export class Sheet {
     const toBtn = el("button", "Route here", "primary");
     toBtn.addEventListener("click", onRouteTo);
     actionsRow.append(gmaps, toBtn);
-    this.content.append(actionsRow);
+    this.content.append(actionsRow, this.reportLink({ name: p.name, id: p.id }));
     this.show();
   }
 

@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { SkywayRouter, haversineMeters, polylineMeters, sliceAlong } from "../src/router.ts";
 import { closingSoonWarnings, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
-import { encodeRouteState, googleMapsUrl, parseRouteState } from "../src/share.ts";
+import { encodeRouteState, googleMapsUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -266,6 +266,13 @@ test("poi grouping and building categories", async () => {
   assert.equal(buildingCategory({ building: "yes", amenity: "parking" }), "parking");
   assert.equal(buildingCategory({ building: "hotel" }), "hotel");
   assert.equal(buildingCategory({ building: "yes" }), "office");
+});
+
+test("reportIssueUrl builds a pre-filled mailto", () => {
+  const url = reportIssueUrl({ name: "Vitality Roasting", id: "poi-123" });
+  assert.ok(url.startsWith("mailto:"));
+  assert.match(url, /subject=Skymap%20issue%3A%20Vitality%20Roasting/);
+  assert.match(url, /body=.*poi-123/);
 });
 
 test("live POIs reference real buildings", () => {

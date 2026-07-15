@@ -28,6 +28,21 @@ export function googleMapsUrl(poi: { name: string; lat: number; lon: number }): 
   return `https://www.google.com/maps/search/?${params.toString()}`;
 }
 
+/**
+ * Data in this app comes entirely from OpenStreetMap, which can go stale —
+ * a known weakness of every skyway map built this way. This is the cheap
+ * fix: a one-tap way to flag it so the underlying data can be corrected.
+ */
+export function reportIssueUrl(target: { name: string; id: string }): string {
+  // mailto: doesn't reliably decode "+" as a space the way form encoding
+  // does, so encode manually rather than reach for URLSearchParams.
+  const subject = encodeURIComponent(`Skymap issue: ${target.name}`);
+  const body = encodeURIComponent(
+    `What's wrong? (closed, wrong hours, wrong location, doesn't exist, other)\n\n\n—\nRef: ${target.id}`,
+  );
+  return `mailto:hello@skymap.app?subject=${subject}&body=${body}`;
+}
+
 export function parseRouteState(search: string): RouteState {
   const params = new URLSearchParams(search);
   const at = params.get("at");
