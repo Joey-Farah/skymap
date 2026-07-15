@@ -34,7 +34,16 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APPLY = process.argv.includes("--apply");
 
 const BBOX = "44.9660,-93.2950,44.9865,-93.2510"; // downtown Minneapolis
-const OVERPASS = process.env.OVERPASS_URL || "https://overpass-api.de/api/interpreter";
+// overpass-api.de returns 406 without a User-Agent; mirrors are fallbacks
+// for when the primary is overloaded (504).
+const USER_AGENT = "skymap-data-pipeline/0.1 (Minneapolis skyway map)";
+const MIRRORS = process.env.OVERPASS_URL
+  ? [process.env.OVERPASS_URL]
+  : [
+      "https://overpass-api.de/api/interpreter",
+      "https://overpass.kumi.systems/api/interpreter",
+      "https://overpass.private.coffee/api/interpreter",
+    ];
 
 const QUERY = `
 [out:json][timeout:90];
@@ -65,14 +74,26 @@ const DEFAULT_HOURS = [
 ];
 
 async function fetchOverpass() {
-  console.log(`Querying Overpass (${OVERPASS})…`);
-  const res = await fetch(OVERPASS, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: "data=" + encodeURIComponent(QUERY),
-  });
-  if (!res.ok) throw new Error(`Overpass returned HTTP ${res.status}`);
-  return res.json();
+  let lastErr;
+  for (const url of MIRRORS) {
+    console.log(`Querying Overpass (${url})…`);
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": USER_AGENT,
+        },
+        body: "data=" + encodeURIComponent(QUERY),
+      });
+      if (res.ok) return res.json();
+      lastErr = new Error(`Overpass returned HTTP ${res.status}`);
+    } catch (err) {
+      lastErr = err;
+    }
+    console.warn(`  ${lastErr.message} — trying next mirror.`);
+  }
+  throw lastErr;
 }
 
 function centroid(ring) {
@@ -196,24 +217,45 @@ function main(osm) {
     }
   }
 
-  // Keep only buildings that participate in the network.
-  const connected = new Set();
+  // Keep only the largest connected component: the contiguous skyway.
+  // Smaller fragments are mostly unrelated indoor corridors (hospitals,
+  // apartment blocks) that would pollute the picker and never route.
+  const adj = new Map();
   for (const e of edgeMap.values()) {
-    connected.add(e.from);
-    connected.add(e.to);
+    (adj.get(e.from) ?? adj.set(e.from, []).get(e.from)).push(e.to);
+    (adj.get(e.to) ?? adj.set(e.to, []).get(e.to)).push(e.from);
   }
-  const finalBuildings = buildings.filter((b) => connected.has(b.id));
+  const seen = new Set();
+  let mainComponent = new Set();
+  for (const start of adj.keys()) {
+    if (seen.has(start)) continue;
+    const comp = new Set();
+    const stack = [start];
+    while (stack.length) {
+      const id = stack.pop();
+      if (comp.has(id)) continue;
+      comp.add(id);
+      seen.add(id);
+      stack.push(...adj.get(id));
+    }
+    if (comp.size > mainComponent.size) mainComponent = comp;
+  }
+  console.log(`Components: keeping largest (${mainComponent.size} of ${seen.size} connected buildings).`);
+  const finalBuildings = buildings.filter((b) => mainComponent.has(b.id));
+  const finalEdges = [...edgeMap.values()].filter(
+    (e) => mainComponent.has(e.from) && mainComponent.has(e.to),
+  );
 
   const data = {
     meta: {
       name: "Minneapolis Skyway (OSM extraction)",
       source: "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
       disclaimer:
-        "Geometry from OSM. Hours are defaults and must be verified per building. Review before shipping.",
+        "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
       generated: new Date().toISOString(),
     },
     buildings: finalBuildings,
-    edges: [...edgeMap.values()],
+    edges: finalEdges,
   };
 
   const outPath = join(
@@ -224,7 +266,7 @@ function main(osm) {
   );
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, JSON.stringify(data, null, 1));
-  console.log(`Wrote ${outPath}: ${finalBuildings.length} buildings, ${edgeMap.size} links.`);
+  console.log(`Wrote ${outPath}: ${finalBuildings.length} buildings, ${finalEdges.length} links.`);
   if (!APPLY) console.log("Review the output, then re-run with --apply to make it live.");
 }
 
