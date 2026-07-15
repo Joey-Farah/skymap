@@ -3,7 +3,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, RouteResult, SkymapData } from "./types.ts";
 import { isOpenAt } from "./hours.ts";
 
-const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
+// Positron: muted grey basemap that lets the skyway network carry the color.
+const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
 const DOWNTOWN_CENTER: [number, number] = [-93.2697, 44.976];
 
 /** Minimal style used when the basemap host is unreachable (offline etc.). */
@@ -12,9 +13,17 @@ const FALLBACK_STYLE: maplibregl.StyleSpecification = {
   glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
   sources: {},
   layers: [
-    { id: "background", type: "background", paint: { "background-color": "#e6ebf2" } },
+    { id: "background", type: "background", paint: { "background-color": "#f2f2ef" } },
   ],
 };
+
+// Wayfinding palette: the city recedes to warm grey, the network reads like
+// a transit diagram — ink-blue lines, signal-amber route.
+const NETWORK = "#2257c9";
+const NETWORK_DEEP = "#17356e";
+const CLOSED = "#a5adbd";
+const ROUTE = "#e08a00";
+const INK = "#17243a";
 
 /** Use the remote basemap when reachable, else the local fallback. */
 export async function resolveStyle(): Promise<string | maplibregl.StyleSpecification> {
@@ -148,38 +157,12 @@ export class SkymapView {
     this.map.addSource("skyway-route", { type: "geojson", data: routeFC(null) });
 
     this.map.addLayer({
-      id: "skyway-bridges-casing",
-      type: "line",
-      source: "skyway-bridges",
-      layout: { "line-cap": "round" },
-      paint: { "line-color": "#ffffff", "line-width": 7, "line-opacity": 0.8 },
-    });
-    this.map.addLayer({
-      id: "skyway-bridges-line",
-      type: "line",
-      source: "skyway-bridges",
-      layout: { "line-cap": "round" },
-      paint: {
-        "line-color": ["case", ["get", "open"], "#2563eb", "#9aa3af"],
-        "line-width": ["case", ["get", "open"], 4, 3],
-        "line-dasharray": ["case", ["get", "open"], ["literal", [1, 0]], ["literal", [1.2, 1.6]]],
-      },
-    });
-
-    this.map.addLayer({
       id: "skyway-buildings-fill",
       type: "fill",
       source: "skyway-buildings",
       paint: {
-        "fill-color": [
-          "case",
-          ["!", ["get", "open"]],
-          "#aab2bd",
-          ["get", "hub"],
-          "#1d4ed8",
-          "#3b82f6",
-        ],
-        "fill-opacity": ["case", ["get", "open"], 0.38, 0.22],
+        "fill-color": ["case", ["!", ["get", "open"]], CLOSED, ["get", "hub"], NETWORK_DEEP, NETWORK],
+        "fill-opacity": ["case", ["get", "open"], 0.16, 0.1],
       },
     });
     this.map.addLayer({
@@ -187,10 +170,32 @@ export class SkymapView {
       type: "line",
       source: "skyway-buildings",
       paint: {
-        "line-color": ["case", ["get", "open"], "#1e40af", "#8b93a0"],
-        "line-width": 1.5,
+        "line-color": ["case", ["get", "open"], NETWORK, CLOSED],
+        "line-width": ["case", ["get", "open"], 1.6, 1],
+        "line-opacity": 0.7,
       },
     });
+
+    // Bridges above fills: confident metro-diagram strokes.
+    this.map.addLayer({
+      id: "skyway-bridges-casing",
+      type: "line",
+      source: "skyway-bridges",
+      layout: { "line-cap": "round" },
+      paint: { "line-color": "#ffffff", "line-width": 8, "line-opacity": 0.9 },
+    });
+    this.map.addLayer({
+      id: "skyway-bridges-line",
+      type: "line",
+      source: "skyway-bridges",
+      layout: { "line-cap": "round" },
+      paint: {
+        "line-color": ["case", ["get", "open"], NETWORK, CLOSED],
+        "line-width": ["case", ["get", "open"], 4.5, 3],
+        "line-dasharray": ["case", ["get", "open"], ["literal", [1, 0]], ["literal", [1.2, 1.6]]],
+      },
+    });
+
     this.map.addLayer({
       id: "skyway-buildings-label",
       type: "symbol",
@@ -198,14 +203,15 @@ export class SkymapView {
       minzoom: 14.8,
       layout: {
         "text-field": ["get", "name"],
-        "text-size": 11,
-        "text-font": ["Noto Sans Regular"],
+        "text-size": 11.5,
+        "text-font": ["Noto Sans Bold"],
         "text-max-width": 8,
+        "text-letter-spacing": 0.02,
       },
       paint: {
-        "text-color": "#1f2937",
-        "text-halo-color": "rgba(255,255,255,0.9)",
-        "text-halo-width": 1.4,
+        "text-color": INK,
+        "text-halo-color": "rgba(255,255,255,0.92)",
+        "text-halo-width": 1.6,
       },
     });
 
@@ -214,14 +220,14 @@ export class SkymapView {
       type: "line",
       source: "skyway-route",
       layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#ffffff", "line-width": 10, "line-opacity": 0.9 },
+      paint: { "line-color": "#ffffff", "line-width": 11, "line-opacity": 0.95 },
     });
     this.map.addLayer({
       id: "skyway-route-line",
       type: "line",
       source: "skyway-route",
       layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#f59e0b", "line-width": 5.5 },
+      paint: { "line-color": ROUTE, "line-width": 6 },
     });
   }
 
