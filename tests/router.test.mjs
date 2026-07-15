@@ -8,24 +8,16 @@ import { SkywayRouter, haversineMeters } from "../src/router.ts";
 import { isOpenAt, statusAt } from "../src/hours.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const data = JSON.parse(readFileSync(join(ROOT, "public/data/skymap-data.json"), "utf8"));
+
+// Router behavior is tested against the committed seed fixture: stable ids,
+// curated hours. The live dataset (public/data) may be an OSM extraction
+// with different ids — it gets its own consistency tests below.
+const data = JSON.parse(readFileSync(join(ROOT, "tests/fixtures/seed-data.json"), "utf8"));
 const router = new SkywayRouter(data);
 
 const TUE_10AM = new Date(2026, 6, 14, 10, 0); // Tuesday
 const SUN_11AM = new Date(2026, 6, 12, 11, 0); // Sunday
 const TUE_3AM = new Date(2026, 6, 14, 3, 0);
-
-test("dataset is internally consistent", () => {
-  const ids = new Set(data.buildings.map((b) => b.id));
-  assert.equal(ids.size, data.buildings.length, "duplicate building ids");
-  for (const e of data.edges) {
-    assert.ok(ids.has(e.from) && ids.has(e.to), `dangling edge ${e.from}->${e.to}`);
-    assert.notEqual(e.from, e.to, "self-loop edge");
-  }
-  for (const b of data.buildings) {
-    assert.equal(b.hours.length, 7, `${b.id} must have 7 days of hours`);
-  }
-});
 
 test("every building is reachable from IDS Center (hours-blind)", () => {
   for (const b of data.buildings) {
@@ -77,4 +69,56 @@ test("hours: status labels", () => {
 test("haversine sanity: one downtown block ~100-200m", () => {
   const d = haversineMeters(44.9763, -93.2715, 44.9752, -93.2724);
   assert.ok(d > 80 && d < 250, `block distance ${d}`);
+});
+
+test("route steps carry leg geometry oriented in travel direction", () => {
+  const mini = {
+    meta: data.meta,
+    buildings: [
+      { ...data.buildings[0], id: "a", lat: 44.97, lon: -93.27 },
+      { ...data.buildings[0], id: "b", lat: 44.971, lon: -93.269 },
+    ],
+    edges: [
+      {
+        from: "a",
+        to: "b",
+        crossing: "Test St",
+        geometry: [
+          [-93.27, 44.97],
+          [-93.2695, 44.9704],
+          [-93.269, 44.971],
+        ],
+      },
+    ],
+  };
+  const r = new SkywayRouter(mini);
+  const fwd = r.route("a", "b", null);
+  assert.deepEqual(fwd.steps[1].legGeometry, mini.edges[0].geometry);
+  const back = r.route("b", "a", null);
+  assert.deepEqual(back.steps[1].legGeometry, [...mini.edges[0].geometry].reverse());
+});
+
+// --- Live dataset (whatever the app currently ships) ----------------------
+
+const live = JSON.parse(readFileSync(join(ROOT, "public/data/skymap-data.json"), "utf8"));
+
+test("live dataset is internally consistent", () => {
+  const ids = new Set(live.buildings.map((b) => b.id));
+  assert.equal(ids.size, live.buildings.length, "duplicate building ids");
+  for (const e of live.edges) {
+    assert.ok(ids.has(e.from) && ids.has(e.to), `dangling edge ${e.from}->${e.to}`);
+    assert.notEqual(e.from, e.to, "self-loop edge");
+  }
+  for (const b of live.buildings) {
+    assert.equal(b.hours.length, 7, `${b.id} must have 7 days of hours`);
+  }
+});
+
+test("live dataset is one connected network (hours-blind)", () => {
+  const liveRouter = new SkywayRouter(live);
+  const origin = live.buildings[0];
+  for (const b of live.buildings.slice(1)) {
+    const r = liveRouter.route(origin.id, b.id, null);
+    assert.ok(r, `no route ${origin.id} -> ${b.id}`);
+  }
 });

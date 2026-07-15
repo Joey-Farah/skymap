@@ -240,7 +240,7 @@ const data = {
   edges: EDGES.map(([from, to, crossing]) => ({ from, to, crossing })),
 };
 
-const out = join(ROOT, "public", "data", "skymap-data.json");
+const out = process.argv[2] ?? join(ROOT, "public", "data", "skymap-data.json");
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(data));
 console.log(`Wrote ${out}: ${buildings.length} buildings, ${EDGES.length} bridges.`);
