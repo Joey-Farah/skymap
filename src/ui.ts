@@ -1,0 +1,199 @@
+import type { Building, RouteResult } from "./types.ts";
+import { formatWeeklyHours, statusAt } from "./hours.ts";
+
+/** Searchable building picker attached to an existing .combo element. */
+export class BuildingCombo {
+  private input: HTMLInputElement;
+  private list: HTMLUListElement;
+  private buildings: Building[];
+  private selectedId: string | null = null;
+  private activeIndex = -1;
+  onSelect: ((b: Building) => void) | null = null;
+
+  constructor(root: HTMLElement, buildings: Building[]) {
+    this.input = root.querySelector("input")!;
+    this.list = root.querySelector(".combo-list")!;
+    this.buildings = [...buildings].sort((a, b) => a.name.localeCompare(b.name));
+
+    this.input.addEventListener("input", () => {
+      this.selectedId = null;
+      this.render(this.input.value);
+    });
+    this.input.addEventListener("focus", () => this.render(this.input.value));
+    this.input.addEventListener("keydown", (e) => this.onKey(e));
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target as Node)) this.hide();
+    });
+  }
+
+  get value(): string | null {
+    return this.selectedId;
+  }
+
+  select(b: Building) {
+    this.selectedId = b.id;
+    this.input.value = b.name;
+    this.hide();
+    this.onSelect?.(b);
+  }
+
+  private matches(query: string): Building[] {
+    const q = query.trim().toLowerCase();
+    if (!q) return this.buildings;
+    return this.buildings.filter(
+      (b) => b.name.toLowerCase().includes(q) || b.address.toLowerCase().includes(q),
+    );
+  }
+
+  private render(query: string) {
+    const items = this.matches(query).slice(0, 12);
+    this.activeIndex = -1;
+    this.list.innerHTML = "";
+    for (const b of items) {
+      const li = document.createElement("li");
+      const name = document.createElement("span");
+      name.textContent = b.name;
+      const addr = document.createElement("span");
+      addr.className = "addr";
+      addr.textContent = b.address;
+      li.append(name, addr);
+      li.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        this.select(b);
+      });
+      this.list.appendChild(li);
+    }
+    this.list.hidden = items.length === 0;
+  }
+
+  private onKey(e: KeyboardEvent) {
+    const items = this.list.querySelectorAll("li");
+    if (this.list.hidden || items.length === 0) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      this.activeIndex =
+        (this.activeIndex + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+      items.forEach((li, i) => li.classList.toggle("active", i === this.activeIndex));
+      items[this.activeIndex].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const idx = this.activeIndex >= 0 ? this.activeIndex : 0;
+      (items[idx] as HTMLElement).dispatchEvent(new MouseEvent("mousedown"));
+    } else if (e.key === "Escape") {
+      this.hide();
+    }
+  }
+
+  private hide() {
+    this.list.hidden = true;
+  }
+}
+
+/** Bottom sheet renderer. */
+export class Sheet {
+  private root: HTMLElement;
+  private content: HTMLElement;
+
+  constructor(root: HTMLElement) {
+    this.root = root;
+    this.content = root.querySelector("#sheet-content")!;
+    root.querySelector("#sheet-close")!.addEventListener("click", () => this.hide());
+  }
+
+  hide() {
+    this.root.hidden = true;
+  }
+
+  private show() {
+    this.root.hidden = false;
+  }
+
+  showBuilding(
+    b: Building,
+    when: Date,
+    actions: { onFrom: () => void; onTo: () => void },
+  ) {
+    const status = statusAt(b, when);
+    this.content.innerHTML = "";
+
+    const h2 = el("h2", b.name);
+    const meta = el("div", b.address, "meta");
+    const badge = el("span", status.open ? status.label : status.label, `badge ${status.open ? "open" : "closed"}`);
+    const hours = el("div", `Skyway hours: ${formatWeeklyHours(b.hours)}`, "hours-line");
+    const note = el("div", b.hoursNote, "meta");
+
+    const actionsRow = document.createElement("div");
+    actionsRow.className = "actions";
+    const fromBtn = el("button", "Route from here");
+    const toBtn = el("button", "Route to here", "primary");
+    fromBtn.addEventListener("click", actions.onFrom);
+    toBtn.addEventListener("click", actions.onTo);
+    actionsRow.append(fromBtn, toBtn);
+
+    this.content.append(h2, meta, badge, hours, note, actionsRow);
+    this.show();
+  }
+
+  showRoute(route: RouteResult, when: Date) {
+    this.content.innerHTML = "";
+    const first = route.steps[0].building;
+    const last = route.steps[route.steps.length - 1].building;
+
+    this.content.append(el("h2", `${first.name} → ${last.name}`));
+
+    if (route.ignoredClosures) {
+      this.content.append(
+        el(
+          "span",
+          "⚠ No fully open route at this time — showing the path ignoring closures",
+          "badge warn",
+        ),
+      );
+    }
+
+    const summary = document.createElement("div");
+    summary.className = "route-summary";
+    summary.append(
+      el("span", `${Math.max(1, Math.round(route.totalMinutes))} min`, "big"),
+      el("span", formatDistance(route.totalMeters), "sub"),
+      el("span", `${route.steps.length} buildings · fully indoors`, "sub"),
+    );
+    this.content.append(summary);
+
+    const ol = document.createElement("ul");
+    ol.className = "steps";
+    for (const step of route.steps) {
+      const li = document.createElement("li");
+      const closedHere = !isOpenLabelOk(step.building, when);
+      li.append(el("span", step.building.name + (closedHere ? " (closed)" : "")));
+      if (step.viaCrossing) {
+        li.prepend(el("span", `Cross over ${step.viaCrossing}`, "via"));
+      }
+      ol.appendChild(li);
+    }
+    this.content.append(ol);
+    this.show();
+  }
+
+  showMessage(title: string, body: string) {
+    this.content.innerHTML = "";
+    this.content.append(el("h2", title), el("div", body, "meta"));
+    this.show();
+  }
+}
+
+function isOpenLabelOk(b: Building, when: Date): boolean {
+  return statusAt(b, when).open;
+}
+
+function formatDistance(meters: number): string {
+  const miles = meters / 1609.34;
+  return miles >= 0.095 ? `${miles.toFixed(1)} mi` : `${Math.round(meters * 3.28084)} ft`;
+}
+
+function el(tag: string, text?: string, className?: string): HTMLElement {
+  const node = document.createElement(tag);
+  if (text) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}

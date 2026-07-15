@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#1d4ed8"/>
+  <!-- two building blocks -->
+  <rect x="64" y="168" width="128" height="232" rx="16" fill="#eff6ff"/>
+  <rect x="320" y="112" width="128" height="288" rx="16" fill="#eff6ff"/>
+  <!-- skyway bridge -->
+  <rect x="176" y="216" width="160" height="64" rx="14" fill="#93c5fd"/>
+  <rect x="176" y="216" width="160" height="14" rx="7" fill="#eff6ff"/>
+  <!-- windows -->
+  <g fill="#93c5fd">
+    <rect x="88" y="196" width="24" height="24" rx="5"/>
+    <rect x="136" y="196" width="24" height="24" rx="5"/>
+    <rect x="88" y="248" width="24" height="24" rx="5"/>
+    <rect x="136" y="248" width="24" height="24" rx="5"/>
+    <rect x="88" y="300" width="24" height="24" rx="5"/>
+    <rect x="136" y="300" width="24" height="24" rx="5"/>
+    <rect x="344" y="144" width="24" height="24" rx="5"/>
+    <rect x="392" y="144" width="24" height="24" rx="5"/>
+    <rect x="344" y="196" width="24" height="24" rx="5"/>
+    <rect x="392" y="196" width="24" height="24" rx="5"/>
+    <rect x="344" y="248" width="24" height="24" rx="5"/>
+    <rect x="392" y="248" width="24" height="24" rx="5"/>
+    <rect x="344" y="300" width="24" height="24" rx="5"/>
+    <rect x="392" y="300" width="24" height="24" rx="5"/>
+  </g>
+  <!-- route dot walking across the bridge -->
+  <circle cx="256" cy="250" r="17" fill="#f59e0b"/>
+</svg>
