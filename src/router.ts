@@ -168,8 +168,16 @@ export class SkywayRouter {
         viaCrossing: p?.crossing,
         legMeters: p?.meters,
         legGeometry: p?.geometry,
+        arrivalMinutes: 0,
       });
       cursor = cursor === fromId ? undefined : p?.id;
+    }
+    // Arrival at step i: walking time so far, plus the per-building transit
+    // penalty for each intermediate building already crossed.
+    let walked = 0;
+    for (let i = 1; i < steps.length; i++) {
+      walked += steps[i].legMeters ?? 0;
+      steps[i].arrivalMinutes = walked / WALK_METERS_PER_MIN + (i - 1) * BUILDING_TRANSIT_MIN;
     }
     const totalMinutes =
       totalMeters / WALK_METERS_PER_MIN + Math.max(0, steps.length - 2) * BUILDING_TRANSIT_MIN;

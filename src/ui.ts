@@ -1,5 +1,5 @@
 import type { Building, RouteResult } from "./types.ts";
-import { formatWeeklyHours, statusAt } from "./hours.ts";
+import { closingSoonWarnings, formatWeeklyHours, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
@@ -149,6 +149,14 @@ export class Sheet {
           "badge warn",
         ),
       );
+    } else {
+      const warnings = closingSoonWarnings(route, when);
+      for (const w of warnings.slice(0, 2)) {
+        this.content.append(el("span", `⚠ ${w.label}`, "badge warn"));
+      }
+      if (warnings.length > 2) {
+        this.content.append(el("span", `⚠ ${warnings.length - 2} more buildings closing soon`, "badge warn"));
+      }
     }
 
     const summary = document.createElement("div");

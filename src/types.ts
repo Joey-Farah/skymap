@@ -45,6 +45,8 @@ export interface RouteStep {
   legMeters?: number;
   /** Real bridge polyline into this building ([lon, lat]), travel-oriented. */
   legGeometry?: [number, number][];
+  /** Minutes after departure when the walker reaches this building. */
+  arrivalMinutes: number;
 }
 
 export interface RouteResult {

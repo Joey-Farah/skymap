@@ -3,6 +3,7 @@ import type { Building, SkymapData } from "./types.ts";
 import { SkywayRouter } from "./router.ts";
 import { SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
+import { encodeRouteState, parseRouteState, toLocalIso } from "./share.ts";
 
 async function boot() {
   const res = await fetch("./data/skymap-data.json");
@@ -22,9 +23,12 @@ async function boot() {
   const whenInput = document.getElementById("input-when") as HTMLInputElement;
   const timeRadios = document.querySelectorAll<HTMLInputElement>('input[name="timemode"]');
 
+  function selectedMode(): string {
+    return [...timeRadios].find((r) => r.checked)?.value ?? "now";
+  }
+
   function selectedTime(): Date {
-    const mode = [...timeRadios].find((r) => r.checked)?.value ?? "now";
-    if (mode === "custom" && whenInput.value) return new Date(whenInput.value);
+    if (selectedMode() === "custom" && whenInput.value) return new Date(whenInput.value);
     return new Date();
   }
 
@@ -69,6 +73,12 @@ async function boot() {
     }
     view.setRoute(route);
     sheet.showRoute(route, when);
+    // Make the address bar shareable: the URL always describes this route.
+    history.replaceState(
+      null,
+      "",
+      encodeRouteState({ fromId, toId, when: selectedMode() === "custom" ? when : null }),
+    );
   }
 
   comboFrom.onSelect = () => routeIfReady();
@@ -91,6 +101,18 @@ async function boot() {
       onTo: () => comboTo.select(b),
     });
   }
+
+  // Restore a shared route from the URL (?from=&to=&at=).
+  const initial = parseRouteState(location.search);
+  if (initial.when) {
+    for (const r of timeRadios) r.checked = r.value === "custom";
+    whenInput.disabled = false;
+    whenInput.value = toLocalIso(initial.when);
+  }
+  const initialFrom = initial.fromId ? router.building(initial.fromId) : undefined;
+  const initialTo = initial.toId ? router.building(initial.toId) : undefined;
+  if (initialFrom) comboFrom.select(initialFrom);
+  if (initialTo) comboTo.select(initialTo);
 
   // Keep "leave now" open/closed styling fresh.
   setInterval(refreshTimeStyling, 60_000);

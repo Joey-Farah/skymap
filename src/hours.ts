@@ -1,4 +1,4 @@
-import type { Building, DayHours } from "./types.ts";
+import type { Building, DayHours, RouteResult } from "./types.ts";
 
 export function isOpenAt(building: Building, when: Date): boolean {
   const day = when.getDay();
@@ -38,6 +38,41 @@ export function formatWeeklyHours(hours: DayHours[]): string {
       return `${label} ${value}`;
     })
     .join(" · ");
+}
+
+export interface ClosureWarning {
+  building: Building;
+  /** Minutes between the walker's arrival and the building closing. */
+  minutesLeft: number;
+  label: string;
+}
+
+/**
+ * Buildings along the route that close within `thresholdMin` minutes of the
+ * walker reaching them, given a departure at `when`.
+ */
+export function closingSoonWarnings(
+  route: RouteResult,
+  when: Date,
+  thresholdMin = 30,
+): ClosureWarning[] {
+  const warnings: ClosureWarning[] = [];
+  for (const step of route.steps) {
+    const arrival = new Date(when.getTime() + step.arrivalMinutes * 60_000);
+    const h = step.building.hours[arrival.getDay()];
+    if (!h) continue;
+    const arrivalMin = arrival.getHours() * 60 + arrival.getMinutes();
+    if (arrivalMin < h[0] || arrivalMin >= h[1]) continue; // not open on arrival
+    const minutesLeft = h[1] - arrivalMin;
+    if (minutesLeft <= thresholdMin) {
+      warnings.push({
+        building: step.building,
+        minutesLeft,
+        label: `${step.building.name} closes at ${formatMinute(h[1])} — ${minutesLeft} min after you'd arrive`,
+      });
+    }
+  }
+  return warnings;
 }
 
 /** Human description of the building's status at `when`, e.g. "Open until 10pm". */

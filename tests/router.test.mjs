@@ -5,7 +5,8 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { SkywayRouter, haversineMeters, polylineMeters, sliceAlong } from "../src/router.ts";
-import { isOpenAt, statusAt } from "../src/hours.ts";
+import { closingSoonWarnings, isOpenAt, statusAt } from "../src/hours.ts";
+import { encodeRouteState, parseRouteState } from "../src/share.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -116,6 +117,47 @@ test("sliceAlong cuts a polyline at a distance", () => {
 
   assert.deepEqual(sliceAlong(line, 0)[0], [0, 0]);
   assert.deepEqual(sliceAlong(line, total * 2), line, "clamps past the end");
+});
+
+test("route steps carry cumulative arrival minutes", () => {
+  const r = router.route("ids-center", "us-bank-stadium", TUE_10AM);
+  assert.equal(r.steps[0].arrivalMinutes, 0);
+  const arrivals = r.steps.map((s) => s.arrivalMinutes);
+  for (let i = 1; i < arrivals.length; i++) {
+    assert.ok(arrivals[i] > arrivals[i - 1], "arrival times increase along the route");
+  }
+  assert.ok(
+    Math.abs(arrivals[arrivals.length - 1] - r.totalMinutes) < 0.01,
+    "last arrival matches total",
+  );
+});
+
+test("closingSoonWarnings flags buildings closing near arrival", () => {
+  // Mon–Fri 6:30am–10pm everywhere in the fixture: at 9:45pm Tuesday,
+  // everything on the route closes within 30 minutes.
+  const TUE_945PM = new Date(2026, 6, 14, 21, 45);
+  const r = router.route("ids-center", "us-bank-stadium", TUE_945PM);
+  const warnings = closingSoonWarnings(r, TUE_945PM, 30);
+  assert.ok(warnings.length > 0, "late-night route should warn");
+  for (const w of warnings) {
+    assert.ok(w.minutesLeft > 0 && w.minutesLeft <= 30);
+    assert.match(w.label, /closes/i);
+  }
+  // Mid-morning: nothing is anywhere near closing.
+  assert.equal(closingSoonWarnings(router.route("ids-center", "us-bank-stadium", TUE_10AM), TUE_10AM, 30).length, 0);
+});
+
+test("route state round-trips through the URL", () => {
+  const when = new Date(2026, 6, 14, 10, 0);
+  const qs = encodeRouteState({ fromId: "ids-center", toId: "hilton", when });
+  const parsed = parseRouteState(qs);
+  assert.equal(parsed.fromId, "ids-center");
+  assert.equal(parsed.toId, "hilton");
+  assert.equal(parsed.when.getTime(), when.getTime());
+
+  const nowMode = parseRouteState(encodeRouteState({ fromId: "a", toId: "b", when: null }));
+  assert.equal(nowMode.when, null);
+  assert.deepEqual(parseRouteState(""), { fromId: null, toId: null, when: null });
 });
 
 // --- Live dataset (whatever the app currently ships) ----------------------
