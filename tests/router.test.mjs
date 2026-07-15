@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SkywayRouter, haversineMeters } from "../src/router.ts";
+import { SkywayRouter, haversineMeters, polylineMeters, sliceAlong } from "../src/router.ts";
 import { isOpenAt, statusAt } from "../src/hours.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -96,6 +96,26 @@ test("route steps carry leg geometry oriented in travel direction", () => {
   assert.deepEqual(fwd.steps[1].legGeometry, mini.edges[0].geometry);
   const back = r.route("b", "a", null);
   assert.deepEqual(back.steps[1].legGeometry, [...mini.edges[0].geometry].reverse());
+});
+
+test("sliceAlong cuts a polyline at a distance", () => {
+  // ~222m of eastward line at the equator, two equal legs.
+  const line = [
+    [0, 0],
+    [0.001, 0],
+    [0.002, 0],
+  ];
+  const total = polylineMeters(line);
+
+  const half = sliceAlong(line, total / 2);
+  assert.equal(half.length, 2, "half-way cut falls exactly on the middle vertex");
+  assert.ok(Math.abs(half[1][0] - 0.001) < 1e-9);
+
+  const quarter = sliceAlong(line, total / 4);
+  assert.ok(Math.abs(quarter[quarter.length - 1][0] - 0.0005) < 1e-6, "interpolates within a leg");
+
+  assert.deepEqual(sliceAlong(line, 0)[0], [0, 0]);
+  assert.deepEqual(sliceAlong(line, total * 2), line, "clamps past the end");
 });
 
 // --- Live dataset (whatever the app currently ships) ----------------------

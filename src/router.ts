@@ -23,6 +23,33 @@ export function polylineMeters(coords: [number, number][]): number {
   return total;
 }
 
+/**
+ * Prefix of `coords` covering the first `meters` of the line, ending in an
+ * interpolated point when the cut falls inside a leg. Clamps to the whole
+ * line. Powers the route draw-on animation and the walking dot.
+ */
+export function sliceAlong(coords: [number, number][], meters: number): [number, number][] {
+  if (meters <= 0 || coords.length === 0) return coords.slice(0, 1);
+  const out: [number, number][] = [coords[0]];
+  let walked = 0;
+  for (let i = 1; i < coords.length; i++) {
+    const leg = haversineMeters(coords[i - 1][1], coords[i - 1][0], coords[i][1], coords[i][0]);
+    if (walked + leg >= meters) {
+      const t = leg === 0 ? 0 : (meters - walked) / leg;
+      if (t >= 1 - 1e-9) out.push(coords[i]);
+      else
+        out.push([
+          coords[i - 1][0] + (coords[i][0] - coords[i - 1][0]) * t,
+          coords[i - 1][1] + (coords[i][1] - coords[i - 1][1]) * t,
+        ]);
+      return out;
+    }
+    walked += leg;
+    out.push(coords[i]);
+  }
+  return out;
+}
+
 interface GraphEdge {
   to: string;
   meters: number;

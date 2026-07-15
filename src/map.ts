@@ -2,6 +2,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, RouteResult, SkymapData } from "./types.ts";
 import { isOpenAt } from "./hours.ts";
+import { polylineMeters, sliceAlong } from "./router.ts";
 
 // Positron: muted grey basemap that lets the skyway network carry the color.
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
@@ -80,24 +81,31 @@ function bridgesFC(data: SkymapData, when: Date): FC {
   };
 }
 
-function routeFC(route: RouteResult | null): FC {
-  if (!route || route.steps.length < 2) return { type: "FeatureCollection", features: [] };
-  // Follow real bridge polylines when the data has them; fall back to
-  // centroid-to-centroid segments for legs without geometry.
+/** Full route polyline: real bridge geometry when present, centroids otherwise. */
+function routeCoords(route: RouteResult): [number, number][] {
   const coordinates: [number, number][] = [[route.steps[0].building.lon, route.steps[0].building.lat]];
   for (const s of route.steps.slice(1)) {
     if (s.legGeometry) coordinates.push(...s.legGeometry);
     else coordinates.push([s.building.lon, s.building.lat]);
   }
+  return coordinates;
+}
+
+function lineFC(coordinates: [number, number][]): FC {
+  if (coordinates.length < 2) return { type: "FeatureCollection", features: [] };
   return {
     type: "FeatureCollection",
     features: [
-      {
-        type: "Feature",
-        properties: {},
-        geometry: { type: "LineString", coordinates },
-      },
+      { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates } },
     ],
+  };
+}
+
+function pointFC(coord: [number, number] | null): FC {
+  if (!coord) return { type: "FeatureCollection", features: [] };
+  return {
+    type: "FeatureCollection",
+    features: [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: coord } }],
   };
 }
 
@@ -107,6 +115,7 @@ export class SkymapView {
   private when: Date = new Date();
   private markers: maplibregl.Marker[] = [];
   private ready = false;
+  private routeAnim = 0;
 
   constructor(
     container: HTMLElement,
@@ -154,7 +163,8 @@ export class SkymapView {
   private addLayers() {
     this.map.addSource("skyway-bridges", { type: "geojson", data: bridgesFC(this.data, this.when) });
     this.map.addSource("skyway-buildings", { type: "geojson", data: buildingsFC(this.data, this.when) });
-    this.map.addSource("skyway-route", { type: "geojson", data: routeFC(null) });
+    this.map.addSource("skyway-route", { type: "geojson", data: lineFC([]) });
+    this.map.addSource("skyway-walker", { type: "geojson", data: pointFC(null) });
 
     this.map.addLayer({
       id: "skyway-buildings-fill",
@@ -229,6 +239,17 @@ export class SkymapView {
       layout: { "line-cap": "round", "line-join": "round" },
       paint: { "line-color": ROUTE, "line-width": 6 },
     });
+    this.map.addLayer({
+      id: "skyway-walker",
+      type: "circle",
+      source: "skyway-walker",
+      paint: {
+        "circle-radius": 8,
+        "circle-color": ROUTE,
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 2.5,
+      },
+    });
   }
 
   setTime(when: Date) {
@@ -244,26 +265,57 @@ export class SkymapView {
 
   setRoute(route: RouteResult | null) {
     const apply = () => {
-      (this.map.getSource("skyway-route") as maplibregl.GeoJSONSource)?.setData(routeFC(route));
+      if (this.routeAnim) cancelAnimationFrame(this.routeAnim);
+      this.routeAnim = 0;
+      const routeSrc = this.map.getSource("skyway-route") as maplibregl.GeoJSONSource;
+      const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
       for (const m of this.markers) m.remove();
       this.markers = [];
-      if (route && route.steps.length > 0) {
-        const first = route.steps[0].building;
-        const last = route.steps[route.steps.length - 1].building;
-        this.markers.push(
-          new maplibregl.Marker({ color: "#16a34a" }).setLngLat([first.lon, first.lat]).addTo(this.map),
-          new maplibregl.Marker({ color: "#dc2626" }).setLngLat([last.lon, last.lat]).addTo(this.map),
-        );
-        const lons = route.steps.map((s) => s.building.lon);
-        const lats = route.steps.map((s) => s.building.lat);
-        this.map.fitBounds(
-          [
-            [Math.min(...lons), Math.min(...lats)],
-            [Math.max(...lons), Math.max(...lats)],
-          ],
-          { padding: { top: 80, bottom: 260, left: 60, right: 60 }, maxZoom: 16 },
-        );
+      if (!route || route.steps.length < 2) {
+        routeSrc?.setData(lineFC([]));
+        walkerSrc?.setData(pointFC(null));
+        return;
       }
+
+      const coords = routeCoords(route);
+      const first = route.steps[0].building;
+      const last = route.steps[route.steps.length - 1].building;
+      this.markers.push(
+        new maplibregl.Marker({ color: "#16a34a" }).setLngLat([first.lon, first.lat]).addTo(this.map),
+        new maplibregl.Marker({ color: "#dc2626" }).setLngLat([last.lon, last.lat]).addTo(this.map),
+      );
+      const lons = coords.map((c) => c[0]);
+      const lats = coords.map((c) => c[1]);
+      this.map.fitBounds(
+        [
+          [Math.min(...lons), Math.min(...lats)],
+          [Math.max(...lons), Math.max(...lats)],
+        ],
+        { padding: { top: 80, bottom: 260, left: 60, right: 60 }, maxZoom: 16 },
+      );
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        routeSrc?.setData(lineFC(coords));
+        walkerSrc?.setData(pointFC(null));
+        return;
+      }
+
+      // Draw the route bridge-by-bridge, the walker riding the tip; start
+      // once the camera flight has mostly settled.
+      const total = polylineMeters(coords);
+      const duration = Math.min(2800, Math.max(1300, total * 2));
+      const startDelay = 550;
+      const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
+      const begin = performance.now() + startDelay;
+      const frame = (now: number) => {
+        const t = Math.min(1, Math.max(0, (now - begin) / duration));
+        const partial = sliceAlong(coords, total * easeInOut(t));
+        routeSrc?.setData(lineFC(partial));
+        walkerSrc?.setData(pointFC(t > 0 && t < 1 ? partial[partial.length - 1] : null));
+        if (t < 1) this.routeAnim = requestAnimationFrame(frame);
+        else this.routeAnim = 0;
+      };
+      this.routeAnim = requestAnimationFrame(frame);
     };
     if (this.ready) apply();
     else this.map.once("load", apply);
