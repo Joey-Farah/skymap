@@ -218,6 +218,38 @@ test("googleMapsUrl builds a search deep link", () => {
   assert.match(url, /Minneapolis/);
 });
 
+test("combo entries include businesses, searchable by name", async () => {
+  const { buildComboEntries, searchEntries } = await import("../src/combo.ts");
+  const buildings = [
+    { id: "forum", name: "Forum Building", address: "100 Main St" },
+    { id: "six-quebec", name: "Six Quebec", address: "200 Main St" },
+  ];
+  const pois = [
+    {
+      id: "poi-1",
+      name: "Vitality Roasting",
+      buildingId: "six-quebec",
+      group: "food",
+      category: "cafe",
+    },
+    { id: "poi-2", name: "Downtown Bus Stop", buildingId: "forum", group: "transit", exterior: true },
+  ];
+  const entries = buildComboEntries(buildings, pois);
+
+  const hit = searchEntries(entries, "vitality");
+  assert.equal(hit.length, 1);
+  assert.equal(hit[0].label, "Vitality Roasting");
+  assert.equal(hit[0].buildingId, "six-quebec", "selecting the business routes to its building");
+  assert.equal(hit[0].sublabel, "Six Quebec");
+
+  assert.equal(searchEntries(entries, "forum").length, 1, "still finds plain buildings");
+  assert.equal(
+    searchEntries(entries, "bus stop").length,
+    0,
+    "exterior transit stops aren't route destinations",
+  );
+});
+
 test("poi grouping and building categories", async () => {
   const { groupFor, buildingCategory } = await import("../src/poi.ts");
   assert.equal(groupFor("amenity", "cafe"), "food");

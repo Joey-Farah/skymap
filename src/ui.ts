@@ -2,21 +2,24 @@ import type { Building, Poi, RouteResult } from "./types.ts";
 import { googleMapsUrl } from "./share.ts";
 import { CATEGORY_LABELS, GROUP_LABELS, type PoiGroup } from "./poi.ts";
 import { haversineMeters } from "./router.ts";
+import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
 import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
   private input: HTMLInputElement;
   private list: HTMLUListElement;
-  private buildings: Building[];
+  private buildingsById: Map<string, Building>;
+  private entries: ComboEntry[];
   private selectedId: string | null = null;
   private activeIndex = -1;
   onSelect: ((b: Building) => void) | null = null;
 
-  constructor(root: HTMLElement, buildings: Building[]) {
+  constructor(root: HTMLElement, buildings: Building[], pois: Poi[] = []) {
     this.input = root.querySelector("input")!;
     this.list = root.querySelector(".combo-list")!;
-    this.buildings = [...buildings].sort((a, b) => a.name.localeCompare(b.name));
+    this.buildingsById = new Map(buildings.map((b) => [b.id, b]));
+    this.entries = buildComboEntries(buildings, pois);
 
     this.input.addEventListener("input", () => {
       this.selectedId = null;
@@ -33,6 +36,12 @@ export class BuildingCombo {
     return this.selectedId;
   }
 
+  /** What's showing in the input — the business name when one was picked, else the building's. */
+  get label(): string | null {
+    return this.selectedId ? this.input.value : null;
+  }
+
+  /** Programmatic selection (sheet actions, swap button) — always a building. */
   select(b: Building) {
     this.selectedId = b.id;
     this.input.value = b.name;
@@ -40,29 +49,30 @@ export class BuildingCombo {
     this.onSelect?.(b);
   }
 
-  private matches(query: string): Building[] {
-    const q = query.trim().toLowerCase();
-    if (!q) return this.buildings;
-    return this.buildings.filter(
-      (b) => b.name.toLowerCase().includes(q) || b.address.toLowerCase().includes(q),
-    );
+  private selectEntry(entry: ComboEntry) {
+    const b = this.buildingsById.get(entry.buildingId);
+    if (!b) return;
+    this.selectedId = entry.buildingId;
+    this.input.value = entry.label;
+    this.hide();
+    this.onSelect?.(b);
   }
 
   private render(query: string) {
-    const items = this.matches(query).slice(0, 12);
+    const items = searchEntries(this.entries, query).slice(0, 12);
     this.activeIndex = -1;
     this.list.innerHTML = "";
-    for (const b of items) {
+    for (const entry of items) {
       const li = document.createElement("li");
       const name = document.createElement("span");
-      name.textContent = b.name;
-      const addr = document.createElement("span");
-      addr.className = "addr";
-      addr.textContent = b.address;
-      li.append(name, addr);
+      name.textContent = entry.label;
+      const sub = document.createElement("span");
+      sub.className = "addr";
+      sub.textContent = entry.poiId ? `in ${entry.sublabel}` : entry.sublabel;
+      li.append(name, sub);
       li.addEventListener("mousedown", (e) => {
         e.preventDefault();
-        this.select(b);
+        this.selectEntry(entry);
       });
       this.list.appendChild(li);
     }
@@ -245,12 +255,12 @@ export class Sheet {
     this.show();
   }
 
-  showRoute(route: RouteResult, when: Date) {
+  showRoute(route: RouteResult, when: Date, labels?: { from?: string; to?: string }) {
     this.content.innerHTML = "";
     const first = route.steps[0].building;
     const last = route.steps[route.steps.length - 1].building;
 
-    this.content.append(el("h2", `${first.name} → ${last.name}`));
+    this.content.append(el("h2", `${labels?.from ?? first.name} → ${labels?.to ?? last.name}`));
 
     if (route.ignoredClosures) {
       this.content.append(

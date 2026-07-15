@@ -30,8 +30,8 @@ async function boot() {
     poisByBuilding.get(p.buildingId)!.push(p);
   }
 
-  const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings);
-  const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings);
+  const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings, data.pois);
+  const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings, data.pois);
   const timeRadios = document.querySelectorAll<HTMLInputElement>('input[name="timemode"]');
 
   // --- Time scrubber: day chips + a slider through the day ---------------
@@ -122,7 +122,7 @@ async function boot() {
     }
     view.setReach(null);
     view.setRoute(route);
-    sheet.showRoute(route, when);
+    sheet.showRoute(route, when, { from: comboFrom.label ?? undefined, to: comboTo.label ?? undefined });
     // Make the address bar shareable: the URL always describes this route.
     history.replaceState(
       null,
