@@ -295,6 +295,46 @@ body {
   margin: 0;
 }
 
+/* --- Near you ------------------------------------------------------------ */
+
+.near-you {
+  top: calc(env(safe-area-inset-top, 0px) + 186px);
+  right: 10px;
+  left: auto;
+  padding: 8px 14px 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 168px;
+  /* Same z-index tier as .search-panel, but later in the DOM the search
+     panel paints over it — a long building name grows this pill leftward
+     right under that panel otherwise. */
+  z-index: 11;
+}
+
+.near-you[hidden] {
+  display: none;
+}
+
+.near-you .dot {
+  width: 8px;
+  height: 8px;
+  background: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+  flex-shrink: 0;
+}
+
+.near-you span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* --- Bottom sheet -------------------------------------------------------- */
 
 .sheet {
@@ -390,6 +430,11 @@ body {
   color: #b45309;
 }
 
+.badge.stairs {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 .hours-line {
   font-size: 13px;
   color: var(--ink);
@@ -459,6 +504,11 @@ body {
   display: block;
   color: var(--muted);
   font-size: 12px;
+}
+
+.steps .via.steps {
+  color: #b45309;
+  font-weight: 600;
 }
 
 .sheet .actions {
@@ -635,7 +685,9 @@ body {
 
 @media (max-width: 560px) {
   .search-panel {
-    right: 10px;
+    /* Leave room on the right for MapLibre's zoom/geolocate controls —
+       full-bleed used to sit on top of them, making them unclickable. */
+    right: 54px;
     width: auto;
   }
 

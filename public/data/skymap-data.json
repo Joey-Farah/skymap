@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-15T22:48:34.085Z"
+  "generated": "2026-07-15T23:44:25.491Z"
  },
  "buildings": [
   {
@@ -14498,7 +14498,8 @@
      -93.269232,
      44.977257
     ]
-   ]
+   ],
+   "hasSteps": true
   },
   {
    "from": "capella-tower-115559604",
@@ -14555,7 +14556,8 @@
      -93.271282,
      44.97966
     ]
-   ]
+   ],
+   "hasSteps": true
   },
   {
    "from": "park-and-shop-ramp-27346580",

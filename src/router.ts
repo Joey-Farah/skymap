@@ -50,12 +50,32 @@ export function sliceAlong(coords: [number, number][], meters: number): [number,
   return out;
 }
 
+/** Closest building to a GPS fix, within `maxMeters`, or null if nothing's close. */
+export function nearestBuilding(
+  lat: number,
+  lon: number,
+  buildings: Building[],
+  maxMeters: number,
+): Building | null {
+  let best: Building | null = null;
+  let bestDist = maxMeters;
+  for (const b of buildings) {
+    const d = haversineMeters(lat, lon, b.lat, b.lon);
+    if (d <= bestDist) {
+      bestDist = d;
+      best = b;
+    }
+  }
+  return best;
+}
+
 interface GraphEdge {
   to: string;
   meters: number;
   crossing: string;
   /** Real bridge polyline oriented in the direction of travel, when known. */
   geometry?: [number, number][];
+  hasSteps?: boolean;
 }
 
 export class SkywayRouter {
@@ -73,10 +93,10 @@ export class SkywayRouter {
       const meters = e.geometry
         ? polylineMeters(e.geometry)
         : haversineMeters(from.lat, from.lon, to.lat, to.lon);
-      this.adjacency.get(e.from)!.push({ to: e.to, meters, crossing: e.crossing, geometry: e.geometry });
+      this.adjacency.get(e.from)!.push({ to: e.to, meters, crossing: e.crossing, geometry: e.geometry, hasSteps: e.hasSteps });
       this.adjacency
         .get(e.to)!
-        .push({ to: e.from, meters, crossing: e.crossing, geometry: e.geometry && [...e.geometry].reverse() });
+        .push({ to: e.from, meters, crossing: e.crossing, geometry: e.geometry && [...e.geometry].reverse(), hasSteps: e.hasSteps });
     }
   }
 
@@ -144,7 +164,7 @@ export class SkywayRouter {
     if (!goal || !start) return null;
 
     const dist = new Map<string, number>([[fromId, 0]]);
-    const prev = new Map<string, { id: string; crossing: string; meters: number; geometry?: [number, number][] }>();
+    const prev = new Map<string, { id: string; crossing: string; meters: number; geometry?: [number, number][]; hasSteps?: boolean }>();
     const open = new Set<string>([fromId]);
     const fScore = new Map<string, number>([
       [fromId, haversineMeters(start.lat, start.lon, goal.lat, goal.lon)],
@@ -178,6 +198,7 @@ export class SkywayRouter {
             crossing: edge.crossing,
             meters: edge.meters,
             geometry: edge.geometry,
+            hasSteps: edge.hasSteps,
           });
           fScore.set(edge.to, tentative + haversineMeters(b.lat, b.lon, goal.lat, goal.lon));
           open.add(edge.to);
@@ -190,7 +211,7 @@ export class SkywayRouter {
   private reconstruct(
     fromId: string,
     toId: string,
-    prev: Map<string, { id: string; crossing: string; meters: number; geometry?: [number, number][] }>,
+    prev: Map<string, { id: string; crossing: string; meters: number; geometry?: [number, number][]; hasSteps?: boolean }>,
     totalMeters: number,
   ): Omit<RouteResult, "ignoredClosures"> {
     const steps: RouteStep[] = [];
@@ -202,6 +223,7 @@ export class SkywayRouter {
         viaCrossing: p?.crossing,
         legMeters: p?.meters,
         legGeometry: p?.geometry,
+        hasSteps: p?.hasSteps,
         arrivalMinutes: 0,
       });
       cursor = cursor === fromId ? undefined : p?.id;

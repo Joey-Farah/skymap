@@ -31,6 +31,8 @@ export interface Edge {
   crossing: string;
   /** Optional real path geometry ([lon, lat] pairs) from OSM extraction. */
   geometry?: [number, number][];
+  /** True when this crossing includes a flight of stairs (OSM highway=steps). */
+  hasSteps?: boolean;
 }
 
 import type { PoiGroup } from "./poi.ts";
@@ -71,6 +73,8 @@ export interface RouteStep {
   legMeters?: number;
   /** Real bridge polyline into this building ([lon, lat]), travel-oriented. */
   legGeometry?: [number, number][];
+  /** True when the crossing leading into this building has stairs. */
+  hasSteps?: boolean;
   /** Minutes after departure when the walker reaches this building. */
   arrivalMinutes: number;
 }

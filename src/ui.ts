@@ -343,6 +343,12 @@ export class Sheet {
       }
     }
 
+    // Visible even in peek — worth knowing before you commit to a route,
+    // not just discovering it mid-walk in the collapsed step list.
+    if (route.steps.some((s) => s.hasSteps)) {
+      this.content.append(el("span", "Includes stairs", "badge stairs"));
+    }
+
     const summary = document.createElement("div");
     summary.className = "route-summary";
     summary.append(
@@ -362,7 +368,8 @@ export class Sheet {
         // OSM often names every bridge "Minneapolis Skyway" — say something
         // shorter than "Cross over Minneapolis Skyway" on every step.
         const generic = /^(minneapolis )?skyway$/i.test(step.viaCrossing.trim());
-        li.prepend(el("span", generic ? "Via skyway" : `Cross over ${step.viaCrossing}`, "via"));
+        const base = generic ? "Via skyway" : `Cross over ${step.viaCrossing}`;
+        li.prepend(el("span", step.hasSteps ? `${base} · stairs` : base, step.hasSteps ? "via steps" : "via"));
       }
       ol.appendChild(li);
     }

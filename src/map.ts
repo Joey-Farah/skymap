@@ -165,6 +165,7 @@ export class SkymapView {
     style: string | maplibregl.StyleSpecification,
     onBuildingClick: (b: Building) => void,
     onPoiClick?: (p: Poi) => void,
+    onPosition?: (lat: number, lon: number) => void,
   ) {
     this.data = data;
     this.map = new maplibregl.Map({
@@ -176,10 +177,17 @@ export class SkymapView {
       attributionControl: { compact: true },
     });
     this.map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
-    this.map.addControl(
-      new maplibregl.GeolocateControl({ trackUserLocation: true, positionOptions: { enableHighAccuracy: true } }),
-      "top-right",
-    );
+    // MapLibre draws its own blue "you are here" dot + accuracy ring;
+    // we just need to hear about updates for building-aware features
+    // (turn-by-turn progress, "you're near X").
+    const geolocate = new maplibregl.GeolocateControl({
+      trackUserLocation: true,
+      positionOptions: { enableHighAccuracy: true },
+    });
+    this.map.addControl(geolocate, "top-right");
+    geolocate.on("geolocate", (pos: GeolocationPosition) => {
+      onPosition?.(pos.coords.latitude, pos.coords.longitude);
+    });
 
     // If the basemap can't load (offline / blocked tiles), keep our overlay
     // usable on a plain background instead of dying.

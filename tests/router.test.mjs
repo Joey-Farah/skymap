@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SkywayRouter, haversineMeters, polylineMeters, sliceAlong } from "../src/router.ts";
+import { SkywayRouter, haversineMeters, nearestBuilding, polylineMeters, sliceAlong } from "../src/router.ts";
 import { closingSoonWarnings, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
 import { encodeRouteState, googleMapsUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
 
@@ -99,6 +99,15 @@ test("route steps carry leg geometry oriented in travel direction", () => {
   assert.deepEqual(back.steps[1].legGeometry, [...mini.edges[0].geometry].reverse());
 });
 
+test("nearestBuilding snaps a GPS fix to the closest building within range", () => {
+  const ids = data.buildings.find((b) => b.id === "ids-center");
+  const near = nearestBuilding(ids.lat + 0.00002, ids.lon, data.buildings, 60);
+  assert.equal(near?.id, "ids-center");
+
+  // Far from everything: no snap within a tight budget.
+  assert.equal(nearestBuilding(0, 0, data.buildings, 60), null);
+});
+
 test("sliceAlong cuts a polyline at a distance", () => {
   // ~222m of eastward line at the equator, two equal legs.
   const line = [
@@ -117,6 +126,23 @@ test("sliceAlong cuts a polyline at a distance", () => {
 
   assert.deepEqual(sliceAlong(line, 0)[0], [0, 0]);
   assert.deepEqual(sliceAlong(line, total * 2), line, "clamps past the end");
+});
+
+test("route steps surface stairs when the bridge crossing has them", () => {
+  const mini = {
+    meta: data.meta,
+    buildings: [
+      { ...data.buildings[0], id: "a" },
+      { ...data.buildings[0], id: "b" },
+    ],
+    edges: [{ from: "a", to: "b", crossing: "skyway", hasSteps: true }],
+  };
+  const r = new SkywayRouter(mini);
+  const route = r.route("a", "b", null);
+  assert.equal(route.steps[1].hasSteps, true);
+
+  const flat = new SkywayRouter({ ...mini, edges: [{ from: "a", to: "b", crossing: "skyway" }] });
+  assert.equal(flat.route("a", "b", null).steps[1].hasSteps, undefined);
 });
 
 test("route steps carry cumulative arrival minutes", () => {

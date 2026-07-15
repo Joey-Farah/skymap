@@ -1,6 +1,6 @@
 import "./styles.css";
 import type { Building, Poi, SkymapData } from "./types.ts";
-import { SkywayRouter } from "./router.ts";
+import { SkywayRouter, nearestBuilding } from "./router.ts";
 import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
@@ -39,6 +39,7 @@ async function boot() {
     style,
     (b) => onBuildingTap(b),
     (p) => onPoiTap(p),
+    (lat, lon) => onPosition(lat, lon),
   );
   const poisByBuilding = new Map<string, Poi[]>();
   for (const p of data.pois ?? []) {
@@ -184,6 +185,27 @@ async function boot() {
     sheet.showPoi(p, host, () => {
       if (host) comboTo.select(host);
     });
+  }
+
+  // --- Live position: snap GPS fixes to the nearest network building -----
+  const nearYou = document.getElementById("near-you") as HTMLButtonElement;
+  let nearBuilding: Building | null = null;
+  nearYou.addEventListener("click", () => {
+    if (nearBuilding) comboFrom.select(nearBuilding);
+  });
+
+  function onPosition(lat: number, lon: number) {
+    nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
+    if (nearBuilding) {
+      const dot = document.createElement("span");
+      dot.className = "dot";
+      const label = document.createElement("span");
+      label.textContent = `Near ${nearBuilding.name}`;
+      nearYou.replaceChildren(dot, label);
+      nearYou.hidden = false;
+    } else {
+      nearYou.hidden = true;
+    }
   }
 
   function showReach(b: Building) {

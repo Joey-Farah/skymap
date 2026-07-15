@@ -298,6 +298,7 @@ async function main(osm) {
             to: b.id,
             crossing: w.tags?.name || "skyway",
             geometry: pending,
+            ...(w.tags?.highway === "steps" ? { hasSteps: true } : {}),
           });
         }
         pending = [pending[pending.length - 1]];
