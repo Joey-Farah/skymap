@@ -296,6 +296,23 @@ export class SkymapView {
       },
     });
 
+    // Route draws under the businesses/labels it passes, not over them — a
+    // thick line painted last used to blot out whatever it crossed.
+    this.map.addLayer({
+      id: "skyway-route-casing",
+      type: "line",
+      source: "skyway-route",
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": "#ffffff", "line-width": 9, "line-opacity": 0.95 },
+    });
+    this.map.addLayer({
+      id: "skyway-route-line",
+      type: "line",
+      source: "skyway-route",
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": ROUTE, "line-width": 4.5 },
+    });
+
     // Businesses appear as you zoom in: dots first, names closer.
     // Transit stops wait for a deeper zoom — 121 of them would swamp the map.
     this.map.addLayer({
@@ -346,20 +363,6 @@ export class SkymapView {
       },
     });
 
-    this.map.addLayer({
-      id: "skyway-route-casing",
-      type: "line",
-      source: "skyway-route",
-      layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#ffffff", "line-width": 11, "line-opacity": 0.95 },
-    });
-    this.map.addLayer({
-      id: "skyway-route-line",
-      type: "line",
-      source: "skyway-route",
-      layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": ROUTE, "line-width": 6 },
-    });
     this.map.addLayer({
       id: "skyway-walker",
       type: "circle",
