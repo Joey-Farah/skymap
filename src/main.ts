@@ -10,6 +10,8 @@ async function boot() {
   const data: SkymapData = await res.json();
 
   const router = new SkywayRouter(data);
+  const disclaimer = document.getElementById("disclaimer");
+  if (disclaimer && data.meta.disclaimer) disclaimer.textContent = data.meta.disclaimer;
   const sheet = new Sheet(document.getElementById("sheet")!);
 
   const style = await resolveStyle();

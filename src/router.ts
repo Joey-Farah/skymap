@@ -27,6 +27,8 @@ interface GraphEdge {
   to: string;
   meters: number;
   crossing: string;
+  /** Real bridge polyline oriented in the direction of travel, when known. */
+  geometry?: [number, number][];
 }
 
 export class SkywayRouter {
@@ -44,8 +46,10 @@ export class SkywayRouter {
       const meters = e.geometry
         ? polylineMeters(e.geometry)
         : haversineMeters(from.lat, from.lon, to.lat, to.lon);
-      this.adjacency.get(e.from)!.push({ to: e.to, meters, crossing: e.crossing });
-      this.adjacency.get(e.to)!.push({ to: e.from, meters, crossing: e.crossing });
+      this.adjacency.get(e.from)!.push({ to: e.to, meters, crossing: e.crossing, geometry: e.geometry });
+      this.adjacency
+        .get(e.to)!
+        .push({ to: e.from, meters, crossing: e.crossing, geometry: e.geometry && [...e.geometry].reverse() });
     }
   }
 
@@ -79,7 +83,7 @@ export class SkywayRouter {
     if (!goal || !start) return null;
 
     const dist = new Map<string, number>([[fromId, 0]]);
-    const prev = new Map<string, { id: string; crossing: string; meters: number }>();
+    const prev = new Map<string, { id: string; crossing: string; meters: number; geometry?: [number, number][] }>();
     const open = new Set<string>([fromId]);
     const fScore = new Map<string, number>([
       [fromId, haversineMeters(start.lat, start.lon, goal.lat, goal.lon)],
@@ -108,7 +112,12 @@ export class SkywayRouter {
         const tentative = dist.get(current)! + edge.meters;
         if (tentative < (dist.get(edge.to) ?? Infinity)) {
           dist.set(edge.to, tentative);
-          prev.set(edge.to, { id: current, crossing: edge.crossing, meters: edge.meters });
+          prev.set(edge.to, {
+            id: current,
+            crossing: edge.crossing,
+            meters: edge.meters,
+            geometry: edge.geometry,
+          });
           fScore.set(edge.to, tentative + haversineMeters(b.lat, b.lon, goal.lat, goal.lon));
           open.add(edge.to);
         }
@@ -120,7 +129,7 @@ export class SkywayRouter {
   private reconstruct(
     fromId: string,
     toId: string,
-    prev: Map<string, { id: string; crossing: string; meters: number }>,
+    prev: Map<string, { id: string; crossing: string; meters: number; geometry?: [number, number][] }>,
     totalMeters: number,
   ): Omit<RouteResult, "ignoredClosures"> {
     const steps: RouteStep[] = [];
@@ -131,6 +140,7 @@ export class SkywayRouter {
         building: this.buildings.get(cursor)!,
         viaCrossing: p?.crossing,
         legMeters: p?.meters,
+        legGeometry: p?.geometry,
       });
       cursor = cursor === fromId ? undefined : p?.id;
     }

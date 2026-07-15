@@ -167,7 +167,10 @@ export class Sheet {
       const closedHere = !isOpenLabelOk(step.building, when);
       li.append(el("span", step.building.name + (closedHere ? " (closed)" : "")));
       if (step.viaCrossing) {
-        li.prepend(el("span", `Cross over ${step.viaCrossing}`, "via"));
+        // OSM often names every bridge "Minneapolis Skyway" — say something
+        // shorter than "Cross over Minneapolis Skyway" on every step.
+        const generic = /^(minneapolis )?skyway$/i.test(step.viaCrossing.trim());
+        li.prepend(el("span", generic ? "Via skyway" : `Cross over ${step.viaCrossing}`, "via"));
       }
       ol.appendChild(li);
     }

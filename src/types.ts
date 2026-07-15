@@ -43,6 +43,8 @@ export interface RouteStep {
   viaCrossing?: string;
   /** Meters walked on the bridge leading into this building. */
   legMeters?: number;
+  /** Real bridge polyline into this building ([lon, lat]), travel-oriented. */
+  legGeometry?: [number, number][];
 }
 
 export interface RouteResult {

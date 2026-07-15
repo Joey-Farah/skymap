@@ -73,16 +73,20 @@ function bridgesFC(data: SkymapData, when: Date): FC {
 
 function routeFC(route: RouteResult | null): FC {
   if (!route || route.steps.length < 2) return { type: "FeatureCollection", features: [] };
+  // Follow real bridge polylines when the data has them; fall back to
+  // centroid-to-centroid segments for legs without geometry.
+  const coordinates: [number, number][] = [[route.steps[0].building.lon, route.steps[0].building.lat]];
+  for (const s of route.steps.slice(1)) {
+    if (s.legGeometry) coordinates.push(...s.legGeometry);
+    else coordinates.push([s.building.lon, s.building.lat]);
+  }
   return {
     type: "FeatureCollection",
     features: [
       {
         type: "Feature",
         properties: {},
-        geometry: {
-          type: "LineString",
-          coordinates: route.steps.map((s) => [s.building.lon, s.building.lat]),
-        },
+        geometry: { type: "LineString", coordinates },
       },
     ],
   };
