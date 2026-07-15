@@ -5,7 +5,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { SkywayRouter, haversineMeters, polylineMeters, sliceAlong } from "../src/router.ts";
-import { closingSoonWarnings, isOpenAt, statusAt } from "../src/hours.ts";
+import { closingSoonWarnings, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
 import { encodeRouteState, parseRouteState } from "../src/share.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -145,6 +145,21 @@ test("closingSoonWarnings flags buildings closing near arrival", () => {
   }
   // Mid-morning: nothing is anywhere near closing.
   assert.equal(closingSoonWarnings(router.route("ids-center", "us-bank-stadium", TUE_10AM), TUE_10AM, 30).length, 0);
+});
+
+test("nextOccurrence finds the coming weekday at a minute-of-day", () => {
+  const ref = new Date(2026, 6, 14, 10, 0); // Tuesday 10:00
+  const laterToday = nextOccurrence(2, 21 * 60, ref); // Tue 9pm
+  assert.equal(laterToday.getDay(), 2);
+  assert.equal(laterToday.getHours(), 21);
+  assert.equal(laterToday.getDate(), 14, "later the same day stays today");
+
+  const earlierSlot = nextOccurrence(2, 9 * 60, ref); // Tue 9am — already past
+  assert.equal(earlierSlot.getDate(), 21, "a past slot rolls to next week");
+
+  const sunday = nextOccurrence(0, 12 * 60, ref);
+  assert.equal(sunday.getDay(), 0);
+  assert.equal(sunday.getDate(), 19, "next Sunday");
 });
 
 test("route state round-trips through the URL", () => {

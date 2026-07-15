@@ -203,16 +203,47 @@ body {
   cursor: pointer;
 }
 
-#input-when {
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 5px 6px;
-  font-size: 13px;
-  color: var(--ink);
+.scrub-label {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
 }
 
-#input-when:disabled {
-  opacity: 0.45;
+.scrubber {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.day-chips {
+  display: flex;
+  gap: 4px;
+}
+
+.day-chip {
+  flex: 1;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: var(--muted);
+  border-radius: 8px;
+  padding: 5px 0;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.day-chip.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+#time-slider {
+  width: 100%;
+  accent-color: var(--amber);
+  margin: 0;
 }
 
 /* --- Bottom sheet -------------------------------------------------------- */

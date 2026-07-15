@@ -50,7 +50,18 @@
           <label class="time-toggle">
             <input type="radio" name="timemode" value="custom" /> At…
           </label>
-          <input type="datetime-local" id="input-when" disabled />
+          <span class="scrub-label" id="scrub-label"></span>
+        </div>
+        <div class="scrubber" id="scrubber" hidden>
+          <div class="day-chips" id="day-chips"></div>
+          <input
+            type="range"
+            id="time-slider"
+            min="0"
+            max="1439"
+            step="15"
+            aria-label="Time of day"
+          />
         </div>
       </header>
 

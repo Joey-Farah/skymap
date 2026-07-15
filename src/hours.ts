@@ -40,6 +40,19 @@ export function formatWeeklyHours(hours: DayHours[]): string {
     .join(" · ");
 }
 
+/**
+ * The next date falling on `day` (0=Sun) at `minuteOfDay`, at or after `from`.
+ * A slot earlier today rolls to the same weekday next week.
+ */
+export function nextOccurrence(day: number, minuteOfDay: number, from = new Date()): Date {
+  const d = new Date(from);
+  d.setHours(Math.floor(minuteOfDay / 60), minuteOfDay % 60, 0, 0);
+  let ahead = (day - from.getDay() + 7) % 7;
+  if (ahead === 0 && d.getTime() < from.getTime()) ahead = 7;
+  d.setDate(d.getDate() + ahead);
+  return d;
+}
+
 export interface ClosureWarning {
   building: Building;
   /** Minutes between the walker's arrival and the building closing. */

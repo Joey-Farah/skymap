@@ -3,7 +3,8 @@ import type { Building, SkymapData } from "./types.ts";
 import { SkywayRouter } from "./router.ts";
 import { SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
-import { encodeRouteState, parseRouteState, toLocalIso } from "./share.ts";
+import { encodeRouteState, parseRouteState } from "./share.ts";
+import { formatMinute, nextOccurrence } from "./hours.ts";
 
 async function boot() {
   const res = await fetch("./data/skymap-data.json");
@@ -20,38 +21,75 @@ async function boot() {
 
   const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings);
   const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings);
-  const whenInput = document.getElementById("input-when") as HTMLInputElement;
   const timeRadios = document.querySelectorAll<HTMLInputElement>('input[name="timemode"]');
+
+  // --- Time scrubber: day chips + a slider through the day ---------------
+  const scrubber = document.getElementById("scrubber")!;
+  const scrubLabel = document.getElementById("scrub-label")!;
+  const slider = document.getElementById("time-slider") as HTMLInputElement;
+  const dayChips = document.getElementById("day-chips")!;
+  const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let scrubDay = new Date().getDay();
+
+  for (const day of [1, 2, 3, 4, 5, 6, 0]) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "day-chip";
+    chip.dataset.day = String(day);
+    chip.textContent = DAY_LABELS[day];
+    chip.addEventListener("click", () => {
+      setScrubDay(day);
+      refreshTimeStyling();
+      routeIfReady();
+    });
+    dayChips.appendChild(chip);
+  }
+
+  function setScrubDay(day: number) {
+    scrubDay = day;
+    dayChips.querySelectorAll<HTMLButtonElement>(".day-chip").forEach((c) => {
+      c.classList.toggle("active", Number(c.dataset.day) === day);
+    });
+  }
+
+  function setScrubTo(when: Date) {
+    setScrubDay(when.getDay());
+    slider.value = String(when.getHours() * 60 + Math.floor(when.getMinutes() / 15) * 15);
+  }
 
   function selectedMode(): string {
     return [...timeRadios].find((r) => r.checked)?.value ?? "now";
   }
 
   function selectedTime(): Date {
-    if (selectedMode() === "custom" && whenInput.value) return new Date(whenInput.value);
+    if (selectedMode() === "custom") return nextOccurrence(scrubDay, Number(slider.value));
     return new Date();
   }
 
+  function updateScrubLabel() {
+    const custom = selectedMode() === "custom";
+    scrubLabel.textContent = custom
+      ? `${DAY_LABELS[scrubDay]} ${formatMinute(Number(slider.value))}`
+      : "";
+  }
+
   function refreshTimeStyling() {
+    updateScrubLabel();
     view.setTime(selectedTime());
   }
 
   for (const r of timeRadios) {
     r.addEventListener("change", () => {
-      whenInput.disabled = ![...timeRadios].some((x) => x.checked && x.value === "custom");
-      if (!whenInput.disabled && !whenInput.value) {
-        const now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        whenInput.value = now.toISOString().slice(0, 16);
-      }
+      const custom = selectedMode() === "custom";
+      scrubber.hidden = !custom;
+      if (custom) setScrubTo(new Date());
       refreshTimeStyling();
       routeIfReady();
     });
   }
-  whenInput.addEventListener("change", () => {
-    refreshTimeStyling();
-    routeIfReady();
-  });
+  // Dragging restyles the network live; recompute the route on release.
+  slider.addEventListener("input", refreshTimeStyling);
+  slider.addEventListener("change", () => routeIfReady());
 
   function routeIfReady() {
     const fromId = comboFrom.value;
@@ -106,8 +144,8 @@ async function boot() {
   const initial = parseRouteState(location.search);
   if (initial.when) {
     for (const r of timeRadios) r.checked = r.value === "custom";
-    whenInput.disabled = false;
-    whenInput.value = toLocalIso(initial.when);
+    scrubber.hidden = false;
+    setScrubTo(initial.when);
   }
   const initialFrom = initial.fromId ? router.building(initial.fromId) : undefined;
   const initialTo = initial.toId ? router.building(initial.toId) : undefined;
