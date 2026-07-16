@@ -615,6 +615,28 @@ a:focus-visible {
   white-space: nowrap;
 }
 
+/* Transient notice pill — floats above everything, never touches the sheet. */
+.toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+  max-width: min(86vw, 420px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink-900);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+}
+
+.toast[hidden] {
+  display: none;
+}
+
 /* Locate button while heading-up tracking is on: accent fill so the mode
    change is visible on the control itself, Apple Maps style. */
 .maplibregl-ctrl button.maplibregl-ctrl-geolocate.heading-on {
@@ -928,7 +950,6 @@ a:focus-visible {
 .lm-cue {
   font-weight: 500;
   color: var(--ink-600);
-  white-space: nowrap;
 }
 
 .lm-chip {

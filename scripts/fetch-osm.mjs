@@ -222,7 +222,15 @@ async function attachLogos(pois) {
         `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`,
       );
       if (!res.ok) return; // 404 = no favicon known; monogram fallback covers it
-      writeFileSync(path, Buffer.from(await res.arrayBuffer()));
+      const bytes = Buffer.from(await res.arrayBuffer());
+      // Platform-default favicons (e.g. the stock WordPress "W") say nothing
+      // about the business — the colored monogram is strictly better.
+      const { createHash } = await import("node:crypto");
+      const GENERIC_FAVICONS = new Set([
+        "ebb03167d411fd593893b2f93ff5d179", // WordPress default
+      ]);
+      if (GENERIC_FAVICONS.has(createHash("md5").update(bytes).digest("hex"))) return;
+      writeFileSync(path, bytes);
       available.add(key);
       downloaded++;
     } catch {
@@ -253,18 +261,28 @@ async function attachLogos(pois) {
  * their outline across several member ways that share endpoints.
  */
 function stitchOuterRing(segments) {
+  // Stitch every closed ring the segments form, then keep the largest —
+  // multi-outer relations (a complex mapped as several detached footprints)
+  // at least keep their dominant building. Unclosed leftovers are rejected:
+  // an open ring fed to pointInRing gets implicitly closed by a chord and
+  // quietly assigns POIs to the wrong building.
   const segs = segments.map((s) => [...s]);
-  if (!segs.length) return null;
-  const ring = segs.shift();
-  while (segs.length && ring[0] !== ring[ring.length - 1]) {
-    const end = ring[ring.length - 1];
-    const i = segs.findIndex((s) => s[0] === end || s[s.length - 1] === end);
-    if (i === -1) break;
-    const [next] = segs.splice(i, 1);
-    if (next[0] === end) ring.push(...next.slice(1));
-    else ring.push(...next.reverse().slice(1));
+  const rings = [];
+  while (segs.length) {
+    const ring = segs.shift();
+    while (segs.length && ring[0] !== ring[ring.length - 1]) {
+      const end = ring[ring.length - 1];
+      const i = segs.findIndex((s) => s[0] === end || s[s.length - 1] === end);
+      if (i === -1) break;
+      const [next] = segs.splice(i, 1);
+      if (next[0] === end) ring.push(...next.slice(1));
+      else ring.push(...next.reverse().slice(1));
+    }
+    if (ring.length >= 4 && ring[0] === ring[ring.length - 1]) rings.push(ring);
   }
-  return ring.length >= 4 ? ring : null;
+  if (!rings.length) return null;
+  rings.sort((a, b) => b.length - a.length);
+  return rings[0];
 }
 
 function slugify(name) {

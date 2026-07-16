@@ -7,9 +7,11 @@
 /** "https://www.kierans.com/x" -> "kierans-com"; null when unparseable. */
 export function logoKey(website: string | undefined | null): string | null {
   if (!website) return null;
+  // OSM website tags are frequently scheme-less ("kierans.com").
+  const url = /^[a-z][a-z0-9+.-]*:/i.test(website) ? website : `https://${website.trim()}`;
   let host: string;
   try {
-    host = new URL(website).hostname;
+    host = new URL(url).hostname;
   } catch {
     return null;
   }

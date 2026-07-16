@@ -350,16 +350,34 @@ async function boot() {
     if (resetBearing) view.map.easeTo({ bearing: 0 }, { geolocateSource: true });
   }
 
+  // Transient notice that never touches the sheet — a GPS hiccup mid-route
+  // must not wipe the directions off screen.
+  const toast = document.getElementById("toast") as HTMLElement;
+  let toastTimer = 0;
+  function showToast(text: string) {
+    toast.textContent = text;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => {
+      toast.hidden = true;
+    }, 5000);
+  }
+
   let locateMode: LocateMode = "off";
+  let compassUnavailable = false; // denied once → cycle degrades to plain on/off
+  let toldAboutTimeout = false; // watchPosition retries every 15s; nag once per session
   const locateButton = document.querySelector(
     "button.maplibregl-ctrl-geolocate",
   ) as HTMLButtonElement | null;
+  const watchState = () => (view.geolocate as unknown as { _watchState?: string })._watchState;
 
   async function applyLocate(tr: ReturnType<typeof locateTransition>) {
     if (tr.heading && !orientationHandler) {
       if (!(await enableCompass())) {
-        // No compass on this device — stay in plain tracking rather than
-        // pretending; the tap still didn't toggle tracking off.
+        // No compass on this device: stay in plain tracking, and stop
+        // intercepting future taps so "off" stays reachable.
+        compassUnavailable = true;
+        showToast("Heading-up mode needs motion access — tap again to stop tracking.");
         locateMode = "lock";
         locateButton?.classList.remove("heading-on");
         return;
@@ -376,6 +394,11 @@ async function boot() {
     "click",
     (e) => {
       if (!locateButton.contains(e.target as Node)) return;
+      // Advance to heading only from a settled lock: while the control is
+      // still WAITING (spinner) or errored, its own tap-to-cancel must win,
+      // and a denied compass demotes the cycle to plain on/off. locateMode
+      // then resolves through the control's end/focus events.
+      if (locateMode === "lock" && (compassUnavailable || watchState() !== "ACTIVE_LOCK")) return;
       const tr = locateTransition(locateMode, "tap");
       if (tr.intercept) e.stopPropagation();
       void applyLocate(tr);
@@ -384,24 +407,25 @@ async function boot() {
   );
   view.geolocate.on("userlocationlostfocus", () => void applyLocate(locateTransition(locateMode, "blur")));
   view.geolocate.on("userlocationfocus", () => void applyLocate(locateTransition(locateMode, "focus")));
+  view.geolocate.on("trackuserlocationstart", () => {
+    toldAboutTimeout = false;
+  });
   view.geolocate.on("error", (err: GeolocationPositionError) => {
     if (err.code === err.PERMISSION_DENIED) {
-      sheet.showMessage(
-        "Location is off",
-        "Skymap can't see where you are. Allow location access in your browser settings to get one-tap routing from wherever you're standing.",
-      );
-    } else if (err.code === err.TIMEOUT) {
-      sheet.showMessage(
-        "Still looking for you",
-        "No GPS fix yet — this happens deep inside buildings. Try again near a window or skyway bridge.",
-      );
+      // MapLibre goes OFF and disables its button here WITHOUT firing
+      // trackuserlocationend — clean up ourselves or a live compass keeps
+      // rotating a map no tap can ever reach again.
+      void applyLocate(locateTransition(locateMode, "end"));
+      showToast("Location is off — allow access in your browser settings to route from where you stand.");
+    } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
+      toldAboutTimeout = true;
+      showToast("No GPS fix yet — normal deep indoors. It'll catch you near a window or bridge.");
     }
   });
   view.geolocate.on("trackuserlocationend", () => {
     // Fires both for real off AND for pan-to-background; only the former is
     // "end" (lostfocus already covers the background case).
-    const state = (view.geolocate as unknown as { _watchState?: string })._watchState;
-    if (state === "OFF") void applyLocate(locateTransition(locateMode, "end"));
+    if (watchState() === "OFF") void applyLocate(locateTransition(locateMode, "end"));
   });
 
   function showReach(b: Building) {

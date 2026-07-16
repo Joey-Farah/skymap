@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-16T17:35:34.864Z"
+  "generated": "2026-07-16T17:59:51.585Z"
  },
  "buildings": [
   {
@@ -23638,8 +23638,7 @@
    "lon": -93.267511,
    "buildingId": "us-bank-plaza-126015100",
    "level": "1",
-   "website": "https://www.theburgerplace.com/",
-   "logo": "theburgerplace-com"
+   "website": "https://www.theburgerplace.com/"
   },
   {
    "id": "poi-12753315921",
@@ -24761,8 +24760,7 @@
    "lon": -93.273841,
    "buildingId": "us-bancorp-center-461224219",
    "level": "1",
-   "website": "https://www.downtowneyes.com/",
-   "logo": "downtowneyes-com"
+   "website": "https://www.downtowneyes.com/"
   },
   {
    "id": "poi-5955554304",
@@ -24932,8 +24930,7 @@
    "lon": -93.267366,
    "buildingId": "sps-tower-45447294",
    "level": "1",
-   "website": "https://thomasjosephandsons.com/",
-   "logo": "thomasjosephandsons-com"
+   "website": "https://thomasjosephandsons.com/"
   },
   {
    "id": "poi-12768888511",

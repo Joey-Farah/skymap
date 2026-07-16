@@ -526,7 +526,7 @@ function el(tag: string, text?: string, className?: string): HTMLElement {
 function landmarkChip(p: Poi): HTMLElement {
   const chip = el("span", undefined, "lm-chip");
   const monogram = () => {
-    const m = el("span", p.name.trim().charAt(0).toUpperCase() || "•", "lm-monogram");
+    const m = el("span", ([...p.name.trim()][0] ?? "•").toUpperCase(), "lm-monogram");
     m.style.background = monogramColor(p.name);
     return m;
   };

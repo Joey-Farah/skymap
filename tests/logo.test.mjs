@@ -8,6 +8,11 @@ test("logoKey reduces a website URL to a stable domain slug", () => {
   assert.equal(logoKey("https://locations.dunnbrothers.com/mn/minneapolis/x.html"), "locations-dunnbrothers-com");
 });
 
+test("logoKey handles scheme-less OSM website tags", () => {
+  assert.equal(logoKey("kierans.com"), "kierans-com");
+  assert.equal(logoKey("www.walgreens.com/store"), "walgreens-com");
+});
+
 test("logoKey returns null for garbage", () => {
   assert.equal(logoKey("not a url"), null);
   assert.equal(logoKey(""), null);
