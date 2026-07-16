@@ -187,7 +187,11 @@ export class SkymapView {
     // (turn-by-turn progress, "you're near X").
     const geolocate = new maplibregl.GeolocateControl({
       trackUserLocation: true,
-      positionOptions: { enableHighAccuracy: true },
+      // maximumAge lets the first tap paint a recent cached fix instantly
+      // (watchPosition then refines it); timeout surfaces an error instead
+      // of spinning forever — the incumbent app's "wait 8-10 seconds and
+      // tap again" bug is exactly this failure mode left silent.
+      positionOptions: { enableHighAccuracy: true, maximumAge: 120000, timeout: 15000 },
     });
     this.map.addControl(geolocate, "top-right");
     geolocate.on("geolocate", (pos: GeolocationPosition) => {

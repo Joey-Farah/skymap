@@ -384,6 +384,19 @@ async function boot() {
   );
   view.geolocate.on("userlocationlostfocus", () => void applyLocate(locateTransition(locateMode, "blur")));
   view.geolocate.on("userlocationfocus", () => void applyLocate(locateTransition(locateMode, "focus")));
+  view.geolocate.on("error", (err: GeolocationPositionError) => {
+    if (err.code === err.PERMISSION_DENIED) {
+      sheet.showMessage(
+        "Location is off",
+        "Skymap can't see where you are. Allow location access in your browser settings to get one-tap routing from wherever you're standing.",
+      );
+    } else if (err.code === err.TIMEOUT) {
+      sheet.showMessage(
+        "Still looking for you",
+        "No GPS fix yet — this happens deep inside buildings. Try again near a window or skyway bridge.",
+      );
+    }
+  });
   view.geolocate.on("trackuserlocationend", () => {
     // Fires both for real off AND for pan-to-background; only the former is
     // "end" (lostfocus already covers the background case).
