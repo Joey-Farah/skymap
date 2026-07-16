@@ -62,6 +62,10 @@ way["building"]["name"](${BBOX});
 out body;
 >;
 out skel qt;
+relation["building"]["name"](${BBOX});
+out body;
+>;
+out skel qt;
 node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|bank|pharmacy|clinic|dentist|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship)$"]["name"](${BBOX});
 out body;
 node["shop"]["name"](${BBOX});
@@ -103,7 +107,21 @@ async function fetchOverpass() {
         },
         body: "data=" + encodeURIComponent(QUERY),
       });
-      if (res.ok) return res.json();
+      if (res.ok) {
+        const osm = await res.json();
+        // Mirrors can lag the main database by weeks; a stale snapshot
+        // silently loses recently mapped buildings and bridges (a fallback
+        // mirror once served 2-week-old data, dropping Mill City Museum).
+        const base = osm.osm3s?.timestamp_osm_base;
+        const ageDays = base ? (Date.now() - Date.parse(base)) / 86400000 : null;
+        console.log(`  Data timestamp: ${base ?? "unknown"} (${ageDays?.toFixed(1) ?? "?"} days old).`);
+        if (ageDays !== null && ageDays > 7) {
+          console.warn(`  WARNING: mirror data is ${ageDays.toFixed(0)} days stale — trying next mirror.`);
+          lastErr = new Error(`stale data from ${url}`);
+          continue;
+        }
+        return osm;
+      }
       lastErr = new Error(`Overpass returned HTTP ${res.status}`);
     } catch (err) {
       lastErr = err;
@@ -141,6 +159,27 @@ function pointInRing(lon, lat, ring) {
     if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
   }
   return inside;
+}
+
+/**
+ * Stitch a multipolygon relation's outer way segments into one closed ring
+ * of node ids. Buildings mapped as relations (the Central Library became
+ * one in July 2026, silently vanishing from our extraction) usually split
+ * their outline across several member ways that share endpoints.
+ */
+function stitchOuterRing(segments) {
+  const segs = segments.map((s) => [...s]);
+  if (!segs.length) return null;
+  const ring = segs.shift();
+  while (segs.length && ring[0] !== ring[ring.length - 1]) {
+    const end = ring[ring.length - 1];
+    const i = segs.findIndex((s) => s[0] === end || s[s.length - 1] === end);
+    if (i === -1) break;
+    const [next] = segs.splice(i, 1);
+    if (next[0] === end) ring.push(...next.slice(1));
+    else ring.push(...next.reverse().slice(1));
+  }
+  return ring.length >= 4 ? ring : null;
 }
 
 function slugify(name) {
@@ -212,10 +251,15 @@ async function fetchLandmarkImages(wikidataByBuildingId) {
 }
 
 async function main(osm) {
+  // SKYMAP_DUMP_RAW=/path.json caches the raw Overpass response so pipeline
+  // logic can be debugged offline without hammering the (flaky) API.
+  if (process.env.SKYMAP_DUMP_RAW) writeFileSync(process.env.SKYMAP_DUMP_RAW, JSON.stringify(osm));
   const nodes = new Map(); // id -> {lat, lon}
   const ways = [];
   const buildingsRaw = [];
   const poiNodes = [];
+  const waysById = new Map(); // every way, tagged or skeleton — relation members resolve here
+  const relationsRaw = [];
 
   const transitNodes = [];
   for (const el of osm.elements) {
@@ -231,9 +275,27 @@ async function main(osm) {
       ) {
         poiNodes.push(el);
       }
-    } else if (el.type === "way" && el.tags?.building && el.tags?.name) buildingsRaw.push(el);
-    else if (el.type === "way" && el.tags?.highway) ways.push(el);
+    } else if (el.type === "way") {
+      waysById.set(el.id, el);
+      if (el.tags?.building && el.tags?.name) buildingsRaw.push(el);
+      else if (el.tags?.highway) ways.push(el);
+    } else if (el.type === "relation" && el.tags?.building && el.tags?.name) relationsRaw.push(el);
   }
+
+  // Buildings mapped as multipolygon relations: stitch outer members into a
+  // way-shaped record so the rest of the pipeline treats them identically.
+  let relationBuildings = 0;
+  for (const r of relationsRaw) {
+    const outers = (r.members ?? [])
+      .filter((m) => m.type === "way" && (m.role === "outer" || !m.role))
+      .map((m) => waysById.get(m.ref)?.nodes)
+      .filter(Boolean);
+    const ring = stitchOuterRing(outers);
+    if (!ring) continue;
+    buildingsRaw.push({ id: `r${r.id}`, nodes: ring, tags: r.tags });
+    relationBuildings++;
+  }
+  if (relationBuildings) console.log(`Building relations stitched: ${relationBuildings}.`);
   console.log(
     `OSM: ${ways.length} skyway ways, ${buildingsRaw.length} named buildings, ${poiNodes.length} POI nodes.`,
   );

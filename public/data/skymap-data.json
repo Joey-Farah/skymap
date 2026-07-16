@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-16T15:33:09.380Z"
+  "generated": "2026-07-16T17:31:19.659Z"
  },
  "buildings": [
   {
@@ -6215,99 +6215,6 @@
     "attribution": "McGhiever · CC BY-SA 3.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Northwestern%20Knitting%20Company%20Factory.jpg"
    }
-  },
-  {
-   "id": "atrium-apartments-45500033",
-   "name": "Atrium Apartments",
-   "address": "Minneapolis",
-   "category": "residential",
-   "lat": 44.981156,
-   "lon": -93.271095,
-   "footprint": [
-    [
-     -93.27126,
-     44.980954
-    ],
-    [
-     -93.271064,
-     44.981093
-    ],
-    [
-     -93.270927,
-     44.980997
-    ],
-    [
-     -93.270714,
-     44.981148
-    ],
-    [
-     -93.270734,
-     44.981162
-    ],
-    [
-     -93.270656,
-     44.981214
-    ],
-    [
-     -93.270899,
-     44.981386
-    ],
-    [
-     -93.271086,
-     44.981253
-    ],
-    [
-     -93.271231,
-     44.981355
-    ],
-    [
-     -93.271453,
-     44.981196
-    ],
-    [
-     -93.271436,
-     44.981184
-    ],
-    [
-     -93.271511,
-     44.981131
-    ],
-    [
-     -93.27126,
-     44.980954
-    ]
-   ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
   },
   {
    "id": "marquette-plaza-45500036",
@@ -19293,6 +19200,792 @@
     ]
    ],
    "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+  },
+  {
+   "id": "7th-street-ramp-a-r2100894",
+   "name": "7th Street Ramp A",
+   "address": "Minneapolis",
+   "category": "parking",
+   "lat": 44.979198,
+   "lon": -93.27794,
+   "footprint": [
+    [
+     -93.277445,
+     44.977926
+    ],
+    [
+     -93.277412,
+     44.977925
+    ],
+    [
+     -93.277412,
+     44.977962
+    ],
+    [
+     -93.277412,
+     44.977976
+    ],
+    [
+     -93.277378,
+     44.977974
+    ],
+    [
+     -93.277379,
+     44.978073
+    ],
+    [
+     -93.277417,
+     44.978073
+    ],
+    [
+     -93.277418,
+     44.978099
+    ],
+    [
+     -93.277448,
+     44.978099
+    ],
+    [
+     -93.277445,
+     44.978127
+    ],
+    [
+     -93.277479,
+     44.978127
+    ],
+    [
+     -93.277479,
+     44.978192
+    ],
+    [
+     -93.277479,
+     44.978231
+    ],
+    [
+     -93.27748,
+     44.978543
+    ],
+    [
+     -93.27748,
+     44.978785
+    ],
+    [
+     -93.27748,
+     44.978892
+    ],
+    [
+     -93.27748,
+     44.979515
+    ],
+    [
+     -93.277459,
+     44.979515
+    ],
+    [
+     -93.277456,
+     44.97956
+    ],
+    [
+     -93.277458,
+     44.979593
+    ],
+    [
+     -93.277481,
+     44.979596
+    ],
+    [
+     -93.277713,
+     44.979799
+    ],
+    [
+     -93.277656,
+     44.979833
+    ],
+    [
+     -93.277636,
+     44.979817
+    ],
+    [
+     -93.27758,
+     44.979853
+    ],
+    [
+     -93.277611,
+     44.97988
+    ],
+    [
+     -93.27763,
+     44.979897
+    ],
+    [
+     -93.277648,
+     44.979913
+    ],
+    [
+     -93.277663,
+     44.979926
+    ],
+    [
+     -93.277779,
+     44.979857
+    ],
+    [
+     -93.277989,
+     44.980044
+    ],
+    [
+     -93.278089,
+     44.980133
+    ],
+    [
+     -93.278192,
+     44.980225
+    ],
+    [
+     -93.278269,
+     44.980294
+    ],
+    [
+     -93.278208,
+     44.980332
+    ],
+    [
+     -93.278231,
+     44.980353
+    ],
+    [
+     -93.278256,
+     44.980377
+    ],
+    [
+     -93.278269,
+     44.980389
+    ],
+    [
+     -93.278287,
+     44.980405
+    ],
+    [
+     -93.278355,
+     44.980369
+    ],
+    [
+     -93.278387,
+     44.980396
+    ],
+    [
+     -93.278469,
+     44.980466
+    ],
+    [
+     -93.278519,
+     44.98044
+    ],
+    [
+     -93.278577,
+     44.980522
+    ],
+    [
+     -93.278631,
+     44.980554
+    ],
+    [
+     -93.278697,
+     44.980562
+    ],
+    [
+     -93.27876,
+     44.980546
+    ],
+    [
+     -93.278877,
+     44.980474
+    ],
+    [
+     -93.279404,
+     44.980166
+    ],
+    [
+     -93.278678,
+     44.979248
+    ],
+    [
+     -93.278679,
+     44.979166
+    ],
+    [
+     -93.278679,
+     44.979101
+    ],
+    [
+     -93.278681,
+     44.978923
+    ],
+    [
+     -93.278683,
+     44.978652
+    ],
+    [
+     -93.278685,
+     44.978246
+    ],
+    [
+     -93.278686,
+     44.978114
+    ],
+    [
+     -93.278687,
+     44.978016
+    ],
+    [
+     -93.278032,
+     44.978013
+    ],
+    [
+     -93.277737,
+     44.978011
+    ],
+    [
+     -93.27758,
+     44.978009
+    ],
+    [
+     -93.27758,
+     44.977973
+    ],
+    [
+     -93.277545,
+     44.977972
+    ],
+    [
+     -93.277492,
+     44.977971
+    ],
+    [
+     -93.277489,
+     44.977926
+    ],
+    [
+     -93.277445,
+     44.977926
+    ]
+   ],
+   "hours": [
+    [
+     720,
+     1080
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     570,
+     1200
+    ]
+   ],
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+  },
+  {
+   "id": "hawthorne-transportation-center-r2100925",
+   "name": "Hawthorne Transportation Center",
+   "address": "Minneapolis",
+   "category": "parking",
+   "lat": 44.977614,
+   "lon": -93.277962,
+   "footprint": [
+    [
+     -93.277737,
+     44.978011
+    ],
+    [
+     -93.277733,
+     44.977968
+    ],
+    [
+     -93.277768,
+     44.977984
+    ],
+    [
+     -93.277793,
+     44.977992
+    ],
+    [
+     -93.277827,
+     44.977997
+    ],
+    [
+     -93.277863,
+     44.977998
+    ],
+    [
+     -93.277902,
+     44.977994
+    ],
+    [
+     -93.277929,
+     44.977986
+    ],
+    [
+     -93.277959,
+     44.977972
+    ],
+    [
+     -93.278032,
+     44.977972
+    ],
+    [
+     -93.278032,
+     44.978013
+    ],
+    [
+     -93.278687,
+     44.978016
+    ],
+    [
+     -93.278687,
+     44.977923
+    ],
+    [
+     -93.278688,
+     44.977774
+    ],
+    [
+     -93.278689,
+     44.97717
+    ],
+    [
+     -93.278648,
+     44.977043
+    ],
+    [
+     -93.278621,
+     44.97702
+    ],
+    [
+     -93.278591,
+     44.977009
+    ],
+    [
+     -93.278554,
+     44.97701
+    ],
+    [
+     -93.278454,
+     44.97703
+    ],
+    [
+     -93.278356,
+     44.977055
+    ],
+    [
+     -93.278254,
+     44.977088
+    ],
+    [
+     -93.278167,
+     44.977122
+    ],
+    [
+     -93.278145,
+     44.977132
+    ],
+    [
+     -93.278114,
+     44.977147
+    ],
+    [
+     -93.278062,
+     44.977172
+    ],
+    [
+     -93.277973,
+     44.977219
+    ],
+    [
+     -93.277953,
+     44.977205
+    ],
+    [
+     -93.277916,
+     44.977229
+    ],
+    [
+     -93.277822,
+     44.977293
+    ],
+    [
+     -93.277839,
+     44.977309
+    ],
+    [
+     -93.277701,
+     44.977434
+    ],
+    [
+     -93.277599,
+     44.977548
+    ],
+    [
+     -93.27753,
+     44.977673
+    ],
+    [
+     -93.277487,
+     44.977789
+    ],
+    [
+     -93.277444,
+     44.977784
+    ],
+    [
+     -93.277423,
+     44.977876
+    ],
+    [
+     -93.277452,
+     44.977878
+    ],
+    [
+     -93.277445,
+     44.977926
+    ],
+    [
+     -93.277489,
+     44.977926
+    ],
+    [
+     -93.277492,
+     44.977971
+    ],
+    [
+     -93.277545,
+     44.977972
+    ],
+    [
+     -93.27758,
+     44.977973
+    ],
+    [
+     -93.27758,
+     44.978009
+    ],
+    [
+     -93.277737,
+     44.978011
+    ]
+   ],
+   "hours": [
+    [
+     720,
+     1080
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     570,
+     1200
+    ]
+   ],
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+  },
+  {
+   "id": "minneapolis-city-hall-r4503577",
+   "name": "Minneapolis City Hall",
+   "address": "350 South 5th Street",
+   "category": "government",
+   "lat": 44.977272,
+   "lon": -93.26555,
+   "footprint": [
+    [
+     -93.266267,
+     44.977148
+    ],
+    [
+     -93.26575,
+     44.976928
+    ],
+    [
+     -93.265194,
+     44.976698
+    ],
+    [
+     -93.264585,
+     44.977433
+    ],
+    [
+     -93.265146,
+     44.977671
+    ],
+    [
+     -93.265641,
+     44.977876
+    ],
+    [
+     -93.266267,
+     44.977148
+    ]
+   ],
+   "hours": [
+    [
+     720,
+     1080
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     570,
+     1200
+    ]
+   ],
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Minneapolis%20City%20Hall%202012.jpg?width=640",
+    "attribution": "Jason Riedy from East Point, GA, USA · CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Minneapolis%20City%20Hall%202012.jpg"
+   }
+  },
+  {
+   "id": "minneapolis-central-library-r21107574",
+   "name": "Minneapolis Central Library",
+   "address": "300 Hennepin Avenue",
+   "category": "office",
+   "lat": 44.980488,
+   "lon": -93.270141,
+   "footprint": [
+    [
+     -93.270645,
+     44.980751
+    ],
+    [
+     -93.270665,
+     44.980734
+    ],
+    [
+     -93.270721,
+     44.980687
+    ],
+    [
+     -93.27067,
+     44.980654
+    ],
+    [
+     -93.270804,
+     44.98054
+    ],
+    [
+     -93.270866,
+     44.980467
+    ],
+    [
+     -93.270876,
+     44.980455
+    ],
+    [
+     -93.270893,
+     44.980435
+    ],
+    [
+     -93.270856,
+     44.980419
+    ],
+    [
+     -93.270832,
+     44.980409
+    ],
+    [
+     -93.270444,
+     44.980243
+    ],
+    [
+     -93.270281,
+     44.980173
+    ],
+    [
+     -93.270218,
+     44.980146
+    ],
+    [
+     -93.27014,
+     44.980112
+    ],
+    [
+     -93.270091,
+     44.980092
+    ],
+    [
+     -93.270043,
+     44.980071
+    ],
+    [
+     -93.269985,
+     44.980116
+    ],
+    [
+     -93.2698,
+     44.980258
+    ],
+    [
+     -93.269818,
+     44.98027
+    ],
+    [
+     -93.269744,
+     44.980336
+    ],
+    [
+     -93.269712,
+     44.980365
+    ],
+    [
+     -93.269668,
+     44.980404
+    ],
+    [
+     -93.269572,
+     44.980359
+    ],
+    [
+     -93.269554,
+     44.980379
+    ],
+    [
+     -93.269544,
+     44.980389
+    ],
+    [
+     -93.269501,
+     44.980442
+    ],
+    [
+     -93.269414,
+     44.980547
+    ],
+    [
+     -93.269323,
+     44.980651
+    ],
+    [
+     -93.269277,
+     44.980703
+    ],
+    [
+     -93.269462,
+     44.980783
+    ],
+    [
+     -93.269483,
+     44.980791
+    ],
+    [
+     -93.270187,
+     44.981092
+    ],
+    [
+     -93.270311,
+     44.980956
+    ],
+    [
+     -93.270472,
+     44.98077
+    ],
+    [
+     -93.270574,
+     44.980809
+    ],
+    [
+     -93.270645,
+     44.980751
+    ]
+   ],
+   "hours": [
+    [
+     720,
+     1080
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     570,
+     1200
+    ]
+   ],
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Public%20library%20minneapolis%20exterior.jpg?width=640",
+    "attribution": "Zachary Korb · CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Public%20library%20minneapolis%20exterior.jpg"
+   }
   }
  ],
  "edges": [
@@ -19523,7 +20216,7 @@
   },
   {
    "from": "hennepin-county-government-center-27518018",
-   "to": "united-states-courthouse-and-federal-building-44684856",
+   "to": "minneapolis-city-hall-r4503577",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
@@ -19549,18 +20242,6 @@
     [
      -93.266084,
      44.976661
-    ],
-    [
-     -93.265998,
-     44.976635
-    ],
-    [
-     -93.26575,
-     44.976928
-    ],
-    [
-     -93.265146,
-     44.977671
     ]
    ]
   },
@@ -19758,7 +20439,7 @@
   },
   {
    "from": "target-center-23125943",
-   "to": "hampton-inn-suites-minneapolis-downtown-198988798",
+   "to": "7th-street-ramp-a-r2100894",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
@@ -19776,14 +20457,6 @@
     [
      -93.277456,
      44.97956
-    ],
-    [
-     -93.277554,
-     44.979497
-    ],
-    [
-     -93.277545,
-     44.977998
     ]
    ]
   },
@@ -20563,32 +21236,47 @@
    ]
   },
   {
-   "from": "hampton-inn-suites-minneapolis-downtown-198988798",
-   "to": "orpheum-theatre-41763764",
+   "from": "7th-street-ramp-a-r2100894",
+   "to": "hawthorne-transportation-center-r2100925",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.277949,
-     44.977275
+     -93.277545,
+     44.977972
     ],
     [
-     -93.278174,
-     44.977161
+     -93.277546,
+     44.977815
     ]
    ]
   },
   {
-   "from": "hampton-inn-suites-minneapolis-downtown-198988798",
-   "to": "pence-building-156912891",
+   "from": "hawthorne-transportation-center-r2100925",
+   "to": "orpheum-theatre-41763764",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.276654,
-     44.977487
+     -93.278145,
+     44.977132
     ],
     [
-     -93.276619,
-     44.977463
+     -93.277958,
+     44.976924
+    ]
+   ]
+  },
+  {
+   "from": "hawthorne-transportation-center-r2100925",
+   "to": "hampton-inn-suites-minneapolis-downtown-198988798",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.277412,
+     44.977962
+    ],
+    [
+     -93.277055,
+     44.977733
     ]
    ]
   },
@@ -20981,7 +21669,7 @@
   },
   {
    "from": "minneapolis-public-service-building-746039475",
-   "to": "united-states-courthouse-and-federal-building-44684856",
+   "to": "minneapolis-city-hall-r4503577",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
@@ -21007,14 +21695,6 @@
     [
      -93.265998,
      44.976635
-    ],
-    [
-     -93.26575,
-     44.976928
-    ],
-    [
-     -93.265146,
-     44.977671
     ]
    ]
   },
@@ -21580,6 +22260,21 @@
    ]
   },
   {
+   "from": "pence-building-156912891",
+   "to": "hampton-inn-suites-minneapolis-downtown-198988798",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276619,
+     44.977463
+    ],
+    [
+     -93.276654,
+     44.977487
+    ]
+   ]
+  },
+  {
    "from": "textile-building-89080618",
    "to": "cowboy-jacks-157031168",
    "crossing": "Minneapolis Skyway",
@@ -21790,6 +22485,36 @@
    ]
   },
   {
+   "from": "minneapolis-central-library-r21107574",
+   "to": "365-nicollet-827426569",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.269544,
+     44.980389
+    ],
+    [
+     -93.26918,
+     44.980227
+    ]
+   ]
+  },
+  {
+   "from": "minneapolis-central-library-r21107574",
+   "to": "rbc-gateway-733105254",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.269462,
+     44.980783
+    ],
+    [
+     -93.269272,
+     44.981012
+    ]
+   ]
+  },
+  {
    "from": "110-grant-apartments-resident-parking-358537233",
    "to": "loring-parking-ramp-612097599",
    "crossing": "Minneapolis Skyway",
@@ -21925,59 +22650,6 @@
    ]
   },
   {
-   "from": "atrium-apartments-45500033",
-   "to": "365-nicollet-827426569",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.270578,
-     44.980765
-    ],
-    [
-     -93.269744,
-     44.980336
-    ]
-   ]
-  },
-  {
-   "from": "365-nicollet-827426569",
-   "to": "xcel-energy-827452013",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.269319,
-     44.979721
-    ],
-    [
-     -93.269484,
-     44.979533
-    ]
-   ]
-  },
-  {
-   "from": "365-nicollet-827426569",
-   "to": "rbc-gateway-733105254",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.269544,
-     44.980389
-    ],
-    [
-     -93.269728,
-     44.980471
-    ],
-    [
-     -93.269462,
-     44.980783
-    ],
-    [
-     -93.269272,
-     44.981012
-    ]
-   ]
-  },
-  {
    "from": "united-states-courthouse-and-federal-building-44684856",
    "to": "flour-exchange-building-156909968",
    "crossing": "Minneapolis Skyway",
@@ -21989,6 +22661,21 @@
     [
      -93.264269,
      44.978175
+    ]
+   ]
+  },
+  {
+   "from": "united-states-courthouse-and-federal-building-44684856",
+   "to": "minneapolis-city-hall-r4503577",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.264896,
+     44.977984
+    ],
+    [
+     -93.265146,
+     44.977671
     ]
    ]
   },
@@ -22023,6 +22710,21 @@
    ]
   },
   {
+   "from": "xcel-energy-827452013",
+   "to": "365-nicollet-827426569",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.269484,
+     44.979533
+    ],
+    [
+     -93.269319,
+     44.979721
+    ]
+   ]
+  },
+  {
    "from": "archdale-apartments-92810569",
    "to": "glendale-111367341",
    "crossing": "skyway",
@@ -22034,6 +22736,45 @@
     [
      -93.276681,
      44.966293
+    ]
+   ]
+  },
+  {
+   "from": "365-nicollet-827426569",
+   "to": "rbc-gateway-733105254",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.269062,
+     44.980513
+    ],
+    [
+     -93.268988,
+     44.980621
+    ],
+    [
+     -93.268963,
+     44.980649
+    ],
+    [
+     -93.268894,
+     44.980742
+    ],
+    [
+     -93.268836,
+     44.980818
+    ],
+    [
+     -93.268816,
+     44.980845
+    ],
+    [
+     -93.268776,
+     44.980871
+    ],
+    [
+     -93.268708,
+     44.980951
     ]
    ]
   },
@@ -24377,6 +25118,26 @@
    "level": "1"
   },
   {
+   "id": "poi-2499762597",
+   "name": "Minerva",
+   "category": "artwork",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.980478,
+   "lon": -93.270132,
+   "buildingId": "minneapolis-central-library-r21107574"
+  },
+  {
+   "id": "poi-302097618",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.977275,
+   "lon": -93.277949,
+   "buildingId": "hawthorne-transportation-center-r2100925"
+  },
+  {
    "id": "poi-5955554308",
    "name": "Elevator",
    "category": "elevator",
@@ -25321,7 +26082,7 @@
    "group": "transit",
    "lat": 44.976675,
    "lon": -93.265163,
-   "buildingId": "hennepin-county-public-safety-center-126015106",
+   "buildingId": "minneapolis-city-hall-r4503577",
    "exterior": true
   },
   {
@@ -25446,6 +26207,28 @@
    "exterior": true
   },
   {
+   "id": "poi-622227760",
+   "name": "Glenwood Ave & 10th St N",
+   "category": "bus_stop",
+   "kind": "transit",
+   "group": "transit",
+   "lat": 44.978833,
+   "lon": -93.279025,
+   "buildingId": "7th-street-ramp-a-r2100894",
+   "exterior": true
+  },
+  {
+   "id": "poi-622227761",
+   "name": "2 Av N",
+   "category": "bus_stop",
+   "kind": "transit",
+   "group": "transit",
+   "lat": 44.980057,
+   "lon": -93.277534,
+   "buildingId": "7th-street-ramp-a-r2100894",
+   "exterior": true
+  },
+  {
    "id": "poi-622227762",
    "name": "Ramp A/7th St Transit Center",
    "category": "bus_stop",
@@ -25453,7 +26236,7 @@
    "group": "transit",
    "lat": 44.97807,
    "lon": -93.277804,
-   "buildingId": "hampton-inn-suites-minneapolis-downtown-198988798",
+   "buildingId": "hawthorne-transportation-center-r2100925",
    "exterior": true
   },
   {
@@ -25651,7 +26434,7 @@
    "group": "transit",
    "lat": 44.980739,
    "lon": -93.270661,
-   "buildingId": "atrium-apartments-45500033",
+   "buildingId": "minneapolis-central-library-r21107574",
    "exterior": true
   },
   {
@@ -25717,7 +26500,7 @@
    "group": "transit",
    "lat": 44.981008,
    "lon": -93.27075,
-   "buildingId": "atrium-apartments-45500033",
+   "buildingId": "minneapolis-central-library-r21107574",
    "exterior": true
   },
   {
@@ -25729,17 +26512,6 @@
    "lat": 44.981222,
    "lon": -93.269932,
    "buildingId": "rbc-gateway-733105254",
-   "exterior": true
-  },
-  {
-   "id": "poi-622227896",
-   "name": "1 Av N",
-   "category": "bus_stop",
-   "kind": "transit",
-   "group": "transit",
-   "lat": 44.982014,
-   "lon": -93.271164,
-   "buildingId": "atrium-apartments-45500033",
    "exterior": true
   },
   {
@@ -25963,17 +26735,6 @@
    "exterior": true
   },
   {
-   "id": "poi-622227929",
-   "name": "2 Av N",
-   "category": "bus_stop",
-   "kind": "transit",
-   "group": "transit",
-   "lat": 44.983771,
-   "lon": -93.271654,
-   "buildingId": "lee-lofts-45758932",
-   "exterior": true
-  },
-  {
    "id": "poi-622227930",
    "name": "3 Av N",
    "category": "bus_stop",
@@ -26135,7 +26896,7 @@
    "group": "transit",
    "lat": 44.980505,
    "lon": -93.271685,
-   "buildingId": "atrium-apartments-45500033",
+   "buildingId": "lumber-exchange-30263208",
    "exterior": true
   },
   {
@@ -26377,7 +27138,7 @@
    "group": "transit",
    "lat": 44.976816,
    "lon": -93.26585,
-   "buildingId": "minneapolis-public-service-building-746039475",
+   "buildingId": "minneapolis-city-hall-r4503577",
    "exterior": true
   },
   {
