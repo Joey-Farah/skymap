@@ -478,6 +478,19 @@ export class SkymapView {
     this.map.flyTo({ center: [b.lon, b.lat], zoom: 16 });
   }
 
+  /** Quick-filter the map to one POI group (food, restroom, …), or null for everything. */
+  setPoiGroupFilter(group: string | null) {
+    const apply = () => {
+      const filter: maplibregl.FilterSpecification = group
+        ? ["==", ["get", "group"], group]
+        : ["!=", ["get", "group"], "transit"];
+      this.map.setFilter("skyway-pois", filter);
+      this.map.setFilter("skyway-pois-label", filter);
+    };
+    if (this.ready) apply();
+    else this.map.once("load", apply);
+  }
+
   /** Shade reachable buildings by minutes band; null clears the overlay. */
   setReach(entries: { building: Building; minutes: number }[] | null) {
     const apply = () => {

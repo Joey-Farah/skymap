@@ -9,6 +9,7 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { classifyWeather, fetchWeather } from "./weather.ts";
+import { GROUP_LABELS } from "./poi.ts";
 
 async function boot() {
   const res = await fetch("./data/skymap-data.json");
@@ -388,6 +389,25 @@ async function boot() {
     weatherLine.classList.toggle("harsh", harsh);
     weatherLine.hidden = false;
   });
+
+  // --- POI quick-filters: "what's around" at a glance ---------------------
+  const filterBar = document.getElementById("poi-filter-bar")!;
+  const QUICK_FILTERS: (keyof typeof GROUP_LABELS | null)[] = [null, "restroom", "food", "shop", "elevator"];
+  for (const group of QUICK_FILTERS) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "poi-filter-chip";
+    chip.dataset.group = group ?? "all";
+    chip.textContent = group ? GROUP_LABELS[group] : "All";
+    chip.classList.toggle("active", group === null);
+    chip.addEventListener("click", () => {
+      filterBar.querySelectorAll<HTMLButtonElement>(".poi-filter-chip").forEach((c) => {
+        c.classList.toggle("active", c === chip);
+      });
+      view.setPoiGroupFilter(group);
+    });
+    filterBar.appendChild(chip);
+  }
 
   // Test/debug handle (drives E2E camera positioning).
   (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition };
