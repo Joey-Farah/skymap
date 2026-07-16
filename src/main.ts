@@ -5,6 +5,7 @@ import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { formatMinute, nextOccurrence } from "./hours.ts";
+import { getSavedRamp, saveRamp } from "./ramp.ts";
 
 async function boot() {
   const res = await fetch("./data/skymap-data.json");
@@ -221,7 +222,47 @@ async function boot() {
     if (activeRoute) {
       sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
     }
+    maybePromptSaveRamp(nearBuilding);
   }
+
+  // --- Save My Ramp: notice when you're parked, offer a one-tap way back --
+  const rampPrompt = document.getElementById("ramp-prompt") as HTMLElement;
+  const rampPromptText = document.getElementById("ramp-prompt-text")!;
+  const rampReturn = document.getElementById("ramp-return") as HTMLButtonElement;
+  let promptedForRampId: string | null = null;
+
+  function refreshRampReturnButton() {
+    const ramp = getSavedRamp(localStorage);
+    rampReturn.hidden = !ramp;
+    if (ramp) rampReturn.textContent = `← Back to ${ramp.name}`;
+  }
+  refreshRampReturnButton();
+
+  function maybePromptSaveRamp(building: Building | null) {
+    if (!building || building.category !== "parking") return;
+    const already = getSavedRamp(localStorage);
+    if (already?.id === building.id) return; // already saved, nothing to ask
+    if (promptedForRampId === building.id) return; // asked this session already
+    promptedForRampId = building.id;
+    rampPromptText.textContent = `Parked at ${building.name}?`;
+    rampPrompt.hidden = false;
+  }
+
+  document.getElementById("ramp-prompt-dismiss")!.addEventListener("click", () => {
+    rampPrompt.hidden = true;
+  });
+  document.getElementById("ramp-prompt-save")!.addEventListener("click", () => {
+    if (nearBuilding) saveRamp(localStorage, nearBuilding);
+    rampPrompt.hidden = true;
+    refreshRampReturnButton();
+  });
+  rampReturn.addEventListener("click", () => {
+    const ramp = getSavedRamp(localStorage);
+    const rampBuilding = ramp ? router.building(ramp.id) : undefined;
+    if (!rampBuilding) return;
+    if (nearBuilding) comboFrom.select(nearBuilding);
+    comboTo.select(rampBuilding);
+  });
 
   function showReach(b: Building) {
     activeRoute = null;

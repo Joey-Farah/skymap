@@ -297,6 +297,32 @@ test("live dataset is internally consistent", () => {
   }
 });
 
+test("saved ramp round-trips through a key-value store", async () => {
+  const { saveRamp, getSavedRamp, clearSavedRamp } = await import("../src/ramp.ts");
+  const mem = new Map();
+  const fakeStore = {
+    getItem: (k) => (mem.has(k) ? mem.get(k) : null),
+    setItem: (k, v) => mem.set(k, v),
+    removeItem: (k) => mem.delete(k),
+  };
+
+  assert.equal(getSavedRamp(fakeStore), null, "nothing saved yet");
+  const saved = saveRamp(fakeStore, { id: "midtown-ramp-1", name: "Midtown Parking Ramp" });
+  assert.equal(saved.id, "midtown-ramp-1");
+  assert.ok(saved.savedAt);
+
+  const loaded = getSavedRamp(fakeStore);
+  assert.equal(loaded.id, "midtown-ramp-1");
+  assert.equal(loaded.name, "Midtown Parking Ramp");
+
+  clearSavedRamp(fakeStore);
+  assert.equal(getSavedRamp(fakeStore), null);
+
+  // Corrupt data doesn't throw, just reads as unsaved.
+  mem.set("skymap.savedRamp", "{not json");
+  assert.equal(getSavedRamp(fakeStore), null);
+});
+
 test("googleMapsUrl builds a search deep link", () => {
   const url = googleMapsUrl({ name: "Cardigan Donuts", lat: 44.9762, lon: -93.2714 });
   assert.ok(url.startsWith("https://www.google.com/maps/search/?api=1&query="));

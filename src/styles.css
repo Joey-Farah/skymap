@@ -361,6 +361,68 @@ body {
   white-space: nowrap;
 }
 
+/* --- Save My Ramp --------------------------------------------------------- */
+
+.ramp-prompt {
+  top: auto;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 66px);
+  left: 10px;
+  right: 10px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 12px 14px;
+  font-size: 14px;
+  z-index: 12;
+}
+
+.ramp-prompt[hidden] {
+  display: none;
+}
+
+.ramp-prompt-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ramp-prompt-actions button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ramp-prompt-actions button.ghost {
+  background: #fff;
+  color: var(--muted);
+  border-color: #d1d5db;
+}
+
+.ramp-return {
+  top: auto;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 66px);
+  left: 10px;
+  right: auto;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--blue);
+  border: 0;
+  cursor: pointer;
+  z-index: 12;
+}
+
+.ramp-return[hidden] {
+  display: none;
+}
+
 /* --- Bottom sheet -------------------------------------------------------- */
 
 .sheet {
