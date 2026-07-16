@@ -66,7 +66,7 @@ node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|bank|pharmacy|clin
 out body;
 node["shop"]["name"](${BBOX});
 out body;
-node["leisure"~"^(fitness_centre|bowling_alley)$"]["name"](${BBOX});
+node["leisure"~"^(fitness_centre|bowling_alley|sports_centre)$"]["name"](${BBOX});
 out body;
 node["amenity"="toilets"](${BBOX});
 out body;
@@ -322,7 +322,7 @@ async function main(osm) {
     (adj.get(e.to) ?? adj.set(e.to, []).get(e.to)).push(e.from);
   }
   const seen = new Set();
-  let mainComponent = new Set();
+  const components = [];
   for (const start of adj.keys()) {
     if (seen.has(start)) continue;
     const comp = new Set();
@@ -334,9 +334,28 @@ async function main(osm) {
       seen.add(id);
       stack.push(...adj.get(id));
     }
-    if (comp.size > mainComponent.size) mainComponent = comp;
+    components.push(comp);
   }
-  console.log(`Components: keeping largest (${mainComponent.size} of ${seen.size} connected buildings).`);
+  components.sort((a, b) => b.size - a.size);
+  // Keep every real skyway cluster, not just the single largest — a size-2
+  // pair is almost always mapping noise (an isolated corridor between two
+  // buildings, unrelated to downtown), but a cluster of 3+ buildings with
+  // internal bridges (e.g. Target Center + Butler Square + Mayo Clinic
+  // Square + 6 more, a real North Loop spur) is a legitimate, separately-
+  // mapped skyway segment that just isn't linked to the core network in
+  // OSM yet. Filtering to only the single largest component silently
+  // dropped real, findable buildings.
+  const MIN_COMPONENT_SIZE = 3;
+  const mainComponent = new Set();
+  let keptComponents = 0;
+  for (const comp of components) {
+    if (comp.size < MIN_COMPONENT_SIZE) continue;
+    keptComponents++;
+    for (const id of comp) mainComponent.add(id);
+  }
+  console.log(
+    `Components: keeping ${keptComponents} of ${components.length} (${mainComponent.size} of ${seen.size} connected buildings, min size ${MIN_COMPONENT_SIZE}).`,
+  );
   const finalBuildings = buildings.filter((b) => mainComponent.has(b.id));
   const finalEdges = [...edgeMap.values()].filter(
     (e) => mainComponent.has(e.from) && mainComponent.has(e.to),

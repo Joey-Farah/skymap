@@ -485,11 +485,19 @@ test("live POIs reference real buildings", () => {
   }
 });
 
-test("live dataset is one connected network (hours-blind)", () => {
+test("live dataset's core network is fully connected; smaller real spurs may stand alone", () => {
+  // Extraction now keeps every component with >=3 buildings, not just the
+  // single largest — real skyway spurs (e.g. Target Center's cluster) that
+  // OSM hasn't mapped a connecting bridge for yet are still findable and
+  // routable *within themselves*, even though a route *between* two
+  // separate clusters correctly returns no-route (the bridge genuinely
+  // isn't in the data). So: assert the big downtown core is one connected
+  // network, and that nothing is a true isolated singleton.
   const liveRouter = new SkywayRouter(live);
-  const origin = live.buildings[0];
-  for (const b of live.buildings.slice(1)) {
-    const r = liveRouter.route(origin.id, b.id, null);
-    assert.ok(r, `no route ${origin.id} -> ${b.id}`);
-  }
+  const reachableCounts = live.buildings.map(
+    (b) => [...liveRouter.reachable(b.id, null, Infinity).keys()].length,
+  );
+  const coreSize = Math.max(...reachableCounts);
+  assert.ok(coreSize >= 100, `core downtown network only covers ${coreSize} buildings — expected the dominant cluster to stay large`);
+  assert.ok(reachableCounts.every((n) => n >= 2), "every building must be reachable from at least one other");
 });
