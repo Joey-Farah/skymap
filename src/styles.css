@@ -941,6 +941,37 @@ a:focus-visible {
   transition: background 0.15s var(--ease);
 }
 
+/* Landmark cue: "past [logo] Ginelli's Pizza" */
+.lm-cue {
+  font-weight: 500;
+  color: var(--ink-600);
+  white-space: nowrap;
+}
+
+.lm-chip {
+  display: inline-flex;
+  vertical-align: -4px;
+  margin: 0 1px;
+}
+
+.lm-chip img,
+.lm-monogram {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  object-fit: contain;
+}
+
+.lm-monogram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .steps li::before {
   content: "";
   position: absolute;

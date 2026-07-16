@@ -56,6 +56,10 @@ export interface Poi {
   level?: string;
   /** Raw OSM opening_hours when present. */
   openingHours?: string;
+  /** Business website from OSM (or resolved from brand:wikidata). */
+  website?: string;
+  /** Key into public/logos/<logo>.png, set when a favicon was bundled at build time. */
+  logo?: string;
 }
 
 export interface SkymapData {

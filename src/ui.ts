@@ -3,6 +3,7 @@ import { googleMapsUrl, reportIssueUrl } from "./share.ts";
 import { CATEGORY_LABELS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
 import { haversineMeters } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
+import { monogramColor } from "./logo.ts";
 
 /** Single-letter result-row monogram per icon group — kept legible without emoji. */
 const RESULT_ICON_LETTER: Record<string, string> = {
@@ -200,8 +201,8 @@ export class Sheet {
           ? "Head into"
           : `Cross over ${crossing} into`;
       const landmark = landmarkNear(this.routePois, next.building.id);
-      const cue = landmark ? `, past ${landmark.name}` : "";
-      this.progressPromptEl.textContent = `${verb} ${next.building.name}${cue}`;
+      this.progressPromptEl.replaceChildren(`${verb} ${next.building.name}`);
+      if (landmark) this.progressPromptEl.append(", ", landmarkCue(landmark));
     }
     this.progressPromptEl.hidden = false;
   }
@@ -450,8 +451,8 @@ export class Sheet {
       const li = document.createElement("li");
       const closedHere = !isOpenLabelOk(step.building, when);
       const landmark = landmarkNear(pois, step.building.id);
-      const landmarkSuffix = landmark ? ` — past ${landmark.name}` : "";
-      li.append(el("span", step.building.name + (closedHere ? " (closed)" : "") + landmarkSuffix));
+      li.append(el("span", step.building.name + (closedHere ? " (closed)" : "")));
+      if (landmark) li.append(" — ", landmarkCue(landmark));
       if (step.viaCrossing) {
         // Every step is via skyway — that's the whole app — so the label
         // only appears when it says something: stairs on the crossing, or
@@ -515,4 +516,36 @@ function el(tag: string, text?: string, className?: string): HTMLElement {
   if (text) node.textContent = text;
   if (className) node.className = className;
   return node;
+}
+
+/**
+ * Visual anchor for a landmark cue: the business's bundled favicon, or a
+ * colored monogram when no logo exists — the row reads identically either
+ * way, so missing logos cost polish, not layout.
+ */
+function landmarkChip(p: Poi): HTMLElement {
+  const chip = el("span", undefined, "lm-chip");
+  const monogram = () => {
+    const m = el("span", p.name.trim().charAt(0).toUpperCase() || "•", "lm-monogram");
+    m.style.background = monogramColor(p.name);
+    return m;
+  };
+  if (p.logo) {
+    const img = document.createElement("img");
+    img.src = `logos/${p.logo}.png`;
+    img.alt = "";
+    img.loading = "lazy";
+    img.addEventListener("error", () => chip.replaceChildren(monogram()));
+    chip.append(img);
+  } else {
+    chip.append(monogram());
+  }
+  return chip;
+}
+
+/** " past <chip> <name>" as inline elements, shared by steps and live cue. */
+function landmarkCue(p: Poi): HTMLElement {
+  const cue = el("span", undefined, "lm-cue");
+  cue.append("past ", landmarkChip(p), ` ${p.name}`);
+  return cue;
 }

@@ -26,7 +26,7 @@
  * merged from the seed dataset by matching names.
  */
 
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildingCategory, groupFor } from "../src/poi.ts";
@@ -159,6 +159,91 @@ function pointInRing(lon, lat, ring) {
     if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
   }
   return inside;
+}
+
+/**
+ * Business logos, downloaded once per domain at build time so the app stays
+ * offline-capable and makes zero third-party requests at runtime. POIs with
+ * only a brand:wikidata tag (chains) get their official website resolved via
+ * Wikidata P856 first. Misses fall back to a monogram chip in the UI, so a
+ * failed download only costs polish, never correctness.
+ */
+async function attachLogos(pois) {
+  const { logoKey } = await import("../src/logo.ts");
+
+  // Resolve brand-only POIs (no website tag) through Wikidata P856.
+  const brandOnly = pois.filter((p) => !p.website && p.brandWikidata);
+  const qids = [...new Set(brandOnly.map((p) => p.brandWikidata))];
+  const siteByQid = new Map();
+  for (let i = 0; i < qids.length; i += 50) {
+    const batch = qids.slice(i, i + 50);
+    try {
+      const res = await fetch(
+        `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${batch.join("|")}&props=claims&format=json`,
+        { headers: { "User-Agent": USER_AGENT } },
+      );
+      if (!res.ok) continue;
+      const json = await res.json();
+      for (const [qid, entity] of Object.entries(json.entities ?? {})) {
+        const url = entity.claims?.P856?.[0]?.mainsnak?.datavalue?.value;
+        if (url) siteByQid.set(qid, url);
+      }
+    } catch {
+      // Logos are decoration; never fail the pipeline over them.
+    }
+  }
+  for (const p of brandOnly) {
+    const site = siteByQid.get(p.brandWikidata);
+    if (site) p.website = site;
+  }
+  for (const p of pois) delete p.brandWikidata;
+
+  const logosDir = join(ROOT, "public", "logos");
+  mkdirSync(logosDir, { recursive: true });
+  const domains = new Map(); // key -> website (first seen)
+  for (const p of pois) {
+    const key = logoKey(p.website);
+    if (key && !domains.has(key)) domains.set(key, p.website);
+  }
+
+  const available = new Set();
+  const entries = [...domains.keys()];
+  const CONCURRENCY = 8;
+  let downloaded = 0;
+  async function fetchOne(key) {
+    const path = join(logosDir, `${key}.png`);
+    if (existsSync(path)) {
+      available.add(key);
+      return;
+    }
+    const domain = new URL(domains.get(key)).hostname;
+    try {
+      const res = await fetch(
+        `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`,
+      );
+      if (!res.ok) return; // 404 = no favicon known; monogram fallback covers it
+      writeFileSync(path, Buffer.from(await res.arrayBuffer()));
+      available.add(key);
+      downloaded++;
+    } catch {
+      // Same: decoration only.
+    }
+  }
+  for (let i = 0; i < entries.length; i += CONCURRENCY) {
+    await Promise.all(entries.slice(i, i + CONCURRENCY).map(fetchOne));
+  }
+
+  let attached = 0;
+  for (const p of pois) {
+    const key = logoKey(p.website);
+    if (key && available.has(key)) {
+      p.logo = key;
+      attached++;
+    }
+  }
+  console.log(
+    `Logos: ${attached} POIs across ${available.size} domains (${downloaded} newly downloaded).`,
+  );
 }
 
 /**
@@ -510,8 +595,13 @@ async function main(osm) {
       buildingId: host.id,
       ...(n.tags.level ? { level: n.tags.level } : {}),
       ...(n.tags.opening_hours ? { openingHours: n.tags.opening_hours } : {}),
+      ...(n.tags.website || n.tags["contact:website"]
+        ? { website: n.tags.website ?? n.tags["contact:website"] }
+        : {}),
+      ...(n.tags["brand:wikidata"] ? { brandWikidata: n.tags["brand:wikidata"] } : {}),
     });
   }
+  await attachLogos(pois);
 
   // Transit stops: street-level, attached to the nearest network building
   // within 120 m; deduped by name (route variants share a pole).
@@ -570,7 +660,12 @@ async function main(osm) {
   if (!APPLY) console.log("Review the output, then re-run with --apply to make it live.");
 }
 
-fetchOverpass()
+// SKYMAP_RAW_IN=/path.json replays a cached Overpass response (see
+// SKYMAP_DUMP_RAW) so pipeline logic can iterate without the flaky API.
+const source = process.env.SKYMAP_RAW_IN
+  ? import("node:fs").then((fs) => JSON.parse(fs.readFileSync(process.env.SKYMAP_RAW_IN, "utf8")))
+  : fetchOverpass();
+source
   .then(main)
   .catch((err) => {
     console.error(`OSM extraction failed: ${err.message}`);
