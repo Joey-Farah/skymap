@@ -156,6 +156,8 @@ function pointFC(coord: [number, number] | null): FC {
 
 export class SkymapView {
   readonly map: maplibregl.Map;
+  /** The locate control — main.ts layers the heading-up tap cycle onto it. */
+  geolocate!: maplibregl.GeolocateControl;
   private data: SkymapData;
   private when: Date = new Date();
   private markers: maplibregl.Marker[] = [];
@@ -191,6 +193,7 @@ export class SkymapView {
     geolocate.on("geolocate", (pos: GeolocationPosition) => {
       onPosition?.(pos.coords.latitude, pos.coords.longitude);
     });
+    this.geolocate = geolocate;
 
     // If the basemap can't load (offline / blocked tiles), keep our overlay
     // usable on a plain background instead of dying.

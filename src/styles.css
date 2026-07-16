@@ -615,31 +615,14 @@ a:focus-visible {
   white-space: nowrap;
 }
 
-.compass-toggle {
-  top: calc(env(safe-area-inset-top, 0px) + 232px);
-  right: 10px;
-  left: auto;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  font-size: 17px;
-  color: var(--ink-600);
-  border: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  transition: transform 0.12s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
-}
-
-.compass-toggle:active {
-  transform: scale(0.92);
-}
-
-.compass-toggle.active {
-  color: #fff;
+/* Locate button while heading-up tracking is on: accent fill so the mode
+   change is visible on the control itself, Apple Maps style. */
+.maplibregl-ctrl button.maplibregl-ctrl-geolocate.heading-on {
   background: var(--accent);
+}
+
+.maplibregl-ctrl button.maplibregl-ctrl-geolocate.heading-on .maplibregl-ctrl-icon {
+  filter: brightness(0) invert(1);
 }
 
 /* --- Save My Ramp --------------------------------------------------------- */

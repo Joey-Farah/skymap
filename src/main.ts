@@ -8,6 +8,7 @@ import { formatMinute, nextOccurrence } from "./hours.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
 import { headingFromOrientation } from "./compass.ts";
+import { locateTransition, type LocateMode } from "./locate-mode.ts";
 import { classifyWeather, fetchWeather } from "./weather.ts";
 import { GROUP_LABELS } from "./poi.ts";
 
@@ -311,9 +312,10 @@ async function boot() {
     comboTo.select(rampBuilding);
   });
 
-  // --- Compass mode: rotate the map to match the phone's heading ---------
-  const compassToggle = document.getElementById("compass-toggle") as HTMLButtonElement;
-  let compassActive = false;
+  // --- Heading-up tracking: Apple-Maps locate cycle -----------------------
+  // Tap 1 centers and tracks, tap 2 rotates the map with your heading,
+  // tap 3 turns tracking off. Panning drops heading mode. Pure transitions
+  // live in locate-mode.ts; this wires them onto MapLibre's control.
   let orientationHandler: ((e: Event) => void) | null = null;
 
   async function enableCompass(): Promise<boolean> {
@@ -330,39 +332,63 @@ async function boot() {
     }
     orientationHandler = (e: Event) => {
       const heading = headingFromOrientation(e as unknown as { webkitCompassHeading?: number; alpha?: number | null });
-      if (heading !== null) view.map.setBearing(heading);
+      // geolocateSource marks the rotation as ours: without it the locate
+      // control reads the camera move as a user pan and drops its lock.
+      if (heading !== null) view.map.setBearing(heading, { geolocateSource: true });
     };
     window.addEventListener("deviceorientationabsolute", orientationHandler);
     window.addEventListener("deviceorientation", orientationHandler);
     return true;
   }
 
-  function disableCompass() {
+  function disableCompass(resetBearing: boolean) {
     if (orientationHandler) {
       window.removeEventListener("deviceorientationabsolute", orientationHandler);
       window.removeEventListener("deviceorientation", orientationHandler);
       orientationHandler = null;
     }
-    view.map.setBearing(0);
+    if (resetBearing) view.map.easeTo({ bearing: 0 }, { geolocateSource: true });
   }
 
-  compassToggle.addEventListener("click", async () => {
-    if (compassActive) {
-      disableCompass();
-      compassActive = false;
-      compassToggle.classList.remove("active");
-      return;
+  let locateMode: LocateMode = "off";
+  const locateButton = document.querySelector(
+    "button.maplibregl-ctrl-geolocate",
+  ) as HTMLButtonElement | null;
+
+  async function applyLocate(tr: ReturnType<typeof locateTransition>) {
+    if (tr.heading && !orientationHandler) {
+      if (!(await enableCompass())) {
+        // No compass on this device — stay in plain tracking rather than
+        // pretending; the tap still didn't toggle tracking off.
+        locateMode = "lock";
+        locateButton?.classList.remove("heading-on");
+        return;
+      }
     }
-    const ok = await enableCompass();
-    if (ok) {
-      compassActive = true;
-      compassToggle.classList.add("active");
-    } else {
-      sheet.showMessage(
-        "Compass unavailable",
-        "Your browser or device doesn't support heading-based rotation, or permission was denied.",
-      );
-    }
+    if (!tr.heading) disableCompass(tr.resetBearing);
+    locateMode = tr.mode;
+    locateButton?.classList.toggle("heading-on", tr.mode === "heading");
+  }
+
+  // Capture on the control container: it runs before the button's own
+  // MapLibre handler, which on a second tap would just turn tracking off.
+  locateButton?.parentElement?.addEventListener(
+    "click",
+    (e) => {
+      if (!locateButton.contains(e.target as Node)) return;
+      const tr = locateTransition(locateMode, "tap");
+      if (tr.intercept) e.stopPropagation();
+      void applyLocate(tr);
+    },
+    true,
+  );
+  view.geolocate.on("userlocationlostfocus", () => void applyLocate(locateTransition(locateMode, "blur")));
+  view.geolocate.on("userlocationfocus", () => void applyLocate(locateTransition(locateMode, "focus")));
+  view.geolocate.on("trackuserlocationend", () => {
+    // Fires both for real off AND for pan-to-background; only the former is
+    // "end" (lostfocus already covers the background case).
+    const state = (view.geolocate as unknown as { _watchState?: string })._watchState;
+    if (state === "OFF") void applyLocate(locateTransition(locateMode, "end"));
   });
 
   function showReach(b: Building) {
