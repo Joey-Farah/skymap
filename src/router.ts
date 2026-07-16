@@ -162,11 +162,16 @@ export class SkywayRouter {
    * route "to the door"). Falls back to hours-blind routing when no open
    * route exists, flagging the result.
    */
-  route(fromId: string, toId: string, when: Date | null): RouteResult | null {
-    const strict = this.search(fromId, toId, when);
+  route(
+    fromId: string,
+    toId: string,
+    when: Date | null,
+    options: { accessible?: boolean } = {},
+  ): RouteResult | null {
+    const strict = this.search(fromId, toId, when, options);
     if (strict) return { ...strict, ignoredClosures: false };
     if (when) {
-      const blind = this.search(fromId, toId, null);
+      const blind = this.search(fromId, toId, null, options);
       if (blind) return { ...blind, ignoredClosures: true };
     }
     return null;
@@ -176,6 +181,7 @@ export class SkywayRouter {
     fromId: string,
     toId: string,
     when: Date | null,
+    options: { accessible?: boolean } = {},
   ): Omit<RouteResult, "ignoredClosures"> | null {
     const goal = this.buildings.get(toId);
     const start = this.buildings.get(fromId);
@@ -205,6 +211,7 @@ export class SkywayRouter {
 
       for (const edge of this.adjacency.get(current) ?? []) {
         if (closed.has(edge.to)) continue;
+        if (options.accessible && edge.hasSteps) continue;
         const b = this.buildings.get(edge.to)!;
         const isEndpoint = edge.to === toId || edge.to === fromId;
         if (when && !isEndpoint && !isOpenAt(b, when)) continue;

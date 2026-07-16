@@ -260,6 +260,20 @@ body {
   cursor: pointer;
 }
 
+.access-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.access-toggle input {
+  accent-color: var(--blue);
+}
+
 .scrub-label {
   margin-left: auto;
   font-weight: 600;

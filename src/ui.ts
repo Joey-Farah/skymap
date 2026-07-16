@@ -357,7 +357,11 @@ export class Sheet {
     this.show();
   }
 
-  showRoute(route: RouteResult, when: Date, labels?: { from?: string; to?: string }) {
+  showRoute(
+    route: RouteResult,
+    when: Date,
+    labels?: { from?: string; to?: string; accessible?: boolean },
+  ) {
     this.content.innerHTML = "";
     const first = route.steps[0].building;
     const last = route.steps[route.steps.length - 1].building;
@@ -386,6 +390,8 @@ export class Sheet {
     // not just discovering it mid-walk in the collapsed step list.
     if (route.steps.some((s) => s.hasSteps)) {
       this.content.append(el("span", "Includes stairs", "badge stairs"));
+    } else if (labels?.accessible) {
+      this.content.append(el("span", "Step-free route", "badge open"));
     }
 
     const summary = document.createElement("div");

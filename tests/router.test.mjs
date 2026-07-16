@@ -144,6 +144,32 @@ test("sliceAlong cuts a polyline at a distance", () => {
   assert.deepEqual(sliceAlong(line, total * 2), line, "clamps past the end");
 });
 
+test("accessible routing avoids stairs edges even when they're the shortest path", () => {
+  // a -[stairs, short]- b, a -[flat, long]- c -[flat]- b: accessible mode
+  // must take the longer flat detour, not the direct stairs edge.
+  const mini = {
+    meta: data.meta,
+    buildings: [
+      { ...data.buildings[0], id: "a", lat: 44.977, lon: -93.271 },
+      { ...data.buildings[0], id: "b", lat: 44.9772, lon: -93.271 }, // ~22m from a
+      { ...data.buildings[0], id: "c", lat: 44.98, lon: -93.268 }, // far detour point
+    ],
+    edges: [
+      { from: "a", to: "b", crossing: "stairs link", hasSteps: true },
+      { from: "a", to: "c", crossing: "flat link 1" },
+      { from: "c", to: "b", crossing: "flat link 2" },
+    ],
+  };
+  const r = new SkywayRouter(mini);
+  const direct = r.route("a", "b", null);
+  assert.equal(direct.steps.length, 2, "hours-blind default takes the direct stairs edge");
+
+  const accessible = r.route("a", "b", null, { accessible: true });
+  assert.ok(accessible, "an accessible route must still be found via the detour");
+  assert.equal(accessible.steps.length, 3, "accessible mode detours around the stairs");
+  assert.ok(accessible.steps.every((s) => !s.hasSteps), "no step in an accessible route has stairs");
+});
+
 test("route steps surface stairs when the bridge crossing has them", () => {
   const mini = {
     meta: data.meta,

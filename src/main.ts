@@ -121,6 +121,8 @@ async function boot() {
   slider.addEventListener("change", () => routeIfReady());
 
   let activeRoute: RouteResult | null = null;
+  const accessibleInput = document.getElementById("input-accessible") as HTMLInputElement;
+  accessibleInput.addEventListener("change", () => routeIfReady());
 
   function routeIfReady() {
     const fromId = comboFrom.value;
@@ -133,14 +135,16 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const route = router.route(fromId, toId, when);
+    const route = router.route(fromId, toId, when, { accessible: accessibleInput.checked });
     if (!route) {
       activeRoute = null;
       expandSearch();
       view.setRoute(null);
       sheet.showMessage(
         "No route found",
-        "These buildings aren't connected in the current dataset.",
+        accessibleInput.checked
+          ? "No stairs-free path connects these buildings in the current dataset."
+          : "These buildings aren't connected in the current dataset.",
       );
       return;
     }
@@ -149,7 +153,7 @@ async function boot() {
     view.setRoute(route);
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
     const toLabel = comboTo.label ?? router.building(toId)!.name;
-    sheet.showRoute(route, when, { from: fromLabel, to: toLabel });
+    sheet.showRoute(route, when, { from: fromLabel, to: toLabel, accessible: accessibleInput.checked });
     collapseSearch(fromLabel, toLabel);
     // Make the address bar shareable: the URL always describes this route.
     history.replaceState(
