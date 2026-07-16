@@ -424,6 +424,10 @@ test("combo entries include businesses, searchable by name", async () => {
   assert.equal(hit[0].label, "Vitality Roasting");
   assert.equal(hit[0].buildingId, "six-quebec", "selecting the business routes to its building");
   assert.equal(hit[0].sublabel, "Six Quebec");
+  assert.equal(hit[0].icon, "food", "business results carry their POI group for the result icon");
+
+  const buildingHit = searchEntries(entries, "forum")[0];
+  assert.equal(buildingHit.icon, "building", "plain buildings get a generic building icon");
 
   assert.equal(searchEntries(entries, "forum").length, 1, "still finds plain buildings");
   assert.equal(

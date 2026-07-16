@@ -3,6 +3,18 @@ import { googleMapsUrl, reportIssueUrl } from "./share.ts";
 import { CATEGORY_LABELS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
 import { haversineMeters } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
+
+/** Single-letter result-row monogram per icon group — kept legible without emoji. */
+const RESULT_ICON_LETTER: Record<string, string> = {
+  building: "B",
+  food: "F",
+  shop: "S",
+  service: "•",
+  restroom: "R",
+  elevator: "E",
+  landmark: "L",
+  transit: "T",
+};
 import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
@@ -64,12 +76,19 @@ export class BuildingCombo {
     this.list.innerHTML = "";
     for (const entry of items) {
       const li = document.createElement("li");
+      const icon = document.createElement("span");
+      icon.className = `result-icon icon-${entry.icon}`;
+      icon.textContent = RESULT_ICON_LETTER[entry.icon] ?? "•";
+      const text = document.createElement("span");
+      text.className = "result-text";
       const name = document.createElement("span");
+      name.className = "result-name";
       name.textContent = entry.label;
       const sub = document.createElement("span");
       sub.className = "addr";
       sub.textContent = entry.poiId ? `in ${entry.sublabel}` : entry.sublabel;
-      li.append(name, sub);
+      text.append(name, sub);
+      li.append(icon, text);
       li.addEventListener("mousedown", (e) => {
         e.preventDefault();
         this.selectEntry(entry);
