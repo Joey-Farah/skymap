@@ -76,6 +76,8 @@ node["highway"="bus_stop"]["name"](${BBOX});
 out body;
 node["railway"~"^(station|tram_stop)$"]["name"](${BBOX});
 out body;
+node["highway"="elevator"](${BBOX});
+out body;
 `;
 
 const DEFAULT_HOURS = [
@@ -222,7 +224,11 @@ async function main(osm) {
       const t = el.tags ?? {};
       if (t.highway === "bus_stop" || t.railway === "station" || t.railway === "tram_stop") {
         if (t.name) transitNodes.push(el);
-      } else if (t.amenity === "toilets" || (t.name && (t.amenity || t.shop || t.leisure || t.tourism))) {
+      } else if (
+        t.amenity === "toilets" ||
+        t.highway === "elevator" ||
+        (t.name && (t.amenity || t.shop || t.leisure || t.tourism))
+      ) {
         poiNodes.push(el);
       }
     } else if (el.type === "way" && el.tags?.building && el.tags?.name) buildingsRaw.push(el);
@@ -352,11 +358,11 @@ async function main(osm) {
   for (const n of poiNodes) {
     const host = finalBuildings.find((b) => pointInRing(n.lon, n.lat, b.footprint));
     if (!host) continue;
-    const kind = n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : "leisure";
-    const category = n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.leisure;
+    const kind = n.tags.highway === "elevator" ? "elevator" : n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : "leisure";
+    const category = n.tags.highway === "elevator" ? "elevator" : (n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.leisure);
     pois.push({
       id: `poi-${n.id}`,
-      name: n.tags.name ?? (category === "toilets" ? "Public restroom" : category),
+      name: n.tags.name ?? (category === "toilets" ? "Public restroom" : category === "elevator" ? "Elevator" : category),
       category,
       kind,
       group: groupFor(kind, category),

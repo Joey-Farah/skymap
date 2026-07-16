@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-15T23:44:25.491Z"
+  "generated": "2026-07-16T00:09:35.875Z"
  },
  "buildings": [
   {
@@ -16513,6 +16513,134 @@
    "lat": 44.980478,
    "lon": -93.270132,
    "buildingId": "minneapolis-central-library-546472304"
+  },
+  {
+   "id": "poi-5955554308",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.975878,
+   "lon": -93.273535,
+   "buildingId": "us-bancorp-center-461224219",
+   "level": "0;1"
+  },
+  {
+   "id": "poi-5955577510",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.977575,
+   "lon": -93.272292,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-5955582347",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.977797,
+   "lon": -93.272929,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-5955582355",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.978023,
+   "lon": -93.273776,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-6008108629",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.977179,
+   "lon": -93.263159,
+   "buildingId": "jerry-haaf-memorial-garage-126015101",
+   "level": "-1;0;1"
+  },
+  {
+   "id": "poi-12590968660",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.977945,
+   "lon": -93.264187,
+   "buildingId": "united-states-courthouse-and-federal-building-44684856",
+   "level": "-1;0"
+  },
+  {
+   "id": "poi-12590968692",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.977533,
+   "lon": -93.263676,
+   "buildingId": "grain-exchange-main-building-45452111"
+  },
+  {
+   "id": "poi-12590968695",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.978451,
+   "lon": -93.265009,
+   "buildingId": "united-states-courthouse-and-federal-building-44684856",
+   "level": "-2;-1;0;1"
+  },
+  {
+   "id": "poi-12695449174",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.976855,
+   "lon": -93.261614,
+   "buildingId": "wells-fargo-550-407613510",
+   "level": "-1;0;1"
+  },
+  {
+   "id": "poi-13410756389",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.974728,
+   "lon": -93.272927,
+   "buildingId": "metro-apartments-156912887",
+   "level": "0;1"
+  },
+  {
+   "id": "poi-13451748937",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.975941,
+   "lon": -93.274403,
+   "buildingId": "811-lasalle-357279465",
+   "level": "0;1"
+  },
+  {
+   "id": "poi-13451748967",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.978733,
+   "lon": -93.272853,
+   "buildingId": "plymouth-building-156909952",
+   "level": "0;1"
   },
   {
    "id": "poi-622227512",

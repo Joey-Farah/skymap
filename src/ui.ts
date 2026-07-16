@@ -224,7 +224,7 @@ export class Sheet {
 
     const interior = pois.filter((p) => !p.exterior);
     const transit = pois.filter((p) => p.exterior);
-    const order: PoiGroup[] = ["food", "shop", "service", "restroom", "landmark"];
+    const order: PoiGroup[] = ["food", "shop", "service", "restroom", "elevator", "landmark"];
     for (const group of order) {
       const members = interior.filter((p) => p.group === group);
       if (members.length === 0) continue;

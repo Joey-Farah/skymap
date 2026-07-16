@@ -1,13 +1,14 @@
 /** POI grouping: one place that decides how a business/feature is classed,
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
-export type PoiGroup = "food" | "shop" | "service" | "restroom" | "landmark" | "transit";
+export type PoiGroup = "food" | "shop" | "service" | "restroom" | "landmark" | "transit" | "elevator";
 
 const FOOD = /^(cafe|restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli|coffee)$/;
 const LANDMARK_AMENITY = /^(library|townhall|courthouse|place_of_worship|theatre|cinema)$/;
 const TRANSIT = /^(bus_stop|station|tram_stop|stop)$/;
 
 export function groupFor(kind: string, category: string): PoiGroup {
+  if (category === "elevator") return "elevator";
   if (category === "toilets") return "restroom";
   if (kind === "transit" || TRANSIT.test(category)) return "transit";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
@@ -23,6 +24,7 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
   restroom: "Restrooms",
   landmark: "Landmarks",
   transit: "Transit nearby",
+  elevator: "Elevators",
 };
 
 /** OSM building-way tags -> our building category. */

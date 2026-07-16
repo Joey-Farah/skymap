@@ -125,6 +125,7 @@ const GROUP_COLORS: Record<string, string> = {
   restroom: "#0d9488",
   landmark: "#7c3aed",
   transit: "#178740",
+  elevator: "#475569",
 };
 
 function poisFC(pois: Poi[]): FC {

@@ -307,6 +307,7 @@ test("poi grouping and building categories", async () => {
   assert.equal(groupFor("shop", "clothes"), "shop");
   assert.equal(groupFor("amenity", "bank"), "service");
   assert.equal(groupFor("amenity", "toilets"), "restroom");
+  assert.equal(groupFor("elevator", "elevator"), "elevator");
   assert.equal(groupFor("tourism", "museum"), "landmark");
   assert.equal(groupFor("transit", "bus_stop"), "transit");
   assert.equal(buildingCategory({ building: "parking" }), "parking");
