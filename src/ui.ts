@@ -453,11 +453,16 @@ export class Sheet {
       const landmarkSuffix = landmark ? ` — past ${landmark.name}` : "";
       li.append(el("span", step.building.name + (closedHere ? " (closed)" : "") + landmarkSuffix));
       if (step.viaCrossing) {
-        // OSM often names every bridge "Minneapolis Skyway" — say something
-        // shorter than "Cross over Minneapolis Skyway" on every step.
+        // Every step is via skyway — that's the whole app — so the label
+        // only appears when it says something: stairs on the crossing, or
+        // a genuinely named crossing (OSM names most bridges the generic
+        // "Minneapolis Skyway", which we treat as saying nothing).
         const generic = /^(minneapolis )?skyway$/i.test(step.viaCrossing.trim());
-        const base = generic ? "Via skyway" : `Cross over ${step.viaCrossing}`;
-        li.prepend(el("span", step.hasSteps ? `${base} · stairs` : base, step.hasSteps ? "via steps" : "via"));
+        if (step.hasSteps) {
+          li.prepend(el("span", generic ? "Stairs" : `Stairs · ${step.viaCrossing}`, "via steps"));
+        } else if (!generic) {
+          li.prepend(el("span", `Cross over ${step.viaCrossing}`, "via"));
+        }
         if (onReportClosed && i > 0) {
           const prevId = route.steps[i - 1].building.id;
           const curId = step.building.id;
