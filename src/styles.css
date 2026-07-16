@@ -739,6 +739,21 @@ a:focus-visible {
   }
 }
 
+@keyframes content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.content-enter {
+  animation: content-enter 0.24s var(--ease);
+}
+
 .sheet h2 {
   margin: 0 0 3px;
   font-size: 18px;
@@ -1195,5 +1210,6 @@ a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

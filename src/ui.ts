@@ -209,6 +209,12 @@ export class Sheet {
   private show(expanded = true) {
     this.root.hidden = false;
     this.setExpanded(expanded);
+    // Retrigger the content fade-in even when the sheet was already open
+    // (e.g. tapping a different building) — a hard content swap otherwise
+    // reads as a glitch rather than a transition.
+    this.content.classList.remove("content-enter");
+    void this.content.offsetWidth; // force reflow so the animation restarts
+    this.content.classList.add("content-enter");
   }
 
   showBuilding(
