@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-16T13:25:31.496Z"
+  "generated": "2026-07-16T14:19:05.741Z"
  },
  "buildings": [
   {
@@ -17048,14 +17048,6 @@
    "crossing": "skyway",
    "geometry": [
     [
-     -93.272862,
-     44.983205
-    ],
-    [
-     -93.273047,
-     44.983296
-    ],
-    [
      -93.273366,
      44.983415
     ],
@@ -17071,10 +17063,6 @@
    "crossing": "skyway",
    "geometry": [
     [
-     -93.27363,
-     44.983488
-    ],
-    [
      -93.273987,
      44.983585
     ],
@@ -17083,6 +17071,560 @@
      44.9837
     ]
    ]
+  },
+  {
+   "from": "4th-street-ramp-c-27346543",
+   "to": "textile-building-89080618",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273603,
+     44.982302
+    ],
+    [
+     -93.273694,
+     44.982236
+    ]
+   ]
+  },
+  {
+   "from": "60-south-sixth-156909966",
+   "to": "gaviidae-common-156909893",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.270929,
+     44.9778
+    ],
+    [
+     -93.271083,
+     44.977591
+    ]
+   ]
+  },
+  {
+   "from": "60-south-sixth-156909966",
+   "to": "the-westin-minneapolis-156912892",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.270425,
+     44.977913
+    ],
+    [
+     -93.270249,
+     44.977842
+    ]
+   ]
+  },
+  {
+   "from": "60-south-sixth-156909966",
+   "to": "50-south-sixth-99714290",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.27094,
+     44.97823
+    ],
+    [
+     -93.271216,
+     44.978335
+    ]
+   ]
+  },
+  {
+   "from": "50-south-sixth-99714290",
+   "to": "15-building-461227729",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271928,
+     44.97871
+    ],
+    [
+     -93.271919,
+     44.978752
+    ]
+   ]
+  },
+  {
+   "from": "50-south-sixth-99714290",
+   "to": "city-center-27346720",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271958,
+     44.978219
+    ],
+    [
+     -93.272093,
+     44.978026
+    ]
+   ]
+  },
+  {
+   "from": "15-building-461227729",
+   "to": "murrays-1334632160",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.272227,
+     44.978879
+    ],
+    [
+     -93.272346,
+     44.978876
+    ]
+   ]
+  },
+  {
+   "from": "15-building-461227729",
+   "to": "lumber-exchange-30263208",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271845,
+     44.979233
+    ],
+    [
+     -93.271683,
+     44.979432
+    ]
+   ]
+  },
+  {
+   "from": "gaviidae-common-156909893",
+   "to": "wells-fargo-center-41763762",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.270958,
+     44.977165
+    ],
+    [
+     -93.270518,
+     44.97699
+    ]
+   ]
+  },
+  {
+   "from": "gaviidae-common-156909893",
+   "to": "ids-center-1385236413",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271658,
+     44.976782
+    ],
+    [
+     -93.27183,
+     44.976506
+    ]
+   ]
+  },
+  {
+   "from": "gaviidae-common-156909893",
+   "to": "city-center-27346720",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.27197,
+     44.977443
+    ],
+    [
+     -93.272292,
+     44.977575
+    ]
+   ]
+  },
+  {
+   "from": "hennepin-county-government-center-27518018",
+   "to": "minneapolis-public-service-building-746039475",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.266186,
+     44.975793
+    ],
+    [
+     -93.26576,
+     44.975616
+    ]
+   ]
+  },
+  {
+   "from": "hennepin-county-government-center-27518018",
+   "to": "us-bank-plaza-126015100",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.267105,
+     44.976169
+    ],
+    [
+     -93.267242,
+     44.976544
+    ]
+   ]
+  },
+  {
+   "from": "hennepin-county-government-center-27518018",
+   "to": "united-states-courthouse-and-federal-building-44684856",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.266442,
+     44.976501
+    ],
+    [
+     -93.266409,
+     44.976563
+    ],
+    [
+     -93.26635,
+     44.976615
+    ],
+    [
+     -93.26627,
+     44.97665
+    ],
+    [
+     -93.266178,
+     44.976666
+    ],
+    [
+     -93.266084,
+     44.976661
+    ],
+    [
+     -93.265998,
+     44.976635
+    ],
+    [
+     -93.26575,
+     44.976928
+    ],
+    [
+     -93.265146,
+     44.977671
+    ]
+   ]
+  },
+  {
+   "from": "us-bank-plaza-126015100",
+   "to": "canadian-pacific-plaza-62005000",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.268115,
+     44.977114
+    ],
+    [
+     -93.268456,
+     44.977232
+    ]
+   ]
+  },
+  {
+   "from": "us-bank-plaza-126015100",
+   "to": "capella-tower-115559604",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.267953,
+     44.976598
+    ],
+    [
+     -93.268102,
+     44.976328
+    ]
+   ]
+  },
+  {
+   "from": "us-bank-plaza-126015100",
+   "to": "mcknight-building-41763761",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.267536,
+     44.977403
+    ],
+    [
+     -93.267352,
+     44.977582
+    ]
+   ]
+  },
+  {
+   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
+   "to": "city-center-27346720",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.272757,
+     44.976989
+    ],
+    [
+     -93.272658,
+     44.977204
+    ]
+   ]
+  },
+  {
+   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
+   "to": "811-lasalle-357279465",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273976,
+     44.976601
+    ],
+    [
+     -93.274072,
+     44.976483
+    ]
+   ]
+  },
+  {
+   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
+   "to": "minneapolis-marriott-city-center-27346715",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273339,
+     44.977244
+    ],
+    [
+     -93.273094,
+     44.977422
+    ]
+   ]
+  },
+  {
+   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
+   "to": "park-and-shop-ramp-27346580",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.274023,
+     44.976887
+    ],
+    [
+     -93.274286,
+     44.977004
+    ]
+   ]
+  },
+  {
+   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
+   "to": "us-bancorp-center-461224219",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273772,
+     44.976513
+    ],
+    [
+     -93.273223,
+     44.976275
+    ],
+    [
+     -93.273311,
+     44.976158
+    ]
+   ]
+  },
+  {
+   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
+   "to": "ids-center-1385236413",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273634,
+     44.976887
+    ],
+    [
+     -93.272956,
+     44.97661
+    ],
+    [
+     -93.272982,
+     44.976577
+    ],
+    [
+     -93.272775,
+     44.976465
+    ]
+   ]
+  },
+  {
+   "from": "target-center-23125943",
+   "to": "5th-street-ramp-b-30062750",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276395,
+     44.980239
+    ],
+    [
+     -93.276057,
+     44.980573
+    ]
+   ]
+  },
+  {
+   "from": "target-center-23125943",
+   "to": "mayo-clinic-square-27346712",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.275261,
+     44.979437
+    ],
+    [
+     -93.274834,
+     44.97915
+    ]
+   ]
+  },
+  {
+   "from": "target-center-23125943",
+   "to": "butler-square-29060521",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.275727,
+     44.980118
+    ],
+    [
+     -93.275959,
+     44.980266
+    ]
+   ]
+  },
+  {
+   "from": "target-center-23125943",
+   "to": "hampton-inn-suites-minneapolis-downtown-198988798",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276395,
+     44.980239
+    ],
+    [
+     -93.277073,
+     44.979806
+    ],
+    [
+     -93.277178,
+     44.97974
+    ],
+    [
+     -93.277456,
+     44.97956
+    ],
+    [
+     -93.277554,
+     44.979497
+    ],
+    [
+     -93.277545,
+     44.977998
+    ]
+   ]
+  },
+  {
+   "from": "ids-center-1385236413",
+   "to": "733-building-126116972",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271469,
+     44.976082
+    ],
+    [
+     -93.271049,
+     44.975918
+    ]
+   ]
+  },
+  {
+   "from": "ids-center-1385236413",
+   "to": "rsm-plaza-357019983",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271946,
+     44.975724
+    ],
+    [
+     -93.27223,
+     44.975455
+    ]
+   ]
+  },
+  {
+   "from": "ids-center-1385236413",
+   "to": "us-bancorp-center-461224219",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.272775,
+     44.976465
+    ],
+    [
+     -93.272982,
+     44.976577
+    ],
+    [
+     -93.273057,
+     44.976481
+    ],
+    [
+     -93.273223,
+     44.976275
+    ],
+    [
+     -93.273311,
+     44.976158
+    ]
+   ]
+  },
+  {
+   "from": "ids-center-1385236413",
+   "to": "811-lasalle-357279465",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.272775,
+     44.976465
+    ],
+    [
+     -93.272982,
+     44.976577
+    ],
+    [
+     -93.273057,
+     44.976481
+    ],
+    [
+     -93.273027,
+     44.976466
+    ],
+    [
+     -93.27315,
+     44.976309
+    ],
+    [
+     -93.273204,
+     44.976245
+    ],
+    [
+     -93.273596,
+     44.976418
+    ]
+   ],
+   "hasSteps": true
   },
   {
    "from": "six-quebec-156912888",
@@ -17100,14 +17642,70 @@
    ]
   },
   {
+   "from": "six-quebec-156912888",
+   "to": "wells-fargo-center-41763762",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.270247,
+     44.976852
+    ],
+    [
+     -93.270518,
+     44.97699
+    ]
+   ]
+  },
+  {
+   "from": "six-quebec-156912888",
+   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.269839,
+     44.977067
+    ],
+    [
+     -93.26972,
+     44.977271
+    ]
+   ]
+  },
+  {
+   "from": "northstar-west-45581647",
+   "to": "705-building-126116975",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.270316,
+     44.976216
+    ],
+    [
+     -93.270485,
+     44.976025
+    ]
+   ]
+  },
+  {
+   "from": "northstar-west-45581647",
+   "to": "groove-lofts-156909964",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.269845,
+     44.976397
+    ],
+    [
+     -93.269732,
+     44.976528
+    ]
+   ]
+  },
+  {
    "from": "essex-building-461224211",
    "to": "young-quinlan-building-44684854",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.274137,
-     44.974426
-    ],
     [
      -93.273933,
      44.974343
@@ -17115,6 +17713,74 @@
     [
      -93.273709,
      44.974597
+    ]
+   ]
+  },
+  {
+   "from": "essex-building-461224211",
+   "to": "target-plaza-45452119",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.274755,
+     44.974209
+    ],
+    [
+     -93.275021,
+     44.974325
+    ],
+    [
+     -93.275073,
+     44.974264
+    ]
+   ]
+  },
+  {
+   "from": "essex-building-461224211",
+   "to": "opus-hall-45452121",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.274755,
+     44.974209
+    ],
+    [
+     -93.275021,
+     44.974325
+    ],
+    [
+     -93.275845,
+     44.974677
+    ]
+   ]
+  },
+  {
+   "from": "young-quinlan-building-44684854",
+   "to": "medical-arts-building-92905817",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273287,
+     44.97459
+    ],
+    [
+     -93.273148,
+     44.974793
+    ]
+   ]
+  },
+  {
+   "from": "young-quinlan-building-44684854",
+   "to": "lakewood-publications-building-461224214",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.274259,
+     44.974943
+    ],
+    [
+     -93.27426,
+     44.974972
     ]
    ]
   },
@@ -17134,14 +17800,44 @@
    ]
   },
   {
+   "from": "city-center-27346720",
+   "to": "33-south-sixth-27346721",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273451,
+     44.978034
+    ],
+    [
+     -93.273123,
+     44.978413
+    ]
+   ]
+  },
+  {
+   "from": "minneapolis-marriott-city-center-27346715",
+   "to": "mayo-clinic-square-27346712",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273706,
+     44.978141
+    ],
+    [
+     -93.274009,
+     44.978351
+    ],
+    [
+     -93.274281,
+     44.978553
+    ]
+   ]
+  },
+  {
    "from": "733-building-126116972",
    "to": "705-building-126116975",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.270914,
-     44.975858
-    ],
     [
      -93.270665,
      44.975757
@@ -17149,6 +17845,36 @@
     [
      -93.270499,
      44.975948
+    ]
+   ]
+  },
+  {
+   "from": "733-building-126116972",
+   "to": "730-building-45581646",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.27096,
+     44.975271
+    ],
+    [
+     -93.270905,
+     44.975254
+    ]
+   ]
+  },
+  {
+   "from": "733-building-126116972",
+   "to": "deluxe-plaza-1462073358",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271015,
+     44.975199
+    ],
+    [
+     -93.271179,
+     44.975
     ]
    ]
   },
@@ -17173,14 +17899,6 @@
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.270327,
-     44.975867
-    ],
-    [
-     -93.269931,
-     44.975694
-    ],
-    [
      -93.270116,
      44.975472
     ],
@@ -17191,26 +17909,40 @@
    ]
   },
   {
+   "from": "730-building-45581646",
+   "to": "minneapolis-club-156909955",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.270024,
+     44.975365
+    ],
+    [
+     -93.269628,
+     44.975227
+    ]
+   ]
+  },
+  {
+   "from": "fifth-street-towers-29080597",
+   "to": "soo-line-building-156909948",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.268788,
+     44.978186
+    ],
+    [
+     -93.268928,
+     44.977991
+    ]
+   ]
+  },
+  {
    "from": "fifth-street-towers-29080597",
    "to": "old-republic-title-building-156912886",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.268734,
-     44.978268
-    ],
-    [
-     -93.268546,
-     44.978243
-    ],
-    [
-     -93.268408,
-     44.978377
-    ],
-    [
-     -93.268194,
-     44.978286
-    ],
     [
      -93.268031,
      44.978216
@@ -17218,6 +17950,66 @@
     [
      -93.267734,
      44.97809
+    ]
+   ]
+  },
+  {
+   "from": "fifth-street-towers-29080597",
+   "to": "4marq-apartments-827449975",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.268894,
+     44.978475
+    ],
+    [
+     -93.269182,
+     44.978605
+    ]
+   ]
+  },
+  {
+   "from": "fifth-street-towers-29080597",
+   "to": "farmers-and-mechanics-savings-bank-157025240",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.268432,
+     44.978527
+    ],
+    [
+     -93.268376,
+     44.978567
+    ]
+   ]
+  },
+  {
+   "from": "old-republic-title-building-156912886",
+   "to": "mcknight-building-41763761",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.267734,
+     44.97809
+    ],
+    [
+     -93.267441,
+     44.977992
+    ]
+   ]
+  },
+  {
+   "from": "mcknight-building-41763761",
+   "to": "emery-autograph-collection-62006964",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.267327,
+     44.978061
+    ],
+    [
+     -93.267285,
+     44.978117
     ]
    ]
   },
@@ -17237,57 +18029,151 @@
    ]
   },
   {
-   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
-   "to": "811-lasalle-357279465",
+   "from": "5th-street-ramp-b-30062750",
+   "to": "cowboy-jacks-157031168",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.273832,
-     44.976964
+     -93.275134,
+     44.981239
     ],
     [
-     -93.273929,
-     44.976907
-    ],
-    [
-     -93.274044,
-     44.976766
-    ],
-    [
-     -93.273976,
-     44.976601
-    ],
-    [
-     -93.274072,
-     44.976483
+     -93.27477,
+     44.98149
     ]
    ]
+  },
+  {
+   "from": "the-churchill-460860491",
+   "to": "rivergate-apartments-81049129",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.264768,
+     44.981921
+    ],
+    [
+     -93.264814,
+     44.981873
+    ]
+   ]
+  },
+  {
+   "from": "the-crossings-1411646515",
+   "to": "330-south-second-45452108",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.26649,
+     44.979878
+    ],
+    [
+     -93.266718,
+     44.979671
+    ]
+   ]
+  },
+  {
+   "from": "the-crossings-1411646515",
+   "to": "100-washington-square-44164776",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.265926,
+     44.980557
+    ],
+    [
+     -93.265588,
+     44.980957
+    ]
+   ]
+  },
+  {
+   "from": "the-crossings-1411646515",
+   "to": "111-washington-square-537857247",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.266449,
+     44.980375
+    ],
+    [
+     -93.266504,
+     44.980435
+    ]
+   ]
+  },
+  {
+   "from": "the-crossings-1411646515",
+   "to": "city-of-lakes-building-45452110",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.265477,
+     44.979937
+    ],
+    [
+     -93.265307,
+     44.979476
+    ]
+   ]
+  },
+  {
+   "from": "811-lasalle-357279465",
+   "to": "lasalle-plaza-461227727",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.274784,
+     44.975995
+    ],
+    [
+     -93.275123,
+     44.976085
+    ]
+   ]
+  },
+  {
+   "from": "811-lasalle-357279465",
+   "to": "us-bancorp-center-461224219",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273596,
+     44.976418
+    ],
+    [
+     -93.273204,
+     44.976245
+    ],
+    [
+     -93.27315,
+     44.976309
+    ],
+    [
+     -93.273027,
+     44.976466
+    ],
+    [
+     -93.273057,
+     44.976481
+    ],
+    [
+     -93.273223,
+     44.976275
+    ],
+    [
+     -93.273311,
+     44.976158
+    ]
+   ],
+   "hasSteps": true
   },
   {
    "from": "us-bancorp-center-461224219",
    "to": "lakewood-publications-building-461224214",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.273416,
-     44.975964
-    ],
-    [
-     -93.273535,
-     44.975878
-    ],
-    [
-     -93.273555,
-     44.975863
-    ],
-    [
-     -93.273767,
-     44.975941
-    ],
-    [
-     -93.274208,
-     44.975409
-    ],
     [
      -93.274248,
      44.975362
@@ -17299,30 +18185,134 @@
    ]
   },
   {
+   "from": "lasalle-plaza-461227727",
+   "to": "lasalle-apartments-461227722",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.275759,
+     44.975992
+    ],
+    [
+     -93.275936,
+     44.975774
+    ]
+   ]
+  },
+  {
+   "from": "lasalle-plaza-461227727",
+   "to": "state-theatre-156912879",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276326,
+     44.976626
+    ],
+    [
+     -93.275894,
+     44.97695
+    ]
+   ]
+  },
+  {
+   "from": "opus-hall-45452121",
+   "to": "fair-school-for-arts-45680534",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276612,
+     44.975402
+    ],
+    [
+     -93.276745,
+     44.975369
+    ]
+   ]
+  },
+  {
+   "from": "opus-hall-45452121",
+   "to": "lasalle-apartments-461227722",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276429,
+     44.975456
+    ],
+    [
+     -93.276103,
+     44.975848
+    ]
+   ]
+  },
+  {
+   "from": "opus-hall-45452121",
+   "to": "terrence-murphy-hall-93481572",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276596,
+     44.974658
+    ],
+    [
+     -93.276627,
+     44.974625
+    ]
+   ]
+  },
+  {
+   "from": "opus-hall-45452121",
+   "to": "target-plaza-45452119",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.275845,
+     44.974677
+    ],
+    [
+     -93.275021,
+     44.974325
+    ],
+    [
+     -93.275073,
+     44.974264
+    ]
+   ]
+  },
+  {
+   "from": "marquette-place-451283544",
+   "to": "sheraton-minneapolis-downtown-convention-center-1394814185",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276509,
+     44.970676
+    ],
+    [
+     -93.276775,
+     44.970786
+    ]
+   ]
+  },
+  {
+   "from": "marquette-place-451283544",
+   "to": "historic-wesley-center-92810581",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.275588,
+     44.970093
+    ],
+    [
+     -93.275589,
+     44.970021
+    ]
+   ]
+  },
+  {
    "from": "hampton-inn-suites-minneapolis-downtown-198988798",
    "to": "orpheum-theatre-41763764",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.277545,
-     44.977998
-    ],
-    [
-     -93.277545,
-     44.977972
-    ],
-    [
-     -93.277546,
-     44.977815
-    ],
-    [
-     -93.277657,
-     44.977561
-    ],
-    [
-     -93.27782,
-     44.977378
-    ],
     [
      -93.277949,
      44.977275
@@ -17330,6 +18320,21 @@
     [
      -93.278174,
      44.977161
+    ]
+   ]
+  },
+  {
+   "from": "hampton-inn-suites-minneapolis-downtown-198988798",
+   "to": "pence-building-156912891",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276654,
+     44.977487
+    ],
+    [
+     -93.276619,
+     44.977463
     ]
    ]
   },
@@ -17349,40 +18354,17 @@
    ]
   },
   {
-   "from": "elevate-apartments-220494794",
+   "from": "hilton-minneapolis-28490639",
    "to": "marquette-parking-ramp-27346594",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.273999,
-     44.972158
-    ],
-    [
-     -93.273968,
-     44.972193
-    ],
-    [
-     -93.273549,
-     44.972017
-    ]
-   ]
-  },
-  {
-   "from": "marquette-parking-ramp-27346594",
-   "to": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.273549,
-     44.972017
+     -93.273156,
+     44.972207
     ],
     [
      -93.273375,
      44.971945
-    ],
-    [
-     -93.273075,
-     44.971818
     ]
    ]
   },
@@ -17402,17 +18384,32 @@
    ]
   },
   {
-   "from": "forum-28525210",
-   "to": "deluxe-plaza-1462073358",
+   "from": "elevate-apartments-220494794",
+   "to": "marquette-parking-ramp-27346594",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.271766,
-     44.973947
+     -93.273999,
+     44.972158
     ],
     [
-     -93.271599,
-     44.974131
+     -93.274046,
+     44.972106
+    ]
+   ]
+  },
+  {
+   "from": "marquette-parking-ramp-27346594",
+   "to": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.273375,
+     44.971945
+    ],
+    [
+     -93.273075,
+     44.971818
     ]
    ]
   },
@@ -17432,90 +18429,96 @@
    ]
   },
   {
-   "from": "lakewood-publications-building-461224214",
-   "to": "young-quinlan-building-44684854",
+   "from": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
+   "to": "minneapolis-convention-center-42837791",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.274395,
-     44.97509
+     -93.272936,
+     44.970772
     ],
     [
-     -93.274403,
-     44.975072
+     -93.273173,
+     44.970485
     ],
     [
-     -93.274374,
-     44.975061
-    ],
-    [
-     -93.27424,
-     44.975008
-    ],
-    [
-     -93.27426,
-     44.974972
-    ],
-    [
-     -93.274259,
-     44.974943
+     -93.273151,
+     44.970426
     ]
    ]
   },
   {
-   "from": "essex-building-461224211",
-   "to": "target-plaza-45452119",
+   "from": "forum-28525210",
+   "to": "at-t-tower-28525211",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.274451,
-     44.974561
+     -93.271823,
+     44.973862
     ],
     [
-     -93.274538,
-     44.97446
-    ],
-    [
-     -93.274755,
-     44.974209
-    ],
-    [
-     -93.275021,
-     44.974325
-    ],
-    [
-     -93.275073,
-     44.974264
+     -93.272094,
+     44.973978
     ]
    ]
   },
   {
-   "from": "young-quinlan-building-44684854",
-   "to": "medical-arts-building-92905817",
+   "from": "forum-28525210",
+   "to": "deluxe-plaza-1462073358",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.273287,
-     44.97459
+     -93.271766,
+     44.973947
     ],
     [
-     -93.273148,
-     44.974793
+     -93.271599,
+     44.974131
     ]
    ]
   },
   {
-   "from": "the-royal-sonesta-minneapolis-downtown-1393159125",
-   "to": "city-center-27346720",
+   "from": "deluxe-plaza-1462073358",
+   "to": "saint-olaf-catholic-church-126015108",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.272757,
-     44.976989
+     -93.270891,
+     44.974374
     ],
     [
-     -93.272658,
-     44.977204
+     -93.270618,
+     44.974227
+    ]
+   ]
+  },
+  {
+   "from": "medical-arts-building-92905817",
+   "to": "rsm-plaza-357019983",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.272969,
+     44.975204
+    ],
+    [
+     -93.273004,
+     44.975218
+    ]
+   ]
+  },
+  {
+   "from": "medical-arts-building-92905817",
+   "to": "metro-apartments-156912887",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.272815,
+     44.975139
+    ],
+    [
+     -93.272787,
+     44.975127
     ]
    ]
   },
@@ -17535,21 +18538,47 @@
    ]
   },
   {
-   "from": "hennepin-county-government-center-27518018",
-   "to": "us-bank-plaza-126015100",
+   "from": "government-center-garage-45452112",
+   "to": "minneapolis-public-service-building-746039475",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.266966,
-     44.976117
+     -93.265305,
+     44.975429
     ],
     [
-     -93.267105,
-     44.976169
+     -93.265331,
+     44.975438
+    ]
+   ]
+  },
+  {
+   "from": "government-center-garage-45452112",
+   "to": "sora-apartments-44164775",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.265258,
+     44.97539
     ],
     [
-     -93.267242,
-     44.976544
+     -93.265439,
+     44.975169
+    ]
+   ]
+  },
+  {
+   "from": "hennepin-county-public-safety-center-126015106",
+   "to": "grain-exchange-main-building-45452111",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.263742,
+     44.977089
+    ],
+    [
+     -93.263722,
+     44.977089
     ]
    ]
   },
@@ -17569,6 +18598,36 @@
    ]
   },
   {
+   "from": "purple-building-143058257",
+   "to": "red-building-143058259",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.261722,
+     44.972821
+    ],
+    [
+     -93.262201,
+     44.972263
+    ]
+   ]
+  },
+  {
+   "from": "hcmc-purple-parking-ramp-27346755",
+   "to": "juvenile-justice-center-101549026",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.262764,
+     44.97402
+    ],
+    [
+     -93.262569,
+     44.97425
+    ]
+   ]
+  },
+  {
    "from": "red-building-143058259",
    "to": "orange-building-143056848",
    "crossing": "skyway",
@@ -17580,6 +18639,21 @@
     [
      -93.261534,
      44.971847
+    ]
+   ]
+  },
+  {
+   "from": "red-building-143058259",
+   "to": "ambulatory-outpatient-specialty-center-411211095",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.262381,
+     44.97175
+    ],
+    [
+     -93.262718,
+     44.971376
     ]
    ]
   },
@@ -17599,55 +18673,79 @@
    ]
   },
   {
+   "from": "gateway-municipal-garage-81049104",
+   "to": "grain-exchange-annex-126015103",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.262792,
+     44.978322
+    ],
+    [
+     -93.262961,
+     44.978083
+    ]
+   ]
+  },
+  {
+   "from": "cortland-mill-district-62006959",
+   "to": "minneapolis-public-service-center-126116946",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.264639,
+     44.979579
+    ],
+    [
+     -93.264705,
+     44.979607
+    ],
+    [
+     -93.264794,
+     44.979501
+    ],
+    [
+     -93.264942,
+     44.979324
+    ]
+   ]
+  },
+  {
    "from": "minneapolis-public-service-building-746039475",
-   "to": "government-center-garage-45452112",
+   "to": "united-states-courthouse-and-federal-building-44684856",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.26576,
-     44.975616
+     -93.265901,
+     44.976355
     ],
     [
-     -93.265675,
-     44.975582
+     -93.265868,
+     44.976414
     ],
     [
-     -93.265331,
-     44.975438
+     -93.265863,
+     44.976477
     ],
     [
-     -93.265305,
-     44.975429
-    ]
-   ]
-  },
-  {
-   "from": "ids-center-1385236413",
-   "to": "733-building-126116972",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.271469,
-     44.976082
+     -93.265884,
+     44.976539
     ],
     [
-     -93.271049,
-     44.975918
-    ]
-   ]
-  },
-  {
-   "from": "rsm-plaza-357019983",
-   "to": "ids-center-1385236413",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.27223,
-     44.975455
+     -93.26593,
+     44.976593
     ],
     [
-     -93.271946,
-     44.975724
+     -93.265998,
+     44.976635
+    ],
+    [
+     -93.26575,
+     44.976928
+    ],
+    [
+     -93.265146,
+     44.977671
     ]
    ]
   },
@@ -17716,47 +18814,63 @@
    ]
   },
   {
-   "from": "mcknight-building-41763761",
-   "to": "emery-autograph-collection-62006964",
+   "from": "tritech-office-center-461219677",
+   "to": "milliam-e-mcgee-building-461219669",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.267327,
-     44.978061
+     -93.266636,
+     44.978693
     ],
     [
-     -93.267285,
-     44.978117
+     -93.266751,
+     44.978815
     ]
    ]
   },
   {
-   "from": "15-building-461227729",
-   "to": "lumber-exchange-30263208",
+   "from": "tritech-office-center-461219677",
+   "to": "minneapolis-public-service-center-126116946",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.271845,
-     44.979233
+     -93.265993,
+     44.978479
     ],
     [
-     -93.271683,
-     44.979432
+     -93.265932,
+     44.978453
     ]
    ]
+  },
+  {
+   "from": "lumber-exchange-30263208",
+   "to": "midtown-parking-ramp-27346722",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.271339,
+     44.979679
+    ],
+    [
+     -93.271282,
+     44.97966
+    ]
+   ],
+   "hasSteps": true
   },
   {
    "from": "330-south-second-45452108",
-   "to": "the-crossings-1411646515",
+   "to": "milliam-e-mcgee-building-461219669",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.266718,
-     44.979671
+     -93.266934,
+     44.979032
     ],
     [
-     -93.26649,
-     44.979878
+     -93.266751,
+     44.978815
     ]
    ]
   },
@@ -17765,10 +18879,6 @@
    "to": "517-marquette-garage-156912894",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.268973,
-     44.977929
-    ],
     [
      -93.268839,
      44.977806
@@ -17780,124 +18890,50 @@
    ]
   },
   {
-   "from": "the-crossings-1411646515",
-   "to": "100-washington-square-44164776",
+   "from": "517-marquette-garage-156912894",
+   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.265926,
-     44.980557
+     -93.269264,
+     44.97739
     ],
     [
-     -93.265588,
-     44.980957
+     -93.269294,
+     44.977363
     ]
    ]
   },
   {
-   "from": "mcknight-building-41763761",
-   "to": "us-bank-plaza-126015100",
+   "from": "517-marquette-garage-156912894",
+   "to": "the-westin-minneapolis-156912892",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.267352,
-     44.977582
+     -93.269556,
+     44.97768
     ],
     [
-     -93.267536,
-     44.977403
+     -93.269853,
+     44.977787
     ]
    ]
   },
   {
-   "from": "us-bank-plaza-126015100",
-   "to": "canadian-pacific-plaza-62005000",
+   "from": "canadian-pacific-plaza-62005000",
+   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.268115,
-     44.977114
+     -93.269232,
+     44.977257
     ],
     [
-     -93.268456,
-     44.977232
+     -93.269304,
+     44.977283
     ]
-   ]
-  },
-  {
-   "from": "old-republic-title-building-156912886",
-   "to": "mcknight-building-41763761",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.267734,
-     44.97809
-    ],
-    [
-     -93.267441,
-     44.977992
-    ]
-   ]
-  },
-  {
-   "from": "us-bank-plaza-126015100",
-   "to": "capella-tower-115559604",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.267953,
-     44.976598
-    ],
-    [
-     -93.268102,
-     44.976328
-    ]
-   ]
-  },
-  {
-   "from": "60-south-sixth-156909966",
-   "to": "gaviidae-common-156909893",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270929,
-     44.9778
-    ],
-    [
-     -93.271083,
-     44.977591
-    ]
-   ]
-  },
-  {
-   "from": "50-south-sixth-99714290",
-   "to": "city-center-27346720",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.271958,
-     44.978219
-    ],
-    [
-     -93.272093,
-     44.978026
-    ]
-   ]
-  },
-  {
-   "from": "milliam-e-mcgee-building-461219669",
-   "to": "330-south-second-45452108",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.266751,
-     44.978815
-    ],
-    [
-     -93.266934,
-     44.979032
-    ]
-   ]
+   ],
+   "hasSteps": true
   },
   {
    "from": "capella-tower-115559604",
@@ -17915,111 +18951,62 @@
    ]
   },
   {
-   "from": "ameriprise-financial-center-45581649",
-   "to": "capella-tower-115559604",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.268631,
-     44.975237
-    ],
-    [
-     -93.268297,
-     44.975362
-    ]
-   ]
-  },
-  {
-   "from": "fifth-street-towers-29080597",
-   "to": "soo-line-building-156909948",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.268788,
-     44.978186
-    ],
-    [
-     -93.268928,
-     44.977991
-    ]
-   ]
-  },
-  {
-   "from": "15-building-461227729",
-   "to": "murrays-1334632160",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.272227,
-     44.978879
-    ],
-    [
-     -93.272346,
-     44.978876
-    ]
-   ]
-  },
-  {
-   "from": "50-south-sixth-99714290",
-   "to": "15-building-461227729",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.271928,
-     44.97871
-    ],
-    [
-     -93.271919,
-     44.978752
-    ]
-   ]
-  },
-  {
-   "from": "tritech-office-center-461219677",
-   "to": "milliam-e-mcgee-building-461219669",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.266693,
-     44.978613
-    ],
-    [
-     -93.266636,
-     44.978693
-    ],
-    [
-     -93.266751,
-     44.978815
-    ]
-   ]
-  },
-  {
-   "from": "gaviidae-common-156909893",
-   "to": "city-center-27346720",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.27197,
-     44.977443
-    ],
-    [
-     -93.272292,
-     44.977575
-    ]
-   ]
-  },
-  {
-   "from": "minneapolis-club-156909955",
+   "from": "capella-tower-115559604",
    "to": "ameriprise-financial-center-45581649",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.269628,
-     44.975227
+     -93.268297,
+     44.975362
     ],
+    [
+     -93.268631,
+     44.975237
+    ]
+   ]
+  },
+  {
+   "from": "capella-tower-115559604",
+   "to": "hyatt-centric-downtown-minneapolis-354742163",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.268755,
+     44.976323
+    ],
+    [
+     -93.268918,
+     44.976126
+    ]
+   ]
+  },
+  {
+   "from": "ameriprise-financial-center-45581649",
+   "to": "minneapolis-club-156909955",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
     [
      -93.269561,
      44.975198
+    ],
+    [
+     -93.269628,
+     44.975227
+    ]
+   ]
+  },
+  {
+   "from": "ameriprise-financial-center-45581649",
+   "to": "minneapolis-club-parking-ramp-156909960",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.268795,
+     44.974883
+    ],
+    [
+     -93.268774,
+     44.974874
     ]
    ]
   },
@@ -18039,6 +19026,21 @@
    ]
   },
   {
+   "from": "plymouth-building-156909952",
+   "to": "33-south-sixth-27346721",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.272933,
+     44.978639
+    ],
+    [
+     -93.273123,
+     44.978413
+    ]
+   ]
+  },
+  {
    "from": "701-building-126116979",
    "to": "centre-village-44164774",
    "crossing": "Minneapolis Skyway",
@@ -18050,6 +19052,36 @@
     [
      -93.266228,
      44.974106
+    ]
+   ]
+  },
+  {
+   "from": "701-building-126116979",
+   "to": "sps-tower-45447294",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.26703,
+     44.974107
+    ],
+    [
+     -93.267351,
+     44.974168
+    ]
+   ]
+  },
+  {
+   "from": "701-building-126116979",
+   "to": "sora-apartments-44164775",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.266073,
+     44.974405
+    ],
+    [
+     -93.26578,
+     44.974748
     ]
    ]
   },
@@ -18070,46 +19102,76 @@
   },
   {
    "from": "sps-tower-45447294",
-   "to": "701-building-126116979",
+   "to": "energy-center-ramp-28490490",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.267351,
-     44.974168
+     -93.267979,
+     44.974298
     ],
     [
-     -93.26703,
-     44.974107
+     -93.268434,
+     44.973741
     ]
    ]
   },
   {
-   "from": "730-building-45581646",
-   "to": "minneapolis-club-156909955",
+   "from": "sps-tower-45447294",
+   "to": "minneapolis-club-parking-ramp-156909960",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.270024,
-     44.975365
+     -93.267951,
+     44.974474
     ],
     [
-     -93.269628,
-     44.975227
+     -93.268364,
+     44.974649
     ]
    ]
   },
   {
-   "from": "fifth-street-towers-29080597",
-   "to": "4marq-apartments-827449975",
+   "from": "minneapolis-public-service-center-126116946",
+   "to": "united-states-courthouse-and-federal-building-44684856",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.268894,
-     44.978475
+     -93.265148,
+     44.978503
     ],
+    [
+     -93.265009,
+     44.978451
+    ]
+   ]
+  },
+  {
+   "from": "minneapolis-public-service-center-126116946",
+   "to": "city-of-lakes-building-45452110",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.264942,
+     44.979324
+    ],
+    [
+     -93.265307,
+     44.979476
+    ]
+   ]
+  },
+  {
+   "from": "4marq-apartments-827449975",
+   "to": "the-nic-on-fifth-827452015",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
     [
      -93.269182,
      44.978605
+    ],
+    [
+     -93.270095,
+     44.978989
     ]
    ]
   },
@@ -18129,81 +19191,47 @@
    ]
   },
   {
-   "from": "50-south-sixth-99714290",
-   "to": "60-south-sixth-156909966",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.271216,
-     44.978335
-    ],
-    [
-     -93.27094,
-     44.97823
-    ]
-   ]
-  },
-  {
-   "from": "deluxe-plaza-1462073358",
+   "from": "two22-44684851",
    "to": "saint-olaf-catholic-church-126015108",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.270891,
-     44.974374
-    ],
-    [
-     -93.270618,
-     44.974227
-    ]
-   ]
-  },
-  {
-   "from": "saint-olaf-catholic-church-126015108",
-   "to": "two22-44684851",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270618,
-     44.974227
-    ],
-    [
      -93.270183,
      44.97404
+    ],
+    [
+     -93.270618,
+     44.974227
     ]
    ]
   },
   {
-   "from": "701-building-126116979",
-   "to": "sora-apartments-44164775",
+   "from": "energy-center-ramp-28490490",
+   "to": "ameriprise-financial-headquarters-28490454",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.266073,
-     44.974405
+     -93.269421,
+     44.973215
     ],
     [
-     -93.26578,
-     44.974748
+     -93.269522,
+     44.97292
     ]
    ]
   },
   {
    "from": "sora-apartments-44164775",
-   "to": "government-center-garage-45452112",
+   "to": "thrivent-corporate-center-27346744",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.26578,
-     44.974748
+     -93.264893,
+     44.974929
     ],
     [
-     -93.265439,
-     44.975169
-    ],
-    [
-     -93.265258,
-     44.97539
+     -93.264563,
+     44.974795
     ]
    ]
   },
@@ -18223,831 +19251,17 @@
    ]
   },
   {
-   "from": "grain-exchange-annex-126015103",
-   "to": "gateway-municipal-garage-81049104",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.263212,
-     44.977793
-    ],
-    [
-     -93.26303,
-     44.978004
-    ],
-    [
-     -93.262961,
-     44.978083
-    ],
-    [
-     -93.262792,
-     44.978322
-    ]
-   ]
-  },
-  {
-   "from": "energy-center-ramp-28490490",
-   "to": "sps-tower-45447294",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.268981,
-     44.973871
-    ],
-    [
-     -93.268963,
-     44.973892
-    ],
-    [
-     -93.268844,
-     44.973841
-    ],
-    [
-     -93.268796,
-     44.973898
-    ],
-    [
-     -93.268434,
-     44.973741
-    ],
-    [
-     -93.267979,
-     44.974298
-    ]
-   ]
-  },
-  {
-   "from": "hennepin-county-public-safety-center-126015106",
-   "to": "grain-exchange-main-building-45452111",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.263778,
-     44.977057
-    ],
-    [
-     -93.263762,
-     44.977077
-    ],
-    [
-     -93.263742,
-     44.977089
-    ],
-    [
-     -93.263722,
-     44.977089
-    ]
-   ]
-  },
-  {
-   "from": "target-center-23125943",
-   "to": "mayo-clinic-square-27346712",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.275261,
-     44.979437
-    ],
-    [
-     -93.274834,
-     44.97915
-    ]
-   ]
-  },
-  {
-   "from": "the-westin-minneapolis-156912892",
-   "to": "517-marquette-garage-156912894",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.269853,
-     44.977787
-    ],
-    [
-     -93.269556,
-     44.97768
-    ]
-   ]
-  },
-  {
-   "from": "minneapolis-marriott-city-center-27346715",
-   "to": "the-royal-sonesta-minneapolis-downtown-1393159125",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.273094,
-     44.977422
-    ],
-    [
-     -93.273339,
-     44.977244
-    ]
-   ]
-  },
-  {
-   "from": "811-lasalle-357279465",
-   "to": "lasalle-plaza-461227727",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.274784,
-     44.975995
-    ],
-    [
-     -93.275123,
-     44.976085
-    ]
-   ]
-  },
-  {
-   "from": "plymouth-building-156909952",
-   "to": "33-south-sixth-27346721",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.272933,
-     44.978639
-    ],
-    [
-     -93.273123,
-     44.978413
-    ]
-   ]
-  },
-  {
-   "from": "33-south-sixth-27346721",
-   "to": "city-center-27346720",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.273123,
-     44.978413
-    ],
-    [
-     -93.273451,
-     44.978034
-    ]
-   ]
-  },
-  {
-   "from": "wells-fargo-center-41763762",
-   "to": "six-quebec-156912888",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270518,
-     44.97699
-    ],
-    [
-     -93.270247,
-     44.976852
-    ]
-   ]
-  },
-  {
-   "from": "opus-hall-45452121",
-   "to": "fair-school-for-arts-45680534",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.276454,
-     44.97544
-    ],
-    [
-     -93.276612,
-     44.975402
-    ],
-    [
-     -93.276745,
-     44.975369
-    ]
-   ]
-  },
-  {
-   "from": "517-marquette-garage-156912894",
-   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.269556,
-     44.97768
-    ],
-    [
-     -93.2695,
-     44.97766
-    ],
-    [
-     -93.269603,
-     44.977537
-    ],
-    [
-     -93.269264,
-     44.97739
-    ],
-    [
-     -93.269294,
-     44.977363
-    ]
-   ]
-  },
-  {
-   "from": "lasalle-plaza-461227727",
-   "to": "lasalle-apartments-461227722",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.275759,
-     44.975992
-    ],
-    [
-     -93.275936,
-     44.975774
-    ]
-   ]
-  },
-  {
-   "from": "lasalle-apartments-461227722",
-   "to": "opus-hall-45452121",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.275936,
-     44.975774
-    ],
-    [
-     -93.276103,
-     44.975848
-    ],
-    [
-     -93.276429,
-     44.975456
-    ]
-   ]
-  },
-  {
-   "from": "lasalle-plaza-461227727",
-   "to": "state-theatre-156912879",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.275123,
-     44.976085
-    ],
-    [
-     -93.275522,
-     44.976295
-    ],
-    [
-     -93.276326,
-     44.976626
-    ],
-    [
-     -93.275894,
-     44.97695
-    ]
-   ]
-  },
-  {
-   "from": "5th-street-ramp-b-30062750",
-   "to": "target-center-23125943",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.276057,
-     44.980573
-    ],
-    [
-     -93.276395,
-     44.980239
-    ]
-   ]
-  },
-  {
-   "from": "textile-building-89080618",
-   "to": "cowboy-jacks-157031168",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.273694,
-     44.982236
-    ],
-    [
-     -93.274669,
-     44.981559
-    ]
-   ]
-  },
-  {
-   "from": "minneapolis-club-parking-ramp-156909960",
-   "to": "sps-tower-45447294",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.268774,
-     44.974874
-    ],
-    [
-     -93.268332,
-     44.974687
-    ],
-    [
-     -93.268364,
-     44.974649
-    ],
-    [
-     -93.267951,
-     44.974474
-    ]
-   ]
-  },
-  {
-   "from": "hcmc-purple-parking-ramp-27346755",
-   "to": "juvenile-justice-center-101549026",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.262729,
-     44.974006
-    ],
-    [
-     -93.262764,
-     44.97402
-    ],
-    [
-     -93.262569,
-     44.97425
-    ]
-   ]
-  },
-  {
-   "from": "state-theatre-156912879",
-   "to": "pence-building-156912891",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.27594,
-     44.97697
-    ],
-    [
-     -93.27626,
-     44.977126
-    ]
-   ]
-  },
-  {
-   "from": "school-of-law-92810608",
-   "to": "schulze-hall-266689885",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.278298,
-     44.974018
-    ],
-    [
-     -93.277951,
-     44.974163
-    ]
-   ]
-  },
-  {
-   "from": "sheraton-minneapolis-downtown-convention-center-1394814185",
-   "to": "westminster-presbyterian-63821145",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.276775,
-     44.970786
-    ],
-    [
-     -93.276748,
-     44.970818
-    ],
-    [
-     -93.276613,
-     44.970977
-    ]
-   ]
-  },
-  {
-   "from": "sheraton-minneapolis-downtown-convention-center-1394814185",
-   "to": "marquette-place-451283544",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.277544,
-     44.971143
-    ],
-    [
-     -93.27711,
-     44.970926
-    ],
-    [
-     -93.276943,
-     44.970856
-    ],
-    [
-     -93.276813,
-     44.970802
-    ],
-    [
-     -93.276775,
-     44.970786
-    ],
-    [
-     -93.276509,
-     44.970676
-    ]
-   ]
-  },
-  {
-   "from": "marquette-parking-ramp-27346594",
-   "to": "hilton-minneapolis-28490639",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.273375,
-     44.971945
-    ],
-    [
-     -93.273156,
-     44.972207
-    ]
-   ]
-  },
-  {
-   "from": "six-quebec-156912888",
-   "to": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.269839,
-     44.977067
-    ],
-    [
-     -93.26972,
-     44.977271
-    ]
-   ]
-  },
-  {
-   "from": "733-building-126116972",
-   "to": "deluxe-plaza-1462073358",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.271015,
-     44.975199
-    ],
-    [
-     -93.271179,
-     44.975
-    ]
-   ]
-  },
-  {
-   "from": "northstar-west-45581647",
-   "to": "705-building-126116975",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270316,
-     44.976216
-    ],
-    [
-     -93.270485,
-     44.976025
-    ]
-   ]
-  },
-  {
-   "from": "111-washington-square-537857247",
-   "to": "the-crossings-1411646515",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.266504,
-     44.980435
-    ],
-    [
-     -93.266449,
-     44.980375
-    ]
-   ]
-  },
-  {
-   "from": "fifth-street-towers-29080597",
-   "to": "farmers-and-mechanics-savings-bank-157025240",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.268432,
-     44.978527
-    ],
-    [
-     -93.268376,
-     44.978567
-    ]
-   ]
-  },
-  {
-   "from": "technical-building-89061902",
-   "to": "helland-center-89061924",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.282899,
-     44.972641
-    ],
-    [
-     -93.282914,
-     44.972339
-    ]
-   ]
-  },
-  {
-   "from": "kopp-hall-89061932",
-   "to": "technical-building-89061902",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.283847,
-     44.972596
-    ],
-    [
-     -93.283751,
-     44.972814
-    ]
-   ]
-  },
-  {
-   "from": "tritech-office-center-461219677",
-   "to": "minneapolis-public-service-center-126116946",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.265993,
-     44.978479
-    ],
-    [
-     -93.265932,
-     44.978453
-    ]
-   ]
-  },
-  {
-   "from": "the-crossings-1411646515",
-   "to": "city-of-lakes-building-45452110",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.265516,
-     44.980021
-    ],
-    [
-     -93.265447,
-     44.979979
-    ],
-    [
-     -93.265477,
-     44.979937
-    ],
-    [
-     -93.265307,
-     44.979476
-    ]
-   ]
-  },
-  {
-   "from": "city-of-lakes-building-45452110",
-   "to": "minneapolis-public-service-center-126116946",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.265307,
-     44.979476
-    ],
-    [
-     -93.264942,
-     44.979324
-    ]
-   ]
-  },
-  {
-   "from": "minneapolis-public-service-center-126116946",
-   "to": "cortland-mill-district-62006959",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.264942,
-     44.979324
-    ],
-    [
-     -93.264794,
-     44.979501
-    ],
-    [
-     -93.264705,
-     44.979607
-    ],
-    [
-     -93.264639,
-     44.979579
-    ]
-   ]
-  },
-  {
-   "from": "metropolitan-lofts-81049075",
-   "to": "depot-office-center-81049079",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.259768,
-     44.978943
-    ],
-    [
-     -93.259851,
-     44.97885
-    ]
-   ]
-  },
-  {
-   "from": "pence-building-156912891",
-   "to": "hampton-inn-suites-minneapolis-downtown-198988798",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.276619,
-     44.977463
-    ],
-    [
-     -93.276654,
-     44.977487
-    ]
-   ]
-  },
-  {
-   "from": "110-grant-apartments-resident-parking-358537233",
-   "to": "loring-parking-ramp-612097599",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.27909,
-     44.970809
-    ],
-    [
-     -93.279055,
-     44.970795
-    ],
-    [
-     -93.278345,
-     44.970493
-    ]
-   ]
-  },
-  {
-   "from": "loring-parking-ramp-612097599",
-   "to": "sheraton-minneapolis-downtown-convention-center-1394814185",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.278345,
-     44.970493
-    ],
-    [
-     -93.278309,
-     44.970479
-    ],
-    [
-     -93.278177,
-     44.970503
-    ],
-    [
-     -93.277777,
-     44.970982
-    ]
-   ]
-  },
-  {
-   "from": "minneapolis-club-parking-ramp-156909960",
-   "to": "ameriprise-financial-center-45581649",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.268774,
-     44.974874
-    ],
-    [
-     -93.268795,
-     44.974883
-    ]
-   ]
-  },
-  {
-   "from": "clark-danielson-college-life-center-39239951",
-   "to": "miller-hall-122795138",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.261474,
-     44.968754
-    ],
-    [
-     -93.261468,
-     44.968954
-    ]
-   ]
-  },
-  {
-   "from": "opus-hall-45452121",
-   "to": "terrence-murphy-hall-93481572",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.276596,
-     44.974658
-    ],
-    [
-     -93.276627,
-     44.974625
-    ]
-   ]
-  },
-  {
-   "from": "terrence-murphy-hall-93481572",
-   "to": "schulze-hall-266689885",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.277147,
-     44.974621
-    ],
-    [
-     -93.277242,
-     44.974544
-    ],
-    [
-     -93.277984,
-     44.974253
-    ]
-   ]
-  },
-  {
-   "from": "wells-fargo-600-407613511",
+   "from": "jerry-haaf-memorial-garage-126015101",
    "to": "wells-fargo-550-407613510",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.261254,
-     44.97654
+     -93.262847,
+     44.977292
     ],
     [
-     -93.261582,
-     44.97668
-    ]
-   ]
-  },
-  {
-   "from": "stadium-parking-ramp-40774167",
-   "to": "wells-fargo-600-407613511",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.259894,
-     44.975998
-    ],
-    [
-     -93.260178,
-     44.976096
-    ]
-   ]
-  },
-  {
-   "from": "red-building-143058259",
-   "to": "purple-building-143058257",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.262201,
-     44.972263
-    ],
-    [
-     -93.261722,
-     44.972821
-    ]
-   ]
-  },
-  {
-   "from": "ambulatory-outpatient-specialty-center-411211095",
-   "to": "red-building-143058259",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.262718,
-     44.971376
-    ],
-    [
-     -93.262381,
-     44.97175
+     -93.26263,
+     44.977138
     ]
    ]
   },
@@ -19056,10 +19270,6 @@
    "to": "grain-exchange-main-building-45452111",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.263159,
-     44.977179
-    ],
     [
      -93.26318,
      44.977188
@@ -19086,266 +19296,197 @@
    ]
   },
   {
-   "from": "the-nic-on-fifth-827452015",
-   "to": "xcel-energy-827452013",
+   "from": "state-theatre-156912879",
+   "to": "pence-building-156912891",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.269958,
-     44.979181
+     -93.27594,
+     44.97697
     ],
     [
-     -93.269903,
-     44.979264
+     -93.27626,
+     44.977126
     ]
    ]
   },
   {
-   "from": "4marq-apartments-827449975",
-   "to": "the-nic-on-fifth-827452015",
+   "from": "textile-building-89080618",
+   "to": "cowboy-jacks-157031168",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.269182,
-     44.978605
-    ],
-    [
-     -93.270095,
-     44.978989
-    ]
-   ]
-  },
-  {
-   "from": "ids-center-1385236413",
-   "to": "gaviidae-common-156909893",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.27183,
-     44.976506
-    ],
-    [
-     -93.271658,
-     44.976782
-    ]
-   ]
-  },
-  {
-   "from": "gaviidae-common-156909893",
-   "to": "wells-fargo-center-41763762",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270958,
-     44.977165
-    ],
-    [
-     -93.270518,
-     44.97699
-    ]
-   ]
-  },
-  {
-   "from": "4th-street-ramp-c-27346543",
-   "to": "textile-building-89080618",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.274404,
-     44.983428
-    ],
-    [
-     -93.273211,
-     44.982582
-    ],
-    [
-     -93.273603,
-     44.982302
-    ],
     [
      -93.273694,
      44.982236
+    ],
+    [
+     -93.274669,
+     44.981559
     ]
    ]
   },
   {
-   "from": "cowboy-jacks-157031168",
-   "to": "5th-street-ramp-b-30062750",
+   "from": "minneapolis-convention-center-42837791",
+   "to": "historic-wesley-center-92810581",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.27477,
-     44.98149
+     -93.275594,
+     44.969641
     ],
     [
-     -93.275134,
-     44.981239
+     -93.275589,
+     44.970021
     ]
    ]
   },
   {
-   "from": "butler-square-29060521",
-   "to": "target-center-23125943",
+   "from": "school-of-law-92810608",
+   "to": "schulze-hall-266689885",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.278298,
+     44.974018
+    ],
+    [
+     -93.277951,
+     44.974163
+    ]
+   ]
+  },
+  {
+   "from": "schulze-hall-266689885",
+   "to": "terrence-murphy-hall-93481572",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.277984,
+     44.974253
+    ],
+    [
+     -93.277242,
+     44.974544
+    ]
+   ]
+  },
+  {
+   "from": "sheraton-minneapolis-downtown-convention-center-1394814185",
+   "to": "westminster-presbyterian-63821145",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.276748,
+     44.970818
+    ],
+    [
+     -93.276613,
+     44.970977
+    ]
+   ]
+  },
+  {
+   "from": "sheraton-minneapolis-downtown-convention-center-1394814185",
+   "to": "loring-parking-ramp-612097599",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.277777,
+     44.970982
+    ],
+    [
+     -93.278177,
+     44.970503
+    ]
+   ]
+  },
+  {
+   "from": "technical-building-89061902",
+   "to": "helland-center-89061924",
    "crossing": "skyway",
    "geometry": [
     [
-     -93.276062,
-     44.980453
+     -93.282899,
+     44.972641
     ],
     [
-     -93.275959,
-     44.980266
-    ],
-    [
-     -93.275727,
-     44.980118
+     -93.282914,
+     44.972339
     ]
    ]
   },
   {
-   "from": "hennepin-county-government-center-27518018",
-   "to": "minneapolis-public-service-building-746039475",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.265998,
-     44.976635
-    ],
-    [
-     -93.266084,
-     44.976661
-    ],
-    [
-     -93.266178,
-     44.976666
-    ],
-    [
-     -93.26627,
-     44.97665
-    ],
-    [
-     -93.26635,
-     44.976615
-    ],
-    [
-     -93.266409,
-     44.976563
-    ],
-    [
-     -93.266442,
-     44.976501
-    ],
-    [
-     -93.266446,
-     44.976434
-    ],
-    [
-     -93.26642,
-     44.97637
-    ],
-    [
-     -93.266367,
-     44.976315
-    ],
-    [
-     -93.266291,
-     44.976275
-    ],
-    [
-     -93.266206,
-     44.976255
-    ],
-    [
-     -93.266117,
-     44.976253
-    ],
-    [
-     -93.266031,
-     44.976271
-    ],
-    [
-     -93.265957,
-     44.976306
-    ],
-    [
-     -93.265901,
-     44.976355
-    ]
-   ]
-  },
-  {
-   "from": "groove-lofts-156909964",
-   "to": "northstar-west-45581647",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.269732,
-     44.976528
-    ],
-    [
-     -93.269845,
-     44.976397
-    ]
-   ]
-  },
-  {
-   "from": "the-andrus-99714289",
-   "to": "the-nic-on-fifth-827452015",
+   "from": "technical-building-89061902",
+   "to": "kopp-hall-89061932",
    "crossing": "skyway",
    "geometry": [
     [
-     -93.270797,
-     44.978793
+     -93.283751,
+     44.972814
     ],
     [
-     -93.27077,
-     44.978835
-    ],
-    [
-     -93.270752,
-     44.978861
-    ],
-    [
-     -93.27074,
-     44.978875
-    ],
-    [
-     -93.270681,
-     44.978935
-    ],
-    [
-     -93.270652,
-     44.978957
+     -93.283847,
+     44.972596
     ]
    ]
   },
   {
-   "from": "ford-center-29060527",
-   "to": "north-loop-green-360-1281792415",
+   "from": "graze-food-hall-by-travail-1223123290",
+   "to": "ford-center-29060527",
    "crossing": "skyway",
    "geometry": [
     [
-     -93.277519,
-     44.983249
+     -93.277317,
+     44.984415
     ],
     [
-     -93.276843,
-     44.982772
+     -93.277452,
+     44.984311
     ]
    ]
   },
   {
-   "from": "energy-center-ramp-28490490",
-   "to": "ameriprise-financial-headquarters-28490454",
+   "from": "metropolitan-lofts-81049075",
+   "to": "depot-office-center-81049079",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.259768,
+     44.978943
+    ],
+    [
+     -93.259851,
+     44.97885
+    ]
+   ]
+  },
+  {
+   "from": "depot-office-center-81049079",
+   "to": "residence-inn-at-the-depot-48816164",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.261351,
+     44.979039
+    ],
+    [
+     -93.261162,
+     44.979252
+    ]
+   ]
+  },
+  {
+   "from": "minneapolis-central-library-546472304",
+   "to": "365-nicollet-827426569",
    "crossing": "Minneapolis Skyway",
    "geometry": [
     [
-     -93.269421,
-     44.973215
+     -93.269544,
+     44.980389
     ],
     [
-     -93.269522,
-     44.97292
+     -93.26918,
+     44.980227
     ]
    ]
   },
@@ -19361,6 +19502,186 @@
     [
      -93.269272,
      44.981012
+    ]
+   ]
+  },
+  {
+   "from": "110-grant-apartments-resident-parking-358537233",
+   "to": "loring-parking-ramp-612097599",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.279055,
+     44.970795
+    ],
+    [
+     -93.278345,
+     44.970493
+    ]
+   ]
+  },
+  {
+   "from": "clark-danielson-college-life-center-39239951",
+   "to": "miller-hall-122795138",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.261474,
+     44.968754
+    ],
+    [
+     -93.261468,
+     44.968954
+    ]
+   ]
+  },
+  {
+   "from": "clark-danielson-college-life-center-39239951",
+   "to": "parking-lot-e-122795248",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.261185,
+     44.968233
+    ],
+    [
+     -93.260893,
+     44.968233
+    ]
+   ]
+  },
+  {
+   "from": "wells-fargo-600-407613511",
+   "to": "wells-fargo-550-407613510",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.261254,
+     44.97654
+    ],
+    [
+     -93.261582,
+     44.97668
+    ]
+   ]
+  },
+  {
+   "from": "wells-fargo-600-407613511",
+   "to": "stadium-parking-ramp-40774167",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.260178,
+     44.976096
+    ],
+    [
+     -93.259894,
+     44.975998
+    ]
+   ]
+  },
+  {
+   "from": "wells-fargo-600-407613511",
+   "to": "radisson-red-minneapolis-downtown-60613336",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.261114,
+     44.976482
+    ],
+    [
+     -93.260749,
+     44.976904
+    ]
+   ]
+  },
+  {
+   "from": "wells-fargo-550-407613510",
+   "to": "edition-apartments-510-413691176",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.262497,
+     44.97708
+    ],
+    [
+     -93.26252,
+     44.977053
+    ]
+   ]
+  },
+  {
+   "from": "wells-fargo-550-407613510",
+   "to": "millwright-building-40933926",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.261614,
+     44.976855
+    ],
+    [
+     -93.26147,
+     44.977036
+    ]
+   ]
+  },
+  {
+   "from": "stadium-parking-ramp-40774167",
+   "to": "4th-park-1223123289",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.259509,
+     44.975828
+    ],
+    [
+     -93.259529,
+     44.975807
+    ]
+   ]
+  },
+  {
+   "from": "united-states-courthouse-and-federal-building-44684856",
+   "to": "flour-exchange-building-156909968",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.264349,
+     44.978208
+    ],
+    [
+     -93.264269,
+     44.978175
+    ]
+   ]
+  },
+  {
+   "from": "the-nic-on-fifth-827452015",
+   "to": "xcel-energy-827452013",
+   "crossing": "Minneapolis Skyway",
+   "geometry": [
+    [
+     -93.269958,
+     44.979181
+    ],
+    [
+     -93.269903,
+     44.979264
+    ]
+   ]
+  },
+  {
+   "from": "the-nic-on-fifth-827452015",
+   "to": "the-andrus-99714289",
+   "crossing": "skyway",
+   "geometry": [
+    [
+     -93.270652,
+     44.978957
+    ],
+    [
+     -93.270681,
+     44.978935
     ]
    ]
   },
@@ -19381,76 +19702,55 @@
   },
   {
    "from": "365-nicollet-827426569",
-   "to": "minneapolis-central-library-546472304",
-   "crossing": "Minneapolis Skyway",
+   "to": "rbc-gateway-733105254",
+   "crossing": "skyway",
    "geometry": [
     [
-     -93.26918,
-     44.980227
+     -93.269062,
+     44.980513
     ],
     [
-     -93.269544,
-     44.980389
+     -93.268988,
+     44.980621
+    ],
+    [
+     -93.268963,
+     44.980649
+    ],
+    [
+     -93.268894,
+     44.980742
+    ],
+    [
+     -93.268836,
+     44.980818
+    ],
+    [
+     -93.268816,
+     44.980845
+    ],
+    [
+     -93.268776,
+     44.980871
+    ],
+    [
+     -93.268708,
+     44.980951
     ]
    ]
   },
   {
-   "from": "60-south-sixth-156909966",
-   "to": "the-westin-minneapolis-156912892",
-   "crossing": "Minneapolis Skyway",
+   "from": "ford-center-29060527",
+   "to": "north-loop-green-360-1281792415",
+   "crossing": "skyway",
    "geometry": [
     [
-     -93.270425,
-     44.977913
+     -93.277587,
+     44.983073
     ],
     [
-     -93.270249,
-     44.977842
-    ]
-   ]
-  },
-  {
-   "from": "minneapolis-public-service-center-126116946",
-   "to": "united-states-courthouse-and-federal-building-44684856",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.265148,
-     44.978503
-    ],
-    [
-     -93.265009,
-     44.978451
-    ]
-   ]
-  },
-  {
-   "from": "united-states-courthouse-and-federal-building-44684856",
-   "to": "flour-exchange-building-156909968",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.264349,
-     44.978208
-    ],
-    [
-     -93.264269,
-     44.978175
-    ]
-   ]
-  },
-  {
-   "from": "thrivent-corporate-center-27346744",
-   "to": "sora-apartments-44164775",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.264563,
-     44.974795
-    ],
-    [
-     -93.264893,
-     44.974929
+     -93.277556,
+     44.98305
     ]
    ]
   },
@@ -19471,376 +19771,17 @@
    "hasSteps": true
   },
   {
-   "from": "forum-28525210",
-   "to": "at-t-tower-28525211",
+   "from": "thrivent-corporate-center-27346744",
+   "to": "moment-apartments-1222145087",
    "crossing": "Minneapolis Skyway",
    "geometry": [
-    [
-     -93.271823,
-     44.973862
-    ],
-    [
-     -93.272094,
-     44.973978
-    ]
-   ]
-  },
-  {
-   "from": "medical-arts-building-92905817",
-   "to": "rsm-plaza-357019983",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.27309,
-     44.9751
-    ],
-    [
-     -93.273058,
-     44.975089
-    ],
-    [
-     -93.272969,
-     44.975204
-    ],
-    [
-     -93.272958,
-     44.975219
-    ],
-    [
-     -93.272815,
-     44.975409
-    ]
-   ]
-  },
-  {
-   "from": "stadium-parking-ramp-40774167",
-   "to": "4th-park-1223123289",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.259509,
-     44.975828
-    ],
-    [
-     -93.259529,
-     44.975807
-    ]
-   ]
-  },
-  {
-   "from": "millwright-building-40933926",
-   "to": "wells-fargo-550-407613510",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.26147,
-     44.977036
-    ],
-    [
-     -93.261614,
-     44.976855
-    ]
-   ]
-  },
-  {
-   "from": "wells-fargo-550-407613510",
-   "to": "edition-apartments-510-413691176",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.262497,
-     44.97708
-    ],
-    [
-     -93.26252,
-     44.977053
-    ]
-   ]
-  },
-  {
-   "from": "wells-fargo-600-407613511",
-   "to": "radisson-red-minneapolis-downtown-60613336",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.261114,
-     44.976482
-    ],
-    [
-     -93.260749,
-     44.976904
-    ]
-   ]
-  },
-  {
-   "from": "730-building-45581646",
-   "to": "733-building-126116972",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270128,
-     44.975405
-    ],
-    [
-     -93.270334,
-     44.975167
-    ],
-    [
-     -93.270451,
-     44.975214
-    ],
-    [
-     -93.27046,
-     44.975203
-    ],
-    [
-     -93.270491,
-     44.975166
-    ],
-    [
-     -93.270757,
-     44.97527
-    ],
-    [
-     -93.270798,
-     44.975217
-    ],
-    [
-     -93.270905,
-     44.975254
-    ],
-    [
-     -93.27096,
-     44.975271
-    ]
-   ]
-  },
-  {
-   "from": "residence-inn-at-the-depot-48816164",
-   "to": "depot-office-center-81049079",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.261162,
-     44.979252
-    ],
-    [
-     -93.261351,
-     44.979039
-    ]
-   ]
-  },
-  {
-   "from": "moment-apartments-1222145087",
-   "to": "thrivent-corporate-center-27346744",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.263982,
-     44.973916
-    ],
     [
      -93.263846,
      44.974081
-    ]
-   ]
-  },
-  {
-   "from": "the-churchill-460860491",
-   "to": "rivergate-apartments-81049129",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.264738,
-     44.982371
     ],
     [
-     -93.26468,
-     44.982346
-    ],
-    [
-     -93.264975,
-     44.982007
-    ],
-    [
-     -93.264768,
-     44.981921
-    ],
-    [
-     -93.264814,
-     44.981873
-    ]
-   ]
-  },
-  {
-   "from": "jerry-haaf-memorial-garage-126015101",
-   "to": "wells-fargo-550-407613510",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.262847,
-     44.977292
-    ],
-    [
-     -93.26263,
-     44.977138
-    ]
-   ]
-  },
-  {
-   "from": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
-   "to": "canadian-pacific-plaza-62005000",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.269304,
-     44.977283
-    ],
-    [
-     -93.269232,
-     44.977257
-    ]
-   ],
-   "hasSteps": true
-  },
-  {
-   "from": "capella-tower-115559604",
-   "to": "hyatt-centric-downtown-minneapolis-354742163",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.268755,
-     44.976323
-    ],
-    [
-     -93.268918,
-     44.976126
-    ]
-   ]
-  },
-  {
-   "from": "metro-apartments-156912887",
-   "to": "medical-arts-building-92905817",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.273073,
-     44.974767
-    ],
-    [
-     -93.273017,
-     44.974847
-    ],
-    [
-     -93.272813,
-     44.975096
-    ],
-    [
-     -93.272787,
-     44.975127
-    ],
-    [
-     -93.272815,
-     44.975139
-    ]
-   ]
-  },
-  {
-   "from": "lumber-exchange-30263208",
-   "to": "midtown-parking-ramp-27346722",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.271339,
-     44.979679
-    ],
-    [
-     -93.271282,
-     44.97966
-    ]
-   ],
-   "hasSteps": true
-  },
-  {
-   "from": "park-and-shop-ramp-27346580",
-   "to": "the-royal-sonesta-minneapolis-downtown-1393159125",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.274334,
-     44.977026
-    ],
-    [
-     -93.274286,
-     44.977004
-    ],
-    [
-     -93.274023,
-     44.976887
-    ]
-   ]
-  },
-  {
-   "from": "historic-wesley-center-92810581",
-   "to": "minneapolis-convention-center-42837791",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.275589,
-     44.970021
-    ],
-    [
-     -93.275594,
-     44.969641
-    ]
-   ]
-  },
-  {
-   "from": "marquette-place-451283544",
-   "to": "historic-wesley-center-92810581",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.27567,
-     44.970128
-    ],
-    [
-     -93.275588,
-     44.970093
-    ],
-    [
-     -93.275589,
-     44.970021
-    ]
-   ]
-  },
-  {
-   "from": "clark-danielson-college-life-center-39239951",
-   "to": "parking-lot-e-122795248",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.261185,
-     44.968233
-    ],
-    [
-     -93.260893,
-     44.968233
-    ]
-   ]
-  },
-  {
-   "from": "ford-center-29060527",
-   "to": "graze-food-hall-by-travail-1223123290",
-   "crossing": "skyway",
-   "geometry": [
-    [
-     -93.277452,
-     44.984311
-    ],
-    [
-     -93.277317,
-     44.984415
+     -93.263982,
+     44.973916
     ]
    ]
   }

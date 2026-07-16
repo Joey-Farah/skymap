@@ -285,31 +285,89 @@ async function main(osm) {
     return found;
   }
 
-  // Walk each way, emitting an edge whenever consecutive nodes belong to
-  // different buildings; accumulate geometry between them.
-  const edgeMap = new Map(); // "a|b" -> {from,to,geometry}
+  // Building-to-building connectivity has to follow the full pedestrian
+  // node graph, not stop at each OSM way's boundary: a single real skyway
+  // bridge is routinely mapped as several way segments joined at shared
+  // nodes (one per contributor, or split at each street crossing), and a
+  // per-way walk that resets its "current building" at every way boundary
+  // misses any connection spanning more than one segment — which silently
+  // dropped real, walkable bridges (found via Target Center: OSM has a
+  // complete, named, indoor-tagged "Minneapolis Skyway" chain from LaSalle
+  // Plaza all the way there, split across ~10 way segments that share
+  // endpoint nodes; the old per-way logic produced zero edges from it).
+  const coordOf = (nodeId) => {
+    const n = nodes.get(nodeId);
+    return [+n.lon.toFixed(6), +n.lat.toFixed(6)];
+  };
+  const nodeGraph = new Map(); // nodeId -> [{to, wayTags}]
+  const addNodeEdge = (a, b, wayTags) => {
+    if (!nodeGraph.has(a)) nodeGraph.set(a, []);
+    nodeGraph.get(a).push({ to: b, wayTags });
+  };
   for (const w of ways) {
-    let prevBuilding = null;
-    let pending = [];
-    for (const nodeId of w.nodes) {
-      const n = nodes.get(nodeId);
-      if (!n) continue;
-      const b = buildingFor(nodeId);
-      pending.push([+n.lon.toFixed(6), +n.lat.toFixed(6)]);
-      if (b && prevBuilding && b.id !== prevBuilding.id) {
-        const key = [prevBuilding.id, b.id].sort().join("|");
-        if (!edgeMap.has(key)) {
-          edgeMap.set(key, {
-            from: prevBuilding.id,
-            to: b.id,
-            crossing: w.tags?.name || "skyway",
-            geometry: pending,
-            ...(w.tags?.highway === "steps" ? { hasSteps: true } : {}),
-          });
+    for (let i = 1; i < w.nodes.length; i++) {
+      const a = w.nodes[i - 1];
+      const b = w.nodes[i];
+      if (!nodes.has(a) || !nodes.has(b)) continue;
+      addNodeEdge(a, b, w.tags);
+      addNodeEdge(b, a, w.tags);
+    }
+  }
+
+  const nodesByBuilding = new Map(); // buildingId -> Set(nodeId)
+  for (const nodeId of nodeGraph.keys()) {
+    const b = buildingFor(nodeId);
+    if (!b) continue;
+    if (!nodesByBuilding.has(b.id)) nodesByBuilding.set(b.id, new Set());
+    nodesByBuilding.get(b.id).add(nodeId);
+  }
+
+  // Sanity cap: real building-to-building skyway hops are short. Without
+  // this, a long unrelated ground-level footway with no building nearby
+  // could in principle bridge two buildings that aren't actually connected.
+  const MAX_BRIDGE_METERS = 500;
+  const edgeMap = new Map(); // "a|b" -> {from,to,geometry,crossing,hasSteps}
+  for (const [buildingId, anchorNodes] of nodesByBuilding) {
+    const visited = new Set(anchorNodes);
+    const queue = [...anchorNodes].map((id) => ({
+      id,
+      dist: 0,
+      geom: [coordOf(id)],
+      hasSteps: false,
+      crossingName: null,
+    }));
+    for (let qi = 0; qi < queue.length; qi++) {
+      const cur = queue[qi];
+      for (const edge of nodeGraph.get(cur.id) ?? []) {
+        if (visited.has(edge.to)) continue;
+        const toCoord = coordOf(edge.to);
+        const hopDist = haversine(coordOf(cur.id)[1], coordOf(cur.id)[0], toCoord[1], toCoord[0]);
+        const newDist = cur.dist + hopDist;
+        if (newDist > MAX_BRIDGE_METERS) continue;
+        const hopHasSteps = edge.wayTags?.highway === "steps";
+        const hopName =
+          edge.wayTags?.name && !/^(minneapolis )?skyway$/i.test(edge.wayTags.name) ? edge.wayTags.name : null;
+        const otherBuilding = buildingFor(edge.to);
+        const newGeom = [...cur.geom, toCoord];
+        const newHasSteps = cur.hasSteps || hopHasSteps;
+        const newCrossingName = cur.crossingName ?? hopName;
+        if (otherBuilding && otherBuilding.id !== buildingId) {
+          const key = [buildingId, otherBuilding.id].sort().join("|");
+          if (!edgeMap.has(key)) {
+            edgeMap.set(key, {
+              from: buildingId,
+              to: otherBuilding.id,
+              crossing: newCrossingName ?? edge.wayTags?.name ?? "skyway",
+              geometry: newGeom,
+              ...(newHasSteps ? { hasSteps: true } : {}),
+            });
+          }
+          visited.add(edge.to);
+          continue;
         }
-        pending = [pending[pending.length - 1]];
+        visited.add(edge.to);
+        queue.push({ id: edge.to, dist: newDist, geom: newGeom, hasSteps: newHasSteps, crossingName: newCrossingName });
       }
-      if (b) prevBuilding = b;
     }
   }
 
