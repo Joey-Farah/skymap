@@ -7,6 +7,15 @@ export function isOpenAt(building: Building, when: Date): boolean {
   return h !== null && minutes >= h[0] && minutes < h[1];
 }
 
+/** True when a building is open right now but closes within `thresholdMin`. */
+export function isClosingSoon(building: Building, when: Date, thresholdMin = 20): boolean {
+  const day = when.getDay();
+  const minutes = when.getHours() * 60 + when.getMinutes();
+  const h = building.hours[day];
+  if (!h || minutes < h[0] || minutes >= h[1]) return false;
+  return h[1] - minutes <= thresholdMin;
+}
+
 export function formatMinute(min: number): string {
   const h24 = Math.floor(min / 60) % 24;
   const m = min % 60;

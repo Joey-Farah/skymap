@@ -12,7 +12,7 @@ import {
   routeStepIndex,
   sliceAlong,
 } from "../src/router.ts";
-import { closingSoonWarnings, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
+import { closingSoonWarnings, isClosingSoon, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
 import { encodeRouteState, feedbackUrl, googleMapsUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -64,6 +64,15 @@ test("shortest path is actually short (triangle sanity)", () => {
   const r = router.route("ids-center", "gaviidae-common", TUE_10AM);
   assert.ok(r);
   assert.equal(r.steps.length, 2, "adjacent buildings should be one hop");
+});
+
+test("isClosingSoon flags open buildings nearing their close time", () => {
+  const ids = data.buildings.find((b) => b.id === "ids-center");
+  // IDS closes at 10pm weekdays: 9:45pm is closing soon, 10am is not,
+  // and already-closed buildings aren't "closing soon" (they're closed).
+  assert.equal(isClosingSoon(ids, new Date(2026, 6, 14, 21, 45), 20), true);
+  assert.equal(isClosingSoon(ids, TUE_10AM, 20), false);
+  assert.equal(isClosingSoon(ids, new Date(2026, 6, 14, 23, 0), 20), false);
 });
 
 test("hours: status labels", () => {

@@ -1,7 +1,7 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
-import { isOpenAt } from "./hours.ts";
+import { isClosingSoon, isOpenAt } from "./hours.ts";
 import { polylineMeters, sliceAlong } from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 
@@ -66,6 +66,7 @@ function buildingsFC(data: SkymapData, when: Date): FC {
         id: b.id,
         name: b.name,
         open: isOpenAt(b, when),
+        closingSoon: isClosingSoon(b, when, 20),
         hub: b.category === "retailHub",
       },
       geometry: { type: "Polygon", coordinates: [b.footprint] },
@@ -250,8 +251,17 @@ export class SkymapView {
       type: "fill",
       source: "skyway-buildings",
       paint: {
-        "fill-color": ["case", ["!", ["get", "open"]], CLOSED, ["get", "hub"], NETWORK_DEEP, NETWORK],
-        "fill-opacity": ["case", ["get", "open"], 0.16, 0.1],
+        "fill-color": [
+          "case",
+          ["!", ["get", "open"]],
+          CLOSED,
+          ["get", "closingSoon"],
+          ROUTE,
+          ["get", "hub"],
+          NETWORK_DEEP,
+          NETWORK,
+        ],
+        "fill-opacity": ["case", ["get", "closingSoon"], 0.22, ["get", "open"], 0.16, 0.1],
       },
     });
     this.map.addLayer({
@@ -259,8 +269,8 @@ export class SkymapView {
       type: "line",
       source: "skyway-buildings",
       paint: {
-        "line-color": ["case", ["get", "open"], NETWORK, CLOSED],
-        "line-width": ["case", ["get", "open"], 1.6, 1],
+        "line-color": ["case", ["get", "closingSoon"], ROUTE, ["get", "open"], NETWORK, CLOSED],
+        "line-width": ["case", ["get", "closingSoon"], 2.2, ["get", "open"], 1.6, 1],
         "line-opacity": 0.7,
       },
     });
@@ -309,7 +319,7 @@ export class SkymapView {
         "text-letter-spacing": 0.02,
       },
       paint: {
-        "text-color": INK,
+        "text-color": ["case", ["get", "closingSoon"], ROUTE, INK],
         "text-halo-color": "rgba(255,255,255,0.92)",
         "text-halo-width": 1.6,
       },
