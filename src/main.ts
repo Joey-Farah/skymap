@@ -3,7 +3,7 @@ import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { SkywayRouter, nearestBuilding, routeStepIndex } from "./router.ts";
 import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
-import { encodeRouteState, parseRouteState } from "./share.ts";
+import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { formatMinute, nextOccurrence } from "./hours.ts";
 
 async function boot() {
@@ -15,6 +15,7 @@ async function boot() {
   const disclaimer = document.getElementById("disclaimer");
   if (disclaimer && data.meta.disclaimer) disclaimer.textContent = data.meta.disclaimer;
   const sheet = new Sheet(document.getElementById("sheet")!);
+  (document.getElementById("feedback-link") as HTMLAnchorElement).href = feedbackUrl();
   const searchPanel = document.getElementById("search-panel")!;
   const tripStrip = document.getElementById("trip-strip") as HTMLElement;
   const tripFrom = document.getElementById("trip-from")!;

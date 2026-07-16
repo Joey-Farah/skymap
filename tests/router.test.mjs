@@ -13,7 +13,7 @@ import {
   sliceAlong,
 } from "../src/router.ts";
 import { closingSoonWarnings, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
-import { encodeRouteState, googleMapsUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
+import { encodeRouteState, feedbackUrl, googleMapsUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -320,6 +320,13 @@ test("reportIssueUrl builds a pre-filled mailto", () => {
   assert.ok(url.startsWith("mailto:"));
   assert.match(url, /subject=Skymap%20issue%3A%20Vitality%20Roasting/);
   assert.match(url, /body=.*poi-123/);
+});
+
+test("feedbackUrl builds a general (not per-target) mailto", () => {
+  const url = feedbackUrl();
+  assert.ok(url.startsWith("mailto:"));
+  assert.match(url, /subject=Skymap%20feedback/);
+  assert.doesNotMatch(url, /Ref%3A/, "feedback isn't tied to a building/POI id");
 });
 
 test("live POIs reference real buildings", () => {

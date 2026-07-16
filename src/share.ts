@@ -43,6 +43,14 @@ export function reportIssueUrl(target: { name: string; id: string }): string {
   return `mailto:hello@skymap.app?subject=${subject}&body=${body}`;
 }
 
+/** General product feedback/ideas — distinct from reportIssueUrl, which is
+ * always tied to a specific building or business's data. */
+export function feedbackUrl(): string {
+  const subject = encodeURIComponent("Skymap feedback");
+  const body = encodeURIComponent("What's working, what's not, what would make this better?\n\n\n");
+  return `mailto:hello@skymap.app?subject=${subject}&body=${body}`;
+}
+
 export function parseRouteState(search: string): RouteState {
   const params = new URLSearchParams(search);
   const at = params.get("at");
