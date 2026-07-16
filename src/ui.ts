@@ -1,9 +1,8 @@
 import type { Building, Poi, RouteResult } from "./types.ts";
-import { googleMapsUrl, reportIssueUrl } from "./share.ts";
+import { reportIssueUrl } from "./share.ts";
 import { CATEGORY_LABELS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
 import { haversineMeters } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
-import { monogramColor } from "./logo.ts";
 
 /** Single-letter result-row monogram per icon group — kept legible without emoji. */
 const RESULT_ICON_LETTER: Record<string, string> = {
@@ -274,7 +273,7 @@ export class Sheet {
         li.append(
           el("span", p.name),
           el("span", p.category === "bus_stop" ? "Bus" : "Light rail", "poi-cat"),
-          el("span", `${ft} ft`, "poi-gmaps"),
+          el("span", `${ft} ft`, "poi-distance"),
         );
         list.appendChild(li);
       }
@@ -317,13 +316,15 @@ export class Sheet {
     for (const p of [...pois].sort((a, b) => a.name.localeCompare(b.name))) {
       const li = document.createElement("li");
       li.append(el("span", p.name), el("span", humanCategory(p.category), "poi-cat"));
-      const link = document.createElement("a");
-      link.href = googleMapsUrl(p);
-      link.target = "_blank";
-      link.rel = "noopener";
-      link.className = "poi-gmaps";
-      link.textContent = "Maps ↗";
-      li.append(link);
+      if (p.website) {
+        const link = document.createElement("a");
+        link.href = p.website;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.className = "poi-website";
+        link.textContent = "Website ↗";
+        li.append(link);
+      }
       list.appendChild(li);
     }
     return list;
@@ -341,15 +342,18 @@ export class Sheet {
 
     const actionsRow = document.createElement("div");
     actionsRow.className = "actions";
-    const gmaps = document.createElement("a");
-    gmaps.href = googleMapsUrl(p);
-    gmaps.target = "_blank";
-    gmaps.rel = "noopener";
-    gmaps.className = "gmaps-btn";
-    gmaps.textContent = "Google Maps ↗";
+    if (p.website) {
+      const website = document.createElement("a");
+      website.href = p.website;
+      website.target = "_blank";
+      website.rel = "noopener";
+      website.className = "website-btn";
+      website.textContent = "Website / menu ↗";
+      actionsRow.append(website);
+    }
     const toBtn = el("button", "Route here", "primary");
     toBtn.addEventListener("click", onRouteTo);
-    actionsRow.append(gmaps, toBtn);
+    actionsRow.append(toBtn);
     this.content.append(actionsRow, this.reportLink({ name: p.name, id: p.id }));
     this.show();
   }
@@ -519,33 +523,26 @@ function el(tag: string, text?: string, className?: string): HTMLElement {
 }
 
 /**
- * Visual anchor for a landmark cue: the business's bundled favicon, or a
- * colored monogram when no logo exists — the row reads identically either
- * way, so missing logos cost polish, not layout.
+ * Visual anchor for a landmark cue: the business's bundled favicon, when we
+ * have one. No logo means no chip — a placeholder monogram implied more
+ * data than we actually have.
  */
-function landmarkChip(p: Poi): HTMLElement {
+function landmarkChip(p: Poi): HTMLElement | null {
+  if (!p.logo) return null;
   const chip = el("span", undefined, "lm-chip");
-  const monogram = () => {
-    const m = el("span", ([...p.name.trim()][0] ?? "•").toUpperCase(), "lm-monogram");
-    m.style.background = monogramColor(p.name);
-    return m;
-  };
-  if (p.logo) {
-    const img = document.createElement("img");
-    img.src = `logos/${p.logo}.png`;
-    img.alt = "";
-    img.loading = "lazy";
-    img.addEventListener("error", () => chip.replaceChildren(monogram()));
-    chip.append(img);
-  } else {
-    chip.append(monogram());
-  }
+  const img = document.createElement("img");
+  img.src = `logos/${p.logo}.png`;
+  img.alt = "";
+  img.loading = "lazy";
+  img.addEventListener("error", () => chip.remove());
+  chip.append(img);
   return chip;
 }
 
-/** " past <chip> <name>" as inline elements, shared by steps and live cue. */
+/** " past [chip] <name>" as inline elements, shared by steps and live cue. */
 function landmarkCue(p: Poi): HTMLElement {
   const cue = el("span", undefined, "lm-cue");
-  cue.append("past ", landmarkChip(p), ` ${p.name}`);
+  const chip = landmarkChip(p);
+  cue.append("past ", ...(chip ? [chip, " "] : []), p.name);
   return cue;
 }

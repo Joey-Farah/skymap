@@ -20,15 +20,6 @@ export function encodeRouteState(state: { fromId: string; toId: string; when: Da
 }
 
 /**
- * Deep link to the business's card on Google Maps (ratings, photos, hours
- * live there — Google's ToS doesn't allow rendering Places data on our map).
- */
-export function googleMapsUrl(poi: { name: string; lat: number; lon: number }): string {
-  const params = new URLSearchParams({ api: "1", query: `${poi.name} Minneapolis` });
-  return `https://www.google.com/maps/search/?${params.toString()}`;
-}
-
-/**
  * Data in this app comes entirely from OpenStreetMap, which can go stale —
  * a known weakness of every skyway map built this way. This is the cheap
  * fix: a one-tap way to flag it so the underlying data can be corrected.

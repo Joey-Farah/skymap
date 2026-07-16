@@ -958,22 +958,11 @@ a:focus-visible {
   margin: 0 1px;
 }
 
-.lm-chip img,
-.lm-monogram {
+.lm-chip img {
   width: 18px;
   height: 18px;
   border-radius: 5px;
   object-fit: contain;
-}
-
-.lm-monogram {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
 }
 
 .steps li::before {
@@ -1193,7 +1182,7 @@ a:focus-visible {
   font-size: 12px;
 }
 
-.poi-gmaps {
+.poi-website {
   margin-left: auto;
   font-size: 12px;
   font-weight: 700;
@@ -1202,7 +1191,15 @@ a:focus-visible {
   white-space: nowrap;
 }
 
-.gmaps-btn {
+.poi-distance {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-400);
+  white-space: nowrap;
+}
+
+.website-btn {
   flex: 1;
   padding: 11px;
   border-radius: var(--radius-sm);
@@ -1216,12 +1213,12 @@ a:focus-visible {
   transition: transform 0.12s var(--ease);
 }
 
-.gmaps-btn:active {
+.website-btn:active {
   transform: scale(0.97);
 }
 
 @media (prefers-color-scheme: dark) {
-  .gmaps-btn {
+  .website-btn {
     background: rgba(255, 255, 255, 0.07);
   }
 }

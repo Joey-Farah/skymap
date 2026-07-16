@@ -13,7 +13,7 @@ import {
   sliceAlong,
 } from "../src/router.ts";
 import { closingSoonWarnings, isClosingSoon, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
-import { encodeRouteState, feedbackUrl, googleMapsUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
+import { encodeRouteState, feedbackUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -411,13 +411,6 @@ test("saved ramp round-trips through a key-value store", async () => {
   // Corrupt data doesn't throw, just reads as unsaved.
   mem.set("skymap.savedRamp", "{not json");
   assert.equal(getSavedRamp(fakeStore), null);
-});
-
-test("googleMapsUrl builds a search deep link", () => {
-  const url = googleMapsUrl({ name: "Cardigan Donuts", lat: 44.9762, lon: -93.2714 });
-  assert.ok(url.startsWith("https://www.google.com/maps/search/?api=1&query="));
-  assert.match(url, /Cardigan\+Donuts/);
-  assert.match(url, /Minneapolis/);
 });
 
 test("combo entries include businesses, searchable by name", async () => {
