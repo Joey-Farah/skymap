@@ -395,6 +395,7 @@ async function main(osm) {
     components.push(comp);
   }
   components.sort((a, b) => b.size - a.size);
+
   // Keep every real skyway cluster, not just the single largest — a size-2
   // pair is almost always mapping noise (an isolated corridor between two
   // buildings, unrelated to downtown), but a cluster of 3+ buildings with

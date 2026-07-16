@@ -30,13 +30,42 @@ async function boot() {
     tripFrom.textContent = fromLabel;
     tripTo.textContent = toLabel;
     tripStrip.hidden = false;
+    searchPanel.classList.remove("idle");
     searchPanel.classList.add("trip-active");
   }
   function expandSearch() {
     tripStrip.hidden = true;
-    searchPanel.classList.remove("trip-active");
+    searchPanel.classList.remove("trip-active", "idle");
   }
   document.getElementById("trip-edit")!.addEventListener("click", expandSearch);
+
+  // Idle: the default, untouched state — a single compact "Where to?" bar,
+  // not the full form. Apple Maps shows almost nothing until you actually
+  // start searching; this is the single highest-leverage change toward
+  // that feel. Tapping the bar reveals everything (weather, both fields,
+  // time/accessibility options); tapping away with nothing entered
+  // collapses back.
+  const idleBar = document.getElementById("search-idle-bar") as HTMLButtonElement;
+  function showIdle() {
+    searchPanel.classList.remove("trip-active");
+    searchPanel.classList.add("idle");
+  }
+  function showEditing() {
+    searchPanel.classList.remove("idle");
+  }
+  idleBar.addEventListener("click", () => {
+    showEditing();
+    // Origin's usually already filled from geolocation (see onPosition
+    // below) — send focus straight to the field that actually needs input.
+    (comboFrom.value ? document.getElementById("input-to") : document.getElementById("input-from"))?.focus();
+  });
+  document.addEventListener("click", (e) => {
+    if (searchPanel.classList.contains("trip-active")) return;
+    if (searchPanel.classList.contains("idle")) return;
+    if (comboFrom.value || comboTo.value) return; // mid-search, don't yank it away
+    if (searchPanel.contains(e.target as Node)) return;
+    showIdle();
+  });
 
   const style = await resolveStyle();
   const view = new SkymapView(
@@ -239,6 +268,10 @@ async function boot() {
       sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
     }
     maybePromptSaveRamp(nearBuilding);
+    // Apple-Maps-style implicit origin: quietly fill From with wherever you
+    // are, so the common case is "just type a destination." Never
+    // overwrites a real selection — only ever touches an empty field.
+    if (nearBuilding && !comboFrom.value) comboFrom.select(nearBuilding);
   }
 
   // --- Save My Ramp: notice when you're parked, offer a one-tap way back --
@@ -367,6 +400,9 @@ async function boot() {
   const initialTo = initial.toId ? router.building(initial.toId) : undefined;
   if (initialFrom) comboFrom.select(initialFrom);
   if (initialTo) comboTo.select(initialTo);
+  // A shared link already has something to show; a cold visit gets the
+  // minimal idle bar instead of the full form.
+  if (!initialFrom || !initialTo) showIdle();
 
   // Keep "leave now" open/closed styling fresh.
   setInterval(refreshTimeStyling, 60_000);
@@ -408,6 +444,16 @@ async function boot() {
     });
     filterBar.appendChild(chip);
   }
+  // Only relevant once you can actually see businesses on the map — same
+  // threshold the POI icon layer itself uses. Fading it in/out (rather
+  // than always-on) is most of what "too much on screen" was about.
+  const POI_FILTER_MINZOOM = 14.8;
+  function updateFilterBarVisibility() {
+    filterBar.classList.toggle("zoomed-out", view.map.getZoom() < POI_FILTER_MINZOOM);
+  }
+  view.map.on("zoom", updateFilterBarVisibility);
+  view.map.on("load", updateFilterBarVisibility);
+  updateFilterBarVisibility();
 
   // Test/debug handle (drives E2E camera positioning).
   (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition };

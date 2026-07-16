@@ -139,8 +139,56 @@ a:focus-visible {
    the map (and the route drawn on it) get the room back. */
 .search-panel.trip-active .field-row,
 .search-panel.trip-active .time-row,
-.search-panel.trip-active .scrubber {
+.search-panel.trip-active .scrubber,
+.search-panel.trip-active .access-toggle,
+.search-panel.trip-active .weather-line {
   display: none;
+}
+
+/* Idle (the default, untouched state): show only a compact "Where to?"
+   bar, not the full form — Apple Maps shows almost nothing until you
+   actually start searching, and that's most of what "feels native" comes
+   down to. Tapping the bar (or either field directly) reveals everything. */
+.search-panel.idle .field-row,
+.search-panel.idle .time-row,
+.search-panel.idle .scrubber,
+.search-panel.idle .access-toggle,
+.search-panel.idle .weather-line,
+.search-panel.idle .trip-strip {
+  display: none;
+}
+
+.search-idle-bar {
+  display: none;
+  width: 100%;
+  align-items: center;
+  gap: 9px;
+  background: rgba(20, 33, 61, 0.045);
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-400);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-idle-bar {
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
+.search-panel.idle .search-idle-bar {
+  display: flex;
+}
+
+.search-idle-icon {
+  font-size: 15px;
+  color: var(--ink-400);
+  flex-shrink: 0;
 }
 
 .trip-strip {
@@ -1143,6 +1191,15 @@ a:focus-visible {
   overflow-x: auto;
   z-index: 8;
   padding-bottom: 2px;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.poi-filter-bar.zoomed-out {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
 }
 
 .poi-filter-chip {
