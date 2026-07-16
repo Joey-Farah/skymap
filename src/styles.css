@@ -619,6 +619,21 @@ body {
   font-size: 12px;
 }
 
+.report-crossing {
+  display: inline-block;
+  margin-top: 2px;
+  border: 0;
+  background: transparent;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
 .steps .via.steps {
   color: #b45309;
   font-weight: 600;

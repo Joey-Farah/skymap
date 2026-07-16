@@ -166,7 +166,7 @@ export class SkywayRouter {
     fromId: string,
     toId: string,
     when: Date | null,
-    options: { accessible?: boolean } = {},
+    options: { accessible?: boolean; closedEdges?: Set<string> } = {},
   ): RouteResult | null {
     const strict = this.search(fromId, toId, when, options);
     if (strict) return { ...strict, ignoredClosures: false };
@@ -181,7 +181,7 @@ export class SkywayRouter {
     fromId: string,
     toId: string,
     when: Date | null,
-    options: { accessible?: boolean } = {},
+    options: { accessible?: boolean; closedEdges?: Set<string> } = {},
   ): Omit<RouteResult, "ignoredClosures"> | null {
     const goal = this.buildings.get(toId);
     const start = this.buildings.get(fromId);
@@ -212,6 +212,7 @@ export class SkywayRouter {
       for (const edge of this.adjacency.get(current) ?? []) {
         if (closed.has(edge.to)) continue;
         if (options.accessible && edge.hasSteps) continue;
+        if (options.closedEdges?.has([current, edge.to].sort().join("|"))) continue;
         const b = this.buildings.get(edge.to)!;
         const isEndpoint = edge.to === toId || edge.to === fromId;
         if (when && !isEndpoint && !isOpenAt(b, when)) continue;

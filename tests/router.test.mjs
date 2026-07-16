@@ -297,6 +297,40 @@ test("live dataset is internally consistent", () => {
   }
 });
 
+test("reported-closed crossings expire and are excluded from routing", async () => {
+  const { reportClosedCrossing, activeClosedEdges, isCrossingReportedClosed } = await import(
+    "../src/incidents.ts"
+  );
+  const mem = new Map();
+  const store = {
+    getItem: (k) => (mem.has(k) ? mem.get(k) : null),
+    setItem: (k, v) => mem.set(k, v),
+    removeItem: (k) => mem.delete(k),
+  };
+
+  const now = 1_000_000;
+  reportClosedCrossing(store, "a", "b", now);
+  assert.equal(isCrossingReportedClosed(store, "a", "b", now), true);
+  assert.equal(isCrossingReportedClosed(store, "b", "a", now), true, "direction-independent");
+  assert.equal(activeClosedEdges(store, now).size, 1);
+
+  // Past the 4h expiry: no longer active.
+  const later = now + 5 * 60 * 60 * 1000;
+  assert.equal(isCrossingReportedClosed(store, "a", "b", later), false);
+});
+
+test("route() excludes a reported-closed crossing even if it's the only path", () => {
+  const mini = {
+    meta: data.meta,
+    buildings: [{ ...data.buildings[0], id: "a" }, { ...data.buildings[0], id: "b" }],
+    edges: [{ from: "a", to: "b", crossing: "locked door" }],
+  };
+  const r = new SkywayRouter(mini);
+  assert.ok(r.route("a", "b", null), "open by default");
+  const closed = r.route("a", "b", null, { closedEdges: new Set(["a|b"]) });
+  assert.equal(closed, null, "the only path is reported closed, so no route exists");
+});
+
 test("saved ramp round-trips through a key-value store", async () => {
   const { saveRamp, getSavedRamp, clearSavedRamp } = await import("../src/ramp.ts");
   const mem = new Map();

@@ -6,6 +6,7 @@ import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { formatMinute, nextOccurrence } from "./hours.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
+import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
 
 async function boot() {
   const res = await fetch("./data/skymap-data.json");
@@ -136,7 +137,10 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const route = router.route(fromId, toId, when, { accessible: accessibleInput.checked });
+    const route = router.route(fromId, toId, when, {
+      accessible: accessibleInput.checked,
+      closedEdges: activeClosedEdges(localStorage),
+    });
     if (!route) {
       activeRoute = null;
       expandSearch();
@@ -159,6 +163,10 @@ async function boot() {
       when,
       { from: fromLabel, to: toLabel, accessible: accessibleInput.checked },
       data.pois ?? [],
+      (a, b) => {
+        reportClosedCrossing(localStorage, a, b);
+        routeIfReady(); // recalculate immediately, same as the spec's live-incident push
+      },
     );
     collapseSearch(fromLabel, toLabel);
     // Make the address bar shareable: the URL always describes this route.

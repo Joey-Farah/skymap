@@ -366,6 +366,7 @@ export class Sheet {
     when: Date,
     labels?: { from?: string; to?: string; accessible?: boolean },
     pois: Poi[] = [],
+    onReportClosed?: (fromId: string, toId: string) => void,
   ) {
     this.routePois = pois;
     this.content.innerHTML = "";
@@ -417,7 +418,7 @@ export class Sheet {
 
     const ol = document.createElement("ul");
     ol.className = "steps sheet-collapsible";
-    for (const step of route.steps) {
+    route.steps.forEach((step, i) => {
       const li = document.createElement("li");
       const closedHere = !isOpenLabelOk(step.building, when);
       const landmark = landmarkNear(pois, step.building.id);
@@ -429,9 +430,19 @@ export class Sheet {
         const generic = /^(minneapolis )?skyway$/i.test(step.viaCrossing.trim());
         const base = generic ? "Via skyway" : `Cross over ${step.viaCrossing}`;
         li.prepend(el("span", step.hasSteps ? `${base} · stairs` : base, step.hasSteps ? "via steps" : "via"));
+        if (onReportClosed && i > 0) {
+          const prevId = route.steps[i - 1].building.id;
+          const curId = step.building.id;
+          const report = el("button", "Report locked/closed", "report-crossing");
+          report.addEventListener("click", (e) => {
+            e.stopPropagation();
+            onReportClosed(prevId, curId);
+          });
+          li.append(report);
+        }
       }
       ol.appendChild(li);
-    }
+    });
     this.content.append(ol);
     this.stepsListEl = ol;
     this.progressPromptEl = prompt;
