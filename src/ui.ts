@@ -229,10 +229,13 @@ export class Sheet {
 
     const h2 = el("h2", b.name);
     const kind = CATEGORY_LABELS[b.category];
-    const meta = el("div", kind ? `${kind} · ${b.address}` : b.address, "meta");
+    // "Minneapolis" is the extraction's placeholder for a missing address —
+    // showing it says nothing the map doesn't already.
+    const address = b.address === "Minneapolis" ? "" : b.address;
+    const metaText = [kind, address].filter(Boolean).join(" · ");
+    const meta = el("div", metaText, "meta");
     const badge = el("span", status.open ? status.label : status.label, `badge ${status.open ? "open" : "closed"}`);
-    const hours = el("div", `Skyway hours: ${formatWeeklyHours(b.hours)}`, "hours-line");
-    const note = el("div", b.hoursNote, "meta");
+    const hours = el("div", `Hours: ${formatWeeklyHours(b.hours)}`, "hours-line");
 
     const actionsRow = document.createElement("div");
     actionsRow.className = "actions";
@@ -242,7 +245,7 @@ export class Sheet {
     toBtn.addEventListener("click", actions.onTo);
     actionsRow.append(fromBtn, toBtn);
 
-    const reachBtn = el("button", "What's within 15 minutes?", "reach-btn");
+    const reachBtn = el("button", "Within 15 min", "reach-btn");
     reachBtn.addEventListener("click", actions.onReach);
 
     // Everything past the essentials collapses away in peek mode.
@@ -277,7 +280,7 @@ export class Sheet {
       more.append(list);
     }
     more.append(this.reportLink({ name: b.name, id: b.id }));
-    this.content.append(h2, meta, badge, hours, note, more);
+    this.content.append(h2, meta, badge, hours, more);
     this.show();
   }
 
@@ -285,7 +288,7 @@ export class Sheet {
     const link = document.createElement("a");
     link.href = reportIssueUrl(target);
     link.className = "report-link";
-    link.textContent = "Something wrong here? Report it";
+    link.textContent = "Report an issue";
     return link;
   }
 
@@ -342,7 +345,7 @@ export class Sheet {
     gmaps.target = "_blank";
     gmaps.rel = "noopener";
     gmaps.className = "gmaps-btn";
-    gmaps.textContent = "Open in Google Maps ↗";
+    gmaps.textContent = "Google Maps ↗";
     const toBtn = el("button", "Route here", "primary");
     toBtn.addEventListener("click", onRouteTo);
     actionsRow.append(gmaps, toBtn);
@@ -361,7 +364,7 @@ export class Sheet {
     this.content.innerHTML = "";
     this.clearRouteProgress();
     this.content.append(el("h2", `Within reach of ${origin.name}`));
-    this.content.append(el("div", `Leaving ${formatWhen(when)} · entirely indoors`, "meta"));
+    this.content.append(el("div", `Leaving ${formatWhen(when)}`, "meta"));
 
     const legend = document.createElement("ul");
     legend.className = "legend";
@@ -431,7 +434,7 @@ export class Sheet {
     summary.append(
       el("span", `${Math.max(1, Math.round(route.totalMinutes))} min`, "big"),
       el("span", formatDistance(route.totalMeters), "sub"),
-      el("span", `${route.steps.length} buildings · fully indoors`, "sub"),
+      el("span", `${route.steps.length} buildings`, "sub"),
     );
     this.content.append(summary);
 
@@ -458,7 +461,9 @@ export class Sheet {
         if (onReportClosed && i > 0) {
           const prevId = route.steps[i - 1].building.id;
           const curId = step.building.id;
-          const report = el("button", "Report locked/closed", "report-crossing");
+          const report = el("button", "⚑", "report-crossing");
+          report.title = "Report this crossing locked or closed";
+          report.setAttribute("aria-label", "Report this crossing locked or closed");
           report.addEventListener("click", (e) => {
             e.stopPropagation();
             onReportClosed(prevId, curId);

@@ -35,7 +35,6 @@
         <div class="brand">
           <span class="brand-mark">◇</span>
           <h1>Skymap</h1>
-          <span class="brand-sub">Minneapolis Skyway</span>
           <a id="feedback-link" class="feedback-link">Feedback</a>
         </div>
         <button class="search-idle-bar" id="search-idle-bar" type="button">
@@ -46,7 +45,7 @@
         <div class="field-row">
           <div class="combo" id="combo-from">
             <span class="dot dot-from"></span>
-            <input type="text" id="input-from" placeholder="From building…" autocomplete="off" />
+            <input type="text" id="input-from" placeholder="From" autocomplete="off" />
             <ul class="combo-list" hidden></ul>
           </div>
           <button class="icon-btn" id="btn-swap" title="Swap origin and destination" aria-label="Swap">⇅</button>
@@ -54,7 +53,7 @@
         <div class="field-row">
           <div class="combo" id="combo-to">
             <span class="dot dot-to"></span>
-            <input type="text" id="input-to" placeholder="To building…" autocomplete="off" />
+            <input type="text" id="input-to" placeholder="To" autocomplete="off" />
             <ul class="combo-list" hidden></ul>
           </div>
           <button class="icon-btn primary" id="btn-route" title="Find route" aria-label="Find route">➜</button>
@@ -101,9 +100,6 @@
 
       <div class="poi-filter-bar" id="poi-filter-bar" role="group" aria-label="Filter map businesses"></div>
 
-      <footer class="disclaimer" id="disclaimer">
-        Preview data: approximate locations &amp; representative hours — not yet field-verified.
-      </footer>
     </div>
     <script type="module" src="./src/main.ts"></script>
   </body>

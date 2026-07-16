@@ -24,13 +24,14 @@ function isPrecipitating(code: number): boolean {
 
 export function classifyWeather(reading: WeatherReading): WeatherClassification {
   const { temperatureF, weatherCode, windKph } = reading;
+  const t = Math.round(temperatureF);
   if (isPrecipitating(weatherCode)) {
-    return { harsh: true, label: weatherCode >= 71 && weatherCode < 90 ? "Snowing" : "Rainy" };
+    return { harsh: true, label: `${t}° · ${weatherCode >= 71 && weatherCode < 90 ? "Snowing" : "Raining"}` };
   }
-  if (temperatureF <= 20) return { harsh: true, label: `${Math.round(temperatureF)}°F — brutal cold` };
-  if (temperatureF >= 95) return { harsh: true, label: `${Math.round(temperatureF)}°F — dangerous heat` };
-  if (windKph >= 40) return { harsh: true, label: "Very windy" };
-  return { harsh: false, label: `${Math.round(temperatureF)}°F and clear` };
+  if (temperatureF <= 20) return { harsh: true, label: `${t}° · Extreme cold` };
+  if (temperatureF >= 95) return { harsh: true, label: `${t}° · Extreme heat` };
+  if (windKph >= 40) return { harsh: true, label: `${t}° · High wind` };
+  return { harsh: false, label: `${t}° · Clear` };
 }
 
 const OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast";

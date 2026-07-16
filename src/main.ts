@@ -17,8 +17,6 @@ async function boot() {
   const data: SkymapData = await res.json();
 
   const router = new SkywayRouter(data);
-  const disclaimer = document.getElementById("disclaimer");
-  if (disclaimer && data.meta.disclaimer) disclaimer.textContent = data.meta.disclaimer;
   const sheet = new Sheet(document.getElementById("sheet")!);
   (document.getElementById("feedback-link") as HTMLAnchorElement).href = feedbackUrl();
   const searchPanel = document.getElementById("search-panel")!;
@@ -165,7 +163,7 @@ async function boot() {
     if (fromId === toId) {
       activeRoute = null;
       expandSearch();
-      sheet.showMessage("Same building", "Origin and destination are the same place.");
+      sheet.showMessage("Same building", "Pick two different places.");
       return;
     }
     const when = selectedTime();
@@ -180,8 +178,8 @@ async function boot() {
       sheet.showMessage(
         "No route found",
         accessibleInput.checked
-          ? "No stairs-free path connects these buildings in the current dataset."
-          : "These buildings aren't connected in the current dataset.",
+          ? "No stairs-free skyway route between these places."
+          : "No skyway connection between these places.",
       );
       return;
     }
@@ -422,9 +420,7 @@ async function boot() {
   fetchWeather(44.976, -93.2697).then((reading) => {
     if (!reading) return; // fails silently — never blocks the app
     const { harsh, label } = classifyWeather(reading);
-    weatherLine.textContent = harsh
-      ? `${label} outside — good thing this route stays indoors the whole way.`
-      : `${label} outside — the skyway's still fully climate-controlled if you'd rather stay in.`;
+    weatherLine.textContent = label;
     weatherLine.classList.toggle("harsh", harsh);
     weatherLine.hidden = false;
   });

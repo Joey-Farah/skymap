@@ -154,8 +154,13 @@ a:focus-visible {
 .search-panel.idle .scrubber,
 .search-panel.idle .access-toggle,
 .search-panel.idle .weather-line,
+.search-panel.idle .brand,
 .search-panel.idle .trip-strip {
   display: none;
+}
+
+.search-panel.idle {
+  padding: 8px;
 }
 
 .search-idle-bar {
@@ -929,7 +934,7 @@ a:focus-visible {
 
 .steps li {
   position: relative;
-  padding: 8px 0 8px 27px;
+  padding: 8px 24px 8px 27px;
   font-size: 14px;
   font-weight: 600;
   border-left: 0;
@@ -972,19 +977,26 @@ a:focus-visible {
   font-weight: 700;
 }
 
+/* Deliberately quiet: a flag you find when you need it, not a red link
+   shouting on every step of every route. */
 .report-crossing {
-  display: inline-block;
-  margin-top: 3px;
+  position: absolute;
+  right: 2px;
+  top: 8px;
   border: 0;
   background: transparent;
-  color: var(--red);
-  font-size: 11px;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: var(--ink-400);
+  opacity: 0.55;
+  font-size: 13px;
   cursor: pointer;
-  padding: 0;
+  padding: 2px 4px;
   font-family: inherit;
+}
+
+.report-crossing:hover,
+.report-crossing:focus-visible {
+  color: var(--red);
+  opacity: 1;
 }
 
 .steps .via.steps {
@@ -1227,28 +1239,6 @@ a:focus-visible {
   background: var(--ink-900);
   color: var(--card);
   box-shadow: var(--shadow-2);
-}
-
-/* --- Disclaimer ---------------------------------------------------------- */
-
-.disclaimer {
-  position: absolute;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 2px);
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--ink-600);
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 3px 11px;
-  border-radius: 999px;
-  z-index: 5;
-  white-space: nowrap;
-  max-width: 96vw;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 @media (max-width: 560px) {
