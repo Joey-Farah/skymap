@@ -127,7 +127,12 @@ export class SkywayRouter {
    * walking minutes (same cost model as routes). Buildings closed at `when`
    * are not traversable; pass null for hours-blind reach.
    */
-  reachable(fromId: string, when: Date | null, maxMinutes: number): Map<string, number> {
+  reachable(
+    fromId: string,
+    when: Date | null,
+    maxMinutes: number,
+    options: { accessible?: boolean; closedEdges?: Set<string> } = {},
+  ): Map<string, number> {
     const minutes = new Map<string, number>([[fromId, 0]]);
     if (!this.buildings.has(fromId)) return new Map();
     const open = new Set<string>([fromId]);
@@ -143,6 +148,8 @@ export class SkywayRouter {
       }
       open.delete(current);
       for (const edge of this.adjacency.get(current) ?? []) {
+        if (options.accessible && edge.hasSteps) continue;
+        if (options.closedEdges?.has([current, edge.to].sort().join("|"))) continue;
         const b = this.buildings.get(edge.to)!;
         if (when && edge.to !== fromId && !isOpenAt(b, when)) continue;
         const transit = current === fromId ? 0 : BUILDING_TRANSIT_MIN;

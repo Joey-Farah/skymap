@@ -396,15 +396,14 @@ async function main(osm) {
   }
   components.sort((a, b) => b.size - a.size);
 
-  // Keep every real skyway cluster, not just the single largest — a size-2
-  // pair is almost always mapping noise (an isolated corridor between two
-  // buildings, unrelated to downtown), but a cluster of 3+ buildings with
-  // internal bridges (e.g. Target Center + Butler Square + Mayo Clinic
-  // Square + 6 more, a real North Loop spur) is a legitimate, separately-
-  // mapped skyway segment that just isn't linked to the core network in
-  // OSM yet. Filtering to only the single largest component silently
-  // dropped real, findable buildings.
-  const MIN_COMPONENT_SIZE = 3;
+  // Keep every real skyway cluster, not just the single largest. Even a
+  // 2-building cluster can be a real destination + its ramp (the Guthrie
+  // Theater is exactly this); dropping small components made real,
+  // searchable buildings silently vanish, which is far worse than a few
+  // niche pairs appearing in search. Cross-cluster routes correctly report
+  // no connection. Only singletons (a building with no skyway edge at all)
+  // are excluded, via the component walk itself.
+  const MIN_COMPONENT_SIZE = 2;
   const mainComponent = new Set();
   let keptComponents = 0;
   for (const comp of components) {

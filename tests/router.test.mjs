@@ -244,6 +244,25 @@ test("nextOccurrence finds the coming weekday at a minute-of-day", () => {
   assert.equal(sunday.getDate(), 19, "next Sunday");
 });
 
+test("reachable() honors accessible and closedEdges like route() does", () => {
+  // a -[stairs]- b: with accessible on, b is out of reach.
+  const mini = {
+    meta: data.meta,
+    buildings: [
+      { ...data.buildings[0], id: "a", lat: 44.977, lon: -93.271 },
+      { ...data.buildings[0], id: "b", lat: 44.9772, lon: -93.271 },
+    ],
+    edges: [{ from: "a", to: "b", crossing: "stairs link", hasSteps: true }],
+  };
+  const r = new SkywayRouter(mini);
+  assert.ok(r.reachable("a", null, 60).has("b"), "reachable by default");
+  assert.ok(!r.reachable("a", null, 60, { accessible: true }).has("b"), "stairs excluded in accessible mode");
+  assert.ok(
+    !r.reachable("a", null, 60, { closedEdges: new Set(["a|b"]) }).has("b"),
+    "reported-closed crossing excluded",
+  );
+});
+
 test("reachable() maps buildings to walking minutes within a budget", () => {
   const reach = router.reachable("ids-center", TUE_10AM, 10);
   assert.equal(reach.get("ids-center"), 0);

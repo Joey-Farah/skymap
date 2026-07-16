@@ -371,7 +371,10 @@ async function boot() {
     activeRoute = null;
     const when = selectedTime();
     const maxBand = REACH_BANDS[REACH_BANDS.length - 1].maxMinutes;
-    const reach = router.reachable(b.id, when, maxBand);
+    const reach = router.reachable(b.id, when, maxBand, {
+      accessible: accessibleInput.checked,
+      closedEdges: activeClosedEdges(localStorage),
+    });
     const entries = [...reach.entries()]
       .filter(([id]) => id !== b.id)
       .map(([id, minutes]) => ({ building: router.building(id)!, minutes }));
