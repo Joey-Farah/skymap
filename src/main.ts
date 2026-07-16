@@ -8,6 +8,7 @@ import { formatMinute, nextOccurrence } from "./hours.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
 import { headingFromOrientation } from "./compass.ts";
+import { classifyWeather, fetchWeather } from "./weather.ts";
 
 async function boot() {
   const res = await fetch("./data/skymap-data.json");
@@ -373,6 +374,20 @@ async function boot() {
   if ("serviceWorker" in navigator && !import.meta.env.DEV) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   }
+
+  // Weather-aware framing: since every Skymap route is already indoors,
+  // there's no outdoor alternative to switch to — just honest context on
+  // why the climate-controlled path is (or isn't) worth caring about today.
+  const weatherLine = document.getElementById("weather-line") as HTMLElement;
+  fetchWeather(44.976, -93.2697).then((reading) => {
+    if (!reading) return; // fails silently — never blocks the app
+    const { harsh, label } = classifyWeather(reading);
+    weatherLine.textContent = harsh
+      ? `${label} outside — good thing this route stays indoors the whole way.`
+      : `${label} outside — the skyway's still fully climate-controlled if you'd rather stay in.`;
+    weatherLine.classList.toggle("harsh", harsh);
+    weatherLine.hidden = false;
+  });
 
   // Test/debug handle (drives E2E camera positioning).
   (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition };

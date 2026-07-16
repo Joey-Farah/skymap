@@ -297,6 +297,34 @@ test("live dataset is internally consistent", () => {
   }
 });
 
+test("classifyWeather flags precipitation, extreme temps, and high wind as harsh", async () => {
+  const { classifyWeather } = await import("../src/weather.ts");
+  assert.equal(classifyWeather({ temperatureF: 75, weatherCode: 0, windKph: 10 }).harsh, false);
+  assert.equal(classifyWeather({ temperatureF: 75, weatherCode: 61, windKph: 10 }).harsh, true, "rain");
+  assert.match(classifyWeather({ temperatureF: 20, weatherCode: 73, windKph: 5 }).label, /snow/i);
+  assert.equal(classifyWeather({ temperatureF: 5, weatherCode: 0, windKph: 5 }).harsh, true, "brutal cold");
+  assert.equal(classifyWeather({ temperatureF: 98, weatherCode: 0, windKph: 5 }).harsh, true, "dangerous heat");
+  assert.equal(classifyWeather({ temperatureF: 70, weatherCode: 0, windKph: 45 }).harsh, true, "high wind");
+});
+
+test("fetchWeather parses Open-Meteo's response shape, fails safe to null", async () => {
+  const { fetchWeather } = await import("../src/weather.ts");
+  const okFetch = async () =>
+    new Response(JSON.stringify({ current: { temperature_2m: 82, weather_code: 0, wind_speed_10m: 12 } }), {
+      status: 200,
+    });
+  const reading = await fetchWeather(44.97, -93.27, okFetch);
+  assert.deepEqual(reading, { temperatureF: 82, weatherCode: 0, windKph: 12 });
+
+  const failFetch = async () => new Response("", { status: 500 });
+  assert.equal(await fetchWeather(44.97, -93.27, failFetch), null);
+
+  const throwFetch = async () => {
+    throw new Error("network down");
+  };
+  assert.equal(await fetchWeather(44.97, -93.27, throwFetch), null, "never throws, fails safe");
+});
+
 test("headingFromOrientation prefers iOS compass heading, else derives from alpha", async () => {
   const { headingFromOrientation } = await import("../src/compass.ts");
   assert.equal(headingFromOrientation({ webkitCompassHeading: 90 }), 90);
