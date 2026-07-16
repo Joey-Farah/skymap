@@ -41,6 +41,21 @@ export function buildingCategory(tags: Record<string, string>): string {
   return "office";
 }
 
+/**
+ * The most recognizable business in a building, for "past X" wayfinding
+ * cues — deterministic (alphabetically first food POI) so instructions
+ * don't flicker between re-renders.
+ */
+export function landmarkNear<T extends { name: string; buildingId: string; group: PoiGroup }>(
+  pois: T[],
+  buildingId: string,
+): T | null {
+  const candidates = pois
+    .filter((p) => p.buildingId === buildingId && (p.group === "food" || p.group === "landmark"))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return candidates[0] ?? null;
+}
+
 export const CATEGORY_LABELS: Record<string, string> = {
   retailHub: "Retail hub",
   office: "Office building",

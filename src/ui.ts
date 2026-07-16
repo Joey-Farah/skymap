@@ -1,6 +1,6 @@
 import type { Building, Poi, RouteResult } from "./types.ts";
 import { googleMapsUrl, reportIssueUrl } from "./share.ts";
-import { CATEGORY_LABELS, GROUP_LABELS, type PoiGroup } from "./poi.ts";
+import { CATEGORY_LABELS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
 import { haversineMeters } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
 import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
@@ -109,6 +109,7 @@ export class Sheet {
   private stepsListEl: HTMLUListElement | null = null;
   private progressPromptEl: HTMLElement | null = null;
   private activeRoute: RouteResult | null = null;
+  private routePois: Poi[] = [];
   private dragStartY = 0;
   private dragStartExpanded = true;
   private dragging = false;
@@ -155,6 +156,7 @@ export class Sheet {
     this.stepsListEl = null;
     this.progressPromptEl = null;
     this.activeRoute = null;
+    this.routePois = [];
   }
 
   /**
@@ -178,7 +180,9 @@ export class Sheet {
         : generic || !crossing
           ? "Head into"
           : `Cross over ${crossing} into`;
-      this.progressPromptEl.textContent = `${verb} ${next.building.name}`;
+      const landmark = landmarkNear(this.routePois, next.building.id);
+      const cue = landmark ? `, past ${landmark.name}` : "";
+      this.progressPromptEl.textContent = `${verb} ${next.building.name}${cue}`;
     }
     this.progressPromptEl.hidden = false;
   }
@@ -361,7 +365,9 @@ export class Sheet {
     route: RouteResult,
     when: Date,
     labels?: { from?: string; to?: string; accessible?: boolean },
+    pois: Poi[] = [],
   ) {
+    this.routePois = pois;
     this.content.innerHTML = "";
     const first = route.steps[0].building;
     const last = route.steps[route.steps.length - 1].building;
@@ -414,7 +420,9 @@ export class Sheet {
     for (const step of route.steps) {
       const li = document.createElement("li");
       const closedHere = !isOpenLabelOk(step.building, when);
-      li.append(el("span", step.building.name + (closedHere ? " (closed)" : "")));
+      const landmark = landmarkNear(pois, step.building.id);
+      const landmarkSuffix = landmark ? ` — past ${landmark.name}` : "";
+      li.append(el("span", step.building.name + (closedHere ? " (closed)" : "") + landmarkSuffix));
       if (step.viaCrossing) {
         // OSM often names every bridge "Minneapolis Skyway" — say something
         // shorter than "Cross over Minneapolis Skyway" on every step.

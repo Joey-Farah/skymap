@@ -154,7 +154,12 @@ async function boot() {
     view.setRoute(route);
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
     const toLabel = comboTo.label ?? router.building(toId)!.name;
-    sheet.showRoute(route, when, { from: fromLabel, to: toLabel, accessible: accessibleInput.checked });
+    sheet.showRoute(
+      route,
+      when,
+      { from: fromLabel, to: toLabel, accessible: accessibleInput.checked },
+      data.pois ?? [],
+    );
     collapseSearch(fromLabel, toLabel);
     // Make the address bar shareable: the URL always describes this route.
     history.replaceState(

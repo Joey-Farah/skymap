@@ -362,6 +362,20 @@ test("combo entries include businesses, searchable by name", async () => {
   );
 });
 
+test("landmarkNear picks a recognizable business for a building, deterministically", async () => {
+  const { landmarkNear } = await import("../src/poi.ts");
+  const pois = [
+    { id: "1", name: "Zephyr Dry Cleaning", buildingId: "b1", group: "service" },
+    { id: "2", name: "Caribou Coffee", buildingId: "b1", group: "food" },
+    { id: "3", name: "Aardvark Bakery", buildingId: "b1", group: "food" },
+    { id: "4", name: "Some Bank", buildingId: "b2", group: "service" },
+  ];
+  const landmark = landmarkNear(pois, "b1");
+  assert.equal(landmark.name, "Aardvark Bakery", "alphabetically-first food POI, deterministic");
+  assert.equal(landmarkNear(pois, "b2"), null, "no food/landmark POI in that building");
+  assert.equal(landmarkNear(pois, "nowhere"), null);
+});
+
 test("poi grouping and building categories", async () => {
   const { groupFor, buildingCategory } = await import("../src/poi.ts");
   assert.equal(groupFor("amenity", "cafe"), "food");
