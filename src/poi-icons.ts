@@ -1,0 +1,134 @@
+import type { PoiGroup } from "./poi.ts";
+
+/**
+ * Small monoline glyph per POI group, rendered to a canvas so MapLibre can
+ * use it as a symbol icon — a colored dot doesn't tell you if you're
+ * looking at a coffee shop or a restroom; a recognizable glyph does.
+ */
+function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, cy: number, r: number) {
+  ctx.strokeStyle = "#ffffff";
+  ctx.fillStyle = "#ffffff";
+  ctx.lineWidth = r * 0.16;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  switch (group) {
+    case "food": {
+      // Coffee cup: body + handle.
+      const w = r * 0.75;
+      const h = r * 0.85;
+      ctx.beginPath();
+      ctx.roundRect(cx - w / 2, cy - h / 2, w, h * 0.8, [2, 2, r * 0.3, r * 0.3]);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx + w / 2 + w * 0.22, cy - h * 0.05, h * 0.22, -Math.PI * 0.5, Math.PI * 0.5);
+      ctx.stroke();
+      break;
+    }
+    case "shop": {
+      // Shopping bag: trapezoid body + handle arc.
+      const w = r * 0.8;
+      const h = r * 0.75;
+      ctx.beginPath();
+      ctx.moveTo(cx - w / 2, cy - h / 2 + h * 0.15);
+      ctx.lineTo(cx + w / 2, cy - h / 2 + h * 0.15);
+      ctx.lineTo(cx + w / 2 - w * 0.08, cy + h / 2);
+      ctx.lineTo(cx - w / 2 + w * 0.08, cy + h / 2);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy - h / 2 + h * 0.15, w * 0.24, Math.PI, 0);
+      ctx.stroke();
+      break;
+    }
+    case "restroom": {
+      // Person: head + shoulders.
+      const headR = r * 0.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy - r * 0.35, headR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.roundRect(cx - r * 0.32, cy - r * 0.05, r * 0.64, r * 0.6, r * 0.28);
+      ctx.stroke();
+      break;
+    }
+    case "elevator": {
+      // Up/down chevrons in a frame.
+      ctx.beginPath();
+      ctx.roundRect(cx - r * 0.42, cy - r * 0.5, r * 0.84, r, r * 0.14);
+      ctx.stroke();
+      const chev = (dir: 1 | -1, oy: number) => {
+        ctx.beginPath();
+        ctx.moveTo(cx - r * 0.18, cy + oy + dir * r * 0.14);
+        ctx.lineTo(cx, cy + oy - dir * r * 0.1);
+        ctx.lineTo(cx + r * 0.18, cy + oy + dir * r * 0.14);
+        ctx.stroke();
+      };
+      chev(1, -r * 0.2);
+      chev(-1, r * 0.2);
+      break;
+    }
+    case "landmark": {
+      // Five-point star.
+      const spikes = 5;
+      const outerR = r * 0.5;
+      const innerR = r * 0.22;
+      ctx.beginPath();
+      for (let i = 0; i < spikes * 2; i++) {
+        const rad = i % 2 === 0 ? outerR : innerR;
+        const angle = (Math.PI / spikes) * i - Math.PI / 2;
+        const x = cx + Math.cos(angle) * rad;
+        const y = cy + Math.sin(angle) * rad;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      break;
+    }
+    case "transit": {
+      // Bus: body + two wheels.
+      const w = r * 0.9;
+      const h = r * 0.55;
+      ctx.beginPath();
+      ctx.roundRect(cx - w / 2, cy - h / 2, w, h, r * 0.16);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx - w * 0.28, cy + h / 2, r * 0.1, 0, Math.PI * 2);
+      ctx.arc(cx + w * 0.28, cy + h / 2, r * 0.1, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+    }
+    default: {
+      // service (and any future group): a small circled dot.
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 0.28, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 0.06, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+/** Renders a colored circle + white glyph for `group`, ready for map.addImage(). */
+export function renderPoiIcon(group: PoiGroup, color: string, size = 48): ImageData {
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const cx = size / 2;
+  const cy = size / 2;
+  const r = size / 2 - 2;
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(255,255,255,0.9)";
+  ctx.stroke();
+
+  drawGlyph(ctx, group, cx, cy, r);
+  return ctx.getImageData(0, 0, size, size);
+}

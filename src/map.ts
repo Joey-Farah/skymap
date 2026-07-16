@@ -3,6 +3,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isOpenAt } from "./hours.ts";
 import { polylineMeters, sliceAlong } from "./router.ts";
+import { renderPoiIcon } from "./poi-icons.ts";
 
 // Positron: muted grey basemap that lets the skyway network carry the color.
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
@@ -196,6 +197,7 @@ export class SkymapView {
 
     this.map.on("load", () => {
       this.ready = true;
+      this.registerPoiIcons();
       this.addLayers();
     });
 
@@ -221,6 +223,14 @@ export class SkymapView {
       this.map.on("mouseleave", layer, () => {
         this.map.getCanvas().style.cursor = "";
       });
+    }
+  }
+
+  private registerPoiIcons() {
+    for (const group of Object.keys(GROUP_COLORS) as (keyof typeof GROUP_COLORS)[]) {
+      const id = `poi-icon-${group}`;
+      if (this.map.hasImage(id)) continue;
+      this.map.addImage(id, renderPoiIcon(group as Poi["group"], GROUP_COLORS[group]));
     }
   }
 
@@ -322,32 +332,32 @@ export class SkymapView {
       paint: { "line-color": ROUTE, "line-width": 4.5 },
     });
 
-    // Businesses appear as you zoom in: dots first, names closer.
+    // Businesses appear as you zoom in: icons first, names closer. A glyph
+    // (cup, bag, person, star…) says what's there without a tap; a plain
+    // dot only said "something's here."
     // Transit stops wait for a deeper zoom — 121 of them would swamp the map.
     this.map.addLayer({
       id: "skyway-pois",
-      type: "circle",
+      type: "symbol",
       source: "skyway-pois",
       minzoom: 14.8,
       filter: ["!=", ["get", "group"], "transit"],
-      paint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 14.8, 2.5, 17, 5],
-        "circle-color": ["get", "color"],
-        "circle-stroke-color": "#ffffff",
-        "circle-stroke-width": 1.5,
+      layout: {
+        "icon-image": ["concat", "poi-icon-", ["get", "group"]],
+        "icon-size": ["interpolate", ["linear"], ["zoom"], 14.8, 0.34, 17, 0.55],
+        "icon-allow-overlap": true,
       },
     });
     this.map.addLayer({
       id: "skyway-pois-transit",
-      type: "circle",
+      type: "symbol",
       source: "skyway-pois",
       minzoom: 16.2,
       filter: ["==", ["get", "group"], "transit"],
-      paint: {
-        "circle-radius": 4,
-        "circle-color": ["get", "color"],
-        "circle-stroke-color": "#ffffff",
-        "circle-stroke-width": 1.5,
+      layout: {
+        "icon-image": "poi-icon-transit",
+        "icon-size": 0.4,
+        "icon-allow-overlap": true,
       },
     });
     this.map.addLayer({
