@@ -7,6 +7,7 @@ import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { formatMinute, nextOccurrence } from "./hours.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
+import { headingFromOrientation } from "./compass.ts";
 
 async function boot() {
   const res = await fetch("./data/skymap-data.json");
@@ -275,6 +276,60 @@ async function boot() {
     if (!rampBuilding) return;
     if (nearBuilding) comboFrom.select(nearBuilding);
     comboTo.select(rampBuilding);
+  });
+
+  // --- Compass mode: rotate the map to match the phone's heading ---------
+  const compassToggle = document.getElementById("compass-toggle") as HTMLButtonElement;
+  let compassActive = false;
+  let orientationHandler: ((e: Event) => void) | null = null;
+
+  async function enableCompass(): Promise<boolean> {
+    const DOE = (window as unknown as { DeviceOrientationEvent?: { requestPermission?: () => Promise<string> } })
+      .DeviceOrientationEvent;
+    if (DOE?.requestPermission) {
+      try {
+        if ((await DOE.requestPermission()) !== "granted") return false;
+      } catch {
+        return false;
+      }
+    } else if (!("DeviceOrientationEvent" in window)) {
+      return false;
+    }
+    orientationHandler = (e: Event) => {
+      const heading = headingFromOrientation(e as unknown as { webkitCompassHeading?: number; alpha?: number | null });
+      if (heading !== null) view.map.setBearing(heading);
+    };
+    window.addEventListener("deviceorientationabsolute", orientationHandler);
+    window.addEventListener("deviceorientation", orientationHandler);
+    return true;
+  }
+
+  function disableCompass() {
+    if (orientationHandler) {
+      window.removeEventListener("deviceorientationabsolute", orientationHandler);
+      window.removeEventListener("deviceorientation", orientationHandler);
+      orientationHandler = null;
+    }
+    view.map.setBearing(0);
+  }
+
+  compassToggle.addEventListener("click", async () => {
+    if (compassActive) {
+      disableCompass();
+      compassActive = false;
+      compassToggle.classList.remove("active");
+      return;
+    }
+    const ok = await enableCompass();
+    if (ok) {
+      compassActive = true;
+      compassToggle.classList.add("active");
+    } else {
+      sheet.showMessage(
+        "Compass unavailable",
+        "Your browser or device doesn't support heading-based rotation, or permission was denied.",
+      );
+    }
   });
 
   function showReach(b: Building) {

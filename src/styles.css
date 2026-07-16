@@ -361,6 +361,27 @@ body {
   white-space: nowrap;
 }
 
+.compass-toggle {
+  top: calc(env(safe-area-inset-top, 0px) + 224px);
+  right: 10px;
+  left: auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 18px;
+  color: var(--muted);
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compass-toggle.active {
+  color: #fff;
+  background: var(--blue);
+}
+
 /* --- Save My Ramp --------------------------------------------------------- */
 
 .ramp-prompt {

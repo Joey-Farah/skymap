@@ -297,6 +297,15 @@ test("live dataset is internally consistent", () => {
   }
 });
 
+test("headingFromOrientation prefers iOS compass heading, else derives from alpha", async () => {
+  const { headingFromOrientation } = await import("../src/compass.ts");
+  assert.equal(headingFromOrientation({ webkitCompassHeading: 90 }), 90);
+  assert.equal(headingFromOrientation({ alpha: 90 }), 270, "alpha is flipped to approximate heading");
+  assert.equal(headingFromOrientation({ alpha: 0 }), 0);
+  assert.equal(headingFromOrientation({}), null);
+  assert.equal(headingFromOrientation({ alpha: null }), null);
+});
+
 test("reported-closed crossings expire and are excluded from routing", async () => {
   const { reportClosedCrossing, activeClosedEdges, isCrossingReportedClosed } = await import(
     "../src/incidents.ts"
