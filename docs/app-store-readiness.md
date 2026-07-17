@@ -69,14 +69,22 @@ your behalf even in principle.
    support URL, age rating questionnaire) — all through Apple's web
    dashboard, tied to your account.
 
-### What I can do once you've done the above
+### What's already done in advance
 
-- **Wrap the PWA in a native shell** using Capacitor (the standard tool
-  for this) so it's a real `.ipa` Xcode can build and sign, rather than a
-  bookmarked website. This reuses everything already built — no
-  rewrite — Capacitor just adds a thin native wrapper and gives access to
-  more device APIs if we ever want them (better background location,
-  push notifications, etc., none of which Skymap currently needs).
+Capacitor (the standard tool for wrapping a web app into a real,
+Xcode-buildable native shell) is installed and configured
+(`capacitor.config.ts`, pointed at `dist/` as the web content). This part
+needed no Apple account — just npm. What's *not* done: actually generating
+the iOS Xcode project (`npx cap add ios`), because that needs a full Xcode
+install and CocoaPods, and this environment only has the Command Line
+Tools — running it blind without being able to verify the result would
+just hand you broken scaffolding to debug instead of a head start.
+
+### What I can do once you've installed Xcode + enrolled
+
+- **Generate and configure the Xcode project**: `npx cap add ios`, then
+  bundle ID, app icons at every required size, launch screen, signing
+  settings pointed at your Developer account.
 - **Configure the Xcode project**: bundle ID, app icons at every required
   size, launch screen, signing settings pointed at your Developer account.
 - **Draft the App Store Connect listing content**: description, keywords,
