@@ -1,0 +1,8 @@
+{
+  "appId": "app.skymap.ios",
+  "appName": "SkyMap",
+  "webDir": "dist",
+  "ios": {
+    "contentInset": "always"
+  }
+}
