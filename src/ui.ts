@@ -45,7 +45,14 @@ export class BuildingCombo {
     this.input.addEventListener("focus", () => this.render(this.input.value));
     this.input.addEventListener("keydown", (e) => this.onKey(e));
     document.addEventListener("click", (e) => {
-      if (!root.contains(e.target as Node)) this.hide();
+      if (root.contains(e.target as Node)) return;
+      // A click elsewhere in the DOM can be exactly what focused this
+      // field in the first place (e.g. tapping the idle "Where to?" bar
+      // programmatically focuses From) — that click bubbles to this
+      // listener a tick after the resulting render, and would otherwise
+      // immediately hide the list it just showed.
+      if (root.contains(document.activeElement)) return;
+      this.hide();
     });
   }
 

@@ -463,52 +463,6 @@ a:focus-visible {
   transform: scale(0.92);
 }
 
-/* --- Near you ------------------------------------------------------------ */
-
-.near-you {
-  top: calc(env(safe-area-inset-top, 0px) + 186px);
-  right: 10px;
-  left: auto;
-  padding: 9px 15px 9px 12px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--ink-900);
-  border: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  max-width: 168px;
-  border-radius: 999px;
-  transition: transform 0.12s var(--ease);
-  /* Same z-index tier as .search-panel, but later in the DOM the search
-     panel paints over it — a long building name grows this pill leftward
-     right under that panel otherwise. */
-  z-index: 11;
-}
-
-.near-you:active {
-  transform: scale(0.96);
-}
-
-.near-you[hidden] {
-  display: none;
-}
-
-.near-you .dot {
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-  flex-shrink: 0;
-}
-
-.near-you span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 /* Transient notice pill — floats above everything, never touches the sheet. */
 .toast {
   position: fixed;

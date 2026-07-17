@@ -60,6 +60,12 @@ async function boot() {
     if (searchPanel.classList.contains("idle")) return;
     if (comboFrom.value || comboTo.value) return; // mid-search, don't yank it away
     if (searchPanel.contains(e.target as Node)) return;
+    // Tapping locate is a normal thing to do mid-search (e.g. reaching for
+    // "Current Location") — it shouldn't silently collapse the panel out
+    // from under you. Class-checked at click time via closest() rather than
+    // holding a reference, since the control isn't created yet this early
+    // in boot().
+    if ((e.target as HTMLElement).closest(".maplibregl-ctrl-geolocate")) return;
     showIdle();
   });
 
@@ -170,33 +176,22 @@ async function boot() {
   }
 
   // --- Live position: snap GPS fixes to the nearest network building -----
-  const nearYou = document.getElementById("near-you") as HTMLButtonElement;
+  // One mechanism for "route from here": the pinned "Current Location" row
+  // in the From combo (see BuildingCombo.setCurrentLocation). Used to also
+  // have a floating "Near X" pill and a silent auto-fill of From, both
+  // doing the same job a different way — direct routing decisions should
+  // be something you choose, not something that happens to you, and having
+  // three of them meant the auto-fill usually raced ahead of the other two
+  // and quietly claimed the field before you saw either.
   let nearBuilding: Building | null = null;
-  nearYou.addEventListener("click", () => {
-    if (nearBuilding) comboFrom.select(nearBuilding);
-  });
 
   function onPosition(lat: number, lon: number) {
     nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
-    if (nearBuilding) {
-      const dot = document.createElement("span");
-      dot.className = "dot";
-      const label = document.createElement("span");
-      label.textContent = `Near ${nearBuilding.name}`;
-      nearYou.replaceChildren(dot, label);
-      nearYou.hidden = false;
-    } else {
-      nearYou.hidden = true;
-    }
     if (activeRoute) {
       sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(nearBuilding);
-    // Apple-Maps-style implicit origin: quietly fill From with wherever you
-    // are, so the common case is "just type a destination." Never
-    // overwrites a real selection — only ever touches an empty field.
-    if (nearBuilding && !comboFrom.value) comboFrom.select(nearBuilding);
   }
 
   // --- Save My Ramp: notice when you're parked, offer a one-tap way back --
