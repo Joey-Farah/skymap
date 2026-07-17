@@ -32,14 +32,44 @@ const files = walk(DIST)
   .map((f) => relative(DIST, f).split(sep).join("/"))
   .filter((f) => !SKIP.test(f));
 
-const precache = ["./", ...files.map((f) => `./${f}`)];
+// Core: the app shell HTML, manifest, the built JS/CSS bundle, and the
+// data file — everything the app cannot function without. The SW install
+// fails outright (see public/sw.js) if any of these can't be fetched.
+// Everything else (icons, splash images, business logos) is best-effort.
+const CORE = /^index\.html$|^manifest\.webmanifest$|^data\/skymap-data\.json$|^assets\/.*\.(js|css)$/;
+const core = ["./", ...files.filter((f) => CORE.test(f)).map((f) => `./${f}`)];
+const extra = files.filter((f) => !CORE.test(f)).map((f) => `./${f}`);
+const precache = { core, extra };
 
-const version = createHash("sha256").update(precache.join("\n")).digest("hex").slice(0, 12);
+const version = createHash("sha256")
+  .update(JSON.stringify(precache))
+  .digest("hex")
+  .slice(0, 12);
 
 const template = readFileSync(join(DIST, "sw.js"), "utf8");
-const rewritten = template
-  .replace("__CACHE_VERSION__", version)
-  .replace("__PRECACHE_MANIFEST__", JSON.stringify(precache));
+
+// Replace the quoted placeholder literals (not bare identifiers — see
+// public/sw.js's own fallback parsing) with function replacers, which
+// side-steps String.replace's special handling of "$" sequences in a
+// literal replacement string. Each replace() is asserted to have actually
+// matched: a silent no-op here (e.g. after the two files drift apart)
+// would ship dist/sw.js still containing the literal placeholder string,
+// which is a working, no-op service worker rather than a loud build
+// failure — much easier to miss.
+function replaceOrThrow(text, needle, replacement) {
+  if (!text.includes(needle)) throw new Error(`build-sw: placeholder ${needle} not found in sw.js template`);
+  return text.replace(needle, replacement);
+}
+
+// public/sw.js's own fallback logic requires both placeholders to remain
+// STRING literals after substitution (it calls .startsWith()/JSON.parse()
+// on them) — so the JSON payload is double-stringified: once to serialize
+// the value, again so that serialized text becomes a valid, escaped JS
+// string literal replacing the quoted placeholder (quotes included).
+let rewritten = replaceOrThrow(template, '"__CACHE_VERSION__"', () => JSON.stringify(version));
+rewritten = replaceOrThrow(rewritten, '"__PRECACHE_MANIFEST__"', () => JSON.stringify(JSON.stringify(precache)));
 
 writeFileSync(join(DIST, "sw.js"), rewritten);
-console.log(`sw.js: precaching ${precache.length} files, cache version ${version}.`);
+console.log(
+  `sw.js: precaching ${core.length} core + ${extra.length} extra files, cache version ${version}.`,
+);

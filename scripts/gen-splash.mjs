@@ -23,9 +23,11 @@ mkdirSync(OUT, { recursive: true });
 // CSS width x height x devicePixelRatio, covering iPhone X (2017) onward —
 // current and recent-enough that a specific match is very likely.
 const SIZES = [
-  { w: 430, h: 932, dpr: 3, label: "430x932-3x" }, // 16/15 Pro Max, 15/14 Plus
+  { w: 440, h: 956, dpr: 3, label: "440x956-3x" }, // 16 Pro Max
+  { w: 430, h: 932, dpr: 3, label: "430x932-3x" }, // 16 Plus, 15 Pro Max, 15/14 Plus
   { w: 428, h: 926, dpr: 3, label: "428x926-3x" }, // 13/12 Pro Max
-  { w: 393, h: 852, dpr: 3, label: "393x852-3x" }, // 16/16 Pro, 15/15 Pro, 14 Pro
+  { w: 402, h: 874, dpr: 3, label: "402x874-3x" }, // 16 Pro
+  { w: 393, h: 852, dpr: 3, label: "393x852-3x" }, // 16, 15/15 Pro, 14 Pro
   { w: 390, h: 844, dpr: 3, label: "390x844-3x" }, // 14, 13, 13 Pro, 12, 12 Pro
   { w: 375, h: 812, dpr: 3, label: "375x812-3x" }, // X, XS, 11 Pro, 13/12 mini
   { w: 414, h: 896, dpr: 3, label: "414x896-3x" }, // XS Max, 11 Pro Max
