@@ -187,6 +187,22 @@ test("route steps surface stairs when the bridge crossing has them", () => {
   assert.equal(flat.route("a", "b", null).steps[1].hasSteps, undefined);
 });
 
+test("route steps surface openAir when a crossing isn't confirmed enclosed", () => {
+  const mini = {
+    meta: data.meta,
+    buildings: [
+      { ...data.buildings[0], id: "a" },
+      { ...data.buildings[0], id: "b" },
+    ],
+    edges: [{ from: "a", to: "b", crossing: "skyway", openAir: true }],
+  };
+  const r = new SkywayRouter(mini);
+  assert.equal(r.route("a", "b", null).steps[1].openAir, true);
+
+  const enclosed = new SkywayRouter({ ...mini, edges: [{ from: "a", to: "b", crossing: "skyway" }] });
+  assert.equal(enclosed.route("a", "b", null).steps[1].openAir, undefined);
+});
+
 test("routeStepIndex finds the nearest step to a live position", () => {
   const r = router.route("ids-center", "us-bank-stadium", TUE_10AM);
   // Right on top of the origin: step 0.

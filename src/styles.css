@@ -893,6 +893,11 @@ a:focus-visible {
   font-weight: 700;
 }
 
+.steps .via.open-air {
+  color: var(--red);
+  font-weight: 700;
+}
+
 .sheet .actions {
   display: flex;
   gap: 8px;

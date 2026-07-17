@@ -510,6 +510,7 @@ async function main(osm) {
       dist: 0,
       geom: [coordOf(id)],
       hasSteps: false,
+      openAir: false,
       crossingName: null,
     }));
     for (let qi = 0; qi < queue.length; qi++) {
@@ -521,11 +522,29 @@ async function main(osm) {
         const newDist = cur.dist + hopDist;
         if (newDist > MAX_BRIDGE_METERS) continue;
         const hopHasSteps = edge.wayTags?.highway === "steps";
+        // Real-world OSM tagging of the Minneapolis skyway is inconsistent
+        // about indoor=yes — most enclosed bridges are only tagged
+        // bridge=yes+layer=1, no indoor tag at all — so "not indoor=yes"
+        // can't mean "not enclosed" or almost everything would be flagged.
+        // Named "Minneapolis Skyway" ways and anything explicitly
+        // indoor/covered/tunneled/corridor are trusted as enclosed; a hop
+        // relying on nothing but a bare layer/bridge tag is the one
+        // genuinely ambiguous case worth flagging.
+        const t = edge.wayTags ?? {};
+        const namedSkyway = /^(minneapolis )?skyway$/i.test(t.name ?? "");
+        const hopOpenAir = !(
+          namedSkyway ||
+          t.indoor === "yes" ||
+          t.covered === "yes" ||
+          t.tunnel === "yes" ||
+          t.highway === "corridor"
+        );
         const hopName =
           edge.wayTags?.name && !/^(minneapolis )?skyway$/i.test(edge.wayTags.name) ? edge.wayTags.name : null;
         const otherBuilding = buildingFor(edge.to);
         const newGeom = [...cur.geom, toCoord];
         const newHasSteps = cur.hasSteps || hopHasSteps;
+        const newOpenAir = cur.openAir || hopOpenAir;
         const newCrossingName = cur.crossingName ?? hopName;
         if (otherBuilding && otherBuilding.id !== buildingId) {
           const key = [buildingId, otherBuilding.id].sort().join("|");
@@ -536,13 +555,21 @@ async function main(osm) {
               crossing: newCrossingName ?? edge.wayTags?.name ?? "skyway",
               geometry: newGeom,
               ...(newHasSteps ? { hasSteps: true } : {}),
+              ...(newOpenAir ? { openAir: true } : {}),
             });
           }
           visited.add(edge.to);
           continue;
         }
         visited.add(edge.to);
-        queue.push({ id: edge.to, dist: newDist, geom: newGeom, hasSteps: newHasSteps, crossingName: newCrossingName });
+        queue.push({
+          id: edge.to,
+          dist: newDist,
+          geom: newGeom,
+          hasSteps: newHasSteps,
+          openAir: newOpenAir,
+          crossingName: newCrossingName,
+        });
       }
     }
   }

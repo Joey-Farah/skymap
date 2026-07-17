@@ -33,6 +33,10 @@ export interface Edge {
   geometry?: [number, number][];
   /** True when this crossing includes a flight of stairs (OSM highway=steps). */
   hasSteps?: boolean;
+  /** True when this crossing isn't confirmed enclosed (no indoor/covered/
+   * tunnel/corridor tag or "Minneapolis Skyway" name) — may mean a brief
+   * outdoor or uncovered stretch. */
+  openAir?: boolean;
 }
 
 import type { PoiGroup } from "./poi.ts";
@@ -79,6 +83,9 @@ export interface RouteStep {
   legGeometry?: [number, number][];
   /** True when the crossing leading into this building has stairs. */
   hasSteps?: boolean;
+  /** True when the crossing leading into this building isn't confirmed
+   * enclosed — may mean a brief outdoor or uncovered stretch. */
+  openAir?: boolean;
   /** Minutes after departure when the walker reaches this building. */
   arrivalMinutes: number;
 }

@@ -520,7 +520,12 @@ export class Sheet {
     }
 
     // Visible even in peek — worth knowing before you commit to a route,
-    // not just discovering it mid-walk in the collapsed step list.
+    // not just discovering it mid-walk in the collapsed step list. Open-air
+    // sorts first: staying enclosed is the app's actual promise, more
+    // central than stairs.
+    if (route.steps.some((s) => s.openAir)) {
+      this.content.append(el("span", "⚠ May briefly go outside", "badge warn"));
+    }
     if (route.steps.some((s) => s.hasSteps)) {
       this.content.append(el("span", "Includes stairs", "badge stairs"));
     }
@@ -554,8 +559,12 @@ export class Sheet {
         // a genuinely named crossing (OSM names most bridges the generic
         // "Minneapolis Skyway", which we treat as saying nothing).
         const generic = /^(minneapolis )?skyway$/i.test(step.viaCrossing.trim());
-        if (step.hasSteps) {
-          li.prepend(el("span", generic ? "Stairs" : `Stairs · ${step.viaCrossing}`, "via steps"));
+        const flags: string[] = [];
+        if (step.openAir) flags.push("Outdoors");
+        if (step.hasSteps) flags.push("Stairs");
+        if (flags.length) {
+          const suffix = generic ? "" : ` · ${step.viaCrossing}`;
+          li.prepend(el("span", `${flags.join(" · ")}${suffix}`, `via ${step.openAir ? "open-air" : "steps"}`));
         } else if (!generic) {
           li.prepend(el("span", `Cross over ${step.viaCrossing}`, "via"));
         }

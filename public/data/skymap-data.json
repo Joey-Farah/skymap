@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-17T17:48:44.263Z"
+  "generated": "2026-07-17T19:09:38.226Z"
  },
  "buildings": [
   {
@@ -19663,7 +19663,8 @@
      -93.27363,
      44.983488
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "4th-street-ramp-c-27346543",
@@ -19678,7 +19679,8 @@
      -93.274422,
      44.9837
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "4th-street-ramp-c-27346543",
@@ -20096,7 +20098,8 @@
      -93.275959,
      44.980266
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "target-center-23125943",
@@ -21372,7 +21375,8 @@
      -93.259141,
      44.986032
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "nicollet-island-inn-80313504",
@@ -21391,7 +21395,8 @@
      -93.259434,
      44.986866
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "100-washington-square-44164776",
@@ -22083,7 +22088,8 @@
      -93.254536,
      44.98475
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "graze-food-hall-by-travail-1223123290",
@@ -22113,7 +22119,8 @@
      -93.259851,
      44.97885
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "depot-office-center-81049079",
@@ -22368,7 +22375,8 @@
      -93.270681,
      44.978935
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "xcel-energy-827452013",
@@ -22398,7 +22406,8 @@
      -93.276681,
      44.966293
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "365-nicollet-827426569",
@@ -22437,7 +22446,8 @@
      -93.268708,
      44.980951
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "ford-center-29060527",
@@ -22452,7 +22462,8 @@
      -93.277556,
      44.98305
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "north-loop-green-360-1281792415",
@@ -22483,7 +22494,8 @@
      -93.273731,
      44.985203
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "deja-vu-89080678",
@@ -22498,7 +22510,8 @@
      -93.273785,
      44.985603
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "intersect-apartments-1216920711",
@@ -22513,7 +22526,8 @@
      -93.272142,
      44.986081
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "hirshfields-design-resource-showroom-101142650",
@@ -22528,7 +22542,8 @@
      -93.288107,
      44.976872
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "glenwood-evergreen-building-89070227",
@@ -22543,7 +22558,8 @@
      -93.28668,
      44.977184
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "thrivent-corporate-center-27346744",
@@ -22573,7 +22589,8 @@
      -93.25753,
      44.979274
     ]
-   ]
+   ],
+   "openAir": true
   },
   {
    "from": "humboldt-annex-157035925",
