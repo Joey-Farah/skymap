@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-17T01:24:58.749Z"
+  "generated": "2026-07-17T01:31:13.141Z"
  },
  "buildings": [
   {
@@ -14881,27 +14881,36 @@
     ]
    ],
    "hours": [
-    null,
     [
-     300,
-     1410
+     720,
+     1080
     ],
     [
-     300,
-     1410
+     390,
+     1320
     ],
     [
-     300,
-     1410
+     390,
+     1320
     ],
     [
-     300,
-     1410
+     390,
+     1320
     ],
-    null,
-    null
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     570,
+     1200
+    ]
    ],
-   "hoursNote": "Building hours from OSM (not skyway-specific)."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
   },
   {
    "id": "wells-fargo-600-407613511",
@@ -14965,27 +14974,36 @@
     ]
    ],
    "hours": [
-    null,
     [
-     300,
-     1410
+     720,
+     1080
     ],
     [
-     300,
-     1410
+     390,
+     1320
     ],
     [
-     300,
-     1410
+     390,
+     1320
     ],
     [
-     300,
-     1410
+     390,
+     1320
     ],
-    null,
-    null
+    [
+     390,
+     1320
+    ],
+    [
+     390,
+     1320
+    ],
+    [
+     570,
+     1200
+    ]
    ],
-   "hoursNote": "Building hours from OSM (not skyway-specific)."
+   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
   },
   {
    "id": "ambulatory-outpatient-specialty-center-411211095",

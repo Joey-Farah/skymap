@@ -49,15 +49,13 @@ test("PH (public holiday) clauses are ignored, not modeled", () => {
   assert.equal(h[6], null);
 });
 
-test("overnight wraps are skipped rather than guessed at", () => {
-  // Fr and Sa/Su close after midnight (close time <= open time); those
-  // clauses are dropped, Mo-Th (no wrap) still applies normally.
-  const h = parseOpeningHours("Mo-Th 05:00-23:30; Fr 05:00-01:00; Sa,Su 05:00-00:30; PH off");
-  assert.deepEqual(h[1], [300, 1410]); // Mon
-  assert.deepEqual(h[4], [300, 1410]); // Thu
-  assert.equal(h[5], null); // Fri: wrap, skipped
-  assert.equal(h[6], null); // Sat: wrap, skipped
-  assert.equal(h[0], null); // Sun: wrap, skipped
+test("an overnight wrap on even one clause discards the whole value", () => {
+  // Fr and Sa/Su close after midnight (close <= open) — a day the model
+  // can't represent. Rather than keep the good Mo-Th data and silently
+  // mark Fri/Sat/Sun "closed" (they're actually open into the small
+  // hours), the whole tag is discarded so the caller falls back to a
+  // less specific but honest source instead of a partial guess.
+  assert.equal(parseOpeningHours("Mo-Th 05:00-23:30; Fr 05:00-01:00; Sa,Su 05:00-00:30; PH off"), null);
 });
 
 test("comma used as a rule separator (non-standard but seen in real data)", () => {
@@ -72,9 +70,18 @@ test("trailing quoted annotations after a time range are ignored", () => {
   assert.deepEqual(h[1], [1140, 1320]);
 });
 
-test("multiple same-day time ranges collapse to their outer span", () => {
-  const h = parseOpeningHours("Mo-Fr 06:00-12:00,13:00-20:00");
-  assert.deepEqual(h[1], [360, 1200]);
+test("split hours (a lunch closure) are not collapsed into a false 'open all day'", () => {
+  // "06:00-12:00,13:00-20:00" is closed 12:00-13:00 — a gap the DayHours
+  // model has no way to represent. Unioning to [360, 1200] would wrongly
+  // report the building open during the closure, so this value is
+  // discarded entirely instead.
+  assert.equal(parseOpeningHours("Mo-Fr 06:00-12:00,13:00-20:00"), null);
+});
+
+test("a day-scoped 24/7 clause is recognized like the bare whole-value form", () => {
+  const h = parseOpeningHours("Fr 24/7");
+  assert.deepEqual(h[5], [0, 1440]);
+  assert.equal(h[1], null);
 });
 
 test("all-off week returns null rather than an all-closed array", () => {
