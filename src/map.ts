@@ -250,6 +250,7 @@ export class SkymapView {
 
     this.map.on("load", () => {
       this.ready = true;
+      this.declutterBasemap();
       this.registerPoiIcons();
       this.addLayers();
     });
@@ -295,6 +296,20 @@ export class SkymapView {
       const id = `poi-icon-${group}`;
       if (this.map.hasImage(id)) continue;
       this.map.addImage(id, renderPoiIcon(group as Poi["group"], GROUP_COLORS[group]));
+    }
+  }
+
+  /** The stock basemap labels every street and shop it can fit — reasonable
+   * for a general atlas, but SkyMap already owns building/POI labeling at
+   * the zoom levels people actually use, so the base style's own text just
+   * competes with it. "place" (city/neighborhood names) is the one source
+   * layer worth keeping for orientation; it's a stable OpenMapTiles schema
+   * field so this holds even if the style's own layer ids get renamed. */
+  private declutterBasemap() {
+    for (const layer of this.map.getStyle().layers ?? []) {
+      if (layer.type !== "symbol") continue;
+      if ("source-layer" in layer && layer["source-layer"] === "place") continue;
+      this.map.setLayoutProperty(layer.id, "visibility", "none");
     }
   }
 
