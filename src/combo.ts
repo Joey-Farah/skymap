@@ -37,10 +37,49 @@ export function buildComboEntries(
   return entries.sort((a, b) => a.label.localeCompare(b.label));
 }
 
+/** True at the start of the string or right after a non-word character —
+ * "central" matches at a word boundary in "Minneapolis Central Library"
+ * but not inside "centralized". */
+function atWordBoundary(text: string, index: number): boolean {
+  return index === 0 || !/\w/.test(text[index - 1]);
+}
+
+/** Higher is more relevant; null means the entry doesn't match at all. Every
+ * query word has to appear somewhere in the label or sublabel (so "central
+ * library" finds "Minneapolis Central Library" regardless of word order),
+ * then results are ranked by how prominent the match is — a name that
+ * starts with the query beats one that merely contains it, word-boundary
+ * matches beat mid-word substrings. */
+function score(entry: ComboEntry, words: string[]): number | null {
+  const label = entry.label.toLowerCase();
+  const sublabel = entry.sublabel.toLowerCase();
+  const full = words.join(" ");
+  let total = 0;
+
+  if (label === full) total += 1000;
+  else if (label.startsWith(full)) total += 500;
+
+  for (const word of words) {
+    const inLabel = label.indexOf(word);
+    const inSub = sublabel.indexOf(word);
+    if (inLabel === -1 && inSub === -1) return null; // every word must hit somewhere
+    if (inLabel !== -1) total += atWordBoundary(label, inLabel) ? 200 : 100;
+    if (inSub !== -1) total += atWordBoundary(sublabel, inSub) ? 50 : 20;
+  }
+  // Tie-breaker: "Target Field" for query "field target" should outrank
+  // "Plaza Near Target Field" — both hit every word at a boundary, but the
+  // first IS the query (just reordered) while the second buries it in a
+  // longer name. Small enough not to override a real relevance gap above.
+  total -= Math.max(0, label.length - full.length) * 0.3;
+  return total;
+}
+
 export function searchEntries(entries: ComboEntry[], query: string): ComboEntry[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return entries;
-  return entries.filter(
-    (e) => e.label.toLowerCase().includes(q) || e.sublabel.toLowerCase().includes(q),
-  );
+  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return entries;
+  return entries
+    .map((e) => ({ e, s: score(e, words) }))
+    .filter((r): r is { e: ComboEntry; s: number } => r.s !== null)
+    .sort((a, b) => b.s - a.s || a.e.label.localeCompare(b.e.label))
+    .map((r) => r.e);
 }

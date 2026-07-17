@@ -437,6 +437,24 @@ test("combo entries include businesses, searchable by name", async () => {
   );
 });
 
+test("searchEntries ranks by relevance, not alphabetically", async () => {
+  const { buildComboEntries, searchEntries } = await import("../src/combo.ts");
+  const buildings = [
+    { id: "a", name: "AAA Plaza", address: "Downtown" },
+    { id: "target", name: "Target Field", address: "1 Twins Way" },
+    { id: "target-adjacent", name: "Plaza Near Target Field", address: "2 Main St" },
+  ];
+  const entries = buildComboEntries(buildings, []);
+
+  const hits = searchEntries(entries, "target");
+  assert.equal(hits.length, 2, "matches both, excludes AAA Plaza");
+  assert.equal(hits[0].label, "Target Field", "name that starts with the query ranks first");
+
+  // Out-of-order, multi-word query still finds the building.
+  const reordered = searchEntries(entries, "field target");
+  assert.equal(reordered[0].label, "Target Field");
+});
+
 test("landmarkNear picks a recognizable business for a building, deterministically", async () => {
   const { landmarkNear } = await import("../src/poi.ts");
   const pois = [

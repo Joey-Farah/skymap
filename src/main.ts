@@ -1,7 +1,7 @@
 import "./styles.css";
 import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { SkywayRouter, nearestBuilding, routeStepIndex } from "./router.ts";
-import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
+import { SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
@@ -142,7 +142,6 @@ async function boot() {
     }
     activeRoute = route;
     manualPositionUntil = 0; // a fresh route starts under normal GPS tracking
-    view.setReach(null);
     view.setRoute(route);
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
     const toLabel = comboTo.label ?? router.building(toId)!.name;
@@ -204,10 +203,7 @@ async function boot() {
     sheet.showBuilding(
       b,
       selectedTime(),
-      {
-        onDirections: () => showDirections(b),
-        onReach: () => showReach(b),
-      },
+      { onDirections: () => showDirections(b) },
       poisByBuilding.get(b.id) ?? [],
     );
   }
@@ -410,30 +406,6 @@ async function boot() {
     // "end" (lostfocus already covers the background case).
     if (watchState() === "OFF") void applyLocate(locateTransition(locateMode, "end"));
   });
-
-  function showReach(b: Building) {
-    activeRoute = null;
-    const when = selectedTime();
-    const maxBand = REACH_BANDS[REACH_BANDS.length - 1].maxMinutes;
-    const reach = router.reachable(b.id, when, maxBand, {
-      closedEdges: activeClosedEdges(localStorage),
-    });
-    const entries = [...reach.entries()]
-      .filter(([id]) => id !== b.id)
-      .map(([id, minutes]) => ({ building: router.building(id)!, minutes }));
-    const counts = REACH_BANDS.map(
-      (band, i) =>
-        entries.filter(
-          (e) => e.minutes <= band.maxMinutes && (i === 0 || e.minutes > REACH_BANDS[i - 1].maxMinutes),
-        ).length,
-    );
-    view.setRoute(null);
-    view.setReach(entries);
-    sheet.showReach(b, when, REACH_BANDS, counts, () => {
-      view.setReach(null);
-      sheet.hide();
-    });
-  }
 
   // Restore a shared route from the URL (?from=&to=). Routing time is
   // always "now", so a shared link's own departure time (if any, from an

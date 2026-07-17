@@ -20,7 +20,7 @@ function resultIconUrl(group: PoiGroup): string {
   }
   return url;
 }
-import { closingSoonWarnings, formatMinute, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
+import { closingSoonWarnings, formatMinute, formatWeeklyHours, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
@@ -314,12 +314,7 @@ export class Sheet {
     this.content.classList.add("content-enter");
   }
 
-  showBuilding(
-    b: Building,
-    when: Date,
-    actions: { onDirections: () => void; onReach: () => void },
-    pois: Poi[] = [],
-  ) {
+  showBuilding(b: Building, when: Date, actions: { onDirections: () => void }, pois: Poi[] = []) {
     const status = statusAt(b, when);
     this.content.innerHTML = "";
     this.clearRouteProgress();
@@ -345,14 +340,11 @@ export class Sheet {
     directionsBtn.addEventListener("click", actions.onDirections);
     actionsRow.append(directionsBtn);
 
-    const reachBtn = el("button", "Within 15 min", "reach-btn");
-    reachBtn.addEventListener("click", actions.onReach);
-
     // Everything past the essentials collapses away in peek mode.
     const more = document.createElement("div");
     more.className = "sheet-collapsible";
     if (b.image) more.append(this.landmarkPhoto(b.image));
-    more.append(actionsRow, reachBtn);
+    more.append(actionsRow);
 
     const interior = pois.filter((p) => !p.exterior);
     const transit = pois.filter((p) => p.exterior);
@@ -455,42 +447,6 @@ export class Sheet {
     directionsBtn.addEventListener("click", onDirections);
     actionsRow.append(directionsBtn);
     this.content.append(actionsRow, this.reportLink({ name: p.name, id: p.id }));
-    this.show();
-  }
-
-  /** Isochrone legend for the reach overlay. */
-  showReach(
-    origin: Building,
-    when: Date,
-    bands: readonly { maxMinutes: number; color: string }[],
-    counts: number[],
-    onClear: () => void,
-  ) {
-    this.content.innerHTML = "";
-    this.clearRouteProgress();
-    this.content.append(el("h2", `Within reach of ${origin.name}`));
-    this.content.append(el("div", `Leaving ${formatWhen(when)}`, "meta"));
-
-    const legend = document.createElement("ul");
-    legend.className = "legend";
-    let prev = 0;
-    bands.forEach((band, i) => {
-      const li = document.createElement("li");
-      const dot = el("span", "", "legend-dot");
-      dot.style.background = band.color;
-      li.append(
-        dot,
-        el("span", `${prev}–${band.maxMinutes} min`),
-        el("span", `${counts[i]} building${counts[i] === 1 ? "" : "s"}`, "legend-count"),
-      );
-      legend.appendChild(li);
-      prev = band.maxMinutes;
-    });
-    this.content.append(legend);
-
-    const clear = el("button", "Clear reach map", "reach-btn");
-    clear.addEventListener("click", onClear);
-    this.content.append(clear);
     this.show();
   }
 
