@@ -155,6 +155,15 @@ a:focus-visible {
   padding: 8px;
 }
 
+/* Picking (search-first flow): tapping "Where to?" opens ONE field — the
+   destination — not the full From/To form. Where you're coming FROM is
+   implicit (current location, applied once Directions is actually
+   pressed) until you deliberately want to change it. */
+.search-panel.picking .field-row-from,
+.search-panel.picking #btn-route {
+  display: none;
+}
+
 .search-idle-bar {
   display: none;
   width: 100%;

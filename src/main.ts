@@ -28,33 +28,36 @@ async function boot() {
     tripFrom.textContent = fromLabel;
     tripTo.textContent = toLabel;
     tripStrip.hidden = false;
-    searchPanel.classList.remove("idle");
+    searchPanel.classList.remove("idle", "picking");
     searchPanel.classList.add("trip-active");
   }
   function expandSearch() {
     tripStrip.hidden = true;
-    searchPanel.classList.remove("trip-active", "idle");
+    searchPanel.classList.remove("trip-active", "idle", "picking");
   }
   document.getElementById("trip-edit")!.addEventListener("click", expandSearch);
 
   // Idle: the default, untouched state — a single compact "Where to?" bar,
   // not the full form. Apple Maps shows almost nothing until you actually
   // start searching; this is the single highest-leverage change toward
-  // that feel. Tapping the bar reveals both fields; tapping away with
-  // nothing entered collapses back.
+  // that feel. Tapping the bar opens search-first "picking" — just the
+  // destination field, Apple Maps style — not the full From/To form;
+  // tapping away with nothing entered collapses back.
   const idleBar = document.getElementById("search-idle-bar") as HTMLButtonElement;
   function showIdle() {
-    searchPanel.classList.remove("trip-active");
+    searchPanel.classList.remove("trip-active", "picking");
     searchPanel.classList.add("idle");
   }
+  function showPicking() {
+    searchPanel.classList.remove("idle", "trip-active");
+    searchPanel.classList.add("picking");
+  }
   function showEditing() {
-    searchPanel.classList.remove("idle");
+    searchPanel.classList.remove("idle", "picking");
   }
   idleBar.addEventListener("click", () => {
-    showEditing();
-    // Origin's usually already filled from geolocation (see onPosition
-    // below) — send focus straight to the field that actually needs input.
-    (comboFrom.value ? document.getElementById("input-to") : document.getElementById("input-from"))?.focus();
+    showPicking();
+    document.getElementById("input-to")?.focus();
   });
   document.addEventListener("click", (e) => {
     if (searchPanel.classList.contains("trip-active")) return;
@@ -156,8 +159,21 @@ async function boot() {
     history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));
   }
 
+  // Search-first (Apple Maps style): picking a destination shows its place
+  // card, not an immediate route — "Directions" on that card is the actual
+  // routing trigger. Once we're past picking (already in the From/To
+  // editor), selecting either field just updates the route directly, same
+  // as before tonight.
   comboFrom.onSelect = () => routeIfReady();
-  comboTo.onSelect = () => routeIfReady();
+  comboTo.onSelect = (b, poi) => {
+    if (searchPanel.classList.contains("picking")) {
+      showIdle(); // collapse the search chrome — the card takes over
+      if (poi) onPoiTap(poi);
+      else onBuildingTap(b);
+      return;
+    }
+    routeIfReady();
+  };
 
   document.getElementById("btn-route")!.addEventListener("click", routeIfReady);
   document.getElementById("btn-swap")!.addEventListener("click", () => {
@@ -169,6 +185,17 @@ async function boot() {
     routeIfReady();
   });
 
+  /** "Directions" on a place card: destination is whatever you tapped,
+   * origin defaults to current location when known (a direct consequence
+   * of pressing this button, not the old silent auto-fill), reveal the
+   * editor, route. */
+  function showDirections(destination: Building) {
+    showEditing();
+    comboTo.select(destination);
+    if (nearBuilding) comboFrom.selectCurrentLocation();
+    routeIfReady();
+  }
+
   function onBuildingTap(b: Building) {
     activeRoute = null;
     view.focusBuilding(b);
@@ -176,8 +203,7 @@ async function boot() {
       b,
       selectedTime(),
       {
-        onFrom: () => comboFrom.select(b),
-        onTo: () => comboTo.select(b),
+        onDirections: () => showDirections(b),
         onReach: () => showReach(b),
       },
       poisByBuilding.get(b.id) ?? [],
@@ -188,7 +214,7 @@ async function boot() {
     activeRoute = null;
     const host = router.building(p.buildingId);
     sheet.showPoi(p, host, () => {
-      if (host) comboTo.select(host);
+      if (host) showDirections(host);
     });
   }
 

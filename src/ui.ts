@@ -27,6 +27,7 @@ export class BuildingCombo {
   private input: HTMLInputElement;
   private list: HTMLUListElement;
   private buildingsById: Map<string, Building>;
+  private poisById: Map<string, Poi>;
   private entries: ComboEntry[];
   private selectedId: string | null = null;
   private activeIndex = -1;
@@ -34,7 +35,10 @@ export class BuildingCombo {
   private showCurrentLocation: boolean;
   private currentLocationBuilding: Building | null = null;
   private recents: RecentEntry[] = [];
-  onSelect: ((b: Building) => void) | null = null;
+  /** Second argument is set when the choice was a specific business inside
+   * a building, not the building itself — callers that want to show that
+   * business's own card (hours, website) rather than just its host use it. */
+  onSelect: ((b: Building, poi?: Poi) => void) | null = null;
   /** Fires only for a deliberate, named choice — not the current-location
    * shortcut — so callers can persist it as a recent without also
    * recording "wherever I happened to be standing" as a place name. */
@@ -44,6 +48,7 @@ export class BuildingCombo {
     this.input = root.querySelector("input")!;
     this.list = root.querySelector(".combo-list")!;
     this.buildingsById = new Map(buildings.map((b) => [b.id, b]));
+    this.poisById = new Map(pois.map((p) => [p.id, p]));
     this.entries = buildComboEntries(buildings, pois);
     this.showCurrentLocation = opts.currentLocation ?? false;
 
@@ -107,11 +112,15 @@ export class BuildingCombo {
     this.selectedId = entry.buildingId;
     this.input.value = entry.label;
     this.hide();
-    this.onSelect?.(b);
+    const poi = entry.poiId ? this.poisById.get(entry.poiId) : undefined;
+    this.onSelect?.(b, poi);
     this.onRecentWorthy?.(b);
   }
 
-  private selectCurrentLocation() {
+  /** Public so callers can auto-fill "From" as a direct consequence of a
+   * deliberate action (e.g. tapping Directions) — distinct from the old
+   * silent auto-fill this replaced, which fired before anyone asked. */
+  selectCurrentLocation() {
     const b = this.currentLocationBuilding;
     if (!b) return;
     this.selectedId = b.id;
@@ -308,7 +317,7 @@ export class Sheet {
   showBuilding(
     b: Building,
     when: Date,
-    actions: { onFrom: () => void; onTo: () => void; onReach: () => void },
+    actions: { onDirections: () => void; onReach: () => void },
     pois: Poi[] = [],
   ) {
     const status = statusAt(b, when);
@@ -332,11 +341,9 @@ export class Sheet {
 
     const actionsRow = document.createElement("div");
     actionsRow.className = "actions";
-    const fromBtn = el("button", "Route from here");
-    const toBtn = el("button", "Route to here", "primary");
-    fromBtn.addEventListener("click", actions.onFrom);
-    toBtn.addEventListener("click", actions.onTo);
-    actionsRow.append(fromBtn, toBtn);
+    const directionsBtn = el("button", "Directions", "primary");
+    directionsBtn.addEventListener("click", actions.onDirections);
+    actionsRow.append(directionsBtn);
 
     const reachBtn = el("button", "Within 15 min", "reach-btn");
     reachBtn.addEventListener("click", actions.onReach);
@@ -424,7 +431,7 @@ export class Sheet {
   }
 
   /** Card for a single business tapped on the map. */
-  showPoi(p: Poi, host: Building | undefined, onRouteTo: () => void) {
+  showPoi(p: Poi, host: Building | undefined, onDirections: () => void) {
     this.content.innerHTML = "";
     this.clearRouteProgress();
     this.content.append(el("h2", p.name));
@@ -444,9 +451,9 @@ export class Sheet {
       website.textContent = "Website / menu ↗";
       actionsRow.append(website);
     }
-    const toBtn = el("button", "Route here", "primary");
-    toBtn.addEventListener("click", onRouteTo);
-    actionsRow.append(toBtn);
+    const directionsBtn = el("button", "Directions", "primary");
+    directionsBtn.addEventListener("click", onDirections);
+    actionsRow.append(directionsBtn);
     this.content.append(actionsRow, this.reportLink({ name: p.name, id: p.id }));
     this.show();
   }
