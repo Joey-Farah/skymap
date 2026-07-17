@@ -8,7 +8,7 @@
   --ink-400: #8891a3;
   --ground: #eef1f6;
   --card: #ffffff;
-  --glass: rgba(255, 255, 255, 0.86);
+  --glass: rgba(255, 255, 255, 0.94);
   --hairline: rgba(20, 33, 61, 0.09);
   --hairline-strong: #d7dce6;
 
@@ -49,7 +49,7 @@
     --ink-400: #707a91;
     --ground: #0d1220;
     --card: #161b2c;
-    --glass: rgba(22, 27, 44, 0.82);
+    --glass: rgba(22, 27, 44, 0.92);
     --hairline: rgba(255, 255, 255, 0.09);
     --hairline-strong: #2a3348;
     --accent: #6f97ff;
@@ -514,6 +514,24 @@ a:focus-visible {
 
 .maplibregl-ctrl button.maplibregl-ctrl-geolocate.heading-on .maplibregl-ctrl-icon {
   filter: brightness(0) invert(1);
+}
+
+/* 3D pitch toggle: same control-group chrome as the built-in buttons, since
+   it isn't one of MapLibre's own icon buttons. */
+.maplibregl-ctrl-pitch-toggle {
+  width: 29px;
+  height: 29px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.maplibregl-ctrl-pitch-toggle.active {
+  background: var(--accent);
+  color: #fff;
 }
 
 /* --- Save My Ramp --------------------------------------------------------- */

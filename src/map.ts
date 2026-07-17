@@ -150,6 +150,45 @@ function poisFC(pois: Poi[]): FC {
   };
 }
 
+const TILTED_PITCH = 45;
+
+/** Apple Maps defaults to top-down and lets you opt into a tilted view —
+ * a flat skyway network reads clearer from directly above, but the tilt
+ * is nice once you're actually walking a route. */
+class Pitch3DControl implements maplibregl.IControl {
+  private map?: maplibregl.Map;
+  private button!: HTMLButtonElement;
+
+  onAdd(map: maplibregl.Map): HTMLElement {
+    this.map = map;
+    const container = document.createElement("div");
+    container.className = "maplibregl-ctrl maplibregl-ctrl-group";
+    this.button = document.createElement("button");
+    this.button.type = "button";
+    this.button.className = "maplibregl-ctrl-pitch-toggle";
+    this.button.setAttribute("aria-label", "Toggle 3D view");
+    this.button.textContent = "3D";
+    this.button.addEventListener("click", () => {
+      const next = (map.getPitch() ?? 0) > 5 ? 0 : TILTED_PITCH;
+      map.easeTo({ pitch: next, duration: 400 });
+    });
+    map.on("pitch", () => this.syncActive());
+    container.appendChild(this.button);
+    this.syncActive();
+    return container;
+  }
+
+  onRemove(): void {
+    this.button.parentElement?.remove();
+    this.map = undefined;
+  }
+
+  private syncActive() {
+    const on = (this.map?.getPitch() ?? 0) > 5;
+    this.button.classList.toggle("active", on);
+  }
+}
+
 function pointFC(coord: [number, number] | null): FC {
   if (!coord) return { type: "FeatureCollection", features: [] };
   return {
@@ -183,10 +222,11 @@ export class SkymapView {
       style,
       center: DOWNTOWN_CENTER,
       zoom: 14.6,
-      pitch: 30,
+      pitch: 0,
       attributionControl: { compact: true },
     });
     this.map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
+    this.map.addControl(new Pitch3DControl(), "top-right");
     // MapLibre draws its own blue "you are here" dot + accuracy ring;
     // we just need to hear about updates for building-aware features
     // (turn-by-turn progress, "you're near X").

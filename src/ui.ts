@@ -20,7 +20,7 @@ function resultIconUrl(group: PoiGroup): string {
   }
   return url;
 }
-import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
+import { closingSoonWarnings, formatMinute, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
@@ -537,10 +537,13 @@ export class Sheet {
       this.content.append(el("span", "Includes stairs", "badge stairs"));
     }
 
+    const totalMin = Math.max(1, Math.round(route.totalMinutes));
+    const eta = new Date(when.getTime() + totalMin * 60_000);
     const summary = document.createElement("div");
     summary.className = "route-summary";
     summary.append(
-      el("span", `${Math.max(1, Math.round(route.totalMinutes))} min`, "big"),
+      el("span", `${totalMin} min walk`, "big"),
+      el("span", `Arrive ${formatMinute(eta.getHours() * 60 + eta.getMinutes())}`, "sub"),
       el("span", formatDistance(route.totalMeters), "sub"),
       el("span", `${route.steps.length} buildings`, "sub"),
     );
@@ -619,19 +622,21 @@ function isOpenLabelOk(b: Building, when: Date): boolean {
 
 function formatDistance(meters: number): string {
   // Miles for anything a tenth of a mile or more — most US users read
-  // that as the natural unit even for a short walk. Below that, a mile
-  // reading would round to a meaningless "0.0 mi", so feet takes over.
+  // that as the natural unit even for a short walk. Below that, feet would
+  // be more precise but reads as false precision for "basically right
+  // here" distances, so it's collapsed to a single "<0.1 mi" reading.
   const miles = meters / 1609.34;
-  return miles >= 0.1 ? `${miles.toFixed(1)} mi` : `${Math.round(meters * 3.28084)} ft`;
+  if (miles >= 0.1) return `${miles.toFixed(1)} mi`;
+  return "<0.1 mi";
 }
 
-/** "3 min · 198 ft" — time leads since it's what people actually plan
+/** "3 min walk · 0.1 mi" — time leads since it's what people actually plan
  * around; distance alone doesn't say much without a pace attached. Uses
  * the router's own indoor walking pace so a "3 min" estimate here means
  * the same thing as a "3 min" route. */
 function formatWalk(meters: number): string {
   const minutes = Math.max(1, Math.round(meters / WALK_METERS_PER_MIN));
-  return `${minutes} min · ${formatDistance(meters)}`;
+  return `${minutes} min walk · ${formatDistance(meters)}`;
 }
 
 function el(tag: string, text?: string, className?: string): HTMLElement {
