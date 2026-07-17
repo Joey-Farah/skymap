@@ -30,6 +30,7 @@ import { writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildingCategory, groupFor } from "../src/poi.ts";
+import { parseOpeningHours } from "../src/opening-hours.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APPLY = process.argv.includes("--apply");
@@ -413,6 +414,16 @@ async function main(osm) {
       const c = centroid(fp);
       const id = `${slugify(w.tags.name)}-${w.id}`;
       if (w.tags.wikidata) wikidataByBuildingId.set(id, w.tags.wikidata);
+      // opening_hours:skyway describes the skyway level specifically (what
+      // we route through) and is preferred over the building's general
+      // opening_hours; both beat the generic schedule when parseable.
+      const skywayHours = parseOpeningHours(w.tags["opening_hours:skyway"]);
+      const generalHours = parseOpeningHours(w.tags.opening_hours);
+      const [hours, hoursNote] = skywayHours
+        ? [skywayHours, "Skyway-specific hours from OSM."]
+        : generalHours
+          ? [generalHours, "Building hours from OSM (not skyway-specific)."]
+          : [DEFAULT_HOURS, "Default skyway hours — unverified, from OSM extraction."];
       return {
         id,
         name: w.tags.name,
@@ -421,8 +432,8 @@ async function main(osm) {
         lat: +c.lat.toFixed(6),
         lon: +c.lon.toFixed(6),
         footprint: fp,
-        hours: DEFAULT_HOURS,
-        hoursNote: "Default skyway hours — unverified, from OSM extraction.",
+        hours,
+        hoursNote,
       };
     })
     .filter(Boolean);

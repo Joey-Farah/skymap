@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-16T17:59:51.585Z"
+  "generated": "2026-07-17T01:24:58.749Z"
  },
  "buildings": [
   {
@@ -132,36 +132,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     300,
      1200
-    ]
+    ],
+    [
+     300,
+     1200
+    ],
+    [
+     300,
+     1200
+    ],
+    [
+     300,
+     1200
+    ],
+    [
+     300,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Skyway-specific hours from OSM.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Target%20Center.jpg?width=640",
     "attribution": "No machine-readable author provided. Mulad assumed (based on copyright claims). · Public domain",
@@ -338,36 +332,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "park-and-shop-ramp-27346580",
@@ -696,36 +684,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     390,
      1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "mayo-clinic-square-27346712",
@@ -834,35 +816,35 @@
    ],
    "hours": [
     [
-     720,
+     600,
      1080
     ],
     [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/BlockE%202007.jpg?width=640",
     "attribution": "MattButts at English Wikipedia · Public domain",
@@ -1061,35 +1043,35 @@
    ],
    "hours": [
     [
-     720,
+     600,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     570,
+     360,
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "33-south-sixth-27346721",
@@ -1272,35 +1254,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     570,
-     1200
+     0,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "thrivent-corporate-center-27346744",
@@ -1618,36 +1600,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Hennepin%20County%20Government%20Center%202018.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 4.0",
@@ -1708,36 +1684,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     360,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "leamington-municipal-ramp-28490447",
@@ -1821,36 +1791,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     360,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "ameriprise-financial-headquarters-28490454",
@@ -1950,36 +1914,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "energy-center-ramp-28490490",
@@ -2079,36 +2037,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "hilton-minneapolis-28490639",
@@ -2236,36 +2188,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "forum-28525210",
@@ -2353,36 +2299,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "at-t-tower-28525211",
@@ -2434,36 +2374,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/AT%26T%20Tower%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -2504,36 +2438,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     360,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Butler%20Square.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 4.0",
@@ -2667,36 +2595,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "fifth-street-towers-29080597",
@@ -2876,36 +2798,30 @@
     ]
    ],
    "hours": [
-    [
-     720,
-     1080
-    ],
+    null,
     [
      390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
      1200
-    ]
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Fifth%20Street%20Towers%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -3063,35 +2979,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     570,
-     1200
+     360,
+     1140
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "lumber-exchange-30263208",
@@ -3159,36 +3075,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
+     450,
+     1050
     ],
     [
-     390,
-     1320
+     450,
+     1050
     ],
     [
-     390,
-     1320
+     450,
+     1050
     ],
     [
-     390,
-     1320
+     450,
+     1050
     ],
     [
-     390,
-     1320
+     450,
+     1050
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Lumber%20Exchange%20Bldg.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 4.0",
@@ -3500,35 +3410,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     570,
-     1200
+     0,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "millwright-building-40933926",
@@ -3649,36 +3559,30 @@
     ]
    ],
    "hours": [
-    [
-     720,
-     1080
-    ],
+    null,
     [
      390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
      1200
-    ]
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "wells-fargo-center-41763762",
@@ -3730,36 +3634,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Wells%20Fargo%20Center%20from%20Foshay.jpg?width=640",
     "attribution": "No machine-readable author provided. Mulad assumed (based on copyright claims). · Public domain",
@@ -4474,36 +4372,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     390,
      1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Skyway-specific hours from OSM.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Mplsconventioncenter.jpg?width=640",
     "attribution": "RxS at English Wikipedia · Public domain",
@@ -4879,36 +4771,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     390,
      1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "100-washington-square-44164776",
@@ -4961,35 +4847,35 @@
    ],
    "hours": [
     [
-     720,
+     480,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     570,
-     1200
+     480,
+     1080
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/100%20Washington%20Square%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -5062,36 +4948,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Campbell%20Mithun%20Tower%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -5136,36 +5016,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     360,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Quinlan%20Building.jpg?width=640",
     "attribution": "Elkman · CC BY-SA 3.0",
@@ -5286,36 +5160,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     420,
      1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "sps-tower-45447294",
@@ -5423,36 +5291,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Accenture%20Tower%20Minneapolis%205.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -5579,31 +5441,31 @@
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
      570,
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "city-of-lakes-building-45452110",
@@ -5778,35 +5640,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     570,
-     1200
+     0,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "target-plaza-45452119",
@@ -6258,36 +6120,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/051907-011-MarquettePlaza.jpg?width=640",
     "attribution": "Bobak Ha'Eri · CC BY 3.0",
@@ -6352,36 +6208,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "northstar-west-45581647",
@@ -6429,36 +6279,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "ameriprise-financial-center-45581649",
@@ -6574,36 +6418,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Ameriprise%20Financial%20Center%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -6709,35 +6547,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     570,
+     360,
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "rock-island-lofts-45758926",
@@ -7105,36 +6943,33 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     480,
+     840
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "cortland-mill-district-62006959",
@@ -7247,36 +7082,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "westminster-presbyterian-63821145",
@@ -7999,31 +7828,31 @@
      1080
     ],
     [
-     390,
+     300,
      1320
     ],
     [
-     390,
+     300,
      1320
     ],
     [
-     390,
+     300,
      1320
     ],
     [
-     390,
+     300,
      1320
     ],
     [
-     390,
+     300,
      1320
     ],
     [
-     570,
+     480,
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "rivergate-apartments-81049129",
@@ -9106,36 +8935,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     360,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "minneapolis-event-centers-92905847",
@@ -9515,35 +9338,35 @@
    ],
    "hours": [
     [
-     720,
+     600,
      1080
     ],
     [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     480,
+     1080
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "riverfront-municipal-parking-ramp-99717608",
@@ -10197,36 +10020,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/225%20South%20Sixth%20from%20street.jpg?width=640",
     "attribution": "Unknown · Public domain",
@@ -10804,36 +10621,33 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     480,
+     840
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/US%20Bank%20Plaza%201%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -10923,35 +10737,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     570,
-     1200
+     0,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "grain-exchange-annex-126015103",
@@ -11120,36 +10934,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "saint-olaf-catholic-church-126015108",
@@ -11366,36 +11174,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     390,
      1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
     [
      390,
-     1320
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "733-building-126116972",
@@ -11447,36 +11249,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "705-building-126116975",
@@ -11532,36 +11328,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "706-building-126116977",
@@ -11718,36 +11508,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "guthrie-theater-129937715",
@@ -12536,36 +12320,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "soo-line-building-156909948",
@@ -12613,36 +12391,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Soo%20Line%20Building%20Minneapolis.jpg?width=640",
     "attribution": "Unknown · Public domain",
@@ -12716,35 +12488,35 @@
    ],
    "hours": [
     [
-     720,
+     660,
      1080
     ],
     [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     480,
+     1080
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Skyway-specific hours from OSM.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Plymouth%20Building.jpg?width=640",
     "attribution": "McGhiever · CC BY 4.0",
@@ -13068,36 +12840,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "60-south-sixth-156909966",
@@ -13169,36 +12935,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Dain%20Rauscher%20Plaza%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -13255,36 +13015,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
+     420,
+     1020
     ],
     [
-     390,
-     1320
+     420,
+     1020
     ],
     [
-     390,
-     1320
+     420,
+     1020
     ],
     [
-     390,
-     1320
+     420,
+     1020
     ],
     [
-     390,
-     1320
+     420,
+     1020
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flour%20Exchange%20Building.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 4.0",
@@ -13346,35 +13100,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     570,
-     1200
+     330,
+     1380
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/2015StateTheatreMPLS.jpg?width=640",
     "attribution": "Jonathunder · GFDL 1.2",
@@ -13605,36 +13359,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "pence-building-156912891",
@@ -13675,35 +13423,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     390,
-     1320
+     330,
+     1380
     ],
     [
-     570,
-     1200
+     330,
+     1380
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "the-westin-minneapolis-156912892",
@@ -13755,36 +13503,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Skyway-specific hours from OSM.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/F%26M%20Bank%203.jpg?width=640",
     "attribution": "Elkman · CC BY-SA 3.0",
@@ -13846,35 +13588,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     390,
-     1320
+     0,
+     1440
     ],
     [
-     570,
-     1200
+     0,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "farmers-and-mechanics-savings-bank-157025240",
@@ -14082,35 +13824,26 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     600,
+     1020
+    ],
+    null,
+    null,
+    null,
+    [
+     600,
+     960
     ],
     [
-     390,
-     1320
+     600,
+     960
     ],
     [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
+     600,
+     1020
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Mill%20City%20Museum-20070704.jpg?width=640",
     "attribution": "quaziefoto from Ann Arbor · CC BY 2.0",
@@ -14374,35 +14107,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     570,
-     1200
+     330,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "elevate-apartments-220494794",
@@ -14894,36 +14627,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Midwest%20Plaza%20Minneapolis.JPG?width=640",
     "attribution": "Jim Winstead Jr., [2] · CC BY 2.0",
@@ -14981,35 +14708,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     390,
-     1320
+     360,
+     1380
     ],
     [
-     570,
-     1200
+     360,
+     1380
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "110-grant-apartments-resident-parking-358537233",
@@ -15154,36 +14881,27 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
+     300,
+     1410
     ],
     [
-     390,
-     1320
+     300,
+     1410
     ],
     [
-     390,
-     1320
+     300,
+     1410
     ],
     [
-     390,
-     1320
+     300,
+     1410
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null,
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "wells-fargo-600-407613511",
@@ -15247,36 +14965,27 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
+     300,
+     1410
     ],
     [
-     390,
-     1320
+     300,
+     1410
     ],
     [
-     390,
-     1320
+     300,
+     1410
     ],
     [
-     390,
-     1320
+     300,
+     1410
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null,
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "ambulatory-outpatient-specialty-center-411211095",
@@ -15644,35 +15353,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
-    ],
-    [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     570,
-     1200
+     360,
+     1320
+    ],
+    [
+     360,
+     1320
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Churchill%20Apartments%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -15807,31 +15516,31 @@
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
-     390,
-     1320
+     360,
+     1200
     ],
     [
      570,
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "essex-building-461224211",
@@ -16057,36 +15766,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/US%20Bancorp%20Center%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -16422,36 +16125,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     360,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "111-washington-square-537857247",
@@ -16970,36 +16667,30 @@
     ]
    ],
    "hours": [
-    [
-     720,
-     1080
-    ],
+    null,
     [
      390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
      1200
-    ]
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "minneapolis-public-service-building-746039475",
@@ -17043,36 +16734,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     360,
      1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
     [
-     390,
-     1320
+     360,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "365-nicollet-827426569",
@@ -17180,36 +16865,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "4marq-apartments-827449975",
@@ -17346,36 +17025,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "the-nic-on-fifth-827452015",
@@ -17463,36 +17136,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "intersect-apartments-1216920711",
@@ -17780,35 +17447,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     660,
+     1260
     ],
     [
-     390,
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
+     1260
+    ],
+    [
+     660,
      1320
     ],
     [
-     390,
+     660,
      1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "north-loop-green-360-1281792415",
@@ -18608,36 +18275,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "sheraton-minneapolis-downtown-convention-center-1394814185",
@@ -18944,31 +18605,31 @@
      1080
     ],
     [
-     390,
+     1140,
      1320
     ],
     [
-     390,
+     1140,
      1320
     ],
     [
-     390,
+     1140,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     390,
+     360,
      1320
     ],
     [
-     570,
+     420,
      1200
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "deluxe-plaza-1462073358",
@@ -19044,36 +18705,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
    "id": "chestnut-pumphouse-1488042853",
@@ -19472,35 +19127,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     390,
-     1320
+     360,
+     1140
     ],
     [
-     570,
-     1200
+     360,
+     1140
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "hawthorne-transportation-center-r2100925",
@@ -19693,35 +19348,35 @@
    ],
    "hours": [
     [
-     720,
-     1080
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     390,
-     1320
+     330,
+     1440
     ],
     [
-     570,
-     1200
+     330,
+     1440
     ]
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hoursNote": "Skyway-specific hours from OSM."
   },
   {
    "id": "minneapolis-city-hall-r4503577",
@@ -19761,36 +19416,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
+     420,
      1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
     [
-     390,
-     1320
+     420,
+     1080
     ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Building hours from OSM (not skyway-specific).",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Minneapolis%20City%20Hall%202012.jpg?width=640",
     "attribution": "Jason Riedy from East Point, GA, USA · CC BY 2.0",
@@ -19951,36 +19600,30 @@
     ]
    ],
    "hours": [
+    null,
     [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
+     360,
      1200
-    ]
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    [
+     360,
+     1200
+    ],
+    null
    ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hoursNote": "Skyway-specific hours from OSM.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Public%20library%20minneapolis%20exterior.jpg?width=640",
     "attribution": "Zachary Korb · CC BY 2.0",

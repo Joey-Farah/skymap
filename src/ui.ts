@@ -236,6 +236,11 @@ export class Sheet {
     const meta = el("div", metaText, "meta");
     const badge = el("span", status.open ? status.label : status.label, `badge ${status.open ? "open" : "closed"}`);
     const hours = el("div", `Hours: ${formatWeeklyHours(b.hours)}`, "hours-line");
+    // Real per-building hours come from OSM tags when present; the generic
+    // schedule is a guess, and guesses should say so rather than pass as fact.
+    if (b.hoursNote.startsWith("Default")) {
+      hours.append(el("span", " (typical, unverified)", "hours-unverified"));
+    }
 
     const actionsRow = document.createElement("div");
     actionsRow.className = "actions";

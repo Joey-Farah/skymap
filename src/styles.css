@@ -871,6 +871,11 @@ a:focus-visible {
   margin: 7px 0;
 }
 
+.hours-unverified {
+  color: var(--ink-400);
+  font-weight: 500;
+}
+
 .progress-prompt {
   font-size: 14.5px;
   font-weight: 800;
