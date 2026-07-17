@@ -4,6 +4,7 @@ import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isClosingSoon, isOpenAt } from "./hours.ts";
 import { polylineMeters, sliceAlong } from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
+import { GROUP_COLORS } from "./poi.ts";
 
 // Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look
 // than Positron's grayscale. Dark: OpenFreeMap's own dark counterpart — a
@@ -132,17 +133,6 @@ function lineFC(coordinates: [number, number][]): FC {
   };
 }
 
-/** Dot color per POI group (transit gets its own layer). */
-const GROUP_COLORS: Record<string, string> = {
-  food: "#e08a00",
-  coffee: "#7c4a2d",
-  shop: "#17356e",
-  service: "#5b6b84",
-  restroom: "#0d9488",
-  landmark: "#7c3aed",
-  transit: "#178740",
-  elevator: "#475569",
-};
 
 function poisFC(pois: Poi[]): FC {
   return {

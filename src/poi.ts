@@ -32,6 +32,19 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
   elevator: "Elevators",
 };
 
+/** One color per group — shared by the map's pins and the search result
+ * icons, so a coffee cup means the same thing wherever you see it. */
+export const GROUP_COLORS: Record<PoiGroup, string> = {
+  food: "#e08a00",
+  coffee: "#7c4a2d",
+  shop: "#17356e",
+  service: "#5b6b84",
+  restroom: "#0d9488",
+  landmark: "#7c3aed",
+  transit: "#178740",
+  elevator: "#475569",
+};
+
 /** OSM building-way tags -> our building category. */
 export function buildingCategory(tags: Record<string, string>): string {
   const b = tags.building ?? "";

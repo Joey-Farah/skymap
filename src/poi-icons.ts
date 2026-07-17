@@ -143,8 +143,7 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
   }
 }
 
-/** Renders a colored circle + white glyph for `group`, ready for map.addImage(). */
-export function renderPoiIcon(group: PoiGroup, color: string, size = 48): ImageData {
+function drawPoiIcon(group: PoiGroup, color: string, size: number): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
@@ -162,5 +161,17 @@ export function renderPoiIcon(group: PoiGroup, color: string, size = 48): ImageD
   ctx.stroke();
 
   drawGlyph(ctx, group, cx, cy, r);
-  return ctx.getImageData(0, 0, size, size);
+  return canvas;
+}
+
+/** Renders a colored circle + white glyph for `group`, ready for map.addImage(). */
+export function renderPoiIcon(group: PoiGroup, color: string, size = 48): ImageData {
+  const canvas = drawPoiIcon(group, color, size);
+  return canvas.getContext("2d")!.getImageData(0, 0, size, size);
+}
+
+/** Same glyph as renderPoiIcon, as a data URL for a plain <img> — the
+ * search result list isn't a MapLibre sprite, it's regular DOM. */
+export function renderPoiIconDataUrl(group: PoiGroup, color: string, size = 32): string {
+  return drawPoiIcon(group, color, size).toDataURL();
 }

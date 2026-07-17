@@ -1,22 +1,25 @@
 import type { Building, Poi, RouteResult } from "./types.ts";
 import { reportIssueUrl } from "./share.ts";
-import { CATEGORY_LABELS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
+import { CATEGORY_LABELS, GROUP_COLORS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
 import { haversineMeters, WALK_METERS_PER_MIN } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
 import type { RecentEntry } from "./recents.ts";
+import { renderPoiIconDataUrl } from "./poi-icons.ts";
 
-/** Single-letter result-row monogram per icon group — kept legible without emoji. */
-const RESULT_ICON_LETTER: Record<string, string> = {
-  building: "B",
-  food: "F",
-  coffee: "C",
-  shop: "S",
-  service: "•",
-  restroom: "R",
-  elevator: "E",
-  landmark: "L",
-  transit: "T",
-};
+// "building" is the one result icon that isn't a real POI group (buildings
+// are the polygons on the map, not icon markers) — it keeps the plain
+// letter badge. Every POI group instead gets the same glyph the map
+// itself uses, memoized since there are only a handful of distinct icons
+// no matter how many result rows are on screen.
+const iconCache = new Map<string, string>();
+function resultIconUrl(group: PoiGroup): string {
+  let url = iconCache.get(group);
+  if (!url) {
+    url = renderPoiIconDataUrl(group, GROUP_COLORS[group], 32);
+    iconCache.set(group, url);
+  }
+  return url;
+}
 import { closingSoonWarnings, formatWeeklyHours, formatWhen, statusAt } from "./hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
@@ -156,7 +159,14 @@ export class BuildingCombo {
       const li = document.createElement("li");
       const icon = document.createElement("span");
       icon.className = `result-icon icon-${entry.icon}`;
-      icon.textContent = RESULT_ICON_LETTER[entry.icon] ?? "•";
+      if (entry.icon === "building") {
+        icon.textContent = "B";
+      } else {
+        const img = document.createElement("img");
+        img.src = resultIconUrl(entry.icon as PoiGroup);
+        img.alt = "";
+        icon.append(img);
+      }
       const text = document.createElement("span");
       text.className = "result-text";
       const name = document.createElement("span");

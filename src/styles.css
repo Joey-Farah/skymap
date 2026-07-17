@@ -381,6 +381,18 @@ a:focus-visible {
   background: var(--ink-400);
 }
 
+/* Real POI groups render their own colored circle + glyph baked into the
+ * image (same drawing as the map's own pins) — no separate badge
+ * background needed underneath. */
+.result-icon:has(img) {
+  background: none;
+}
+
+.result-icon img {
+  width: 30px;
+  height: 30px;
+}
+
 .result-icon.icon-building { background: var(--accent); }
 .result-icon.icon-food { background: var(--amber); }
 .result-icon.icon-coffee { background: #7c4a2d; }
