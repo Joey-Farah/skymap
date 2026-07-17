@@ -400,7 +400,14 @@ async function boot() {
 
   // --- POI quick-filters: "what's around" at a glance ---------------------
   const filterBar = document.getElementById("poi-filter-bar")!;
-  const QUICK_FILTERS: (keyof typeof GROUP_LABELS | null)[] = [null, "restroom", "food", "shop", "elevator"];
+  const QUICK_FILTERS: (keyof typeof GROUP_LABELS | null)[] = [
+    null,
+    "restroom",
+    "food",
+    "coffee",
+    "shop",
+    "elevator",
+  ];
   for (const group of QUICK_FILTERS) {
     const chip = document.createElement("button");
     chip.type = "button";

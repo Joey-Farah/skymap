@@ -383,6 +383,7 @@ a:focus-visible {
 
 .result-icon.icon-building { background: var(--accent); }
 .result-icon.icon-food { background: var(--amber); }
+.result-icon.icon-coffee { background: #7c4a2d; }
 .result-icon.icon-shop { background: #17356e; }
 .result-icon.icon-service { background: var(--ink-400); }
 .result-icon.icon-restroom { background: #0d9488; }

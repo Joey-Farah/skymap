@@ -8,6 +8,7 @@ import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
 const RESULT_ICON_LETTER: Record<string, string> = {
   building: "B",
   food: "F",
+  coffee: "C",
   shop: "S",
   service: "•",
   restroom: "R",
@@ -306,7 +307,7 @@ export class Sheet {
 
     const interior = pois.filter((p) => !p.exterior);
     const transit = pois.filter((p) => p.exterior);
-    const order: PoiGroup[] = ["food", "shop", "service", "restroom", "elevator", "landmark"];
+    const order: PoiGroup[] = ["coffee", "food", "shop", "service", "restroom", "elevator", "landmark"];
     for (const group of order) {
       const members = interior.filter((p) => p.group === group);
       if (members.length === 0) continue;
@@ -559,11 +560,11 @@ function isOpenLabelOk(b: Building, when: Date): boolean {
 }
 
 function formatDistance(meters: number): string {
-  // Always miles — feet reads as an odd unit switch mid-route to most US
-  // users, even for a short walk. Floor at 0.1 mi so a real but tiny
-  // distance never rounds down to a nonsensical "0.0 mi".
-  const miles = Math.max(0.1, meters / 1609.34);
-  return `${miles.toFixed(1)} mi`;
+  // Miles for anything a tenth of a mile or more — most US users read
+  // that as the natural unit even for a short walk. Below that, a mile
+  // reading would round to a meaningless "0.0 mi", so feet takes over.
+  const miles = meters / 1609.34;
+  return miles >= 0.1 ? `${miles.toFixed(1)} mi` : `${Math.round(meters * 3.28084)} ft`;
 }
 
 function el(tag: string, text?: string, className?: string): HTMLElement {

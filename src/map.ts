@@ -122,6 +122,7 @@ function lineFC(coordinates: [number, number][]): FC {
 /** Dot color per POI group (transit gets its own layer). */
 const GROUP_COLORS: Record<string, string> = {
   food: "#e08a00",
+  coffee: "#7c4a2d",
   shop: "#17356e",
   service: "#5b6b84",
   restroom: "#0d9488",

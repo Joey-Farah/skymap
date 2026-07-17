@@ -1,9 +1,12 @@
 /** POI grouping: one place that decides how a business/feature is classed,
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
-export type PoiGroup = "food" | "shop" | "service" | "restroom" | "landmark" | "transit" | "elevator";
+export type PoiGroup = "food" | "coffee" | "shop" | "service" | "restroom" | "landmark" | "transit" | "elevator";
 
-const FOOD = /^(cafe|restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli|coffee)$/;
+// Coffee split out from food generally: someone who wants "where can I get
+// a coffee" doesn't want a restaurant list to dig through, and vice versa.
+const COFFEE = /^(cafe|coffee)$/;
+const FOOD = /^(restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli)$/;
 const LANDMARK_AMENITY = /^(library|townhall|courthouse|place_of_worship|theatre|cinema)$/;
 const TRANSIT = /^(bus_stop|station|tram_stop|stop)$/;
 
@@ -12,13 +15,15 @@ export function groupFor(kind: string, category: string): PoiGroup {
   if (category === "toilets") return "restroom";
   if (kind === "transit" || TRANSIT.test(category)) return "transit";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
+  if (COFFEE.test(category)) return "coffee";
   if (FOOD.test(category)) return "food";
   if (kind === "shop") return "shop";
   return "service";
 }
 
 export const GROUP_LABELS: Record<PoiGroup, string> = {
-  food: "Food & drink",
+  food: "Restaurants",
+  coffee: "Coffee",
   shop: "Shops",
   service: "Services",
   restroom: "Restrooms",
@@ -51,7 +56,9 @@ export function landmarkNear<T extends { name: string; buildingId: string; group
   buildingId: string,
 ): T | null {
   const candidates = pois
-    .filter((p) => p.buildingId === buildingId && (p.group === "food" || p.group === "landmark"))
+    .filter(
+      (p) => p.buildingId === buildingId && (p.group === "food" || p.group === "coffee" || p.group === "landmark"),
+    )
     .sort((a, b) => a.name.localeCompare(b.name));
   return candidates[0] ?? null;
 }

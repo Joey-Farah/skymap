@@ -433,11 +433,15 @@ test("landmarkNear picks a recognizable business for a building, deterministical
   assert.equal(landmark.name, "Aardvark Bakery", "alphabetically-first food POI, deterministic");
   assert.equal(landmarkNear(pois, "b2"), null, "no food/landmark POI in that building");
   assert.equal(landmarkNear(pois, "nowhere"), null);
+
+  const withCoffee = [{ id: "5", name: "Zinnia Cafe", buildingId: "b3", group: "coffee" }];
+  assert.equal(landmarkNear(withCoffee, "b3").name, "Zinnia Cafe", "coffee counts as a wayfinding landmark too");
 });
 
 test("poi grouping and building categories", async () => {
   const { groupFor, buildingCategory } = await import("../src/poi.ts");
-  assert.equal(groupFor("amenity", "cafe"), "food");
+  assert.equal(groupFor("amenity", "cafe"), "coffee");
+  assert.equal(groupFor("amenity", "restaurant"), "food");
   assert.equal(groupFor("shop", "clothes"), "shop");
   assert.equal(groupFor("amenity", "bank"), "service");
   assert.equal(groupFor("amenity", "toilets"), "restroom");

@@ -13,7 +13,7 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
   ctx.lineJoin = "round";
 
   switch (group) {
-    case "food": {
+    case "coffee": {
       // Coffee cup: body + handle.
       const w = r * 0.75;
       const h = r * 0.85;
@@ -22,6 +22,38 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(cx + w / 2 + w * 0.22, cy - h * 0.05, h * 0.22, -Math.PI * 0.5, Math.PI * 0.5);
+      ctx.stroke();
+      break;
+    }
+    case "food": {
+      // Fork + knife: the universal "restaurant" pictogram.
+      const h = r * 0.85;
+      const top = cy - h / 2;
+      const bottom = cy + h / 2;
+      const gap = r * 0.22;
+      // Fork: three short tines feeding into a single shaft.
+      const forkX = cx - gap;
+      for (const dx of [-r * 0.12, 0, r * 0.12]) {
+        ctx.beginPath();
+        ctx.moveTo(forkX + dx, top);
+        ctx.lineTo(forkX + dx, top + h * 0.28);
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.moveTo(forkX - r * 0.12, top + h * 0.28);
+      ctx.quadraticCurveTo(forkX, top + h * 0.4, forkX, top + h * 0.4);
+      ctx.quadraticCurveTo(forkX, top + h * 0.4, forkX + r * 0.12, top + h * 0.28);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(forkX, top + h * 0.4);
+      ctx.lineTo(forkX, bottom);
+      ctx.stroke();
+      // Knife: a slim blade tapering into the handle.
+      const knifeX = cx + gap;
+      ctx.beginPath();
+      ctx.moveTo(knifeX - r * 0.1, top);
+      ctx.quadraticCurveTo(knifeX + r * 0.14, top + h * 0.32, knifeX, top + h * 0.42);
+      ctx.lineTo(knifeX, bottom);
       ctx.stroke();
       break;
     }
