@@ -81,6 +81,7 @@ async function boot() {
     (b) => onBuildingTap(b),
     (p) => onPoiTap(p),
     (lat, lon) => onPosition(lat, lon),
+    (lat, lon) => onRouteTap(lat, lon),
   );
   const poisByBuilding = new Map<string, Poi[]>();
   for (const p of data.pois ?? []) {
@@ -140,6 +141,7 @@ async function boot() {
       return;
     }
     activeRoute = route;
+    manualPositionUntil = 0; // a fresh route starts under normal GPS tracking
     view.setReach(null);
     view.setRoute(route);
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
@@ -228,10 +230,27 @@ async function boot() {
   // and quietly claimed the field before you saw either.
   let nearBuilding: Building | null = null;
 
+  // GPS drifts indoors — sometimes badly enough to land on the wrong step
+  // of a route. Borrowed from Sky Walker (iOS competitor): tapping the
+  // route line manually corrects your position. The correction holds for
+  // a while rather than being overwritten by the very next (possibly
+  // still-drifting) GPS fix, which would defeat the point of tapping at
+  // all; automatic updates resume on their own once the window passes.
+  const MANUAL_POSITION_GRACE_MS = 45_000;
+  let manualPositionUntil = 0;
+
+  function onRouteTap(lat: number, lon: number) {
+    if (!activeRoute) return; // nothing to correct against
+    sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
+    view.setManualPosition([lon, lat]);
+    manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
+  }
+
   function onPosition(lat: number, lon: number) {
     nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
-    if (activeRoute) {
+    if (activeRoute && Date.now() >= manualPositionUntil) {
       sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
+      view.setManualPosition(null); // real GPS is back in control
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(nearBuilding);
@@ -473,7 +492,7 @@ async function boot() {
   updateFilterBarVisibility();
 
   // Test/debug handle (drives E2E camera positioning).
-  (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition };
+  (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition, onRouteTap };
 }
 
 boot().catch((err) => {

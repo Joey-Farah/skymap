@@ -175,6 +175,7 @@ export class SkymapView {
     onBuildingClick: (b: Building) => void,
     onPoiClick?: (p: Poi) => void,
     onPosition?: (lat: number, lon: number) => void,
+    onRouteTap?: (lat: number, lon: number) => void,
   ) {
     this.data = data;
     this.map = new maplibregl.Map({
@@ -228,7 +229,18 @@ export class SkymapView {
       const p = this.data.pois?.find((x) => x.id === id);
       if (p && onPoiClick) onPoiClick(p);
     });
-    for (const layer of ["skyway-buildings-fill", "skyway-pois"]) {
+    // GPS drifts indoors, sometimes badly enough to put you on the wrong
+    // step of a route — a manual correction is the fallback (borrowed
+    // from Sky Walker's "tap your dot back onto the route" idea). Lowest
+    // priority of the three tap targets: a building or POI under the same
+    // point still wins, since those are more specific intents.
+    this.map.on("click", "skyway-route-casing", (e) => {
+      const poiHit = this.map.queryRenderedFeatures(e.point, { layers: ["skyway-pois"] }).length;
+      const buildingHit = this.map.queryRenderedFeatures(e.point, { layers: ["skyway-buildings-fill"] }).length;
+      if (poiHit || buildingHit) return;
+      onRouteTap?.(e.lngLat.lat, e.lngLat.lng);
+    });
+    for (const layer of ["skyway-buildings-fill", "skyway-pois", "skyway-route-casing"]) {
       this.map.on("mouseenter", layer, () => {
         this.map.getCanvas().style.cursor = "pointer";
       });
@@ -483,6 +495,15 @@ export class SkymapView {
     };
     if (this.ready) apply();
     else this.map.once("load", apply);
+  }
+
+  /** Manual GPS-drift correction: MapLibre's own blue dot is driven by the
+   * Geolocation API and can't be placed programmatically, so a tap
+   * correction gets its own marker on the same dot layer the route-draw
+   * animation already uses. `null` clears it once real GPS resumes. */
+  setManualPosition(coord: [number, number] | null) {
+    const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
+    walkerSrc?.setData(pointFC(coord));
   }
 
   focusBuilding(b: Building) {
