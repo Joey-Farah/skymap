@@ -1,7 +1,7 @@
 import type { Building, RouteResult, RouteStep, SkymapData } from "./types.ts";
 import { isOpenAt } from "./hours.ts";
 
-const WALK_METERS_PER_MIN = 78; // ~2.9 mph indoor pace
+export const WALK_METERS_PER_MIN = 78; // ~2.9 mph indoor pace
 const BUILDING_TRANSIT_MIN = 0.75; // corridors, escalators, doors per building passed
 
 export function haversineMeters(aLat: number, aLon: number, bLat: number, bLon: number): number {

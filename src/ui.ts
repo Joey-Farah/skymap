@@ -1,7 +1,7 @@
 import type { Building, Poi, RouteResult } from "./types.ts";
 import { reportIssueUrl } from "./share.ts";
 import { CATEGORY_LABELS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
-import { haversineMeters } from "./router.ts";
+import { haversineMeters, WALK_METERS_PER_MIN } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
 
 /** Single-letter result-row monogram per icon group — kept legible without emoji. */
@@ -320,11 +320,11 @@ export class Sheet {
       list.className = "poi-list";
       for (const p of transit.slice(0, 4)) {
         const li = document.createElement("li");
-        const dist = formatDistance(haversineMeters(p.lat, p.lon, b.lat, b.lon));
+        const walk = formatWalk(haversineMeters(p.lat, p.lon, b.lat, b.lon));
         li.append(
           el("span", p.name),
           el("span", p.category === "bus_stop" ? "Bus" : "Light rail", "poi-cat"),
-          el("span", dist, "poi-distance"),
+          el("span", walk, "poi-distance"),
         );
         list.appendChild(li);
       }
@@ -565,6 +565,15 @@ function formatDistance(meters: number): string {
   // reading would round to a meaningless "0.0 mi", so feet takes over.
   const miles = meters / 1609.34;
   return miles >= 0.1 ? `${miles.toFixed(1)} mi` : `${Math.round(meters * 3.28084)} ft`;
+}
+
+/** "3 min · 198 ft" — time leads since it's what people actually plan
+ * around; distance alone doesn't say much without a pace attached. Uses
+ * the router's own indoor walking pace so a "3 min" estimate here means
+ * the same thing as a "3 min" route. */
+function formatWalk(meters: number): string {
+  const minutes = Math.max(1, Math.round(meters / WALK_METERS_PER_MIN));
+  return `${minutes} min · ${formatDistance(meters)}`;
 }
 
 function el(tag: string, text?: string, className?: string): HTMLElement {
