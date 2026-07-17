@@ -1,9 +1,31 @@
-/* Skymap service worker: cache-first app shell + data, network-first tiles. */
-const CACHE = "skymap-v1";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./data/skymap-data.json", "./icons/icon.svg"];
+/* Skymap service worker: precached app shell + data, network-first tiles.
+ *
+ * CACHE_VERSION and PRECACHE are placeholders — scripts/build-sw.mjs
+ * rewrites this file after `vite build`, injecting the real hashed asset
+ * list (index-XXXX.js/css, all logos, the data file, icons) and a cache
+ * name derived from a hash of that list, so every deploy with different
+ * content gets a fresh cache and cleanly evicts the old one. A raw copy
+ * of this file (e.g. running straight off public/ in dev) still works —
+ * it just precaches nothing and falls back to network-first everywhere.
+ */
+const CACHE = "skymap-__CACHE_VERSION__";
+const PRECACHE = __PRECACHE_MANIFEST__;
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  event.waitUntil(
+    caches.open(CACHE).then((cache) =>
+      // Individual puts, not cache.addAll: addAll is all-or-nothing, so one
+      // flaky asset fetch would fail the entire SW install and leave the
+      // app with no offline support at all. A partial precache still beats
+      // none — anything missed here gets caught by the fetch handler's
+      // stale-while-revalidate on first use.
+      Promise.allSettled(
+        PRECACHE.map((url) =>
+          fetch(url, { cache: "reload" }).then((res) => (res.ok ? cache.put(url, res) : undefined)),
+        ),
+      ).then(() => self.skipWaiting()),
+    ),
+  );
 });
 
 self.addEventListener("activate", (event) => {

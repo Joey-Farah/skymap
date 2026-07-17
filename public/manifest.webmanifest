@@ -1,7 +1,10 @@
 {
+  "id": "/",
   "name": "Skymap — Minneapolis Skyway",
   "short_name": "Skymap",
   "description": "Navigate the Minneapolis Skyway, the largest contiguous skyway network in the world.",
+  "lang": "en-US",
+  "categories": ["navigation", "travel"],
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -10,7 +13,8 @@
   "theme_color": "#1d4ed8",
   "icons": [
     { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

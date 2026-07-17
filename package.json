@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node scripts/build-sw.mjs",
     "preview": "vite preview",
     "data:seed": "node scripts/generate-seed-data.mjs",
     "data:osm": "node scripts/fetch-osm.mjs",
