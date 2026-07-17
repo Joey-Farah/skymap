@@ -389,6 +389,18 @@ a:focus-visible {
 .result-icon.icon-elevator { background: #475569; }
 .result-icon.icon-landmark { background: #7c3aed; }
 .result-icon.icon-transit { background: var(--green); }
+.result-icon.icon-current-location { background: var(--accent); font-size: 15px; }
+
+.current-location-row {
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 4px;
+  padding-bottom: 10px;
+}
+
+.current-location-row .result-name {
+  color: var(--accent);
+  font-weight: 700;
+}
 
 .result-text {
   flex: 1;

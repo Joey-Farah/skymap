@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "Skymap — Minneapolis Skyway",
-  "short_name": "Skymap",
+  "name": "SkyMap — Minneapolis Skyway",
+  "short_name": "SkyMap",
   "description": "Navigate the Minneapolis Skyway, the largest contiguous skyway network in the world.",
   "lang": "en-US",
   "categories": ["navigation", "travel"],

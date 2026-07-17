@@ -1,4 +1,4 @@
-# Why Skymap — what Apple Maps and Google Maps can't do here
+# Why SkyMap — what Apple Maps and Google Maps can't do here
 
 The Minneapolis Skyway is 9.5 miles of enclosed, second-story walkways
 connecting ~80 downtown blocks — the largest system of its kind in the
@@ -14,7 +14,7 @@ bridges appear (at best) as decorative lines — not as something you can
 route through. The specialist tools that do exist are static PDF maps or
 thin viewers with stale listings.
 
-Skymap's entire routing graph *is* the skyway: buildings are the nodes,
+SkyMap's entire routing graph *is* the skyway: buildings are the nodes,
 enclosed bridges are the edges, extracted from OpenStreetMap's real
 geometry and rebuilt automatically as the mapping community improves it.
 
@@ -55,6 +55,6 @@ No login, no tracking, no ads.
 
 ## The one-line version
 
-Apple Maps knows the city's streets. Skymap knows the city that exists
+Apple Maps knows the city's streets. SkyMap knows the city that exists
 one story up, indoors, with opening hours — and treats it as the real
 transportation network it is.

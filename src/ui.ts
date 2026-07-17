@@ -25,13 +25,17 @@ export class BuildingCombo {
   private entries: ComboEntry[];
   private selectedId: string | null = null;
   private activeIndex = -1;
+  /** Only the "From" combo offers this — you don't route *to* where you are. */
+  private showCurrentLocation: boolean;
+  private currentLocationBuilding: Building | null = null;
   onSelect: ((b: Building) => void) | null = null;
 
-  constructor(root: HTMLElement, buildings: Building[], pois: Poi[] = []) {
+  constructor(root: HTMLElement, buildings: Building[], pois: Poi[] = [], opts: { currentLocation?: boolean } = {}) {
     this.input = root.querySelector("input")!;
     this.list = root.querySelector(".combo-list")!;
     this.buildingsById = new Map(buildings.map((b) => [b.id, b]));
     this.entries = buildComboEntries(buildings, pois);
+    this.showCurrentLocation = opts.currentLocation ?? false;
 
     this.input.addEventListener("input", () => {
       this.selectedId = null;
@@ -42,6 +46,17 @@ export class BuildingCombo {
     document.addEventListener("click", (e) => {
       if (!root.contains(e.target as Node)) this.hide();
     });
+  }
+
+  /**
+   * Updates the building a live position fix resolves to. Re-renders
+   * immediately if the list is already open (typically empty-query, just
+   * focused) so the option appears the moment a fix arrives, not just on
+   * the next focus.
+   */
+  setCurrentLocation(b: Building | null) {
+    this.currentLocationBuilding = b;
+    if (!this.list.hidden) this.render(this.input.value);
   }
 
   get value(): string | null {
@@ -70,10 +85,40 @@ export class BuildingCombo {
     this.onSelect?.(b);
   }
 
+  private selectCurrentLocation() {
+    const b = this.currentLocationBuilding;
+    if (!b) return;
+    this.selectedId = b.id;
+    this.input.value = "Current Location";
+    this.hide();
+    this.onSelect?.(b);
+  }
+
   private render(query: string) {
     const items = searchEntries(this.entries, query).slice(0, 12);
     this.activeIndex = -1;
     this.list.innerHTML = "";
+    // Pinned first row, Apple-Maps style — only when the field is empty
+    // (once you're typing a search, you're looking for something else)
+    // and a position fix has actually resolved to a building. No fix yet
+    // means no row, rather than a "Current Location" option that fails
+    // when tapped.
+    if (this.showCurrentLocation && !query.trim() && this.currentLocationBuilding) {
+      const li = document.createElement("li");
+      li.className = "current-location-row";
+      const icon = document.createElement("span");
+      icon.className = "result-icon icon-current-location";
+      icon.textContent = "⌖";
+      const text = document.createElement("span");
+      text.className = "result-text";
+      text.append(el("span", "Current Location", "result-name"));
+      li.append(icon, text);
+      li.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        this.selectCurrentLocation();
+      });
+      this.list.appendChild(li);
+    }
     for (const entry of items) {
       const li = document.createElement("li");
       const icon = document.createElement("span");
@@ -95,7 +140,7 @@ export class BuildingCombo {
       });
       this.list.appendChild(li);
     }
-    this.list.hidden = items.length === 0;
+    this.list.hidden = this.list.children.length === 0;
   }
 
   private onKey(e: KeyboardEvent) {
@@ -274,11 +319,11 @@ export class Sheet {
       list.className = "poi-list";
       for (const p of transit.slice(0, 4)) {
         const li = document.createElement("li");
-        const ft = Math.round(haversineMeters(p.lat, p.lon, b.lat, b.lon) * 3.28084);
+        const dist = formatDistance(haversineMeters(p.lat, p.lon, b.lat, b.lon));
         li.append(
           el("span", p.name),
           el("span", p.category === "bus_stop" ? "Bus" : "Light rail", "poi-cat"),
-          el("span", `${ft} ft`, "poi-distance"),
+          el("span", dist, "poi-distance"),
         );
         list.appendChild(li);
       }
@@ -514,8 +559,11 @@ function isOpenLabelOk(b: Building, when: Date): boolean {
 }
 
 function formatDistance(meters: number): string {
-  const miles = meters / 1609.34;
-  return miles >= 0.095 ? `${miles.toFixed(1)} mi` : `${Math.round(meters * 3.28084)} ft`;
+  // Always miles — feet reads as an odd unit switch mid-route to most US
+  // users, even for a short walk. Floor at 0.1 mi so a real but tiny
+  // distance never rounds down to a nonsensical "0.0 mi".
+  const miles = Math.max(0.1, meters / 1609.34);
+  return `${miles.toFixed(1)} mi`;
 }
 
 function el(tag: string, text?: string, className?: string): HTMLElement {

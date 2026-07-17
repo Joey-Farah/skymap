@@ -5,8 +5,8 @@ import { isClosingSoon, isOpenAt } from "./hours.ts";
 import { polylineMeters, sliceAlong } from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 
-// Positron: muted grey basemap that lets the skyway network carry the color.
-const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
+// Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look than Positron's grayscale.
+const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const DOWNTOWN_CENTER: [number, number] = [-93.2697, 44.976];
 
 /** Minimal style used when the basemap host is unreachable (offline etc.). */

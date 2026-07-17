@@ -78,7 +78,9 @@ async function boot() {
     poisByBuilding.get(p.buildingId)!.push(p);
   }
 
-  const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings, data.pois);
+  const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings, data.pois, {
+    currentLocation: true,
+  });
   const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings, data.pois);
 
   // Routing always uses the current moment — no traffic to plan around,
@@ -190,6 +192,7 @@ async function boot() {
       sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
     }
     maybePromptSaveRamp(nearBuilding);
+    comboFrom.setCurrentLocation(nearBuilding);
     // Apple-Maps-style implicit origin: quietly fill From with wherever you
     // are, so the common case is "just type a destination." Never
     // overwrites a real selection — only ever touches an empty field.
@@ -430,5 +433,5 @@ async function boot() {
 
 boot().catch((err) => {
   console.error(err);
-  document.body.innerHTML = `<p style="padding:2rem;font-family:sans-serif">Failed to start Skymap: ${err}</p>`;
+  document.body.innerHTML = `<p style="padding:2rem;font-family:sans-serif">Failed to start SkyMap: ${err}</p>`;
 });

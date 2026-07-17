@@ -27,7 +27,7 @@ export function encodeRouteState(state: { fromId: string; toId: string; when: Da
 export function reportIssueUrl(target: { name: string; id: string }): string {
   // mailto: doesn't reliably decode "+" as a space the way form encoding
   // does, so encode manually rather than reach for URLSearchParams.
-  const subject = encodeURIComponent(`Skymap issue: ${target.name}`);
+  const subject = encodeURIComponent(`SkyMap issue: ${target.name}`);
   const body = encodeURIComponent(
     `What's wrong? (closed, wrong hours, wrong location, doesn't exist, other)\n\n\n—\nRef: ${target.id}`,
   );
@@ -37,7 +37,7 @@ export function reportIssueUrl(target: { name: string; id: string }): string {
 /** General product feedback/ideas — distinct from reportIssueUrl, which is
  * always tied to a specific building or business's data. */
 export function feedbackUrl(): string {
-  const subject = encodeURIComponent("Skymap feedback");
+  const subject = encodeURIComponent("SkyMap feedback");
   const body = encodeURIComponent("What's working, what's not, what would make this better?\n\n\n");
   return `mailto:hello@skymap.app?subject=${subject}&body=${body}`;
 }

@@ -1,4 +1,4 @@
-# Getting Skymap onto your iPhone — and, eventually, the App Store
+# Getting SkyMap onto your iPhone — and, eventually, the App Store
 
 Two different goals, two very different amounts of effort. This doc is
 honest about which is which.
@@ -20,7 +20,7 @@ What was built tonight (branch `overnight/2026-07-16-pwa-native`):
   app boots, loads all buildings, and computes a real route with zero
   successful network requests.
 - **Splash screens** for every current iPhone size (X through 16 Pro
-  Max) so opening the app shows the Skymap mark on launch instead of a
+  Max) so opening the app shows the SkyMap mark on launch instead of a
   blank white flash.
 - **A maskable icon** so the home-screen icon looks correct regardless of
   what shape mask iOS/Android crops it to.
@@ -42,7 +42,7 @@ What was built tonight (branch `overnight/2026-07-16-pwa-native`):
    just your say-so from earlier in the conversation.)
 2. Open **https://skymap-alpha.vercel.app** in Safari on your iPhone.
 3. Tap the Share button → **Add to Home Screen**.
-4. That's it — you now have a Skymap icon that opens full-screen and
+4. That's it — you now have a SkyMap icon that opens full-screen and
    works offline.
 5. **Merge the branch** if you're happy with it:
    `git checkout main && git merge overnight/2026-07-16-pwa-native`
@@ -85,10 +85,8 @@ just hand you broken scaffolding to debug instead of a head start.
 - **Generate and configure the Xcode project**: `npx cap add ios`, then
   bundle ID, app icons at every required size, launch screen, signing
   settings pointed at your Developer account.
-- **Configure the Xcode project**: bundle ID, app icons at every required
-  size, launch screen, signing settings pointed at your Developer account.
 - **Draft the App Store Connect listing content**: description, keywords,
-  what's-new text, privacy nutrition label answers (Skymap collects
+  what's-new text, privacy nutrition label answers (SkyMap collects
   nothing — no accounts, no tracking, no analytics — so this should be
   straightforward).
 - **Prepare screenshots** at the required device sizes.
@@ -99,7 +97,7 @@ Apple's App Store Review Guideline 4.2 ("Minimum Functionality") has
 historically been strict about apps that are just a website in a wrapper
 with no added native value. A Capacitor-wrapped PWA can pass review, but
 reviewers do sometimes reject "thin wrapper" submissions and ask for more
-native integration. Skymap's offline-first design and on-device routing
+native integration. SkyMap's offline-first design and on-device routing
 (nothing round-trips to a server) work in our favor here — it's a
 legitimately different experience from "open Safari and bookmark it" —
 but it's worth knowing this isn't a guaranteed rubber-stamp, and a first

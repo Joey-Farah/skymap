@@ -453,14 +453,14 @@ test("poi grouping and building categories", async () => {
 test("reportIssueUrl builds a pre-filled mailto", () => {
   const url = reportIssueUrl({ name: "Vitality Roasting", id: "poi-123" });
   assert.ok(url.startsWith("mailto:"));
-  assert.match(url, /subject=Skymap%20issue%3A%20Vitality%20Roasting/);
+  assert.match(url, /subject=SkyMap%20issue%3A%20Vitality%20Roasting/);
   assert.match(url, /body=.*poi-123/);
 });
 
 test("feedbackUrl builds a general (not per-target) mailto", () => {
   const url = feedbackUrl();
   assert.ok(url.startsWith("mailto:"));
-  assert.match(url, /subject=Skymap%20feedback/);
+  assert.match(url, /subject=SkyMap%20feedback/);
   assert.doesNotMatch(url, /Ref%3A/, "feedback isn't tied to a building/POI id");
 });
 
