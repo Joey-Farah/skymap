@@ -5,19 +5,29 @@ import { isClosingSoon, isOpenAt } from "./hours.ts";
 import { polylineMeters, sliceAlong } from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 
-// Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look than Positron's grayscale.
-const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
+// Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look
+// than Positron's grayscale. Dark: OpenFreeMap's own dark counterpart — a
+// bright daytime style under a dark UI (app chrome follows
+// prefers-color-scheme everywhere else) reads as broken, not intentional.
+const LIGHT_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
+const DARK_STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 const DOWNTOWN_CENTER: [number, number] = [-93.2697, 44.976];
 
+function prefersDark(): boolean {
+  return typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
 /** Minimal style used when the basemap host is unreachable (offline etc.). */
-const FALLBACK_STYLE: maplibregl.StyleSpecification = {
-  version: 8,
-  glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
-  sources: {},
-  layers: [
-    { id: "background", type: "background", paint: { "background-color": "#f2f2ef" } },
-  ],
-};
+function fallbackStyle(dark: boolean): maplibregl.StyleSpecification {
+  return {
+    version: 8,
+    glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+    sources: {},
+    layers: [
+      { id: "background", type: "background", paint: { "background-color": dark ? "#14161a" : "#f2f2ef" } },
+    ],
+  };
+}
 
 // Wayfinding palette: the city recedes to warm grey, the network reads like
 // a transit diagram — ink-blue lines, signal-amber route.
@@ -43,16 +53,19 @@ const REACH_COLORS_EXPR: maplibregl.ExpressionSpecification = [
   REACH_BANDS[2].color,
 ];
 
-/** Use the remote basemap when reachable, else the local fallback. */
+/** Use the remote basemap when reachable, else the local fallback. Picks
+ * light/dark once at load time, matching the OS preference. */
 export async function resolveStyle(): Promise<string | maplibregl.StyleSpecification> {
+  const dark = prefersDark();
+  const url = dark ? DARK_STYLE_URL : LIGHT_STYLE_URL;
   try {
-    const res = await fetch(STYLE_URL, { signal: AbortSignal.timeout(5000) });
-    if (res.ok) return STYLE_URL;
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (res.ok) return url;
   } catch {
     // fall through
   }
   console.warn("Basemap unreachable; using offline fallback style.");
-  return FALLBACK_STYLE;
+  return fallbackStyle(dark);
 }
 
 type FC = GeoJSON.FeatureCollection;
