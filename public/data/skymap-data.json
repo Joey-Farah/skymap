@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-17T01:31:13.141Z"
+  "generated": "2026-07-17T17:09:12.555Z"
  },
  "buildings": [
   {
@@ -24168,7 +24168,8 @@
    "lon": -93.271684,
    "buildingId": "50-south-sixth-99714290",
    "level": "1",
-   "website": "https://www.bmoharris.com/"
+   "website": "https://www.bmoharris.com/",
+   "logo": "bmoharris-com"
   },
   {
    "id": "poi-13451749000",
@@ -27093,6 +27094,226 @@
    "lon": -93.27862,
    "buildingId": "ford-center-29060527",
    "exterior": true
+  },
+  {
+   "id": "landmark-martin-olav-sabo-post-office-23125944",
+   "name": "Martin Olav Sabo Post Office",
+   "category": "government",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.983324,
+   "lon": -93.263949,
+   "buildingId": "the-churchill-460860491"
+  },
+  {
+   "id": "landmark-lofton-hotel-27346710",
+   "name": "Lofton Hotel",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.978888,
+   "lon": -93.27515,
+   "buildingId": "mayo-clinic-square-27346712"
+  },
+  {
+   "id": "landmark-holiday-inn-express-minneapolis-downtown-convention-center-28490028",
+   "name": "Holiday Inn Express Minneapolis Downtown Convention Center",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.971134,
+   "lon": -93.271855,
+   "buildingId": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035"
+  },
+  {
+   "id": "landmark-central-lutheran-church-43346042",
+   "name": "Central Lutheran Church",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.96947,
+   "lon": -93.271046,
+   "buildingId": "minneapolis-convention-center-42837791"
+  },
+  {
+   "id": "landmark-doubletree-suites-by-hilton-hotel-minneapolis-45066437",
+   "name": "DoubleTree Suites by Hilton Hotel Minneapolis",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.973277,
+   "lon": -93.276773,
+   "buildingId": "target-plaza-45452119"
+  },
+  {
+   "id": "landmark-eagle-brook-church-45680466",
+   "name": "Eagle Brook Church",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.974965,
+   "lon": -93.277909,
+   "buildingId": "fair-school-for-arts-45680534"
+  },
+  {
+   "id": "landmark-hewing-hotel-45758924",
+   "name": "Hewing Hotel",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.984947,
+   "lon": -93.272517,
+   "buildingId": "lee-lofts-45758932"
+  },
+  {
+   "id": "landmark-federal-building-48816163",
+   "name": "Federal Building",
+   "category": "government",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.980709,
+   "lon": -93.264359,
+   "buildingId": "100-washington-square-44164776"
+  },
+  {
+   "id": "landmark-normandy-inn-suites-63619638",
+   "name": "Normandy Inn & Suites",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.972963,
+   "lon": -93.267341,
+   "buildingId": "centre-village-44164774"
+  },
+  {
+   "id": "landmark-hilton-garden-inn-minneapolis-downtown-63619639",
+   "name": "Hilton Garden Inn Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.970249,
+   "lon": -93.269924,
+   "buildingId": "leamington-municipal-ramp-28490447"
+  },
+  {
+   "id": "landmark-family-justice-center-81049078",
+   "name": "Family Justice Center",
+   "category": "government",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.979356,
+   "lon": -93.267707,
+   "buildingId": "330-south-second-45452108"
+  },
+  {
+   "id": "landmark-aloft-minneapolis-81049120",
+   "name": "Aloft Minneapolis",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.976609,
+   "lon": -93.255089,
+   "buildingId": "stadium-parking-ramp-40774167"
+  },
+  {
+   "id": "landmark-first-covenant-church-111400187",
+   "name": "First Covenant Church",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.972366,
+   "lon": -93.260538,
+   "buildingId": "moment-apartments-1222145087"
+  },
+  {
+   "id": "landmark-gethsemane-episcopal-church-122709388",
+   "name": "Gethsemane Episcopal Church",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.972199,
+   "lon": -93.268375,
+   "buildingId": "ameriprise-financial-headquarters-28490454"
+  },
+  {
+   "id": "landmark-hotel-indigo-minneapolis-downtown-156909962",
+   "name": "Hotel Indigo Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.976282,
+   "lon": -93.269591,
+   "buildingId": "groove-lofts-156909964"
+  },
+  {
+   "id": "landmark-the-chambers-hotel-156974227",
+   "name": "The Chambers Hotel",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.975988,
+   "lon": -93.277054,
+   "buildingId": "fair-school-for-arts-45680534"
+  },
+  {
+   "id": "landmark-fire-station-6-158466775",
+   "name": "Fire Station 6",
+   "category": "government",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.967509,
+   "lon": -93.275524,
+   "buildingId": "historic-wesley-center-92810581"
+  },
+  {
+   "id": "landmark-elliot-park-hotel-613598897",
+   "name": "Elliot Park Hotel",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.972064,
+   "lon": -93.266541,
+   "buildingId": "centre-village-44164774"
+  },
+  {
+   "id": "landmark-us-bank-stadium-743461508",
+   "name": "US Bank Stadium",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.9734,
+   "lon": -93.25722,
+   "buildingId": "stadium-parking-ramp-40774167"
+  },
+  {
+   "id": "landmark-element-minneapolis-downtown-900175940",
+   "name": "Element Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.983937,
+   "lon": -93.279362,
+   "buildingId": "t3-723284484"
+  },
+  {
+   "id": "landmark-ac-hotel-by-marriott-minneapolis-downtown-941828949",
+   "name": "AC Hotel by Marriott Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.980026,
+   "lon": -93.271311,
+   "buildingId": "midtown-parking-ramp-27346722"
+  },
+  {
+   "id": "landmark-target-field-r2203690",
+   "name": "Target Field",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.981908,
+   "lon": -93.277638,
+   "buildingId": "5th-street-ramp-b-30062750"
   }
  ]
 }

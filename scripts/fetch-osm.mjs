@@ -660,8 +660,66 @@ async function main(osm) {
       exterior: true,
     });
   }
+
+  // Nearby landmarks: named buildings dropped from the skyway network
+  // (never had a skyway-graph node within reach, or filtered out with a
+  // too-small component) but recognizable enough that "I can't navigate to
+  // X" is a real complaint rather than a data gap nobody cares about.
+  // Target Field is exactly this: an open-air stadium a block from the
+  // network with no enclosed bridge into it — the skyway reaches its own
+  // parking ramp, not the stadium bowl. Surfaced as a searchable landmark
+  // attached to the nearest network building, same pattern as transit
+  // stops above, instead of silently not existing with no explanation.
+  const LANDMARK_CATEGORIES = new Set(["venue", "government", "hotel"]);
+  const MAX_LANDMARK_METERS = 400;
+  // Geographically nearest isn't the same as usefully routable: prefer
+  // attaching to the main downtown component (components[0], the one
+  // everything else routes through) over a nearer building that's itself
+  // part of a small isolated side-cluster — otherwise the "fix" just
+  // relocates the dead end instead of removing it.
+  const largestComponent = components[0] ?? new Set();
+  const preferredHosts = finalBuildings.filter((fb) => largestComponent.has(fb.id));
+  const attachedLandmarkNames = new Set();
+  let landmarksAttached = 0;
+  for (const b of buildings) {
+    if (mainComponent.has(b.id)) continue; // already a real network building
+    if (!LANDMARK_CATEGORIES.has(b.category)) continue;
+    // The same real building can exist as two OSM records (e.g. a way and
+    // a relation both mapping it) — keep only the first one encountered.
+    if (attachedLandmarkNames.has(b.name)) continue;
+    let host = null;
+    let best = MAX_LANDMARK_METERS;
+    for (const fb of preferredHosts.length ? preferredHosts : finalBuildings) {
+      const d = haversine(b.lat, b.lon, fb.lat, fb.lon);
+      if (d < best) {
+        best = d;
+        host = fb;
+      }
+    }
+    if (!host) continue;
+    pois.push({
+      id: `landmark-${b.id}`,
+      name: b.name,
+      category: b.category,
+      kind: "landmark",
+      group: "landmark",
+      lat: b.lat,
+      lon: b.lon,
+      buildingId: host.id,
+      // Not exterior: unlike transit stops, this must stay searchable and
+      // selectable — picking it should route to its nearest network
+      // building, since that's the closest you can actually get via
+      // skyway. exterior:true is filtered out of the From/To combo
+      // entirely, which would silently defeat the whole point here.
+    });
+    attachedLandmarkNames.add(b.name);
+    landmarksAttached++;
+  }
+
   console.log(
-    `POIs: ${pois.filter((p) => !p.exterior).length} inside the network, ${pois.filter((p) => p.exterior).length} transit stops nearby.`,
+    `POIs: ${pois.filter((p) => !p.exterior).length} inside the network, ` +
+      `${pois.filter((p) => p.exterior && p.kind === "transit").length} transit stops, ` +
+      `${landmarksAttached} nearby landmarks.`,
   );
 
   const data = {
