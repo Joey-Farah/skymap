@@ -137,11 +137,7 @@ a:focus-visible {
 
 /* Once a trip is set, the full form gives way to a one-line strip —
    the map (and the route drawn on it) get the room back. */
-.search-panel.trip-active .field-row,
-.search-panel.trip-active .time-row,
-.search-panel.trip-active .scrubber,
-.search-panel.trip-active .access-toggle,
-.search-panel.trip-active .weather-line {
+.search-panel.trip-active .field-row {
   display: none;
 }
 
@@ -150,10 +146,6 @@ a:focus-visible {
    actually start searching, and that's most of what "feels native" comes
    down to. Tapping the bar (or either field directly) reveals everything. */
 .search-panel.idle .field-row,
-.search-panel.idle .time-row,
-.search-panel.idle .scrubber,
-.search-panel.idle .access-toggle,
-.search-panel.idle .weather-line,
 .search-panel.idle .brand,
 .search-panel.idle .trip-strip {
   display: none;
@@ -286,32 +278,6 @@ a:focus-visible {
   border-radius: 999px;
   background: var(--accent-soft);
   flex-shrink: 0;
-}
-
-.weather-line {
-  font-size: 12px;
-  color: var(--ink-600);
-  font-weight: 600;
-  margin-bottom: 9px;
-  padding: 7px 10px;
-  border-radius: var(--radius-sm);
-  background: rgba(20, 33, 61, 0.045);
-}
-
-@media (prefers-color-scheme: dark) {
-  .weather-line {
-    background: rgba(255, 255, 255, 0.06);
-  }
-}
-
-.weather-line.harsh {
-  background: var(--amber-soft);
-  color: var(--amber);
-  font-weight: 700;
-}
-
-.weather-line[hidden] {
-  display: none;
 }
 
 .field-row {
@@ -482,91 +448,6 @@ a:focus-visible {
 
 .icon-btn:active {
   transform: scale(0.92);
-}
-
-.time-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--ink-600);
-  font-weight: 600;
-  flex-wrap: wrap;
-}
-
-.time-toggle {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-}
-
-.access-toggle {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-600);
-  margin-top: 9px;
-  cursor: pointer;
-}
-
-.access-toggle input {
-  accent-color: var(--accent);
-}
-
-.scrub-label {
-  margin-left: auto;
-  font-weight: 700;
-  color: var(--amber);
-  font-variant-numeric: tabular-nums;
-}
-
-.scrubber {
-  display: grid;
-  gap: 9px;
-  margin-top: 11px;
-}
-
-.scrubber[hidden] {
-  display: none;
-}
-
-.day-chips {
-  display: flex;
-  gap: 4px;
-}
-
-.day-chip {
-  flex: 1;
-  border: 0;
-  background: rgba(20, 33, 61, 0.045);
-  color: var(--ink-600);
-  border-radius: var(--radius-sm);
-  padding: 6px 0;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.12s var(--ease), color 0.12s var(--ease);
-}
-
-@media (prefers-color-scheme: dark) {
-  .day-chip {
-    background: rgba(255, 255, 255, 0.07);
-  }
-}
-
-.day-chip.active {
-  background: var(--accent);
-  color: #fff;
-}
-
-#time-slider {
-  width: 100%;
-  accent-color: var(--amber);
-  margin: 0;
 }
 
 /* --- Near you ------------------------------------------------------------ */

@@ -4,12 +4,10 @@ import { SkywayRouter, nearestBuilding, routeStepIndex } from "./router.ts";
 import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
-import { formatMinute, nextOccurrence } from "./hours.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
-import { classifyWeather, fetchWeather } from "./weather.ts";
 import { GROUP_LABELS } from "./poi.ts";
 
 async function boot() {
@@ -41,9 +39,8 @@ async function boot() {
   // Idle: the default, untouched state — a single compact "Where to?" bar,
   // not the full form. Apple Maps shows almost nothing until you actually
   // start searching; this is the single highest-leverage change toward
-  // that feel. Tapping the bar reveals everything (weather, both fields,
-  // time/accessibility options); tapping away with nothing entered
-  // collapses back.
+  // that feel. Tapping the bar reveals both fields; tapping away with
+  // nothing entered collapses back.
   const idleBar = document.getElementById("search-idle-bar") as HTMLButtonElement;
   function showIdle() {
     searchPanel.classList.remove("trip-active");
@@ -83,79 +80,15 @@ async function boot() {
 
   const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings, data.pois);
   const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings, data.pois);
-  const timeRadios = document.querySelectorAll<HTMLInputElement>('input[name="timemode"]');
 
-  // --- Time scrubber: day chips + a slider through the day ---------------
-  const scrubber = document.getElementById("scrubber")!;
-  const scrubLabel = document.getElementById("scrub-label")!;
-  const slider = document.getElementById("time-slider") as HTMLInputElement;
-  const dayChips = document.getElementById("day-chips")!;
-  const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  let scrubDay = new Date().getDay();
-
-  for (const day of [1, 2, 3, 4, 5, 6, 0]) {
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.className = "day-chip";
-    chip.dataset.day = String(day);
-    chip.textContent = DAY_LABELS[day];
-    chip.addEventListener("click", () => {
-      setScrubDay(day);
-      refreshTimeStyling();
-      routeIfReady();
-    });
-    dayChips.appendChild(chip);
-  }
-
-  function setScrubDay(day: number) {
-    scrubDay = day;
-    dayChips.querySelectorAll<HTMLButtonElement>(".day-chip").forEach((c) => {
-      c.classList.toggle("active", Number(c.dataset.day) === day);
-    });
-  }
-
-  function setScrubTo(when: Date) {
-    setScrubDay(when.getDay());
-    slider.value = String(when.getHours() * 60 + Math.floor(when.getMinutes() / 15) * 15);
-  }
-
-  function selectedMode(): string {
-    return [...timeRadios].find((r) => r.checked)?.value ?? "now";
-  }
-
+  // Routing always uses the current moment — no traffic to plan around,
+  // and building-hours awareness (a closed building drops out of the
+  // graph) already applies live without a departure-time picker.
   function selectedTime(): Date {
-    if (selectedMode() === "custom") return nextOccurrence(scrubDay, Number(slider.value));
     return new Date();
   }
 
-  function updateScrubLabel() {
-    const custom = selectedMode() === "custom";
-    scrubLabel.textContent = custom
-      ? `${DAY_LABELS[scrubDay]} ${formatMinute(Number(slider.value))}`
-      : "";
-  }
-
-  function refreshTimeStyling() {
-    updateScrubLabel();
-    view.setTime(selectedTime());
-  }
-
-  for (const r of timeRadios) {
-    r.addEventListener("change", () => {
-      const custom = selectedMode() === "custom";
-      scrubber.hidden = !custom;
-      if (custom) setScrubTo(new Date());
-      refreshTimeStyling();
-      routeIfReady();
-    });
-  }
-  // Dragging restyles the network live; recompute the route on release.
-  slider.addEventListener("input", refreshTimeStyling);
-  slider.addEventListener("change", () => routeIfReady());
-
   let activeRoute: RouteResult | null = null;
-  const accessibleInput = document.getElementById("input-accessible") as HTMLInputElement;
-  accessibleInput.addEventListener("change", () => routeIfReady());
 
   function routeIfReady() {
     const fromId = comboFrom.value;
@@ -169,19 +102,13 @@ async function boot() {
     }
     const when = selectedTime();
     const route = router.route(fromId, toId, when, {
-      accessible: accessibleInput.checked,
       closedEdges: activeClosedEdges(localStorage),
     });
     if (!route) {
       activeRoute = null;
       expandSearch();
       view.setRoute(null);
-      sheet.showMessage(
-        "No route found",
-        accessibleInput.checked
-          ? "No stairs-free skyway route between these places."
-          : "No skyway connection between these places.",
-      );
+      sheet.showMessage("No route found", "No skyway connection between these places.");
       return;
     }
     activeRoute = route;
@@ -192,7 +119,7 @@ async function boot() {
     sheet.showRoute(
       route,
       when,
-      { from: fromLabel, to: toLabel, accessible: accessibleInput.checked },
+      { from: fromLabel, to: toLabel },
       data.pois ?? [],
       (a, b) => {
         reportClosedCrossing(localStorage, a, b);
@@ -201,11 +128,7 @@ async function boot() {
     );
     collapseSearch(fromLabel, toLabel);
     // Make the address bar shareable: the URL always describes this route.
-    history.replaceState(
-      null,
-      "",
-      encodeRouteState({ fromId, toId, when: selectedMode() === "custom" ? when : null }),
-    );
+    history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));
   }
 
   comboFrom.onSelect = () => routeIfReady();
@@ -433,7 +356,6 @@ async function boot() {
     const when = selectedTime();
     const maxBand = REACH_BANDS[REACH_BANDS.length - 1].maxMinutes;
     const reach = router.reachable(b.id, when, maxBand, {
-      accessible: accessibleInput.checked,
       closedEdges: activeClosedEdges(localStorage),
     });
     const entries = [...reach.entries()]
@@ -453,13 +375,10 @@ async function boot() {
     });
   }
 
-  // Restore a shared route from the URL (?from=&to=&at=).
+  // Restore a shared route from the URL (?from=&to=). Routing time is
+  // always "now", so a shared link's own departure time (if any, from an
+  // older link) isn't restored.
   const initial = parseRouteState(location.search);
-  if (initial.when) {
-    for (const r of timeRadios) r.checked = r.value === "custom";
-    scrubber.hidden = false;
-    setScrubTo(initial.when);
-  }
   const initialFrom = initial.fromId ? router.building(initial.fromId) : undefined;
   const initialTo = initial.toId ? router.building(initial.toId) : undefined;
   if (initialFrom) comboFrom.select(initialFrom);
@@ -468,25 +387,13 @@ async function boot() {
   // minimal idle bar instead of the full form.
   if (!initialFrom || !initialTo) showIdle();
 
-  // Keep "leave now" open/closed styling fresh.
-  setInterval(refreshTimeStyling, 60_000);
-  refreshTimeStyling();
+  // Keep "open until…" / "closing soon" styling fresh as the clock moves.
+  setInterval(() => view.setTime(selectedTime()), 60_000);
+  view.setTime(selectedTime());
 
   if ("serviceWorker" in navigator && !import.meta.env.DEV) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   }
-
-  // Weather-aware framing: since every Skymap route is already indoors,
-  // there's no outdoor alternative to switch to — just honest context on
-  // why the climate-controlled path is (or isn't) worth caring about today.
-  const weatherLine = document.getElementById("weather-line") as HTMLElement;
-  fetchWeather(44.976, -93.2697).then((reading) => {
-    if (!reading) return; // fails silently — never blocks the app
-    const { harsh, label } = classifyWeather(reading);
-    weatherLine.textContent = label;
-    weatherLine.classList.toggle("harsh", harsh);
-    weatherLine.hidden = false;
-  });
 
   // --- POI quick-filters: "what's around" at a glance ---------------------
   const filterBar = document.getElementById("poi-filter-bar")!;

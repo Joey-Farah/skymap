@@ -402,7 +402,7 @@ export class Sheet {
   showRoute(
     route: RouteResult,
     when: Date,
-    labels?: { from?: string; to?: string; accessible?: boolean },
+    labels?: { from?: string; to?: string },
     pois: Poi[] = [],
     onReportClosed?: (fromId: string, toId: string) => void,
   ) {
@@ -435,8 +435,6 @@ export class Sheet {
     // not just discovering it mid-walk in the collapsed step list.
     if (route.steps.some((s) => s.hasSteps)) {
       this.content.append(el("span", "Includes stairs", "badge stairs"));
-    } else if (labels?.accessible) {
-      this.content.append(el("span", "Step-free route", "badge open"));
     }
 
     const summary = document.createElement("div");

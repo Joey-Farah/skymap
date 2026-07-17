@@ -41,7 +41,6 @@
           <span class="search-idle-icon">⌕</span>
           Where to?
         </button>
-        <div class="weather-line" id="weather-line" hidden></div>
         <div class="field-row">
           <div class="combo" id="combo-from">
             <span class="dot dot-from"></span>
@@ -57,30 +56,6 @@
             <ul class="combo-list" hidden></ul>
           </div>
           <button class="icon-btn primary" id="btn-route" title="Find route" aria-label="Find route">➜</button>
-        </div>
-        <div class="time-row">
-          <label class="time-toggle">
-            <input type="radio" name="timemode" value="now" checked /> Leave now
-          </label>
-          <label class="time-toggle">
-            <input type="radio" name="timemode" value="custom" /> At…
-          </label>
-          <span class="scrub-label" id="scrub-label"></span>
-        </div>
-        <label class="access-toggle">
-          <input type="checkbox" id="input-accessible" />
-          Avoid stairs
-        </label>
-        <div class="scrubber" id="scrubber" hidden>
-          <div class="day-chips" id="day-chips"></div>
-          <input
-            type="range"
-            id="time-slider"
-            min="0"
-            max="1439"
-            step="15"
-            aria-label="Time of day"
-          />
         </div>
         <div class="trip-strip" id="trip-strip" hidden>
           <span class="dot dot-from"></span>
