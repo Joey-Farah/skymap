@@ -5,6 +5,7 @@ import { REACH_BANDS, SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
+import { getRecents, recordRecent } from "./recents.ts";
 import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
@@ -88,6 +89,22 @@ async function boot() {
     currentLocation: true,
   });
   const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings, data.pois);
+
+  // Recent destinations replace an unfiltered building dump on empty focus.
+  // Both fields share one list — a place you routed *to* is just as worth
+  // recalling when picking a *from* next time, and vice versa.
+  function refreshRecents() {
+    const recents = getRecents(localStorage);
+    comboFrom.setRecents(recents);
+    comboTo.setRecents(recents);
+  }
+  refreshRecents();
+  const onRecentWorthy = (b: Building) => {
+    recordRecent(localStorage, b);
+    refreshRecents();
+  };
+  comboFrom.onRecentWorthy = onRecentWorthy;
+  comboTo.onRecentWorthy = onRecentWorthy;
 
   // Routing always uses the current moment — no traffic to plan around,
   // and building-hours awareness (a closed building drops out of the

@@ -3,6 +3,7 @@ import { reportIssueUrl } from "./share.ts";
 import { CATEGORY_LABELS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
 import { haversineMeters, WALK_METERS_PER_MIN } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
+import type { RecentEntry } from "./recents.ts";
 
 /** Single-letter result-row monogram per icon group — kept legible without emoji. */
 const RESULT_ICON_LETTER: Record<string, string> = {
@@ -29,7 +30,12 @@ export class BuildingCombo {
   /** Only the "From" combo offers this — you don't route *to* where you are. */
   private showCurrentLocation: boolean;
   private currentLocationBuilding: Building | null = null;
+  private recents: RecentEntry[] = [];
   onSelect: ((b: Building) => void) | null = null;
+  /** Fires only for a deliberate, named choice — not the current-location
+   * shortcut — so callers can persist it as a recent without also
+   * recording "wherever I happened to be standing" as a place name. */
+  onRecentWorthy: ((b: Building) => void) | null = null;
 
   constructor(root: HTMLElement, buildings: Building[], pois: Poi[] = [], opts: { currentLocation?: boolean } = {}) {
     this.input = root.querySelector("input")!;
@@ -67,6 +73,13 @@ export class BuildingCombo {
     if (!this.list.hidden) this.render(this.input.value);
   }
 
+  /** Recent, deliberately-chosen destinations — shown in place of an
+   * unfiltered building dump when the field is focused empty. */
+  setRecents(recents: RecentEntry[]) {
+    this.recents = recents;
+    if (!this.list.hidden) this.render(this.input.value);
+  }
+
   get value(): string | null {
     return this.selectedId;
   }
@@ -82,6 +95,7 @@ export class BuildingCombo {
     this.input.value = b.name;
     this.hide();
     this.onSelect?.(b);
+    this.onRecentWorthy?.(b);
   }
 
   private selectEntry(entry: ComboEntry) {
@@ -91,6 +105,7 @@ export class BuildingCombo {
     this.input.value = entry.label;
     this.hide();
     this.onSelect?.(b);
+    this.onRecentWorthy?.(b);
   }
 
   private selectCurrentLocation() {
@@ -103,7 +118,17 @@ export class BuildingCombo {
   }
 
   private render(query: string) {
-    const items = searchEntries(this.entries, query).slice(0, 12);
+    // An unfiltered dump of every building is not a useful starting point —
+    // show recent, deliberately-chosen destinations instead, or nothing at
+    // all if there aren't any yet. Typing narrows to a real search either way.
+    const items = query.trim()
+      ? searchEntries(this.entries, query).slice(0, 12)
+      : this.recents
+          .map((r): ComboEntry | null => {
+            const b = this.buildingsById.get(r.id);
+            return b ? { label: b.name, sublabel: b.address, buildingId: b.id, icon: "building" } : null;
+          })
+          .filter((e): e is ComboEntry => e !== null);
     this.activeIndex = -1;
     this.list.innerHTML = "";
     // Pinned first row, Apple-Maps style — only when the field is empty
