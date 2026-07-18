@@ -323,19 +323,28 @@ export class Sheet {
     });
   }
 
-  /** Actual pixel heights for this sheet's current content: peek is the
-   * height with .sheet-collapsible content hidden (title/badges/summary
-   * only), expanded is the full height, capped at 60% of the viewport so
-   * the map stays partly visible. Measuring rather than guessing means a
-   * route with three warning badges and one with none both peek at
-   * exactly their own correct height, never clipped or oversized. */
+  /** Actual pixel heights for this sheet's current content: peek clips at
+   * the bottom edge of the last always-visible element (title, badges,
+   * summary, the progress prompt when live), expanded is the full height
+   * capped at 60% of the viewport so the map stays partly visible.
+   *
+   * Peek is read from rendered geometry (offsetTop + height of that last
+   * element) rather than the old hide-collapsibles-and-read-scrollHeight
+   * trick: scrollHeight could be captured while a since-hidden element
+   * (the progress prompt) was still visible, leaving the clip line a step
+   * too low — the top of the turn list poked out under the summary. */
   private measureHeights() {
-    const collapsibles = [...this.content.querySelectorAll<HTMLElement>(".sheet-collapsible")];
-    const prevDisplay = collapsibles.map((el) => el.style.display);
-    collapsibles.forEach((el) => (el.style.display = "none"));
-    this.peekHeight = this.root.scrollHeight;
-    collapsibles.forEach((el, i) => (el.style.display = prevDisplay[i]));
-    this.expandedHeight = Math.min(this.root.scrollHeight, window.innerHeight * 0.6);
+    const visible = [...this.content.children].filter(
+      (el): el is HTMLElement =>
+        el instanceof HTMLElement && !el.classList.contains("sheet-collapsible") && !el.hidden,
+    );
+    const last = visible[visible.length - 1];
+    const padBottom = parseFloat(getComputedStyle(this.root).paddingBottom) || 0;
+    this.peekHeight = last ? last.offsetTop + last.offsetHeight + padBottom : 120;
+    this.expandedHeight = Math.max(
+      this.peekHeight,
+      Math.min(this.root.scrollHeight, window.innerHeight * 0.6),
+    );
   }
 
   /** Peek shows just the summary; expanded shows full content. Always togglable via the handle. */
