@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyMap · Privacy Policy</title>
+    <style>
+      :root {
+        --ink: #14213d;
+        --muted: #58627a;
+        --ground: #eef1f6;
+        --card: #ffffff;
+        --accent: #2258e6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --ink: #f1f4fa;
+          --muted: #aab2c5;
+          --ground: #0d1220;
+          --card: #161b2c;
+          --accent: #6f97ff;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+        background: var(--ground);
+        color: var(--ink);
+        line-height: 1.6;
+      }
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 48px 20px 96px;
+      }
+      h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
+      .updated { color: var(--muted); font-size: 13px; margin-bottom: 32px; }
+      h2 { font-size: 17px; margin: 32px 0 8px; }
+      p, li { font-size: 15px; color: var(--ink); }
+      ul { padding-left: 22px; }
+      a { color: var(--accent); }
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin: 24px 0;
+        font-size: 15px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>SkyMap Privacy Policy</h1>
+      <div class="updated">Last updated: July 17, 2026</div>
+
+      <div class="card">
+        The short version: SkyMap has no accounts, no analytics, and no
+        tracking. Your location is used only on your device, only while you
+        use the app, and is never stored or sent anywhere.
+      </div>
+
+      <h2>Location</h2>
+      <p>
+        SkyMap asks for location permission ("while using the app") to show
+        where you are on the skyway map and follow your progress along a
+        route. Your coordinates are processed entirely in memory on your
+        device. They are never saved, never transmitted to us (we have no
+        server that could receive them), and never shared with anyone.
+        Declining location access disables only those features — everything
+        else works normally.
+      </p>
+
+      <h2>What the app stores on your device</h2>
+      <ul>
+        <li>Your five most recent destinations (building names), so search
+          can offer them again.</li>
+        <li>A parking ramp you explicitly chose to save, so you can route
+          back to it.</li>
+        <li>The app's own files and map data, cached for offline use.</li>
+      </ul>
+      <p>
+        All of this stays in your device's local storage. Deleting the app
+        (or clearing website data, for the web version) removes it
+        completely.
+      </p>
+
+      <h2>Network requests the app makes</h2>
+      <ul>
+        <li><strong>Map tiles</strong> from
+          <a href="https://openfreemap.org/">OpenFreeMap</a> — like any
+          online map, the tile server sees your IP address and which map
+          areas you view. OpenFreeMap states it does not log or track
+          users.</li>
+        <li><strong>Landmark photos</strong> hosted by Wikimedia Commons,
+          fetched only when you open a landmark's card.</li>
+        <li><strong>The app itself and its data</strong> from our static
+          hosting. Skyway data comes from OpenStreetMap and contains no
+          personal information.</li>
+      </ul>
+      <p>That is the complete list. There are no analytics services, ad
+        networks, or third-party trackers of any kind.</p>
+
+      <h2>Feedback</h2>
+      <p>
+        The Feedback and Report buttons open your own email app with a
+        pre-filled draft. Nothing is sent unless you choose to send it, and
+        it goes through your email provider, not through us.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If SkyMap ever adds a feature that changes any of the above, this
+        policy will be updated first and the "last updated" date bumped.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions: <a href="mailto:joeyefarah+skymap@gmail.com">joeyefarah+skymap@gmail.com</a>
+      </p>
+    </main>
+  </body>
+</html>
