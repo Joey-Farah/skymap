@@ -317,6 +317,7 @@ export class Sheet {
       const delta = this.dragStartY - e.clientY;
       const next = Math.min(this.expandedHeight, Math.max(this.peekHeight, this.dragStartHeight + delta));
       this.root.style.maxHeight = `${next}px`;
+      this.setClearance(next + 12); // floaters track the drag live, not just at rest
     });
     handle.addEventListener("pointerup", (e) => {
       const dy = e.clientY - this.dragStartY;
@@ -429,7 +430,11 @@ export class Sheet {
     // while peeked, a stray scroll would reveal the steps without the
     // handle ever being touched.
     this.root.style.overflowY = expanded ? "auto" : "hidden";
-    this.setClearance(this.peekHeight + 12);
+    // Bug this fixes: clearance always used peekHeight, even while
+    // expanded — so anything floating above the drawer (the toast, the
+    // locate button) thought the collapsed sheet was still the real
+    // height and landed mid-drawer once you dragged it open.
+    this.setClearance((expanded ? this.expandedHeight : this.peekHeight) + 12);
   }
 
   private clearRouteProgress() {
