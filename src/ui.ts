@@ -516,13 +516,7 @@ export class Sheet {
     this.show();
   }
 
-  showRoute(
-    route: RouteResult,
-    when: Date,
-    labels?: { from?: string; to?: string },
-    pois: Poi[] = [],
-    onReportClosed?: (fromId: string, toId: string) => void,
-  ) {
+  showRoute(route: RouteResult, when: Date, labels?: { from?: string; to?: string }, pois: Poi[] = []) {
     this.routePois = pois;
     this.content.innerHTML = "";
     const first = route.steps[0].building;
@@ -579,7 +573,7 @@ export class Sheet {
 
     const ol = document.createElement("ul");
     ol.className = "steps sheet-collapsible";
-    route.steps.forEach((step, i) => {
+    route.steps.forEach((step) => {
       const li = document.createElement("li");
       const closedHere = !isOpenLabelOk(step.building, when);
       const landmark = landmarkNear(pois, step.building.id);
@@ -599,18 +593,6 @@ export class Sheet {
           li.prepend(el("span", `${flags.join(" · ")}${suffix}`, `via ${step.openAir ? "open-air" : "steps"}`));
         } else if (!generic) {
           li.prepend(el("span", `Cross over ${step.viaCrossing}`, "via"));
-        }
-        if (onReportClosed && i > 0) {
-          const prevId = route.steps[i - 1].building.id;
-          const curId = step.building.id;
-          const report = el("button", "⚑", "report-crossing");
-          report.title = "Report this crossing locked or closed";
-          report.setAttribute("aria-label", "Report this crossing locked or closed");
-          report.addEventListener("click", (e) => {
-            e.stopPropagation();
-            onReportClosed(prevId, curId);
-          });
-          li.append(report);
         }
       }
       ol.appendChild(li);

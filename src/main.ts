@@ -7,7 +7,7 @@ import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
-import { activeClosedEdges, reportClosedCrossing } from "./incidents.ts";
+import { activeClosedEdges } from "./incidents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
 import { GROUP_LABELS } from "./poi.ts";
@@ -155,16 +155,7 @@ async function boot() {
     });
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
     const toLabel = comboTo.label ?? router.building(toId)!.name;
-    sheet.showRoute(
-      route,
-      when,
-      { from: fromLabel, to: toLabel },
-      data.pois ?? [],
-      (a, b) => {
-        reportClosedCrossing(localStorage, a, b);
-        routeIfReady(); // recalculate immediately, same as the spec's live-incident push
-      },
-    );
+    sheet.showRoute(route, when, { from: fromLabel, to: toLabel }, data.pois ?? []);
     collapseSearch(fromLabel, toLabel);
     // Make the address bar shareable: the URL always describes this route.
     history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));

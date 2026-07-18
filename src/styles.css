@@ -908,28 +908,6 @@ a:focus-visible {
   font-weight: 700;
 }
 
-/* Deliberately quiet: a flag you find when you need it, not a red link
-   shouting on every step of every route. */
-.report-crossing {
-  position: absolute;
-  right: 2px;
-  top: 8px;
-  border: 0;
-  background: transparent;
-  color: var(--ink-400);
-  opacity: 0.55;
-  font-size: 13px;
-  cursor: pointer;
-  padding: 2px 4px;
-  font-family: inherit;
-}
-
-.report-crossing:hover,
-.report-crossing:focus-visible {
-  color: var(--red);
-  opacity: 1;
-}
-
 .steps .via.steps {
   color: var(--amber);
   font-weight: 700;
@@ -1090,9 +1068,15 @@ a:focus-visible {
 
 .poi-filter {
   position: absolute;
-  left: 10px;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 22px);
-  z-index: 8;
+  /* Top-right, clear of both the search panel above (tallest persistent
+     state is the trip strip, ~110px) and the directions sheet that rises
+     from the bottom — the old bottom-left spot sat exactly where the
+     sheet's peek state lands. */
+  right: 10px;
+  top: calc(env(safe-area-inset-top, 0px) + 124px);
+  /* Above the bottom sheet (z 10): an open dropdown should never be cut
+     off by a panel rising from the other edge of the screen. */
+  z-index: 11;
   opacity: 1;
   transform: none;
   transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
@@ -1148,13 +1132,13 @@ a:focus-visible {
   font-weight: 800;
 }
 
-/* Opens upward from the button, a plain vertical list — every category
+/* Opens downward from the button, a plain vertical list — every category
    readable at a glance, nothing scrolled off-screen the way the old
    horizontal chip row could be. */
 .poi-filter-menu {
   position: absolute;
-  left: 0;
-  bottom: calc(100% + 8px);
+  right: 0;
+  top: calc(100% + 8px);
   min-width: 190px;
   margin: 0;
   padding: 6px;
