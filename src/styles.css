@@ -1259,11 +1259,9 @@ a:focus-visible {
   display: none;
 }
 
-#app.mode-nav .sheet-handle {
-  display: none;
-}
-
-/* In nav mode the drawer is a slim bar — flatten its top padding a bit. */
+/* In nav mode the drawer is a slim bar at rest — flatten its top padding
+   a bit; the handle stays live so dragging up still reveals the full
+   turn-by-turn list, same gesture as the preview screen. */
 .sheet.nav-mode {
   padding-top: 16px;
 }

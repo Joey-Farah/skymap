@@ -278,6 +278,7 @@ export class Sheet {
   private routePois: Poi[] = [];
   private navBarArrival: HTMLElement | null = null;
   private navBarRemaining: HTMLElement | null = null;
+  private navStepsListEl: HTMLUListElement | null = null;
   /** Measured, not guessed — see measureHeights(). Peek is however tall the
    * always-visible summary actually is; expanded is the full content,
    * capped so the map behind it always stays partly visible. */
@@ -311,7 +312,7 @@ export class Sheet {
     });
     handle.addEventListener("pointermove", (e) => {
       if (!this.dragging) return;
-      if (this.mode !== "card" && this.mode !== "preview") return;
+      if (this.mode !== "card" && this.mode !== "preview" && this.mode !== "nav") return;
       // 1:1 with the finger, Apple Maps style.
       const delta = this.dragStartY - e.clientY;
       const next = Math.min(this.expandedHeight, Math.max(this.peekHeight, this.dragStartHeight + delta));
@@ -330,7 +331,6 @@ export class Sheet {
         if (dy > 60) this.onDismissSearch?.(); // dragged down: dismiss
         return;
       }
-      if (this.mode === "nav") return;
       if (!moved) {
         this.setExpanded(!this.expanded); // a plain tap still toggles
         return;
@@ -371,12 +371,10 @@ export class Sheet {
       this.root.style.maxHeight = `${Math.round(window.innerHeight * 0.82)}px`;
       this.root.style.overflowY = "auto";
       this.setClearance(0); // locate is hidden in this mode anyway
-    } else if (m === "nav") {
-      this.measureHeights();
-      this.root.style.maxHeight = `${this.peekHeight}px`;
-      this.root.style.overflowY = "hidden";
-      this.setClearance(this.peekHeight + 12);
     } else {
+      // card, preview, and nav all size the same way: peek clips at the
+      // last always-visible element, expanded (drag-up) reveals the full
+      // turn-by-turn list underneath.
       this.measureHeights();
       this.setExpanded(this.expanded);
     }
@@ -435,12 +433,13 @@ export class Sheet {
     this.routePois = [];
     this.navBarArrival = null;
     this.navBarRemaining = null;
+    this.navStepsListEl = null;
   }
 
   private show(mode: DrawerMode, expanded: boolean) {
     this.mode = mode;
     this.applyMode();
-    if (mode === "card" || mode === "preview") this.setExpanded(expanded);
+    if (mode === "card" || mode === "preview" || mode === "nav") this.setExpanded(expanded);
     // Retrigger the content fade-in even when the sheet was already open
     // (e.g. tapping a different building) — a hard content swap otherwise
     // reads as a glitch rather than a transition.
@@ -688,8 +687,9 @@ export class Sheet {
   }
 
   /** Screen 5: the slim bar under the instruction banner — arrival, time
-   * and distance remaining, End. */
-  showNavigating(route: RouteResult, pois: Poi[], actions: { onEnd: () => void }) {
+   * and distance remaining, End — with the full turn-by-turn list one
+   * drag-up away, same as the preview screen. */
+  showNavigating(route: RouteResult, when: Date, pois: Poi[], actions: { onEnd: () => void }) {
     this.routePois = pois;
     this.activeRoute = route;
     this.content.innerHTML = "";
@@ -701,6 +701,8 @@ export class Sheet {
     end.addEventListener("click", actions.onEnd);
     bar.append(this.navBarArrival, this.navBarRemaining, end);
     this.content.append(bar);
+    this.navStepsListEl = this.buildStepsList(route, when, pois);
+    this.content.append(this.navStepsListEl);
     this.show("nav", false);
   }
 
@@ -712,6 +714,9 @@ export class Sheet {
   updateNav(stepIndex: number, now: Date): { title: string; sub: HTMLElement | null } | null {
     if (!this.activeRoute || this.mode !== "nav") return null;
     const route = this.activeRoute;
+    this.navStepsListEl?.querySelectorAll("li").forEach((li, i) => {
+      li.classList.toggle("current", i === stepIndex);
+    });
     const lastIdx = route.steps.length - 1;
     const frac = lastIdx > 0 ? Math.min(1, stepIndex / lastIdx) : 1;
     const remainingMin = Math.round(route.totalMinutes * (1 - frac));

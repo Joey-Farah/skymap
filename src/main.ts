@@ -209,7 +209,7 @@ async function boot() {
     if (!activeRoute) return;
     setMode("nav");
     manualPositionUntil = 0;
-    sheet.showNavigating(activeRoute, data.pois ?? [], { onEnd: () => enterIdle() });
+    sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
   }
 
