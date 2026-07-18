@@ -415,7 +415,20 @@ export class Sheet {
     );
     const last = visible[visible.length - 1];
     const padBottom = parseFloat(getComputedStyle(this.root).paddingBottom) || 0;
-    this.peekHeight = last ? last.offsetTop + last.offsetHeight + padBottom : 120;
+    if (last) {
+      const lastBottom = last.offsetTop + last.offsetHeight;
+      // Trailing space defaults to the sheet's own bottom padding, but a
+      // collapsible element (the hidden detail content) often follows
+      // right after with a smaller gap — using the full padding then
+      // clips a few pixels INTO it instead of stopping cleanly at its
+      // edge, which is exactly what showed as "Hours: …" peeking out
+      // under the Directions button.
+      const next = last.nextElementSibling as HTMLElement | null;
+      const gapToNext = next ? next.offsetTop - lastBottom : padBottom;
+      this.peekHeight = lastBottom + Math.min(padBottom, Math.max(0, gapToNext));
+    } else {
+      this.peekHeight = 120;
+    }
     this.expandedHeight = Math.max(
       this.peekHeight,
       Math.min(this.root.scrollHeight, window.innerHeight * 0.6),

@@ -1264,9 +1264,11 @@ a:focus-visible {
   display: none;
 }
 
-/* In nav mode the drawer is a slim bar at rest — flatten its top padding
-   a bit; the handle stays live so dragging up still reveals the full
-   turn-by-turn list, same gesture as the preview screen. */
+/* In nav mode the drawer is a slim bar at rest — the handle stays live
+   (dragging up still reveals the turn-by-turn list) but it's an
+   absolutely-positioned 40px band, which paints above the sheet's static
+   content regardless of DOM order. padding-top has to clear that band or
+   the End button sits underneath it and stops being clickable. */
 .sheet.nav-mode {
-  padding-top: 16px;
+  padding-top: 42px;
 }
