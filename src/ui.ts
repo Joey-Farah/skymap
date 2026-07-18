@@ -423,10 +423,16 @@ export class Sheet {
       // right after with a smaller gap — using the full padding then
       // clips a few pixels INTO it instead of stopping cleanly at its
       // edge, which is exactly what showed as "Hours: …" peeking out
-      // under the Directions button.
+      // under the Directions button. A flush 0px gap (e.g. the route
+      // steps list, which starts its own box right where the GO button
+      // ends) still needs a few px of floor, though — with none at all,
+      // the sheet's own rounded bottom corner has nowhere to round into
+      // and reads as a hard-cropped edge. 6px is comfortably inside a
+      // list item's own top padding (8px), so it never actually shows
+      // real content, just gives the corner room to breathe.
       const next = last.nextElementSibling as HTMLElement | null;
       const gapToNext = next ? next.offsetTop - lastBottom : padBottom;
-      this.peekHeight = lastBottom + Math.min(padBottom, Math.max(0, gapToNext));
+      this.peekHeight = lastBottom + Math.min(padBottom, Math.max(6, gapToNext));
     } else {
       this.peekHeight = 120;
     }
