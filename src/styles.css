@@ -234,34 +234,6 @@ a:focus-visible {
   letter-spacing: -0.01em;
 }
 
-/* Accessible routing toggle: lives with the From/To editor (same states),
-   compact enough not to crowd it. */
-.avoid-stairs-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 9px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-600);
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.avoid-stairs-row input {
-  width: 17px;
-  height: 17px;
-  accent-color: var(--accent);
-  margin: 0;
-}
-
-.search-panel.idle .avoid-stairs-row,
-.search-panel.picking .avoid-stairs-row,
-.search-panel.trip-active .avoid-stairs-row {
-  display: none;
-}
-
 /* You stare at this strip for the whole walk: the destination is what you
    need to read, so it wins the space fight. Origin (usually "Current
    Location · X") shrinks first and hardest. */
