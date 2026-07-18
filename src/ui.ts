@@ -259,28 +259,47 @@ export class BuildingCombo {
 }
 
 /** Bottom sheet renderer. */
+export type DrawerMode = "idle" | "search" | "card" | "preview" | "nav";
+
+/**
+ * The drawer: one bottom sheet that is, in turn, the search field (idle),
+ * the search screen, a place card, the route preview, and the slim
+ * navigation bar — Apple Maps' architecture. Mode determines which static
+ * section shows, how tall the sheet sits, and what dragging means.
+ */
 export class Sheet {
   private root: HTMLElement;
   private content: HTMLElement;
-  private stepsListEl: HTMLUListElement | null = null;
-  private progressPromptEl: HTMLElement | null = null;
+  private idleBar: HTMLElement;
+  private searchSection: HTMLElement;
+  private closeBtn: HTMLButtonElement;
+  private mode: DrawerMode = "idle";
   private activeRoute: RouteResult | null = null;
   private routePois: Poi[] = [];
+  private navBarArrival: HTMLElement | null = null;
+  private navBarRemaining: HTMLElement | null = null;
   /** Measured, not guessed — see measureHeights(). Peek is however tall the
-   * always-visible summary actually is (title, badges, the walk/arrival
-   * line); expanded is the full content, capped so the map behind it
-   * always stays partly visible. */
+   * always-visible summary actually is; expanded is the full content,
+   * capped so the map behind it always stays partly visible. */
   private peekHeight = 0;
   private expandedHeight = 0;
   private expanded = false;
   private dragStartY = 0;
   private dragStartHeight = 0;
   private dragging = false;
+  /** Search-mode drag-down (or Cancel) → back to idle; card ✕ → back to
+   * search. Owned by main.ts, which runs the mode state machine. */
+  onDismissSearch: (() => void) | null = null;
+  onRequestSearch: (() => void) | null = null;
+  onClose: (() => void) | null = null;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.content = root.querySelector("#sheet-content")!;
-    root.querySelector("#sheet-close")!.addEventListener("click", () => this.hide());
+    this.idleBar = root.querySelector("#search-idle-bar")!;
+    this.searchSection = root.querySelector("#d-search")!;
+    this.closeBtn = root.querySelector("#sheet-close")!;
+    this.closeBtn.addEventListener("click", () => this.onClose?.());
 
     const handle = root.querySelector<HTMLElement>("#sheet-handle")!;
     handle.addEventListener("pointerdown", (e) => {
@@ -292,16 +311,26 @@ export class Sheet {
     });
     handle.addEventListener("pointermove", (e) => {
       if (!this.dragging) return;
-      // 1:1 with the finger, Apple Maps style — not a threshold that jumps
-      // to a fixed state once you've dragged "enough."
+      if (this.mode !== "card" && this.mode !== "preview") return;
+      // 1:1 with the finger, Apple Maps style.
       const delta = this.dragStartY - e.clientY;
       const next = Math.min(this.expandedHeight, Math.max(this.peekHeight, this.dragStartHeight + delta));
       this.root.style.maxHeight = `${next}px`;
     });
     handle.addEventListener("pointerup", (e) => {
-      const moved = Math.abs(this.dragStartY - e.clientY) > 8;
+      const dy = e.clientY - this.dragStartY;
+      const moved = Math.abs(dy) > 8;
       this.dragging = false;
       this.root.classList.remove("dragging");
+      if (this.mode === "idle") {
+        this.onRequestSearch?.(); // tap or fling up on the pill both open search
+        return;
+      }
+      if (this.mode === "search") {
+        if (dy > 60) this.onDismissSearch?.(); // dragged down: dismiss
+        return;
+      }
+      if (this.mode === "nav") return;
       if (!moved) {
         this.setExpanded(!this.expanded); // a plain tap still toggles
         return;
@@ -314,25 +343,68 @@ export class Sheet {
     });
 
     // Rotation / split-view resize invalidates the measured heights (the
-    // expanded cap is 60% of the viewport) — re-measure or the sheet keeps
+    // expanded cap is a viewport fraction) — re-measure or the sheet keeps
     // portrait-sized bounds in landscape until reopened.
-    window.addEventListener("resize", () => {
-      if (this.root.hidden) return;
+    window.addEventListener("resize", () => this.applyMode());
+  }
+
+  get currentMode(): DrawerMode {
+    return this.mode;
+  }
+
+  /** Section visibility + sizing for the current mode. */
+  private applyMode() {
+    const m = this.mode;
+    this.idleBar.hidden = m !== "idle";
+    this.searchSection.hidden = m !== "search";
+    this.content.style.display = m === "card" || m === "preview" || m === "nav" ? "" : "none";
+    this.closeBtn.hidden = m !== "card";
+    this.root.classList.toggle("nav-mode", m === "nav");
+    if (m === "idle") {
+      const pad = parseFloat(getComputedStyle(this.root).paddingBottom) || 0;
+      const h = this.idleBar.offsetTop + this.idleBar.offsetHeight + pad;
+      this.root.style.maxHeight = `${h}px`;
+      this.root.style.overflowY = "hidden";
+      this.setClearance(h + 12);
+    } else if (m === "search") {
+      // Tall fixed sheet, Apple's search detent; the list inside scrolls.
+      this.root.style.maxHeight = `${Math.round(window.innerHeight * 0.82)}px`;
+      this.root.style.overflowY = "auto";
+      this.setClearance(0); // locate is hidden in this mode anyway
+    } else if (m === "nav") {
+      this.measureHeights();
+      this.root.style.maxHeight = `${this.peekHeight}px`;
+      this.root.style.overflowY = "hidden";
+      this.setClearance(this.peekHeight + 12);
+    } else {
       this.measureHeights();
       this.setExpanded(this.expanded);
-    });
+    }
+  }
+
+  private setClearance(px: number) {
+    document.documentElement.style.setProperty("--sheet-clearance", `${px}px`);
+  }
+
+  showIdle() {
+    this.mode = "idle";
+    this.clearRouteProgress();
+    this.content.innerHTML = "";
+    this.applyMode();
+  }
+
+  showSearch() {
+    this.mode = "search";
+    this.clearRouteProgress();
+    this.content.innerHTML = "";
+    this.applyMode();
   }
 
   /** Actual pixel heights for this sheet's current content: peek clips at
-   * the bottom edge of the last always-visible element (title, badges,
-   * summary, the progress prompt when live), expanded is the full height
-   * capped at 60% of the viewport so the map stays partly visible.
-   *
-   * Peek is read from rendered geometry (offsetTop + height of that last
-   * element) rather than the old hide-collapsibles-and-read-scrollHeight
-   * trick: scrollHeight could be captured while a since-hidden element
-   * (the progress prompt) was still visible, leaving the clip line a step
-   * too low — the top of the turn list poked out under the summary. */
+   * the bottom edge of the last always-visible element, expanded is the
+   * full height capped at 60% of the viewport so the map stays partly
+   * visible. Read from rendered geometry so the clip boundary can't drift
+   * from what's actually on screen. */
   private measureHeights() {
     const visible = [...this.content.children].filter(
       (el): el is HTMLElement =>
@@ -351,78 +423,24 @@ export class Sheet {
   private setExpanded(expanded: boolean) {
     this.expanded = expanded;
     this.root.style.maxHeight = `${expanded ? this.expandedHeight : this.peekHeight}px`;
-    // Peeked content isn't display:none anymore (it needs to be in normal
-    // flow to reveal progressively as you drag), which means it's also
-    // technically scrollable — a stray scroll gesture could reveal the
-    // steps without ever touching the handle. Only the fully-expanded
-    // state should actually scroll, for the case content still exceeds
-    // the 60vh cap.
+    // Only the fully-expanded state scrolls, for content past the cap —
+    // while peeked, a stray scroll would reveal the steps without the
+    // handle ever being touched.
     this.root.style.overflowY = expanded ? "auto" : "hidden";
-    this.syncClearance();
-  }
-
-  /** Publishes the sheet's peek height as --sheet-clearance so the locate
-   * button (bottom-right map control) rides above the sheet instead of
-   * being buried under it exactly when it matters most — mid-route.
-   * Pinned to peek height on purpose: fully expanded, the sheet is a
-   * reading surface and may cover the button. */
-  private syncClearance() {
-    document.documentElement.style.setProperty(
-      "--sheet-clearance",
-      this.root.hidden ? "0px" : `${this.peekHeight + 12}px`,
-    );
-  }
-
-  hide() {
-    this.root.hidden = true;
-    this.clearRouteProgress();
-    this.syncClearance();
+    this.setClearance(this.peekHeight + 12);
   }
 
   private clearRouteProgress() {
-    this.stepsListEl = null;
-    this.progressPromptEl = null;
     this.activeRoute = null;
     this.routePois = [];
+    this.navBarArrival = null;
+    this.navBarRemaining = null;
   }
 
-  /**
-   * Called on every live position update while a route is showing: moves
-   * the "current step" highlight and swaps the prompt to the next crossing.
-   * No-op once the sheet has moved on to something else.
-   */
-  updateRouteProgress(stepIndex: number) {
-    if (!this.stepsListEl || !this.progressPromptEl || !this.activeRoute) return;
-    this.stepsListEl.querySelectorAll("li").forEach((li, i) => {
-      li.classList.toggle("current", i === stepIndex);
-    });
-    const next = this.activeRoute.steps[stepIndex + 1];
-    if (!next) {
-      this.progressPromptEl.textContent = "You've arrived";
-    } else {
-      const crossing = next.viaCrossing ?? "";
-      const generic = /^(minneapolis )?skyway$/i.test(crossing.trim());
-      const verb = next.hasSteps
-        ? "Take the stairs into"
-        : generic || !crossing
-          ? "Head into"
-          : `Cross over ${crossing} into`;
-      const landmark = landmarkNear(this.routePois, next.building.id);
-      this.progressPromptEl.replaceChildren(`${verb} ${next.building.name}`);
-      if (landmark) this.progressPromptEl.append(", ", landmarkCue(landmark));
-    }
-    // The prompt starts hidden (nothing to say before a live fix arrives),
-    // so peekHeight was measured without it — revealing it here would
-    // otherwise clip against a now-stale height.
-    this.progressPromptEl.hidden = false;
-    this.measureHeights();
-    this.setExpanded(this.expanded);
-  }
-
-  private show(expanded = true) {
-    this.root.hidden = false;
-    this.measureHeights();
-    this.setExpanded(expanded);
+  private show(mode: DrawerMode, expanded: boolean) {
+    this.mode = mode;
+    this.applyMode();
+    if (mode === "card" || mode === "preview") this.setExpanded(expanded);
     // Retrigger the content fade-in even when the sheet was already open
     // (e.g. tapping a different building) — a hard content swap otherwise
     // reads as a glitch rather than a transition.
@@ -431,7 +449,12 @@ export class Sheet {
     this.content.classList.add("content-enter");
   }
 
-  showBuilding(b: Building, when: Date, actions: { onDirections: () => void }, pois: Poi[] = []) {
+  showBuilding(
+    b: Building,
+    when: Date,
+    actions: { onDirections: () => void; directionsLabel?: string },
+    pois: Poi[] = [],
+  ) {
     const status = statusAt(b, when);
     this.content.innerHTML = "";
     this.clearRouteProgress();
@@ -443,25 +466,26 @@ export class Sheet {
     const address = b.address === "Minneapolis" ? "" : b.address;
     const metaText = [kind, address].filter(Boolean).join(" · ");
     const meta = el("div", metaText, "meta");
-    const badge = el("span", status.open ? status.label : status.label, `badge ${status.open ? "open" : "closed"}`);
+    const badge = el("span", status.label, `badge ${status.open ? "open" : "closed"}`);
+
+    // Peek = name, status, and the Directions pill (with the walk time on
+    // it when known) — Apple's card peek. Everything else under drag-up.
+    const actionsRow = document.createElement("div");
+    actionsRow.className = "actions";
+    const directionsBtn = el("button", actions.directionsLabel ?? "Directions", "primary");
+    directionsBtn.addEventListener("click", actions.onDirections);
+    actionsRow.append(directionsBtn);
+
+    const more = document.createElement("div");
+    more.className = "sheet-collapsible";
     const hours = el("div", `Hours: ${formatWeeklyHours(b.hours)}`, "hours-line");
     // Real per-building hours come from OSM tags when present; the generic
     // schedule is a guess, and guesses should say so rather than pass as fact.
     if (b.hoursNote.startsWith("Default")) {
       hours.append(el("span", " (typical, unverified)", "hours-unverified"));
     }
-
-    const actionsRow = document.createElement("div");
-    actionsRow.className = "actions";
-    const directionsBtn = el("button", "Directions", "primary");
-    directionsBtn.addEventListener("click", actions.onDirections);
-    actionsRow.append(directionsBtn);
-
-    // Everything past the essentials collapses away in peek mode.
-    const more = document.createElement("div");
-    more.className = "sheet-collapsible";
+    more.append(hours);
     if (b.image) more.append(this.landmarkPhoto(b.image));
-    more.append(actionsRow);
 
     const interior = pois.filter((p) => !p.exterior);
     const transit = pois.filter((p) => p.exterior);
@@ -489,8 +513,8 @@ export class Sheet {
       more.append(list);
     }
     more.append(this.reportLink({ name: b.name, id: b.id }, formatWeeklyHours(b.hours)));
-    this.content.append(h2, meta, badge, hours, more);
-    this.show();
+    this.content.append(h2, meta, badge, actionsRow, more);
+    this.show("card", false);
   }
 
   private reportLink(target: { name: string; id: string }, hours?: string): HTMLElement {
@@ -540,17 +564,28 @@ export class Sheet {
   }
 
   /** Card for a single business tapped on the map. */
-  showPoi(p: Poi, host: Building | undefined, onDirections: () => void) {
+  showPoi(
+    p: Poi,
+    host: Building | undefined,
+    actions: { onDirections: () => void; directionsLabel?: string },
+  ) {
     this.content.innerHTML = "";
     this.clearRouteProgress();
     this.content.append(el("h2", p.name));
     const where = host ? `${humanCategory(p.category)} · ${host.name}` : humanCategory(p.category);
     this.content.append(el("div", where, "meta"));
     if (p.level === "1") this.content.append(el("span", "Skyway level", "badge open"));
-    if (p.openingHours) this.content.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
 
     const actionsRow = document.createElement("div");
     actionsRow.className = "actions";
+    const directionsBtn = el("button", actions.directionsLabel ?? "Directions", "primary");
+    directionsBtn.addEventListener("click", actions.onDirections);
+    actionsRow.append(directionsBtn);
+    this.content.append(actionsRow);
+
+    const more = document.createElement("div");
+    more.className = "sheet-collapsible";
+    if (p.openingHours) more.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
     if (p.website) {
       const website = document.createElement("a");
       website.href = p.website;
@@ -558,36 +593,28 @@ export class Sheet {
       website.rel = "noopener";
       website.className = "website-btn";
       website.textContent = "Website / menu ↗";
-      actionsRow.append(website);
+      more.append(website);
     }
-    const directionsBtn = el("button", "Directions", "primary");
-    directionsBtn.addEventListener("click", onDirections);
-    actionsRow.append(directionsBtn);
-    this.content.append(actionsRow, this.reportLink({ name: p.name, id: p.id }));
-    this.show();
+    more.append(this.reportLink({ name: p.name, id: p.id }));
+    this.content.append(more);
+    this.show("card", false);
   }
 
-  showRoute(
+  /** Screen 4: route preview — summary, warnings, Share, the green GO.
+   * No live tracking here; that's what GO is for. */
+  showRoutePreview(
     route: RouteResult,
     when: Date,
-    labels?: { from?: string; to?: string },
-    pois: Poi[] = [],
-    onShare?: () => void,
+    pois: Poi[],
+    actions: { onGo: () => void; onShare: () => void },
   ) {
     this.routePois = pois;
     this.content.innerHTML = "";
-    const first = route.steps[0].building;
-    const last = route.steps[route.steps.length - 1].building;
-
-    this.content.append(el("h2", `${labels?.from ?? first.name} → ${labels?.to ?? last.name}`));
+    this.clearRouteProgress();
 
     if (route.ignoredClosures) {
       this.content.append(
-        el(
-          "span",
-          "⚠ No fully open route at this time — showing the path ignoring closures",
-          "badge warn",
-        ),
+        el("span", "⚠ No fully open route at this time — showing the path ignoring closures", "badge warn"),
       );
     } else {
       const warnings = closingSoonWarnings(route, when);
@@ -598,11 +625,6 @@ export class Sheet {
         this.content.append(el("span", `⚠ ${warnings.length - 2} more buildings closing soon`, "badge warn"));
       }
     }
-
-    // Visible even in peek — worth knowing before you commit to a route,
-    // not just discovering it mid-walk in the collapsed step list. Open-air
-    // sorts first: staying enclosed is the app's actual promise, more
-    // central than stairs.
     if (route.steps.some((s) => s.openAir)) {
       this.content.append(el("span", "⚠ May briefly go outside", "badge warn"));
     }
@@ -620,20 +642,22 @@ export class Sheet {
       el("span", formatDistance(route.totalMeters), "sub"),
       el("span", `${route.steps.length} buildings`, "sub"),
     );
-    if (onShare) {
-      const share = el("button", "Share", "share-btn");
-      share.setAttribute("aria-label", "Share this route");
-      share.addEventListener("click", onShare);
-      summary.append(share);
-    }
+    const share = el("button", "Share", "share-btn");
+    share.setAttribute("aria-label", "Share this route");
+    share.addEventListener("click", actions.onShare);
+    summary.append(share);
     this.content.append(summary);
 
-    // Filled in by updateRouteProgress() once live position updates arrive;
-    // stays empty/hidden for a route you're just previewing.
-    const prompt = el("div", "", "progress-prompt");
-    prompt.hidden = true;
-    this.content.append(prompt);
+    const go = el("button", "GO", "go-btn");
+    go.addEventListener("click", actions.onGo);
+    this.content.append(go);
 
+    this.content.append(this.buildStepsList(route, when, pois));
+    this.activeRoute = route;
+    this.show("preview", false);
+  }
+
+  private buildStepsList(route: RouteResult, when: Date, pois: Poi[]): HTMLUListElement {
     const ol = document.createElement("ul");
     ol.className = "steps sheet-collapsible";
     route.steps.forEach((step) => {
@@ -660,20 +684,63 @@ export class Sheet {
       }
       ol.appendChild(li);
     });
-    this.content.append(ol);
-    this.stepsListEl = ol;
-    this.progressPromptEl = prompt;
+    return ol;
+  }
+
+  /** Screen 5: the slim bar under the instruction banner — arrival, time
+   * and distance remaining, End. */
+  showNavigating(route: RouteResult, pois: Poi[], actions: { onEnd: () => void }) {
+    this.routePois = pois;
     this.activeRoute = route;
-    // Peek: the summary line is the win, the full turn list can crowd out
-    // the map it's describing — drag the handle up (or tap it) for that.
-    this.show(false);
+    this.content.innerHTML = "";
+    const bar = document.createElement("div");
+    bar.className = "nav-bar";
+    this.navBarArrival = el("strong", "—");
+    this.navBarRemaining = el("span", "", "sub");
+    const end = el("button", "End", "end-btn");
+    end.addEventListener("click", actions.onEnd);
+    bar.append(this.navBarArrival, this.navBarRemaining, end);
+    this.content.append(bar);
+    this.show("nav", false);
+  }
+
+  /**
+   * Live navigation update: refreshes the bottom bar's arrival/remaining
+   * numbers and returns the instruction for the top banner. Remaining is
+   * a step-fraction estimate — plenty for indoor walking distances.
+   */
+  updateNav(stepIndex: number, now: Date): { title: string; sub: HTMLElement | null } | null {
+    if (!this.activeRoute || this.mode !== "nav") return null;
+    const route = this.activeRoute;
+    const lastIdx = route.steps.length - 1;
+    const frac = lastIdx > 0 ? Math.min(1, stepIndex / lastIdx) : 1;
+    const remainingMin = Math.round(route.totalMinutes * (1 - frac));
+    const remainingMeters = route.totalMeters * (1 - frac);
+    const eta = new Date(now.getTime() + remainingMin * 60_000);
+    if (this.navBarArrival) {
+      this.navBarArrival.textContent = formatMinute(eta.getHours() * 60 + eta.getMinutes());
+    }
+    if (this.navBarRemaining) {
+      this.navBarRemaining.textContent = `arrival · ${Math.max(0, remainingMin)} min · ${formatDistance(remainingMeters)}`;
+    }
+    const next = route.steps[stepIndex + 1];
+    if (!next) return { title: "You've arrived", sub: null };
+    const crossing = next.viaCrossing ?? "";
+    const generic = /^(minneapolis )?skyway$/i.test(crossing.trim());
+    const verb = next.hasSteps
+      ? "Take the stairs into"
+      : generic || !crossing
+        ? "Head into"
+        : `Cross over ${crossing} into`;
+    const landmark = landmarkNear(this.routePois, next.building.id);
+    return { title: `${verb} ${next.building.name}`, sub: landmark ? landmarkCue(landmark) : null };
   }
 
   showMessage(title: string, body: string) {
     this.content.innerHTML = "";
     this.clearRouteProgress();
     this.content.append(el("h2", title), el("div", body, "meta"));
-    this.show();
+    this.show("card", true);
   }
 }
 

@@ -21,59 +21,23 @@ async function boot() {
   const router = new SkywayRouter(data);
   const sheet = new Sheet(document.getElementById("sheet")!);
   (document.getElementById("feedback-link") as HTMLAnchorElement).href = feedbackUrl();
-  const searchPanel = document.getElementById("search-panel")!;
-  const tripStrip = document.getElementById("trip-strip") as HTMLElement;
-  const tripFrom = document.getElementById("trip-from")!;
-  const tripTo = document.getElementById("trip-to")!;
+  const app = document.getElementById("app")!;
+  const routeEditor = document.getElementById("route-editor") as HTMLElement;
+  const navBanner = document.getElementById("nav-banner") as HTMLElement;
+  const navInstruction = document.getElementById("nav-instruction")!;
+  const navInstructionSub = document.getElementById("nav-instruction-sub")!;
 
-  function collapseSearch(fromLabel: string, toLabel: string) {
-    tripFrom.textContent = fromLabel;
-    tripTo.textContent = toLabel;
-    tripStrip.hidden = false;
-    searchPanel.classList.remove("idle", "picking");
-    searchPanel.classList.add("trip-active");
+  // The five screens of the Apple Maps flow. Mode lives on #app as a class
+  // so CSS can hide/show chrome (locate button, editor, banner) per screen.
+  type Mode = "idle" | "search" | "card" | "preview" | "nav";
+  let mode: Mode = "idle";
+  function setMode(m: Mode) {
+    app.classList.remove(`mode-${mode}`);
+    mode = m;
+    app.classList.add(`mode-${mode}`);
+    routeEditor.hidden = m !== "preview";
+    navBanner.hidden = m !== "nav";
   }
-  function expandSearch() {
-    tripStrip.hidden = true;
-    searchPanel.classList.remove("trip-active", "idle", "picking");
-  }
-  document.getElementById("trip-edit")!.addEventListener("click", expandSearch);
-
-  // Idle: the default, untouched state — a single compact "Where to?" bar,
-  // not the full form. Apple Maps shows almost nothing until you actually
-  // start searching; this is the single highest-leverage change toward
-  // that feel. Tapping the bar opens search-first "picking" — just the
-  // destination field, Apple Maps style — not the full From/To form;
-  // tapping away with nothing entered collapses back.
-  const idleBar = document.getElementById("search-idle-bar") as HTMLButtonElement;
-  function showIdle() {
-    searchPanel.classList.remove("trip-active", "picking");
-    searchPanel.classList.add("idle");
-  }
-  function showPicking() {
-    searchPanel.classList.remove("idle", "trip-active");
-    searchPanel.classList.add("picking");
-  }
-  function showEditing() {
-    searchPanel.classList.remove("idle", "picking");
-  }
-  idleBar.addEventListener("click", () => {
-    showPicking();
-    document.getElementById("input-to")?.focus();
-  });
-  document.addEventListener("click", (e) => {
-    if (searchPanel.classList.contains("trip-active")) return;
-    if (searchPanel.classList.contains("idle")) return;
-    if (comboFrom.value || comboTo.value) return; // mid-search, don't yank it away
-    if (searchPanel.contains(e.target as Node)) return;
-    // Tapping locate is a normal thing to do mid-search (e.g. reaching for
-    // "Current Location") — it shouldn't silently collapse the panel out
-    // from under you. Class-checked at click time via closest() rather than
-    // holding a reference, since the control isn't created yet this early
-    // in boot().
-    if ((e.target as HTMLElement).closest(".maplibregl-ctrl-geolocate")) return;
-    showIdle();
-  });
 
   const style = await resolveStyle();
   const view = new SkymapView(
@@ -95,6 +59,10 @@ async function boot() {
     currentLocation: true,
   });
   const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings, data.pois);
+  // The drawer's search field (screen 2) — picks a destination, whose place
+  // card then owns the Directions step. Separate from the preview editor's
+  // To field so each screen keeps its own text state, Apple-style.
+  const comboSearch = new BuildingCombo(document.getElementById("combo-search")!, data.buildings, data.pois);
 
   // Recent destinations replace an unfiltered building dump on empty focus.
   // Both fields share one list — a place you routed *to* is just as worth
@@ -103,6 +71,7 @@ async function boot() {
     const recents = getRecents(localStorage);
     comboFrom.setRecents(recents);
     comboTo.setRecents(recents);
+    comboSearch.setRecents(recents);
   }
   refreshRecents();
   const onRecentWorthy = (b: Building) => {
@@ -111,6 +80,7 @@ async function boot() {
   };
   comboFrom.onRecentWorthy = onRecentWorthy;
   comboTo.onRecentWorthy = onRecentWorthy;
+  comboSearch.onRecentWorthy = onRecentWorthy;
 
   // Routing always uses the current moment — no traffic to plan around,
   // and building-hours awareness (a closed building drops out of the
@@ -120,46 +90,8 @@ async function boot() {
   }
 
   let activeRoute: RouteResult | null = null;
-
-  function routeIfReady() {
-    const fromId = comboFrom.value;
-    const toId = comboTo.value;
-    if (!fromId || !toId) return;
-    if (fromId === toId) {
-      activeRoute = null;
-      expandSearch();
-      sheet.showMessage("Same building", "Pick two different places.");
-      return;
-    }
-    const when = selectedTime();
-    const route = router.route(fromId, toId, when);
-    if (!route) {
-      activeRoute = null;
-      expandSearch();
-      view.setRoute(null);
-      sheet.showMessage("No route found", "No skyway connection between these places.");
-      return;
-    }
-    activeRoute = route;
-    manualPositionUntil = 0; // a fresh route starts under normal GPS tracking
-    // The route itself is building-to-building (that's the network the
-    // skyway graph actually models), but when either end is a specific
-    // business, mark that business's own precise spot rather than its host
-    // building's centroid — inside a large building those can be tens of
-    // meters apart, enough to look like the pin missed the destination.
-    view.setRoute(route, {
-      fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
-      toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
-    });
-    const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
-    const toLabel = comboTo.label ?? router.building(toId)!.name;
-    sheet.showRoute(route, when, { from: fromLabel, to: toLabel }, data.pois ?? [], () => {
-      void shareRoute(`${fromLabel} → ${toLabel}`);
-    });
-    collapseSearch(fromLabel, toLabel);
-    // Make the address bar shareable: the URL always describes this route.
-    history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));
-  }
+  /** The place the user picked (screen 3) — what Directions routes to. */
+  let destination: { b: Building; poi?: Poi } | null = null;
 
   /** The URL already encodes any route (?from=&to=) — sharing is just
    * surfacing it. Inside the native shell location.origin is
@@ -181,75 +113,158 @@ async function boot() {
     }
   }
 
-  // Search-first (Apple Maps style): picking a destination shows its place
-  // card, not an immediate route — "Directions" on that card is the actual
-  // routing trigger. Once we're past picking (already in the From/To
-  // editor), selecting either field just updates the route directly, same
-  // as before tonight.
-  comboFrom.onSelect = (b) => {
-    // Destination searches measure "closest" from the chosen origin —
-    // picking a From re-anchors the To field's chain-name ordering.
-    comboTo.setSearchAnchor({ lat: b.lat, lon: b.lon });
-    routeIfReady();
-  };
-  comboTo.onSelect = (b, poi) => {
-    if (searchPanel.classList.contains("picking")) {
-      showIdle(); // collapse the search chrome — the card takes over
-      if (poi) onPoiTap(poi);
-      else onBuildingTap(b);
+  // --- The mode transitions -----------------------------------------------
+
+  function enterIdle() {
+    activeRoute = null;
+    destination = null;
+    view.setRoute(null);
+    sheet.showIdle();
+    setMode("idle");
+    history.replaceState(null, "", location.pathname);
+  }
+
+  function enterSearch() {
+    activeRoute = null;
+    view.setRoute(null);
+    sheet.showSearch();
+    setMode("search");
+    (document.getElementById("input-search") as HTMLInputElement).focus();
+  }
+
+  /** Screen 3: pin + place card. The Directions pill pre-computes the walk
+   * time from the live location when there is one — Apple shows the
+   * commitment cost on the button itself. */
+  function showPlace(b: Building, poi?: Poi) {
+    activeRoute = null;
+    destination = { b, poi };
+    view.setRoute(null);
+    view.focusBuilding(b);
+    let directionsLabel: string | undefined;
+    if (nearBuilding && nearBuilding.id !== b.id) {
+      const preview = router.route(nearBuilding.id, b.id, selectedTime());
+      if (preview) directionsLabel = `Directions · ${Math.max(1, Math.round(preview.totalMinutes))} min`;
+    }
+    const actions = { onDirections: () => enterPreview(), directionsLabel };
+    if (poi) sheet.showPoi(poi, b, actions);
+    else sheet.showBuilding(b, selectedTime(), actions, poisByBuilding.get(b.id) ?? []);
+    setMode("card");
+  }
+
+  /** Screen 4: From/To editor slides in at the top, route draws, GO waits.
+   * From defaults to the live location as a direct consequence of tapping
+   * Directions — not a silent background fill. */
+  function enterPreview() {
+    if (!destination) return;
+    setMode("preview");
+    comboTo.select(destination.b, destination.poi, { silent: true });
+    if (!comboFrom.value && nearBuilding) comboFrom.selectCurrentLocation();
+    computePreview();
+  }
+
+  function computePreview() {
+    if (mode !== "preview") return;
+    const fromId = comboFrom.value;
+    const toId = comboTo.value;
+    if (!fromId) {
+      sheet.showMessage("Choose a starting point", "Pick where you're starting from above.");
+      (document.getElementById("input-from") as HTMLInputElement).focus();
       return;
     }
-    routeIfReady();
+    if (!toId) return;
+    if (fromId === toId) {
+      sheet.showMessage("Same building", "Pick two different places.");
+      return;
+    }
+    const when = selectedTime();
+    const route = router.route(fromId, toId, when);
+    if (!route) {
+      activeRoute = null;
+      view.setRoute(null);
+      sheet.showMessage("No route found", "No skyway connection between these places.");
+      return;
+    }
+    activeRoute = route;
+    manualPositionUntil = 0;
+    // The route itself is building-to-building (that's the network the
+    // skyway graph actually models), but when either end is a specific
+    // business, mark that business's own precise spot rather than its host
+    // building's centroid.
+    view.setRoute(route, {
+      fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
+      toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
+    });
+    const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
+    const toLabel = comboTo.label ?? router.building(toId)!.name;
+    sheet.showRoutePreview(route, when, data.pois ?? [], {
+      onGo: () => enterNav(),
+      onShare: () => void shareRoute(`${fromLabel} → ${toLabel}`),
+    });
+    // Make the address bar shareable: the URL always describes this route.
+    history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));
+  }
+
+  /** Screen 5: GO pressed — banner up top, slim bar below, live tracking on. */
+  function enterNav() {
+    if (!activeRoute) return;
+    setMode("nav");
+    manualPositionUntil = 0;
+    sheet.showNavigating(activeRoute, data.pois ?? [], { onEnd: () => enterIdle() });
+    applyNavProgress(0);
+  }
+
+  function applyNavProgress(stepIndex: number) {
+    const info = sheet.updateNav(stepIndex, new Date());
+    if (!info) return;
+    navInstruction.textContent = info.title;
+    navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
+  }
+
+  // --- Wiring between screens ---------------------------------------------
+
+  const idleBar = document.getElementById("search-idle-bar") as HTMLButtonElement;
+  idleBar.addEventListener("click", () => enterSearch());
+  sheet.onRequestSearch = () => enterSearch();
+  sheet.onDismissSearch = () => enterIdle();
+  sheet.onClose = () => enterSearch(); // card ✕ → back to search, Apple-style
+  document.getElementById("search-cancel")!.addEventListener("click", () => enterIdle());
+  document.getElementById("editor-close")!.addEventListener("click", () => {
+    // Leaving the preview returns to the place card, like closing Apple's
+    // directions panel.
+    if (destination) showPlace(destination.b, destination.poi);
+    else enterIdle();
+  });
+
+  comboSearch.onSelect = (b, poi) => showPlace(b, poi);
+  comboFrom.onSelect = (b) => {
+    // Destination searches measure "closest" from the chosen origin.
+    comboTo.setSearchAnchor({ lat: b.lat, lon: b.lon });
+    computePreview();
+  };
+  comboTo.onSelect = (b, poi) => {
+    destination = { b, poi };
+    computePreview();
   };
 
-  document.getElementById("btn-route")!.addEventListener("click", routeIfReady);
-  // Swap just swaps the fields — routing is a separate, deliberate action
-  // via "Find route", not something that fires the moment you flip origin
-  // and destination.
   document.getElementById("btn-swap")!.addEventListener("click", () => {
     const from = comboFrom.value ? router.building(comboFrom.value) : null;
     const to = comboTo.value ? router.building(comboTo.value) : null;
     const fromPoi = comboFrom.poi;
     const toPoi = comboTo.poi;
-    // Silent: each combo's onSelect is wired to trigger routing, which
-    // collapses the editor back to the one-line trip strip — a plain swap
-    // should just swap the fields and leave the editor open, not act as
-    // if you'd deliberately picked a new destination.
     if (to) comboFrom.select(to, toPoi ?? undefined, { silent: true });
     if (from) comboTo.select(from, fromPoi ?? undefined, { silent: true });
+    computePreview();
   });
 
-  /** "Directions" on a place card: destination is whatever you tapped,
-   * origin defaults to current location when known (a direct consequence
-   * of pressing this button, not the old silent auto-fill), reveal the
-   * editor, route. `poi`, when the card was for a specific business rather
-   * than a bare building, carries its precise location through so the
-   * route marker lands on the business itself, not just its host
-   * building's centroid. */
-  function showDirections(destination: Building, poi?: Poi) {
-    showEditing();
-    comboTo.select(destination, poi);
-    if (nearBuilding) comboFrom.selectCurrentLocation();
-    routeIfReady();
-  }
-
   function onBuildingTap(b: Building) {
-    activeRoute = null;
-    view.focusBuilding(b);
-    sheet.showBuilding(
-      b,
-      selectedTime(),
-      { onDirections: () => showDirections(b) },
-      poisByBuilding.get(b.id) ?? [],
-    );
+    if (mode === "nav") return; // navigating: the map is for walking, not browsing
+    showPlace(b);
   }
 
   function onPoiTap(p: Poi) {
-    activeRoute = null;
+    if (mode === "nav") return;
     const host = router.building(p.buildingId);
-    sheet.showPoi(p, host, () => {
-      if (host) showDirections(host, p);
-    });
+    if (host) showPlace(host, p);
   }
 
   // --- Live position: snap GPS fixes to the nearest network building -----
@@ -272,16 +287,17 @@ async function boot() {
   let manualPositionUntil = 0;
 
   function onRouteTap(lat: number, lon: number) {
-    if (!activeRoute) return; // nothing to correct against
-    sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
+    // A navigation-mode concern: previews are for reading, not walking.
+    if (!activeRoute || mode !== "nav") return;
+    applyNavProgress(routeStepIndex(activeRoute, lat, lon));
     view.setManualPosition([lon, lat]);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
   }
 
   function onPosition(lat: number, lon: number) {
     nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
-    if (activeRoute && Date.now() >= manualPositionUntil) {
-      sheet.updateRouteProgress(routeStepIndex(activeRoute, lat, lon));
+    if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
+      applyNavProgress(routeStepIndex(activeRoute, lat, lon));
       view.setManualPosition(null); // real GPS is back in control
     }
     maybePromptSaveRamp(nearBuilding);
@@ -454,11 +470,16 @@ async function boot() {
   const initial = parseRouteState(location.search);
   const initialFrom = initial.fromId ? router.building(initial.fromId) : undefined;
   const initialTo = initial.toId ? router.building(initial.toId) : undefined;
-  if (initialFrom) comboFrom.select(initialFrom);
-  if (initialTo) comboTo.select(initialTo);
-  // A shared link already has something to show; a cold visit gets the
-  // minimal idle bar instead of the full form.
-  if (!initialFrom || !initialTo) showIdle();
+  if (initialFrom && initialTo) {
+    // A shared link opens straight into the route preview (screen 4).
+    destination = { b: initialTo };
+    setMode("preview");
+    comboFrom.select(initialFrom, undefined, { silent: true });
+    comboTo.select(initialTo, undefined, { silent: true });
+    computePreview();
+  } else {
+    enterIdle();
+  }
 
   // Keep "open until…" / "closing soon" styling fresh as the clock moves.
   setInterval(() => view.setTime(selectedTime()), 60_000);
@@ -525,7 +546,10 @@ async function boot() {
   view.setPoiGroupFilter([]); // nothing shown until the user opts in
 
   // Test/debug handle (drives E2E camera positioning).
-  (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition, onRouteTap };
+  (window as unknown as Record<string, unknown>).__skymap = {
+    view, router, data, sheet, onPosition, onRouteTap,
+    modes: { get current() { return mode; }, enterSearch, enterIdle, showPlace, enterPreview, enterNav },
+  };
 }
 
 boot().catch((err) => {

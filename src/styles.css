@@ -134,144 +134,6 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* --- Search panel ------------------------------------------------------- */
-
-.search-panel {
-  top: calc(env(safe-area-inset-top, 0px) + 10px);
-  /* True screen-centering, not just left-anchored with a max-width cap —
-     on phones wider than ~420px (Plus/Pro Max sizes) a plain "left:10px,
-     width: min(400px, ...)" leaves the leftover space only on the right,
-     so the card (and everything centered inside it) reads as off-center. */
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(400px, calc(100vw - 20px));
-  padding: 14px 16px 13px;
-  transition:
-    padding 0.2s var(--ease),
-    max-height 0.2s var(--ease);
-}
-
-/* Once a trip is set, the full form gives way to a one-line strip —
-   the map (and the route drawn on it) get the room back. */
-.search-panel.trip-active .field-row {
-  display: none;
-}
-
-/* Idle (the default, untouched state): show only a compact "Where to?"
-   bar, not the full form — Apple Maps shows almost nothing until you
-   actually start searching, and that's most of what "feels native" comes
-   down to. Tapping the bar (or either field directly) reveals everything. */
-.search-panel.idle .field-row,
-.search-panel.idle .brand,
-.search-panel.idle .trip-strip {
-  display: none;
-}
-
-.search-panel.idle {
-  padding: 8px;
-}
-
-/* Picking (search-first flow): tapping "Where to?" opens ONE field — the
-   destination — not the full From/To form. Where you're coming FROM is
-   implicit (current location, applied once Directions is actually
-   pressed) until you deliberately want to change it. */
-.search-panel.picking .field-row-from,
-.search-panel.picking #btn-route {
-  display: none;
-}
-
-.search-idle-bar {
-  display: none;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  background: rgba(20, 33, 61, 0.045);
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink-400);
-  cursor: pointer;
-  font-family: inherit;
-  text-align: center;
-}
-
-@media (prefers-color-scheme: dark) {
-  .search-idle-bar {
-    background: rgba(255, 255, 255, 0.07);
-  }
-}
-
-.search-panel.idle .search-idle-bar {
-  display: flex;
-}
-
-.search-idle-icon {
-  font-size: 15px;
-  color: var(--ink-400);
-  flex-shrink: 0;
-}
-
-.trip-strip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14.5px;
-  padding: 2px 0;
-}
-
-.trip-strip[hidden] {
-  display: none;
-}
-
-.trip-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-/* You stare at this strip for the whole walk: the destination is what you
-   need to read, so it wins the space fight. Origin (usually "Current
-   Location · X") shrinks first and hardest. */
-#trip-from {
-  flex: 0 1 auto;
-  min-width: 34px;
-  max-width: 30%;
-}
-
-#trip-to {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.trip-arrow {
-  color: var(--ink-400);
-  flex-shrink: 0;
-  font-size: 12px;
-}
-
-.trip-edit {
-  margin-left: auto;
-  border: 0;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 13px;
-  border-radius: 999px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.12s var(--ease);
-}
-
-.trip-edit:active {
-  transform: scale(0.94);
-}
-
 .brand {
   display: flex;
   align-items: center;
@@ -710,6 +572,10 @@ a:focus-visible {
   background: var(--hairline-strong);
 }
 
+.sheet-close[hidden] {
+  display: none;
+}
+
 .sheet-close {
   position: absolute;
   top: 10px;
@@ -1122,12 +988,8 @@ a:focus-visible {
    right under the destination field, Apple Maps style, instead of a
    floating button that inevitably collides with some other panel. */
 .suggestions {
-  display: none;
-}
-
-.search-panel.picking .suggestions {
   display: block;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .suggestions-label {
@@ -1194,4 +1056,214 @@ a:focus-visible {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+/* --- The Apple-Maps drawer flow ------------------------------------------ */
+
+/* Screen 1: the collapsed drawer is just this pill. */
+.search-idle-bar {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: rgba(20, 33, 61, 0.045);
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 13px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-400);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.search-idle-bar[hidden] {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-idle-bar {
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
+.search-idle-icon {
+  font-size: 15px;
+  color: var(--ink-400);
+  flex-shrink: 0;
+}
+
+/* Screen 2: search field + Cancel inside the tall drawer. */
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-row .combo {
+  flex: 1;
+}
+
+.search-cancel {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 6px 2px;
+  flex-shrink: 0;
+}
+
+.drawer-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+}
+
+.drawer-footer .brand-name {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.drawer-footer .feedback-link {
+  margin-left: auto;
+}
+
+/* Screen 4: the floating From/To editor, Apple's top placement. */
+.route-editor {
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(400px, calc(100vw - 20px));
+  padding: 12px 14px;
+  display: flex;
+  gap: 10px;
+  z-index: 11;
+}
+
+.route-editor[hidden] {
+  display: none;
+}
+
+.editor-rows {
+  flex: 1;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.editor-side {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  flex-shrink: 0;
+}
+
+/* Screen 5: instruction banner + slim status bar. */
+.nav-banner {
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(400px, calc(100vw - 20px));
+  padding: 14px 18px;
+  background: #17243a;
+  border: 0;
+  color: #fff;
+  z-index: 11;
+}
+
+.nav-banner[hidden] {
+  display: none;
+}
+
+#nav-instruction {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+#nav-instruction-sub {
+  font-size: 13px;
+  opacity: 0.75;
+  margin-top: 2px;
+}
+
+#nav-instruction-sub:empty {
+  display: none;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-bar strong {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.nav-bar .sub {
+  color: var(--ink-600);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.end-btn {
+  margin-left: auto;
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 18px;
+  background: var(--red);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.go-btn {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 13px;
+  margin-top: 2px;
+  background: #0f9d58;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease);
+}
+
+.go-btn:active,
+.end-btn:active {
+  transform: scale(0.97);
+}
+
+/* Mode-scoped chrome: the locate button gets out of the way while
+   searching (keyboard) and navigating (banner + bar own the screen). */
+#app.mode-search .maplibregl-ctrl-bottom-right,
+#app.mode-nav .maplibregl-ctrl-bottom-right {
+  display: none;
+}
+
+#app.mode-nav .sheet-handle {
+  display: none;
+}
+
+/* In nav mode the drawer is a slim bar — flatten its top padding a bit. */
+.sheet.nav-mode {
+  padding-top: 16px;
 }

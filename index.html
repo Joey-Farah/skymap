@@ -56,51 +56,68 @@
       </div>
       <button class="panel ramp-return" id="ramp-return" hidden></button>
 
-      <header class="panel search-panel" id="search-panel">
-        <div class="brand">
-          <img class="brand-mark" src="/icons/icon.svg" alt="" />
-          <h1>SkyMap</h1>
-          <a id="feedback-link" class="feedback-link">Feedback</a>
-        </div>
-        <button class="search-idle-bar" id="search-idle-bar" type="button">
-          <span class="search-idle-icon">⌕</span>
-          Where to?
-        </button>
-        <div class="field-row field-row-from">
-          <div class="combo" id="combo-from">
-            <span class="dot dot-from"></span>
-            <input type="text" id="input-from" placeholder="From" autocomplete="off" role="combobox"
-              aria-label="Starting point" aria-expanded="false" aria-autocomplete="list" />
-            <ul class="combo-list" role="listbox" aria-label="Starting point suggestions" hidden></ul>
-          </div>
-          <button class="icon-btn" id="btn-swap" title="Swap origin and destination" aria-label="Swap">⇅</button>
-        </div>
-        <div class="field-row field-row-to">
-          <div class="combo" id="combo-to">
-            <span class="dot dot-to"></span>
-            <input type="text" id="input-to" placeholder="To" autocomplete="off" role="combobox"
-              aria-label="Destination" aria-expanded="false" aria-autocomplete="list" />
-            <ul class="combo-list" role="listbox" aria-label="Destination suggestions" hidden></ul>
-          </div>
-          <button class="icon-btn primary" id="btn-route" title="Find route" aria-label="Find route">➜</button>
-        </div>
-        <div class="suggestions" id="suggestions">
-          <span class="suggestions-label">Show on map</span>
-          <div class="suggestions-row" id="suggestions-row" role="group" aria-label="Show categories on the map"></div>
-        </div>
-        <div class="trip-strip" id="trip-strip" hidden>
-          <span class="dot dot-from"></span>
-          <span class="trip-label" id="trip-from"></span>
-          <span class="trip-arrow">→</span>
-          <span class="dot dot-to"></span>
-          <span class="trip-label" id="trip-to"></span>
-          <button class="trip-edit" id="trip-edit">Edit</button>
-        </div>
-      </header>
+      <!-- Screen 5: turn-by-turn instruction banner -->
+      <div class="panel nav-banner" id="nav-banner" hidden>
+        <div id="nav-instruction"></div>
+        <div id="nav-instruction-sub"></div>
+      </div>
 
-      <section class="panel sheet" id="sheet" hidden>
-        <button class="sheet-handle" id="sheet-handle" aria-label="Show more / less"><span class="grip"></span></button>
-        <button class="sheet-close" id="sheet-close" aria-label="Close">×</button>
+      <!-- Screen 4: floating From/To editor (Apple's placement: top) -->
+      <div class="panel route-editor" id="route-editor" hidden>
+        <div class="editor-rows">
+          <div class="field-row">
+            <div class="combo" id="combo-from">
+              <span class="dot dot-from"></span>
+              <input type="text" id="input-from" placeholder="From" autocomplete="off" role="combobox"
+                aria-label="Starting point" aria-expanded="false" aria-autocomplete="list" />
+              <ul class="combo-list" role="listbox" aria-label="Starting point suggestions" hidden></ul>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="combo" id="combo-to">
+              <span class="dot dot-to"></span>
+              <input type="text" id="input-to" placeholder="To" autocomplete="off" role="combobox"
+                aria-label="Destination" aria-expanded="false" aria-autocomplete="list" />
+              <ul class="combo-list" role="listbox" aria-label="Destination suggestions" hidden></ul>
+            </div>
+          </div>
+        </div>
+        <div class="editor-side">
+          <button class="icon-btn" id="btn-swap" title="Swap origin and destination" aria-label="Swap">⇅</button>
+          <button class="icon-btn" id="editor-close" title="Back" aria-label="Close directions">✕</button>
+        </div>
+      </div>
+
+      <!-- The drawer: search, place cards, route preview, and the nav bar
+           all live in this one bottom sheet, Apple Maps style. -->
+      <section class="panel sheet drawer" id="sheet">
+        <button class="sheet-handle" id="sheet-handle" aria-label="Expand or collapse"><span class="grip"></span></button>
+        <button class="sheet-close" id="sheet-close" aria-label="Close" hidden>×</button>
+        <div id="drawer-static">
+          <button class="search-idle-bar" id="search-idle-bar" type="button">
+            <span class="search-idle-icon">⌕</span>
+            Where to?
+          </button>
+          <div id="d-search" hidden>
+            <div class="search-row">
+              <div class="combo" id="combo-search">
+                <input type="text" id="input-search" placeholder="Search buildings & businesses" autocomplete="off"
+                  role="combobox" aria-label="Search" aria-expanded="false" aria-autocomplete="list" />
+                <ul class="combo-list" role="listbox" aria-label="Search results" hidden></ul>
+              </div>
+              <button class="search-cancel" id="search-cancel" type="button">Cancel</button>
+            </div>
+            <div class="suggestions" id="suggestions">
+              <span class="suggestions-label">Show on map</span>
+              <div class="suggestions-row" id="suggestions-row" role="group" aria-label="Show categories on the map"></div>
+            </div>
+            <div class="drawer-footer">
+              <img class="brand-mark" src="/icons/icon.svg" alt="" />
+              <span class="brand-name">SkyMap</span>
+              <a id="feedback-link" class="feedback-link">Feedback</a>
+            </div>
+          </div>
+        </div>
         <div id="sheet-content"></div>
       </section>
 
