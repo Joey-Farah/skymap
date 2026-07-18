@@ -22,6 +22,14 @@ async function boot() {
   const sheet = new Sheet(document.getElementById("sheet")!);
   (document.getElementById("feedback-link") as HTMLAnchorElement).href = feedbackUrl();
   const searchPanel = document.getElementById("search-panel")!;
+  // Accessible routing: persisted because it's a property of the person,
+  // not of one trip — someone avoiding stairs avoids them every trip.
+  const avoidStairs = document.getElementById("avoid-stairs") as HTMLInputElement;
+  avoidStairs.checked = localStorage.getItem("skymap.avoidStairs") === "1";
+  avoidStairs.addEventListener("change", () => {
+    localStorage.setItem("skymap.avoidStairs", avoidStairs.checked ? "1" : "0");
+    routeIfReady(); // re-route live if a trip is on screen
+  });
   const tripStrip = document.getElementById("trip-strip") as HTMLElement;
   const tripFrom = document.getElementById("trip-from")!;
   const tripTo = document.getElementById("trip-to")!;
@@ -132,12 +140,17 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const route = router.route(fromId, toId, when);
+    const route = router.route(fromId, toId, when, { accessible: avoidStairs.checked });
     if (!route) {
       activeRoute = null;
       expandSearch();
       view.setRoute(null);
-      sheet.showMessage("No route found", "No skyway connection between these places.");
+      sheet.showMessage(
+        "No route found",
+        avoidStairs.checked
+          ? "No stair-free skyway route between these places — try turning off Avoid stairs."
+          : "No skyway connection between these places.",
+      );
       return;
     }
     activeRoute = route;
@@ -153,10 +166,32 @@ async function boot() {
     });
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
     const toLabel = comboTo.label ?? router.building(toId)!.name;
-    sheet.showRoute(route, when, { from: fromLabel, to: toLabel }, data.pois ?? []);
+    sheet.showRoute(route, when, { from: fromLabel, to: toLabel }, data.pois ?? [], () => {
+      void shareRoute(`${fromLabel} → ${toLabel}`);
+    });
     collapseSearch(fromLabel, toLabel);
     // Make the address bar shareable: the URL always describes this route.
     history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));
+  }
+
+  /** The URL already encodes any route (?from=&to=) — sharing is just
+   * surfacing it. Inside the native shell location.origin is
+   * capacitor://localhost, which is meaningless to a recipient, so links
+   * are always built against the public web origin. */
+  async function shareRoute(label: string) {
+    const base = Capacitor.isNativePlatform()
+      ? "https://skymap-alpha.vercel.app/"
+      : location.origin + location.pathname;
+    const url = base + location.search;
+    try {
+      if (navigator.share) await navigator.share({ title: `SkyMap: ${label}`, url });
+      else {
+        await navigator.clipboard.writeText(url);
+        showToast("Route link copied");
+      }
+    } catch {
+      // Share sheet dismissed, or clipboard denied — neither needs a scold.
+    }
   }
 
   // Search-first (Apple Maps style): picking a destination shows its place

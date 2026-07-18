@@ -182,7 +182,11 @@ export class SkymapView {
       // error instead of spinning forever.
       positionOptions: { enableHighAccuracy: true, maximumAge: 120000, timeout: 15000 },
     });
-    this.map.addControl(geolocate, "top-right");
+    // Bottom-right, above the attribution mark — the one map control that
+    // earns its screen space: re-centering on yourself after panning away
+    // is the most-wanted button in any navigation app, and hiding it made
+    // heading-up mode unreachable dead code.
+    this.map.addControl(geolocate, "bottom-right");
     geolocate.on("geolocate", (pos: GeolocationPosition) => {
       onPosition?.(pos.coords.latitude, pos.coords.longitude);
     });

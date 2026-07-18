@@ -153,7 +153,10 @@ export class BuildingCombo {
     if (!b) return;
     this.selectedId = b.id;
     this.selectedPoi = null;
-    this.input.value = "Current Location";
+    // Name the building the GPS fix snapped to: indoors, drift can cross a
+    // street, and a plain "Current Location" hides a wrong snap until the
+    // route's first step looks inexplicably wrong.
+    this.input.value = `Current Location · ${b.name}`;
     this.hide();
     this.onSelect?.(b);
   }
@@ -185,7 +188,12 @@ export class BuildingCombo {
       icon.textContent = "⌖";
       const text = document.createElement("span");
       text.className = "result-text";
-      text.append(el("span", "Current Location", "result-name"));
+      text.append(
+        el("span", "Current Location", "result-name"),
+        // Which building the fix resolved to — a wrong indoor snap should
+        // be visible before routing, not discovered mid-route.
+        el("span", this.currentLocationBuilding.name, "addr"),
+      );
       li.append(icon, text);
       li.addEventListener("mousedown", (e) => {
         e.preventDefault();
@@ -222,6 +230,8 @@ export class BuildingCombo {
       this.list.appendChild(li);
     }
     this.list.hidden = this.list.children.length === 0;
+    for (const li of this.list.children) li.setAttribute("role", "option");
+    this.input.setAttribute("aria-expanded", String(!this.list.hidden));
   }
 
   private onKey(e: KeyboardEvent) {
@@ -244,6 +254,7 @@ export class BuildingCombo {
 
   private hide() {
     this.list.hidden = true;
+    this.input.setAttribute("aria-expanded", "false");
   }
 }
 
@@ -301,6 +312,15 @@ export class Sheet {
       const midpoint = (this.peekHeight + this.expandedHeight) / 2;
       this.setExpanded(current > midpoint);
     });
+
+    // Rotation / split-view resize invalidates the measured heights (the
+    // expanded cap is 60% of the viewport) — re-measure or the sheet keeps
+    // portrait-sized bounds in landscape until reopened.
+    window.addEventListener("resize", () => {
+      if (this.root.hidden) return;
+      this.measureHeights();
+      this.setExpanded(this.expanded);
+    });
   }
 
   /** Actual pixel heights for this sheet's current content: peek is the
@@ -329,11 +349,25 @@ export class Sheet {
     // state should actually scroll, for the case content still exceeds
     // the 60vh cap.
     this.root.style.overflowY = expanded ? "auto" : "hidden";
+    this.syncClearance();
+  }
+
+  /** Publishes the sheet's peek height as --sheet-clearance so the locate
+   * button (bottom-right map control) rides above the sheet instead of
+   * being buried under it exactly when it matters most — mid-route.
+   * Pinned to peek height on purpose: fully expanded, the sheet is a
+   * reading surface and may cover the button. */
+  private syncClearance() {
+    document.documentElement.style.setProperty(
+      "--sheet-clearance",
+      this.root.hidden ? "0px" : `${this.peekHeight + 12}px`,
+    );
   }
 
   hide() {
     this.root.hidden = true;
     this.clearRouteProgress();
+    this.syncClearance();
   }
 
   private clearRouteProgress() {
@@ -445,14 +479,14 @@ export class Sheet {
       }
       more.append(list);
     }
-    more.append(this.reportLink({ name: b.name, id: b.id }));
+    more.append(this.reportLink({ name: b.name, id: b.id }, formatWeeklyHours(b.hours)));
     this.content.append(h2, meta, badge, hours, more);
     this.show();
   }
 
-  private reportLink(target: { name: string; id: string }): HTMLElement {
+  private reportLink(target: { name: string; id: string }, hours?: string): HTMLElement {
     const link = document.createElement("a");
-    link.href = reportIssueUrl(target);
+    link.href = reportIssueUrl(target, hours);
     link.className = "report-link";
     link.textContent = "Report an issue";
     return link;
@@ -524,7 +558,13 @@ export class Sheet {
     this.show();
   }
 
-  showRoute(route: RouteResult, when: Date, labels?: { from?: string; to?: string }, pois: Poi[] = []) {
+  showRoute(
+    route: RouteResult,
+    when: Date,
+    labels?: { from?: string; to?: string },
+    pois: Poi[] = [],
+    onShare?: () => void,
+  ) {
     this.routePois = pois;
     this.content.innerHTML = "";
     const first = route.steps[0].building;
@@ -571,6 +611,12 @@ export class Sheet {
       el("span", formatDistance(route.totalMeters), "sub"),
       el("span", `${route.steps.length} buildings`, "sub"),
     );
+    if (onShare) {
+      const share = el("button", "Share", "share-btn");
+      share.setAttribute("aria-label", "Share this route");
+      share.addEventListener("click", onShare);
+      summary.append(share);
+    }
     this.content.append(summary);
 
     // Filled in by updateRouteProgress() once live position updates arrive;
