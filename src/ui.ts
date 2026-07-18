@@ -148,7 +148,7 @@ export class BuildingCombo {
   /** Public so callers can auto-fill "From" as a direct consequence of a
    * deliberate action (e.g. tapping Directions) — distinct from the old
    * silent auto-fill this replaced, which fired before anyone asked. */
-  selectCurrentLocation() {
+  selectCurrentLocation(opts: { silent?: boolean } = {}) {
     const b = this.currentLocationBuilding;
     if (!b) return;
     this.selectedId = b.id;
@@ -158,6 +158,7 @@ export class BuildingCombo {
     // route's first step looks inexplicably wrong.
     this.input.value = `Current Location · ${b.name}`;
     this.hide();
+    if (opts.silent) return;
     this.onSelect?.(b);
   }
 
@@ -725,7 +726,10 @@ export class Sheet {
     this.content.append(bar);
     this.navStepsListEl = this.buildStepsList(route, when, pois);
     this.content.append(this.navStepsListEl);
-    this.show("nav", false);
+    // Expanded by default so the full turn-by-turn list is visible the
+    // moment navigation starts, not just the slim arrival bar — still a
+    // drag away from collapsing if someone wants the map instead.
+    this.show("nav", true);
   }
 
   /**

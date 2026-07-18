@@ -74,7 +74,13 @@ html,
 body,
 #app,
 #map {
+  /* 100% (and 100vh) size against the viewport as if the browser chrome
+     were fully collapsed — on mobile Safari that's taller than what's
+     actually visible when the bottom toolbar is showing, so anything
+     anchored to the bottom (the GO button) renders partly behind it.
+     100dvh tracks the real, currently-visible viewport instead. */
   height: 100%;
+  height: 100dvh;
   margin: 0;
 }
 

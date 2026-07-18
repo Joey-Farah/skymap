@@ -158,7 +158,16 @@ async function boot() {
     if (!destination) return;
     setMode("preview");
     comboTo.select(destination.b, destination.poi, { silent: true });
-    if (!comboFrom.value && nearBuilding) comboFrom.selectCurrentLocation();
+    // Silent: computePreview() below already covers this — a non-silent
+    // select would fire comboFrom.onSelect too, computing the preview
+    // twice back to back. The second pass raced the sheet's just-started
+    // entrance-animation transform and, on some runs, measured content
+    // heights against the wrong offsetParent, undersizing the drawer by
+    // exactly its own padding and clipping the GO button.
+    if (!comboFrom.value && nearBuilding) {
+      comboFrom.selectCurrentLocation({ silent: true });
+      comboTo.setSearchAnchor({ lat: nearBuilding.lat, lon: nearBuilding.lon });
+    }
     computePreview();
   }
 
