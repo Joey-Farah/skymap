@@ -98,7 +98,19 @@
         <div id="sheet-content"></div>
       </section>
 
-      <div class="poi-filter-bar" id="poi-filter-bar" role="group" aria-label="Filter map businesses"></div>
+      <div class="poi-filter" id="poi-filter">
+        <button
+          class="poi-filter-toggle"
+          id="poi-filter-toggle"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span>Filter</span>
+          <span class="poi-filter-count" id="poi-filter-count" hidden></span>
+        </button>
+        <ul class="poi-filter-menu" id="poi-filter-menu" role="menu" aria-label="Filter map businesses" hidden></ul>
+      </div>
 
     </div>
     <script type="module" src="./src/main.ts"></script>

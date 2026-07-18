@@ -110,12 +110,17 @@ export class BuildingCombo {
 
   /** Programmatic selection (sheet actions, swap button) — always a building,
    * except when `poi` is passed along (e.g. "Directions" from a POI's own
-   * card knows exactly which business it's routing to/from). */
-  select(b: Building, poi?: Poi) {
+   * card knows exactly which business it's routing to/from). `silent`
+   * skips the onSelect callback — swap needs this: both fields' onSelect
+   * are wired to trigger routing (and routing collapses the editor back
+   * to the one-line trip strip), so a plain field swap would otherwise
+   * immediately re-collapse the very form you just wanted to keep open. */
+  select(b: Building, poi?: Poi, opts: { silent?: boolean } = {}) {
     this.selectedId = b.id;
     this.selectedPoi = poi ?? null;
     this.input.value = poi?.name ?? b.name;
     this.hide();
+    if (opts.silent) return;
     this.onSelect?.(b, poi);
     this.onRecentWorthy?.(b);
   }

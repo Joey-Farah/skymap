@@ -515,13 +515,12 @@ export class SkymapView {
   }
 
   /** Quick-filter the map to any combination of POI groups (food, restroom,
-   * …); an empty/null set means everything. */
-  setPoiGroupFilter(groups: string[] | null) {
+   * …); an empty set shows nothing — opt-in, not opt-out, so the map starts
+   * clean rather than saturated with icons. */
+  setPoiGroupFilter(groups: string[]) {
     const apply = () => {
       const filter: maplibregl.FilterSpecification =
-        groups && groups.length > 0
-          ? ["in", ["get", "group"], ["literal", groups]]
-          : ["!=", ["get", "group"], "transit"];
+        groups.length > 0 ? ["in", ["get", "group"], ["literal", groups]] : false;
       this.map.setFilter("skyway-pois", filter);
       this.map.setFilter("skyway-pois-label", filter);
     };

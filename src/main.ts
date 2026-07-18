@@ -195,8 +195,12 @@ async function boot() {
     const to = comboTo.value ? router.building(comboTo.value) : null;
     const fromPoi = comboFrom.poi;
     const toPoi = comboTo.poi;
-    if (to) comboFrom.select(to, toPoi ?? undefined);
-    if (from) comboTo.select(from, fromPoi ?? undefined);
+    // Silent: each combo's onSelect is wired to trigger routing, which
+    // collapses the editor back to the one-line trip strip — a plain swap
+    // should just swap the fields and leave the editor open, not act as
+    // if you'd deliberately picked a new destination.
+    if (to) comboFrom.select(to, toPoi ?? undefined, { silent: true });
+    if (from) comboTo.select(from, fromPoi ?? undefined, { silent: true });
   });
 
   /** "Directions" on a place card: destination is whatever you tapped,
@@ -461,37 +465,67 @@ async function boot() {
   }
 
   // --- POI quick-filters: "what's around" at a glance ---------------------
-  // Multi-select, Apple/Google Maps style: everything shows by default (no
-  // chip active); tapping a chip narrows the map to just the categories
-  // you've selected, and any combination can be on at once. Deselecting
-  // the last active chip returns to "show everything."
-  const filterBar = document.getElementById("poi-filter-bar")!;
+  // Opt-in, not opt-out: the map starts with no business icons at all (just
+  // buildings/skyways), and a single Filter button opens a plain vertical
+  // checklist — every category readable at once, no horizontal scroll to
+  // miss one off-screen. Any combination can be checked at once.
+  const poiFilter = document.getElementById("poi-filter")!;
+  const filterToggle = document.getElementById("poi-filter-toggle") as HTMLButtonElement;
+  const filterMenu = document.getElementById("poi-filter-menu")!;
+  const filterCount = document.getElementById("poi-filter-count") as HTMLElement;
   const QUICK_FILTERS: (keyof typeof GROUP_LABELS)[] = ["restroom", "food", "coffee", "shop", "elevator"];
   const activeFilters = new Set<string>();
+
+  function refreshFilterToggle() {
+    filterToggle.classList.toggle("active", activeFilters.size > 0);
+    filterCount.hidden = activeFilters.size === 0;
+    filterCount.textContent = String(activeFilters.size);
+  }
+
   for (const group of QUICK_FILTERS) {
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.className = "poi-filter-chip";
-    chip.dataset.group = group;
-    chip.textContent = GROUP_LABELS[group];
-    chip.addEventListener("click", () => {
+    const item = document.createElement("li");
+    item.className = "poi-filter-item";
+    item.dataset.group = group;
+    item.setAttribute("role", "menuitemcheckbox");
+    item.setAttribute("aria-checked", "false");
+    const check = document.createElement("span");
+    check.className = "poi-filter-check";
+    check.textContent = "✓";
+    item.append(check, GROUP_LABELS[group]);
+    item.addEventListener("click", () => {
       if (activeFilters.has(group)) activeFilters.delete(group);
       else activeFilters.add(group);
-      chip.classList.toggle("active", activeFilters.has(group));
-      view.setPoiGroupFilter(activeFilters.size > 0 ? [...activeFilters] : null);
+      const checked = activeFilters.has(group);
+      item.classList.toggle("checked", checked);
+      item.setAttribute("aria-checked", String(checked));
+      refreshFilterToggle();
+      view.setPoiGroupFilter([...activeFilters]);
     });
-    filterBar.appendChild(chip);
+    filterMenu.appendChild(item);
   }
+
+  filterToggle.addEventListener("click", () => {
+    const open = filterMenu.hidden;
+    filterMenu.hidden = !open;
+    filterToggle.setAttribute("aria-expanded", String(open));
+  });
+  document.addEventListener("click", (e) => {
+    if (poiFilter.contains(e.target as Node)) return;
+    filterMenu.hidden = true;
+    filterToggle.setAttribute("aria-expanded", "false");
+  });
+
   // Only relevant once you can actually see businesses on the map — same
   // threshold the POI icon layer itself uses. Fading it in/out (rather
   // than always-on) is most of what "too much on screen" was about.
   const POI_FILTER_MINZOOM = 14.8;
-  function updateFilterBarVisibility() {
-    filterBar.classList.toggle("zoomed-out", view.map.getZoom() < POI_FILTER_MINZOOM);
+  function updateFilterVisibility() {
+    poiFilter.classList.toggle("zoomed-out", view.map.getZoom() < POI_FILTER_MINZOOM);
   }
-  view.map.on("zoom", updateFilterBarVisibility);
-  view.map.on("load", updateFilterBarVisibility);
-  updateFilterBarVisibility();
+  view.map.on("zoom", updateFilterVisibility);
+  view.map.on("load", updateFilterVisibility);
+  updateFilterVisibility();
+  view.setPoiGroupFilter([]); // nothing shown until the user opts in
 
   // Test/debug handle (drives E2E camera positioning).
   (window as unknown as Record<string, unknown>).__skymap = { view, router, data, sheet, onPosition, onRouteTap };
