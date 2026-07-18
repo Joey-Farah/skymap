@@ -635,20 +635,20 @@ a:focus-visible {
   max-width: 480px;
   margin: 0 auto;
   padding: 24px 18px 16px;
-  max-height: 48vh;
   overflow-y: auto;
+  /* max-height is driven directly by JS (Sheet.setHeight) as a real pixel
+     value, both at rest and live during a drag — this transition is what
+     makes the release-to-snap animation smooth. Peek and expanded aren't
+     two fixed sizes; peek is measured from actual content (title, badges,
+     summary line), so it's never a magic number that clips something it
+     shouldn't. */
   transition: max-height 0.28s var(--ease);
 }
 
-/* Peek: just the essentials, so the route drawn behind it stays visible.
-   Drag the handle up, or tap it, to see everything. .sheet-collapsible
-   content (the turn-by-turn step list) is hidden below, so peek sizes
-   naturally to whatever's left — title, warning badges, the walk/arrival
-   summary line. A fixed pixel height here would clip that visible content
-   instead of the steps it's meant to hide, depending on how many badges a
-   given route happens to have. */
-.sheet.peek {
-  overflow: hidden;
+/* While actively dragging, height changes come from the pointer 1:1 —
+   the eased transition would otherwise fight and lag behind the finger. */
+.sheet.dragging {
+  transition: none;
 }
 
 .sheet-handle {
@@ -671,10 +671,6 @@ a:focus-visible {
   height: 4.5px;
   border-radius: 3px;
   background: var(--hairline-strong);
-}
-
-.sheet.peek .sheet-collapsible {
-  display: none;
 }
 
 .sheet-close {

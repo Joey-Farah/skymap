@@ -242,8 +242,15 @@ export class Sheet {
   private progressPromptEl: HTMLElement | null = null;
   private activeRoute: RouteResult | null = null;
   private routePois: Poi[] = [];
+  /** Measured, not guessed — see measureHeights(). Peek is however tall the
+   * always-visible summary actually is (title, badges, the walk/arrival
+   * line); expanded is the full content, capped so the map behind it
+   * always stays partly visible. */
+  private peekHeight = 0;
+  private expandedHeight = 0;
+  private expanded = false;
   private dragStartY = 0;
-  private dragStartExpanded = true;
+  private dragStartHeight = 0;
   private dragging = false;
 
   constructor(root: HTMLElement) {
@@ -254,29 +261,54 @@ export class Sheet {
     const handle = root.querySelector<HTMLElement>("#sheet-handle")!;
     handle.addEventListener("pointerdown", (e) => {
       this.dragging = true;
+      this.root.classList.add("dragging");
       this.dragStartY = e.clientY;
-      this.dragStartExpanded = this.root.classList.contains("expanded");
+      this.dragStartHeight = this.root.getBoundingClientRect().height;
       handle.setPointerCapture(e.pointerId);
     });
     handle.addEventListener("pointermove", (e) => {
       if (!this.dragging) return;
-      // Drag up expands, drag down collapses — a live preview via a class
-      // toggle at the halfway point feels responsive without a full
-      // continuous-resize implementation.
+      // 1:1 with the finger, Apple Maps style — not a threshold that jumps
+      // to a fixed state once you've dragged "enough."
       const delta = this.dragStartY - e.clientY;
-      if (Math.abs(delta) > 20) this.setExpanded(delta > 0);
+      const next = Math.min(this.expandedHeight, Math.max(this.peekHeight, this.dragStartHeight + delta));
+      this.root.style.maxHeight = `${next}px`;
     });
     handle.addEventListener("pointerup", (e) => {
       const moved = Math.abs(this.dragStartY - e.clientY) > 8;
       this.dragging = false;
-      if (!moved) this.setExpanded(!this.dragStartExpanded);
+      this.root.classList.remove("dragging");
+      if (!moved) {
+        this.setExpanded(!this.expanded); // a plain tap still toggles
+        return;
+      }
+      // Released mid-drag: snap to whichever end is closer, animated by
+      // the CSS transition (re-enabled now that .dragging is off).
+      const current = this.root.getBoundingClientRect().height;
+      const midpoint = (this.peekHeight + this.expandedHeight) / 2;
+      this.setExpanded(current > midpoint);
     });
+  }
+
+  /** Actual pixel heights for this sheet's current content: peek is the
+   * height with .sheet-collapsible content hidden (title/badges/summary
+   * only), expanded is the full height, capped at 60% of the viewport so
+   * the map stays partly visible. Measuring rather than guessing means a
+   * route with three warning badges and one with none both peek at
+   * exactly their own correct height, never clipped or oversized. */
+  private measureHeights() {
+    const collapsibles = [...this.content.querySelectorAll<HTMLElement>(".sheet-collapsible")];
+    const prevDisplay = collapsibles.map((el) => el.style.display);
+    collapsibles.forEach((el) => (el.style.display = "none"));
+    this.peekHeight = this.root.scrollHeight;
+    collapsibles.forEach((el, i) => (el.style.display = prevDisplay[i]));
+    this.expandedHeight = Math.min(this.root.scrollHeight, window.innerHeight * 0.6);
   }
 
   /** Peek shows just the summary; expanded shows full content. Always togglable via the handle. */
   private setExpanded(expanded: boolean) {
-    this.root.classList.toggle("expanded", expanded);
-    this.root.classList.toggle("peek", !expanded);
+    this.expanded = expanded;
+    this.root.style.maxHeight = `${expanded ? this.expandedHeight : this.peekHeight}px`;
   }
 
   hide() {
@@ -316,11 +348,17 @@ export class Sheet {
       this.progressPromptEl.replaceChildren(`${verb} ${next.building.name}`);
       if (landmark) this.progressPromptEl.append(", ", landmarkCue(landmark));
     }
+    // The prompt starts hidden (nothing to say before a live fix arrives),
+    // so peekHeight was measured without it — revealing it here would
+    // otherwise clip against a now-stale height.
     this.progressPromptEl.hidden = false;
+    this.measureHeights();
+    this.setExpanded(this.expanded);
   }
 
   private show(expanded = true) {
     this.root.hidden = false;
+    this.measureHeights();
     this.setExpanded(expanded);
     // Retrigger the content fade-in even when the sheet was already open
     // (e.g. tapping a different building) — a hard content swap otherwise
