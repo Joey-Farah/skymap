@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- A · The Pin — the universal navigation mark, made ours: a map pin
+       with the skyway's glass band running through it, traveler at the
+       center. Unmistakably a wayfinding app at any size. -->
+  <defs>
+    <linearGradient id="a-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1e40af"/>
+    </linearGradient>
+    <clipPath id="a-pin">
+      <path d="M256 468 C 206 388 100 336 100 216 a156 156 0 1 1 312 0 C 412 336 306 388 256 468 Z"/>
+    </clipPath>
+  </defs>
+  <rect width="512" height="512" fill="url(#a-bg)"/>
+  <path d="M256 468 C 206 388 100 336 100 216 a156 156 0 1 1 312 0 C 412 336 306 388 256 468 Z"
+        fill="#f8fafc"/>
+  <g clip-path="url(#a-pin)">
+    <rect x="60" y="180" width="392" height="76" fill="#bfdbfe"/>
+    <rect x="60" y="180" width="392" height="22" fill="#eff6ff"/>
+  </g>
+  <circle cx="256" cy="218" r="52" fill="#f59e0b"/>
+</svg>

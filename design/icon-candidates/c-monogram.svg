@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- C · The Monogram — an S drawn as the skyway itself: a wide white
+       walkway tube with a glass stripe, snaking like the letter.
+       Monograms stay crisp at every size. -->
+  <defs>
+    <linearGradient id="c-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#c-bg)"/>
+  <path d="M368 132 H208 a60 60 0 0 0 0 120 H304 a60 60 0 0 1 0 120 H144"
+        fill="none" stroke="#0f2a6e" stroke-width="112" stroke-linecap="round" opacity="0.45"/>
+  <path d="M368 132 H208 a60 60 0 0 0 0 120 H304 a60 60 0 0 1 0 120 H144"
+        fill="none" stroke="#f8fafc" stroke-width="96" stroke-linecap="round"/>
+  <path d="M368 132 H208 a60 60 0 0 0 0 120 H304 a60 60 0 0 1 0 120 H144"
+        fill="none" stroke="#bfdbfe" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="368" cy="132" r="30" fill="#f59e0b"/>
+</svg>

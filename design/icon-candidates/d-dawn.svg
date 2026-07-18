@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- D · Dawn Crossing — winter dawn over downtown: low sun in the sky,
+       skyline silhouette, one lit skyway between two dark towers. -->
+  <defs>
+    <linearGradient id="d-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6fb0f5"/>
+      <stop offset="0.55" stop-color="#bcd8f9"/>
+      <stop offset="1" stop-color="#fbd191"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#d-sky)"/>
+  <circle cx="140" cy="140" r="52" fill="#f59e0b"/>
+  <!-- background skyline -->
+  <path d="M0 512 V392 h50 v-56 h44 v76 h36 v-110 h58 v96 h42 v-72 h48 v104 h50 v-84 h56 v60 h50 v-44 h78 v152 Z"
+        fill="#31518f" opacity="0.5"/>
+  <!-- foreground towers + lit skyway -->
+  <rect x="96" y="232" width="100" height="280" fill="#14213d"/>
+  <rect x="316" y="184" width="100" height="328" fill="#14213d"/>
+  <rect x="166" y="308" width="180" height="64" rx="24" fill="#f8fafc"/>
+  <rect x="180" y="322" width="152" height="36" rx="14" fill="#fbbf24"/>
+</svg>
