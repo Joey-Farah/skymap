@@ -383,6 +383,10 @@ export class Sheet {
       // turn-by-turn list underneath.
       this.measureHeights();
       this.setExpanded(this.expanded);
+      // Nothing gained by dragging (a plain message, a card with no extra
+      // detail) — showing the handle and letting overflow scroll anyway
+      // reads as an affordance for content that isn't there.
+      this.root.classList.toggle("no-expand", this.expandedHeight <= this.peekHeight + 1);
     }
   }
 
@@ -436,10 +440,13 @@ export class Sheet {
     } else {
       this.peekHeight = 120;
     }
-    this.expandedHeight = Math.max(
-      this.peekHeight,
-      Math.min(this.root.scrollHeight, window.innerHeight * 0.6),
-    );
+    // Only a sheet-collapsible section is worth dragging up for — without
+    // one, root.scrollHeight can still exceed peekHeight by a few px of
+    // margin-collapse noise, which isn't real content and shouldn't make
+    // the sheet claim there's something to expand into.
+    this.expandedHeight = this.content.querySelector(".sheet-collapsible")
+      ? Math.max(this.peekHeight, Math.min(this.root.scrollHeight, window.innerHeight * 0.6))
+      : this.peekHeight;
   }
 
   /** Peek shows just the summary; expanded shows full content. Always togglable via the handle. */
@@ -777,7 +784,9 @@ export class Sheet {
     this.content.innerHTML = "";
     this.clearRouteProgress();
     this.content.append(el("h2", title), el("div", body, "meta"));
-    this.show("card", true);
+    // Not expanded: it's a couple lines of text, nothing further to drag
+    // up into — matches the peek-only sizing applyMode() already gives it.
+    this.show("card", false);
   }
 }
 

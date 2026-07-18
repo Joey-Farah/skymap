@@ -583,6 +583,16 @@ a:focus-visible {
   background: var(--hairline-strong);
 }
 
+/* Peek and expanded are the same height — dragging wouldn't reveal
+   anything, so the handle shouldn't invite it. */
+.sheet.no-expand .sheet-handle {
+  display: none;
+}
+
+.sheet.no-expand {
+  overflow-y: hidden;
+}
+
 .sheet-close[hidden] {
   display: none;
 }
