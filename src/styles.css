@@ -634,7 +634,7 @@ a:focus-visible {
   bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
   max-width: 480px;
   margin: 0 auto;
-  padding: 24px 18px 16px;
+  padding: 34px 18px 16px;
   overflow-y: auto;
   /* max-height is driven directly by JS (Sheet.setHeight) as a real pixel
      value, both at rest and live during a drag — this transition is what
@@ -656,7 +656,10 @@ a:focus-visible {
   top: 0;
   left: 0;
   right: 0;
-  height: 24px;
+  /* A bigger hit target than the thin grip line implies — easy to miss
+     low and land on the content below instead, which used to mean an
+     accidental scroll through the route steps rather than a drag. */
+  height: 40px;
   border: 0;
   background: transparent;
   cursor: grab;

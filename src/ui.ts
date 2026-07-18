@@ -309,6 +309,13 @@ export class Sheet {
   private setExpanded(expanded: boolean) {
     this.expanded = expanded;
     this.root.style.maxHeight = `${expanded ? this.expandedHeight : this.peekHeight}px`;
+    // Peeked content isn't display:none anymore (it needs to be in normal
+    // flow to reveal progressively as you drag), which means it's also
+    // technically scrollable — a stray scroll gesture could reveal the
+    // steps without ever touching the handle. Only the fully-expanded
+    // state should actually scroll, for the case content still exceeds
+    // the 60vh cap.
+    this.root.style.overflowY = expanded ? "auto" : "hidden";
   }
 
   hide() {
