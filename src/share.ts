@@ -19,6 +19,12 @@ export function encodeRouteState(state: { fromId: string; toId: string; when: Da
   return `?${params.toString()}`;
 }
 
+/** A real, monitored inbox — hello@skymap.app looked more official but the
+ * domain isn't ours, so tester mail would have bounced or gone to a
+ * stranger. Gmail's +tag makes these filterable without a new account;
+ * swap for a custom-domain address if/when one actually exists. */
+const FEEDBACK_EMAIL = "joeyefarah+skymap@gmail.com";
+
 /**
  * Data in this app comes entirely from OpenStreetMap, which can go stale —
  * a known weakness of every skyway map built this way. This is the cheap
@@ -31,7 +37,7 @@ export function reportIssueUrl(target: { name: string; id: string }): string {
   const body = encodeURIComponent(
     `What's wrong? (closed, wrong hours, wrong location, doesn't exist, other)\n\n\n—\nRef: ${target.id}`,
   );
-  return `mailto:hello@skymap.app?subject=${subject}&body=${body}`;
+  return `mailto:${encodeURIComponent(FEEDBACK_EMAIL)}?subject=${subject}&body=${body}`;
 }
 
 /** General product feedback/ideas — distinct from reportIssueUrl, which is
@@ -39,7 +45,7 @@ export function reportIssueUrl(target: { name: string; id: string }): string {
 export function feedbackUrl(): string {
   const subject = encodeURIComponent("SkyMap feedback");
   const body = encodeURIComponent("What's working, what's not, what would make this better?\n\n\n");
-  return `mailto:hello@skymap.app?subject=${subject}&body=${body}`;
+  return `mailto:${encodeURIComponent(FEEDBACK_EMAIL)}?subject=${subject}&body=${body}`;
 }
 
 export function parseRouteState(search: string): RouteState {
