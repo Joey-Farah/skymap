@@ -1,23 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- "The Pin": map pin with the skyway's glass band running through it,
-       amber traveler at center. Chosen from four candidates 2026-07-18
-       (design/icon-candidates has the alternates). scripts/render-icons.mjs
-       swaps rx="112" -> rx="0" for the full-bleed apple-touch icon. -->
+  <!-- "The Route": amber route threading between city blocks, start dot to
+       destination — chosen 2026-07-18 (design/icon-candidates has the
+       alternates). scripts/render-icons.mjs swaps rx="112" -> rx="0" for
+       the full-bleed apple-touch icon; the maskable/iOS pipeline keys on
+       the gradient id "bg". -->
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#2563eb"/>
-      <stop offset="1" stop-color="#1e40af"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e3a8a"/>
+      <stop offset="1" stop-color="#172554"/>
     </linearGradient>
-    <clipPath id="pin">
-      <path d="M256 468 C 206 388 100 336 100 216 a156 156 0 1 1 312 0 C 412 336 306 388 256 468 Z"/>
-    </clipPath>
   </defs>
   <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <path d="M256 468 C 206 388 100 336 100 216 a156 156 0 1 1 312 0 C 412 336 306 388 256 468 Z"
-        fill="#f8fafc"/>
-  <g clip-path="url(#pin)">
-    <rect x="60" y="180" width="392" height="76" fill="#bfdbfe"/>
-    <rect x="60" y="180" width="392" height="22" fill="#eff6ff"/>
-  </g>
-  <circle cx="256" cy="218" r="52" fill="#f59e0b"/>
+  <rect x="52" y="52" width="150" height="150" rx="26" fill="#3b5bd6" opacity="0.85"/>
+  <rect x="310" y="52" width="150" height="150" rx="26" fill="#3b5bd6" opacity="0.55"/>
+  <rect x="52" y="310" width="150" height="150" rx="26" fill="#3b5bd6" opacity="0.55"/>
+  <rect x="310" y="310" width="150" height="150" rx="26" fill="#3b5bd6" opacity="0.85"/>
+  <path d="M120 400 H244 a24 24 0 0 0 24 -24 V136 a24 24 0 0 1 24 -24 H392"
+        fill="none" stroke="#0b1b45" stroke-width="58" stroke-linecap="round" opacity="0.35"/>
+  <path d="M120 400 H244 a24 24 0 0 0 24 -24 V136 a24 24 0 0 1 24 -24 H392"
+        fill="none" stroke="#f59e0b" stroke-width="44" stroke-linecap="round"/>
+  <circle cx="120" cy="400" r="34" fill="#f8fafc"/>
+  <circle cx="120" cy="400" r="16" fill="#f59e0b"/>
+  <circle cx="392" cy="112" r="34" fill="#f8fafc"/>
+  <circle cx="392" cy="112" r="16" fill="#1e40af"/>
 </svg>
