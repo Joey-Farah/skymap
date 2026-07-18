@@ -1,4 +1,5 @@
 import "./styles.css";
+import { Capacitor } from "@capacitor/core";
 import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { SkywayRouter, nearestBuilding, routeStepIndex } from "./router.ts";
 import { SkymapView, resolveStyle } from "./map.ts";
@@ -12,6 +13,7 @@ import { locateTransition, type LocateMode } from "./locate-mode.ts";
 import { GROUP_LABELS } from "./poi.ts";
 
 async function boot() {
+  console.log("[skymap-build-marker] " + new Date().toISOString());
   const res = await fetch("./data/skymap-data.json");
   if (!res.ok) throw new Error(`Could not load skyway data (${res.status})`);
   const data: SkymapData = await res.json();
@@ -142,7 +144,15 @@ async function boot() {
     }
     activeRoute = route;
     manualPositionUntil = 0; // a fresh route starts under normal GPS tracking
-    view.setRoute(route);
+    // The route itself is building-to-building (that's the network the
+    // skyway graph actually models), but when either end is a specific
+    // business, mark that business's own precise spot rather than its host
+    // building's centroid — inside a large building those can be tens of
+    // meters apart, enough to look like the pin missed the destination.
+    view.setRoute(route, {
+      fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
+      toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
+    });
     const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
     const toLabel = comboTo.label ?? router.building(toId)!.name;
     sheet.showRoute(
@@ -177,22 +187,28 @@ async function boot() {
   };
 
   document.getElementById("btn-route")!.addEventListener("click", routeIfReady);
+  // Swap just swaps the fields — routing is a separate, deliberate action
+  // via "Find route", not something that fires the moment you flip origin
+  // and destination.
   document.getElementById("btn-swap")!.addEventListener("click", () => {
     const from = comboFrom.value ? router.building(comboFrom.value) : null;
     const to = comboTo.value ? router.building(comboTo.value) : null;
-    if (to) comboFrom.select(to);
-    if (from) comboTo.select(from);
-    if (!from && !to) return;
-    routeIfReady();
+    const fromPoi = comboFrom.poi;
+    const toPoi = comboTo.poi;
+    if (to) comboFrom.select(to, toPoi ?? undefined);
+    if (from) comboTo.select(from, fromPoi ?? undefined);
   });
 
   /** "Directions" on a place card: destination is whatever you tapped,
    * origin defaults to current location when known (a direct consequence
    * of pressing this button, not the old silent auto-fill), reveal the
-   * editor, route. */
-  function showDirections(destination: Building) {
+   * editor, route. `poi`, when the card was for a specific business rather
+   * than a bare building, carries its precise location through so the
+   * route marker lands on the business itself, not just its host
+   * building's centroid. */
+  function showDirections(destination: Building, poi?: Poi) {
     showEditing();
-    comboTo.select(destination);
+    comboTo.select(destination, poi);
     if (nearBuilding) comboFrom.selectCurrentLocation();
     routeIfReady();
   }
@@ -212,7 +228,7 @@ async function boot() {
     activeRoute = null;
     const host = router.building(p.buildingId);
     sheet.showPoi(p, host, () => {
-      if (host) showDirections(host);
+      if (host) showDirections(host, p);
     });
   }
 
@@ -423,32 +439,46 @@ async function boot() {
   setInterval(() => view.setTime(selectedTime()), 60_000);
   view.setTime(selectedTime());
 
-  if ("serviceWorker" in navigator && !import.meta.env.DEV) {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  // The service worker's whole job is caching over-the-network requests for
+  // the PWA. Inside the native wrapper, assets are already bundled on disk —
+  // there's no network round-trip to save, and a stale cached build would
+  // just silently survive across native rebuilds. Register it for the real
+  // PWA only, and actively clear out any service worker + caches left over
+  // from before this app was ever run natively (e.g. testing the PWA first).
+  if ("serviceWorker" in navigator) {
+    if (Capacitor.isNativePlatform()) {
+      void (async () => {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        if (regs.length === 0) return;
+        await Promise.all(regs.map((reg) => reg.unregister()));
+        const keys = await caches.keys();
+        await Promise.all(keys.map((k) => caches.delete(k)));
+        location.reload();
+      })();
+    } else if (!import.meta.env.DEV) {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
   }
 
   // --- POI quick-filters: "what's around" at a glance ---------------------
+  // Multi-select, Apple/Google Maps style: everything shows by default (no
+  // chip active); tapping a chip narrows the map to just the categories
+  // you've selected, and any combination can be on at once. Deselecting
+  // the last active chip returns to "show everything."
   const filterBar = document.getElementById("poi-filter-bar")!;
-  const QUICK_FILTERS: (keyof typeof GROUP_LABELS | null)[] = [
-    null,
-    "restroom",
-    "food",
-    "coffee",
-    "shop",
-    "elevator",
-  ];
+  const QUICK_FILTERS: (keyof typeof GROUP_LABELS)[] = ["restroom", "food", "coffee", "shop", "elevator"];
+  const activeFilters = new Set<string>();
   for (const group of QUICK_FILTERS) {
     const chip = document.createElement("button");
     chip.type = "button";
     chip.className = "poi-filter-chip";
-    chip.dataset.group = group ?? "all";
-    chip.textContent = group ? GROUP_LABELS[group] : "All";
-    chip.classList.toggle("active", group === null);
+    chip.dataset.group = group;
+    chip.textContent = GROUP_LABELS[group];
     chip.addEventListener("click", () => {
-      filterBar.querySelectorAll<HTMLButtonElement>(".poi-filter-chip").forEach((c) => {
-        c.classList.toggle("active", c === chip);
-      });
-      view.setPoiGroupFilter(group);
+      if (activeFilters.has(group)) activeFilters.delete(group);
+      else activeFilters.add(group);
+      chip.classList.toggle("active", activeFilters.has(group));
+      view.setPoiGroupFilter(activeFilters.size > 0 ? [...activeFilters] : null);
     });
     filterBar.appendChild(chip);
   }

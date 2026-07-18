@@ -134,45 +134,6 @@ function poisFC(pois: Poi[]): FC {
   };
 }
 
-const TILTED_PITCH = 45;
-
-/** Apple Maps defaults to top-down and lets you opt into a tilted view —
- * a flat skyway network reads clearer from directly above, but the tilt
- * is nice once you're actually walking a route. */
-class Pitch3DControl implements maplibregl.IControl {
-  private map?: maplibregl.Map;
-  private button!: HTMLButtonElement;
-
-  onAdd(map: maplibregl.Map): HTMLElement {
-    this.map = map;
-    const container = document.createElement("div");
-    container.className = "maplibregl-ctrl maplibregl-ctrl-group";
-    this.button = document.createElement("button");
-    this.button.type = "button";
-    this.button.className = "maplibregl-ctrl-pitch-toggle";
-    this.button.setAttribute("aria-label", "Toggle 3D view");
-    this.button.textContent = "3D";
-    this.button.addEventListener("click", () => {
-      const next = (map.getPitch() ?? 0) > 5 ? 0 : TILTED_PITCH;
-      map.easeTo({ pitch: next, duration: 400 });
-    });
-    map.on("pitch", () => this.syncActive());
-    container.appendChild(this.button);
-    this.syncActive();
-    return container;
-  }
-
-  onRemove(): void {
-    this.button.parentElement?.remove();
-    this.map = undefined;
-  }
-
-  private syncActive() {
-    const on = (this.map?.getPitch() ?? 0) > 5;
-    this.button.classList.toggle("active", on);
-  }
-}
-
 function pointFC(coord: [number, number] | null): FC {
   if (!coord) return { type: "FeatureCollection", features: [] };
   return {
@@ -209,17 +170,16 @@ export class SkymapView {
       pitch: 0,
       attributionControl: { compact: true },
     });
-    this.map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
-    this.map.addControl(new Pitch3DControl(), "top-right");
-    // MapLibre draws its own blue "you are here" dot + accuracy ring;
-    // we just need to hear about updates for building-aware features
-    // (turn-by-turn progress, "you're near X").
+    // Pinch-to-zoom and two-finger-drag-to-tilt are on by default with no
+    // button needed. MapLibre draws its own blue "you are here" dot +
+    // accuracy ring; the control itself stays off-screen (see
+    // .maplibregl-ctrl-top-right in styles.css) — location is asked for and
+    // tracked automatically on first load rather than through a tap target.
     const geolocate = new maplibregl.GeolocateControl({
       trackUserLocation: true,
-      // maximumAge lets the first tap paint a recent cached fix instantly
-      // (watchPosition then refines it); timeout surfaces an error instead
-      // of spinning forever — the incumbent app's "wait 8-10 seconds and
-      // tap again" bug is exactly this failure mode left silent.
+      // maximumAge lets the first fix paint a recent cached position
+      // instantly (watchPosition then refines it); timeout surfaces an
+      // error instead of spinning forever.
       positionOptions: { enableHighAccuracy: true, maximumAge: 120000, timeout: 15000 },
     });
     this.map.addControl(geolocate, "top-right");
@@ -237,6 +197,8 @@ export class SkymapView {
       this.declutterBasemap();
       this.registerPoiIcons();
       this.addLayers();
+      this.collapseAttribution();
+      geolocate.trigger(); // prompts for permission once, then tracks continuously
     });
 
     this.map.on("click", "skyway-buildings-fill", (e) => {
@@ -295,6 +257,18 @@ export class SkymapView {
       if ("source-layer" in layer && layer["source-layer"] === "place") continue;
       this.map.setLayoutProperty(layer.id, "visibility", "none");
     }
+  }
+
+  /** MapLibre's compact attribution starts fully expanded (the required
+   * OpenFreeMap/OSM credit as a full text strip) and only collapses to the
+   * small "i" icon once the user drags the map — so on a fresh launch it
+   * just sits there as a persistent banner. Collapse it immediately; the
+   * credit is still one tap away via the icon, same as it would be after
+   * a drag. */
+  private collapseAttribution() {
+    const attrib = this.map.getContainer().querySelector(".maplibregl-ctrl-attrib");
+    attrib?.removeAttribute("open");
+    attrib?.classList.remove("maplibregl-compact-show");
   }
 
   private addLayers() {
@@ -463,7 +437,11 @@ export class SkymapView {
     );
   }
 
-  setRoute(route: RouteResult | null) {
+  /** `fromCoord`/`toCoord` override the marker position when routing to/from
+   * a specific business rather than a bare building — the route line itself
+   * still runs building-to-building (that's the graph the skyway network
+   * actually models), only the pin moves to the business's own spot. */
+  setRoute(route: RouteResult | null, poiCoords?: { fromCoord?: [number, number]; toCoord?: [number, number] }) {
     const apply = () => {
       if (this.routeAnim) cancelAnimationFrame(this.routeAnim);
       this.routeAnim = 0;
@@ -480,12 +458,14 @@ export class SkymapView {
       const coords = routeCoords(route);
       const first = route.steps[0].building;
       const last = route.steps[route.steps.length - 1].building;
+      const fromCoord = poiCoords?.fromCoord ?? [first.lon, first.lat];
+      const toCoord = poiCoords?.toCoord ?? [last.lon, last.lat];
       this.markers.push(
-        new maplibregl.Marker({ color: "#16a34a" }).setLngLat([first.lon, first.lat]).addTo(this.map),
-        new maplibregl.Marker({ color: "#dc2626" }).setLngLat([last.lon, last.lat]).addTo(this.map),
+        new maplibregl.Marker({ color: "#16a34a" }).setLngLat(fromCoord).addTo(this.map),
+        new maplibregl.Marker({ color: "#dc2626" }).setLngLat(toCoord).addTo(this.map),
       );
-      const lons = coords.map((c) => c[0]);
-      const lats = coords.map((c) => c[1]);
+      const lons = [...coords.map((c) => c[0]), fromCoord[0], toCoord[0]];
+      const lats = [...coords.map((c) => c[1]), fromCoord[1], toCoord[1]];
       this.map.fitBounds(
         [
           [Math.min(...lons), Math.min(...lats)],
@@ -534,12 +514,14 @@ export class SkymapView {
     this.map.flyTo({ center: [b.lon, b.lat], zoom: 16 });
   }
 
-  /** Quick-filter the map to one POI group (food, restroom, …), or null for everything. */
-  setPoiGroupFilter(group: string | null) {
+  /** Quick-filter the map to any combination of POI groups (food, restroom,
+   * …); an empty/null set means everything. */
+  setPoiGroupFilter(groups: string[] | null) {
     const apply = () => {
-      const filter: maplibregl.FilterSpecification = group
-        ? ["==", ["get", "group"], group]
-        : ["!=", ["get", "group"], "transit"];
+      const filter: maplibregl.FilterSpecification =
+        groups && groups.length > 0
+          ? ["in", ["get", "group"], ["literal", groups]]
+          : ["!=", ["get", "group"], "transit"];
       this.map.setFilter("skyway-pois", filter);
       this.map.setFilter("skyway-pois-label", filter);
     };

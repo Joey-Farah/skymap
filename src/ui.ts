@@ -30,6 +30,11 @@ export class BuildingCombo {
   private poisById: Map<string, Poi>;
   private entries: ComboEntry[];
   private selectedId: string | null = null;
+  /** The specific business behind the current selection, if any — a route
+   * to/from this field should mark the business's own precise location,
+   * not just its host building's centroid (which can be dozens of meters
+   * off in a large building). */
+  private selectedPoi: Poi | null = null;
   private activeIndex = -1;
   /** Only the "From" combo offers this — you don't route *to* where you are. */
   private showCurrentLocation: boolean;
@@ -97,12 +102,21 @@ export class BuildingCombo {
     return this.selectedId ? this.input.value : null;
   }
 
-  /** Programmatic selection (sheet actions, swap button) — always a building. */
-  select(b: Building) {
+  /** The precise business location behind the current selection, if the
+   * choice was a specific business rather than the building itself. */
+  get poi(): Poi | null {
+    return this.selectedPoi;
+  }
+
+  /** Programmatic selection (sheet actions, swap button) — always a building,
+   * except when `poi` is passed along (e.g. "Directions" from a POI's own
+   * card knows exactly which business it's routing to/from). */
+  select(b: Building, poi?: Poi) {
     this.selectedId = b.id;
-    this.input.value = b.name;
+    this.selectedPoi = poi ?? null;
+    this.input.value = poi?.name ?? b.name;
     this.hide();
-    this.onSelect?.(b);
+    this.onSelect?.(b, poi);
     this.onRecentWorthy?.(b);
   }
 
@@ -113,6 +127,7 @@ export class BuildingCombo {
     this.input.value = entry.label;
     this.hide();
     const poi = entry.poiId ? this.poisById.get(entry.poiId) : undefined;
+    this.selectedPoi = poi ?? null;
     this.onSelect?.(b, poi);
     this.onRecentWorthy?.(b);
   }
@@ -124,6 +139,7 @@ export class BuildingCombo {
     const b = this.currentLocationBuilding;
     if (!b) return;
     this.selectedId = b.id;
+    this.selectedPoi = null;
     this.input.value = "Current Location";
     this.hide();
     this.onSelect?.(b);

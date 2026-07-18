@@ -3,6 +3,6 @@
   "appName": "SkyMap",
   "webDir": "dist",
   "ios": {
-    "contentInset": "always"
+    "contentInset": "never"
   }
 }

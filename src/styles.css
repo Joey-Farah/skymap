@@ -78,6 +78,18 @@ body,
   margin: 0;
 }
 
+html,
+body {
+  /* position: fixed (not just overflow: hidden) so there's no document to
+     scroll at all — inside a native iOS wrapper, the WKWebView's own
+     scroll view can still rubber-band on a tall/keyboard-shifted document
+     even when every element's own overflow is contained. This is the
+     standard fix for that class of bug in hybrid apps. */
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
 body {
   /* The system stack renders as true SF Pro on iOS/macOS — more authentic
      to an "Apple Maps" feel than any embedded alternative. */
@@ -126,8 +138,12 @@ a:focus-visible {
 
 .search-panel {
   top: calc(env(safe-area-inset-top, 0px) + 10px);
-  left: 10px;
-  right: auto;
+  /* True screen-centering, not just left-anchored with a max-width cap —
+     on phones wider than ~420px (Plus/Pro Max sizes) a plain "left:10px,
+     width: min(400px, ...)" leaves the leftover space only on the right,
+     so the card (and everything centered inside it) reads as off-center. */
+  left: 50%;
+  transform: translateX(-50%);
   width: min(400px, calc(100vw - 20px));
   padding: 14px 16px 13px;
   transition:
@@ -168,6 +184,7 @@ a:focus-visible {
   display: none;
   width: 100%;
   align-items: center;
+  justify-content: center;
   gap: 9px;
   background: rgba(20, 33, 61, 0.045);
   border: 0;
@@ -178,7 +195,7 @@ a:focus-visible {
   color: var(--ink-400);
   cursor: pointer;
   font-family: inherit;
-  text-align: left;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -253,13 +270,8 @@ a:focus-visible {
   width: 24px;
   height: 24px;
   border-radius: 8px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  display: grid;
-  place-items: center;
   flex-shrink: 0;
+  display: block;
 }
 
 .brand h1 {
@@ -493,7 +505,10 @@ a:focus-visible {
   max-width: min(86vw, 420px);
   padding: 10px 16px;
   border-radius: 999px;
-  background: var(--ink-900);
+  /* Fixed navy, not var(--ink-900) — that flips to near-white in dark mode,
+     which combined with this pill's hardcoded white text became invisible
+     white-on-white. This pill is meant to look the same in both themes. */
+  background: #14213d;
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -516,22 +531,19 @@ a:focus-visible {
   filter: brightness(0) invert(1);
 }
 
-/* 3D pitch toggle: same control-group chrome as the built-in buttons, since
-   it isn't one of MapLibre's own icon buttons. */
-.maplibregl-ctrl-pitch-toggle {
-  width: 29px;
-  height: 29px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--ink-600);
-  background: transparent;
-  border: none;
-  cursor: pointer;
+/* No on-screen zoom/3D/locate buttons — pinch and two-finger-drag cover
+   zoom and tilt, and location tracking starts automatically on load
+   (see SkymapView's geolocate.trigger() call). */
+.maplibregl-ctrl-top-right {
+  display: none;
 }
 
-.maplibregl-ctrl-pitch-toggle.active {
-  background: var(--accent);
-  color: #fff;
+/* The one remaining control is the required attribution credit — give it
+   room for the home-indicator safe area so it isn't clipped on notched
+   phones. */
+.maplibregl-ctrl-bottom-right {
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* --- Save My Ramp --------------------------------------------------------- */
@@ -629,9 +641,13 @@ a:focus-visible {
 }
 
 /* Peek: just the essentials, so the route drawn behind it stays visible.
-   Drag the handle up, or tap it, to see everything. */
+   Drag the handle up, or tap it, to see everything. .sheet-collapsible
+   content (the turn-by-turn step list) is hidden below, so peek sizes
+   naturally to whatever's left — title, warning badges, the walk/arrival
+   summary line. A fixed pixel height here would clip that visible content
+   instead of the steps it's meant to hide, depending on how many badges a
+   given route happens to have. */
 .sheet.peek {
-  max-height: 136px;
   overflow: hidden;
 }
 
@@ -1122,13 +1138,6 @@ a:focus-visible {
 }
 
 @media (max-width: 560px) {
-  .search-panel {
-    /* Leave room on the right for MapLibre's zoom/geolocate controls —
-       full-bleed used to sit on top of them, making them unclickable. */
-    right: 54px;
-    width: auto;
-  }
-
   .sheet {
     max-height: 44vh;
   }
