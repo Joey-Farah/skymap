@@ -41,10 +41,13 @@ const core = ["./", ...files.filter((f) => CORE.test(f)).map((f) => `./${f}`)];
 const extra = files.filter((f) => !CORE.test(f)).map((f) => `./${f}`);
 const precache = { core, extra };
 
-const version = createHash("sha256")
-  .update(JSON.stringify(precache))
-  .digest("hex")
-  .slice(0, 12);
+// Version covers file CONTENTS, not just the name list: Vite content-hashes
+// js/css names, but icons/logos/data keep stable names across builds — a
+// list-only hash meant an asset-only change (e.g. a new app icon) shipped
+// under the same cache version and returning users kept the stale bytes.
+const contentDigest = createHash("sha256");
+for (const f of files) contentDigest.update(f).update(readFileSync(join(DIST, f)));
+const version = contentDigest.digest("hex").slice(0, 12);
 
 const template = readFileSync(join(DIST, "sw.js"), "utf8");
 
