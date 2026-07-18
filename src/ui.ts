@@ -368,9 +368,13 @@ export class Sheet {
       this.setClearance(h + 12);
     } else if (m === "search") {
       // Tall fixed sheet, Apple's search detent; the list inside scrolls.
-      this.root.style.maxHeight = `${Math.round(window.innerHeight * 0.82)}px`;
+      const h = Math.round(window.innerHeight * 0.82);
+      this.root.style.maxHeight = `${h}px`;
       this.root.style.overflowY = "auto";
-      this.setClearance(0); // locate is hidden in this mode anyway
+      // The locate button itself is hidden in this mode, but other
+      // bottom-anchored floaters (the toast) still need to clear the
+      // sheet's real height, not 0.
+      this.setClearance(h + 12);
     } else {
       // card, preview, and nav all size the same way: peek clips at the
       // last always-visible element, expanded (drag-up) reveals the full

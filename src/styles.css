@@ -371,12 +371,16 @@ a:focus-visible {
   transform: scale(0.92);
 }
 
-/* Transient notice pill — floats above everything, never touches the sheet. */
+/* Transient notice pill — floats above everything, never touches the sheet.
+   bottom rides on --sheet-clearance (the same value the locate button
+   uses) instead of a fixed offset: the drawer's height now varies wildly
+   by mode (a slim idle pill vs. a tall search or place-card sheet), and a
+   fixed guess got covered by — or covered — the drawer depending on mode. */
 .toast {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px + var(--sheet-clearance, 80px));
   max-width: min(86vw, 420px);
   padding: 10px 16px;
   border-radius: 999px;
@@ -390,6 +394,7 @@ a:focus-visible {
   text-align: center;
   z-index: 30;
   box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  transition: bottom 0.28s var(--ease);
 }
 
 .toast[hidden] {
