@@ -1064,133 +1064,71 @@ a:focus-visible {
   }
 }
 
-/* --- POI quick filters ---------------------------------------------------- */
+/* --- Category suggestions (inside the search panel) ---------------------- */
 
-.poi-filter {
-  position: absolute;
-  /* Top-right, clear of both the search panel above (tallest persistent
-     state is the trip strip, ~110px) and the directions sheet that rises
-     from the bottom — the old bottom-left spot sat exactly where the
-     sheet's peek state lands. */
-  right: 10px;
-  top: calc(env(safe-area-inset-top, 0px) + 124px);
-  /* Above the bottom sheet (z 10): an open dropdown should never be cut
-     off by a panel rising from the other edge of the screen. */
-  z-index: 11;
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+/* Only in the "picking" state — tap "Where to?" and the categories sit
+   right under the destination field, Apple Maps style, instead of a
+   floating button that inevitably collides with some other panel. */
+.suggestions {
+  display: none;
 }
 
-.poi-filter.zoomed-out {
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
+.search-panel.picking .suggestions {
+  display: block;
+  margin-top: 12px;
 }
 
-.poi-filter-toggle {
+.suggestions-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-400);
+  margin-bottom: 8px;
+}
+
+.suggestions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.suggestion-pill {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 14px;
+  gap: 6px;
+  padding: 7px 12px 7px 8px;
   border-radius: 999px;
   border: 0;
-  background: var(--glass);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: var(--shadow-1);
+  background: rgba(20, 33, 61, 0.045);
   font-size: 12.5px;
   font-weight: 700;
+  font-family: inherit;
   color: var(--ink-600);
   cursor: pointer;
   transition: transform 0.12s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
 }
 
-.poi-filter-toggle:active {
-  transform: scale(0.96);
-}
-
-/* Active = at least one category chosen — the button itself carries that
-   state so it's visible even with the menu closed, same idea as an
-   active filter chip used to. */
-.poi-filter-toggle.active {
-  background: var(--ink-900);
-  color: var(--card);
-  box-shadow: var(--shadow-2);
-}
-
-.poi-filter-count {
-  display: inline-grid;
-  place-items: center;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 10.5px;
-  font-weight: 800;
-}
-
-/* Opens downward from the button, a plain vertical list — every category
-   readable at a glance, nothing scrolled off-screen the way the old
-   horizontal chip row could be. */
-.poi-filter-menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  min-width: 190px;
-  margin: 0;
-  padding: 6px;
-  list-style: none;
-  background: var(--glass);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-2);
-}
-
-.poi-filter-menu[hidden] {
-  display: none;
-}
-
-.poi-filter-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink-900);
-}
-
-.poi-filter-item:active {
-  background: rgba(20, 33, 61, 0.06);
-}
-
 @media (prefers-color-scheme: dark) {
-  .poi-filter-item:active {
-    background: rgba(255, 255, 255, 0.08);
+  .suggestion-pill {
+    background: rgba(255, 255, 255, 0.07);
   }
 }
 
-.poi-filter-check {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  border-radius: 5px;
-  border: 1.5px solid var(--hairline-strong);
-  display: grid;
-  place-items: center;
-  font-size: 12px;
+.suggestion-pill:active {
+  transform: scale(0.95);
+}
+
+.suggestion-pill.active {
+  background: var(--accent);
   color: #fff;
 }
 
-.poi-filter-item.checked .poi-filter-check {
-  background: var(--accent);
-  border-color: var(--accent);
+.suggestion-pill img {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 @media (max-width: 560px) {

@@ -455,6 +455,26 @@ test("searchEntries ranks by relevance, not alphabetically", async () => {
   assert.equal(reordered[0].label, "Target Field");
 });
 
+test("searchEntries lists same-name chain results closest-first", async () => {
+  const { buildComboEntries, searchEntries } = await import("../src/combo.ts");
+  const buildings = [
+    { id: "north", name: "North Tower", address: "1 N St", lat: 44.99, lon: -93.27 },
+    { id: "south", name: "South Tower", address: "1 S St", lat: 44.96, lon: -93.27 },
+  ];
+  const pois = [
+    { id: "sb-n", name: "Starbucks", buildingId: "north", group: "coffee", lat: 44.99, lon: -93.27 },
+    { id: "sb-s", name: "Starbucks", buildingId: "south", group: "coffee", lat: 44.96, lon: -93.27 },
+  ];
+  const entries = buildComboEntries(buildings, pois);
+
+  const fromSouth = searchEntries(entries, "starbucks", { lat: 44.961, lon: -93.27 });
+  assert.equal(fromSouth[0].poiId, "sb-s", "anchored near south, south branch first");
+  const fromNorth = searchEntries(entries, "starbucks", { lat: 44.989, lon: -93.27 });
+  assert.equal(fromNorth[0].poiId, "sb-n", "anchored near north, north branch first");
+  // No anchor: order falls back to something stable, both still returned.
+  assert.equal(searchEntries(entries, "starbucks").length, 2);
+});
+
 test("landmarkNear picks a recognizable business for a building, deterministically", async () => {
   const { landmarkNear } = await import("../src/poi.ts");
   const pois = [

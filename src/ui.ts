@@ -40,6 +40,9 @@ export class BuildingCombo {
   private showCurrentLocation: boolean;
   private currentLocationBuilding: Building | null = null;
   private recents: RecentEntry[] = [];
+  /** Where "closest" is measured from for equally-relevant results — the
+   * live GPS fix, or (for the To field) the chosen origin. */
+  private searchAnchor: { lat: number; lon: number } | null = null;
   /** Second argument is set when the choice was a specific business inside
    * a building, not the building itself — callers that want to show that
    * business's own card (hours, website) rather than just its host use it. */
@@ -84,6 +87,11 @@ export class BuildingCombo {
   setCurrentLocation(b: Building | null) {
     this.currentLocationBuilding = b;
     if (!this.list.hidden) this.render(this.input.value);
+  }
+
+  /** Anchor for closest-first ordering of same-name results (chains). */
+  setSearchAnchor(anchor: { lat: number; lon: number } | null) {
+    this.searchAnchor = anchor;
   }
 
   /** Recent, deliberately-chosen destinations — shown in place of an
@@ -155,7 +163,7 @@ export class BuildingCombo {
     // show recent, deliberately-chosen destinations instead, or nothing at
     // all if there aren't any yet. Typing narrows to a real search either way.
     const items = query.trim()
-      ? searchEntries(this.entries, query).slice(0, 12)
+      ? searchEntries(this.entries, query, this.searchAnchor).slice(0, 12)
       : this.recents
           .map((r): ComboEntry | null => {
             const b = this.buildingsById.get(r.id);

@@ -7,10 +7,10 @@ import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
-import { activeClosedEdges } from "./incidents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
-import { GROUP_LABELS } from "./poi.ts";
+import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
+import { renderPoiIconDataUrl } from "./poi-icons.ts";
 
 async function boot() {
   console.log("[skymap-build-marker] " + new Date().toISOString());
@@ -132,9 +132,7 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const route = router.route(fromId, toId, when, {
-      closedEdges: activeClosedEdges(localStorage),
-    });
+    const route = router.route(fromId, toId, when);
     if (!route) {
       activeRoute = null;
       expandSearch();
@@ -166,7 +164,12 @@ async function boot() {
   // routing trigger. Once we're past picking (already in the From/To
   // editor), selecting either field just updates the route directly, same
   // as before tonight.
-  comboFrom.onSelect = () => routeIfReady();
+  comboFrom.onSelect = (b) => {
+    // Destination searches measure "closest" from the chosen origin —
+    // picking a From re-anchors the To field's chain-name ordering.
+    comboTo.setSearchAnchor({ lat: b.lat, lon: b.lon });
+    routeIfReady();
+  };
   comboTo.onSelect = (b, poi) => {
     if (searchPanel.classList.contains("picking")) {
       showIdle(); // collapse the search chrome — the card takes over
@@ -261,6 +264,11 @@ async function boot() {
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(nearBuilding);
+    // Same-name chains rank closest-first from where you actually are;
+    // the To field prefers the chosen origin as its anchor when one's set.
+    comboFrom.setSearchAnchor({ lat, lon });
+    const fromB = comboFrom.value ? router.building(comboFrom.value) : null;
+    comboTo.setSearchAnchor(fromB ? { lat: fromB.lat, lon: fromB.lon } : { lat, lon });
   }
 
   // --- Save My Ramp: notice when you're parked, offer a one-tap way back --
@@ -434,6 +442,14 @@ async function boot() {
   setInterval(() => view.setTime(selectedTime()), 60_000);
   view.setTime(selectedTime());
 
+  // The per-step "report crossing closed" UI is gone, but reports it filed
+  // live in localStorage for 4 hours and used to silently detour routing —
+  // with no UI left to see or clear them, a stray old tap would just look
+  // like the router picking a bizarre path. Purge on boot until closure
+  // reporting returns as a deliberate feature (incidents.ts is kept and
+  // tested for that day).
+  localStorage.removeItem("skymap.incidents");
+
   // The service worker's whole job is caching over-the-network requests for
   // the PWA. Inside the native wrapper, assets are already bundled on disk —
   // there's no network round-trip to save, and a stale cached build would
@@ -455,67 +471,35 @@ async function boot() {
     }
   }
 
-  // --- POI quick-filters: "what's around" at a glance ---------------------
-  // Opt-in, not opt-out: the map starts with no business icons at all (just
-  // buildings/skyways), and a single Filter button opens a plain vertical
-  // checklist — every category readable at once, no horizontal scroll to
-  // miss one off-screen. Any combination can be checked at once.
-  const poiFilter = document.getElementById("poi-filter")!;
-  const filterToggle = document.getElementById("poi-filter-toggle") as HTMLButtonElement;
-  const filterMenu = document.getElementById("poi-filter-menu")!;
-  const filterCount = document.getElementById("poi-filter-count") as HTMLElement;
-  const QUICK_FILTERS: (keyof typeof GROUP_LABELS)[] = ["restroom", "food", "coffee", "shop", "elevator"];
-  const activeFilters = new Set<string>();
-
-  function refreshFilterToggle() {
-    filterToggle.classList.toggle("active", activeFilters.size > 0);
-    filterCount.hidden = activeFilters.size === 0;
-    filterCount.textContent = String(activeFilters.size);
-  }
-
-  for (const group of QUICK_FILTERS) {
-    const item = document.createElement("li");
-    item.className = "poi-filter-item";
-    item.dataset.group = group;
-    item.setAttribute("role", "menuitemcheckbox");
-    item.setAttribute("aria-checked", "false");
-    const check = document.createElement("span");
-    check.className = "poi-filter-check";
-    check.textContent = "✓";
-    item.append(check, GROUP_LABELS[group]);
-    item.addEventListener("click", () => {
-      if (activeFilters.has(group)) activeFilters.delete(group);
-      else activeFilters.add(group);
-      const checked = activeFilters.has(group);
-      item.classList.toggle("checked", checked);
-      item.setAttribute("aria-checked", String(checked));
-      refreshFilterToggle();
-      view.setPoiGroupFilter([...activeFilters]);
+  // --- Category suggestions: "show on map" toggles in the search panel ----
+  // They live under the destination field in the picking state (tap "Where
+  // to?"), Apple Maps style — not a floating button that inevitably ends up
+  // colliding with the search panel or the directions sheet. Opt-in: the
+  // map starts with no business icons at all; toggles are multi-select and
+  // whatever's on stays on after the panel closes.
+  const suggestionsRow = document.getElementById("suggestions-row")!;
+  const SUGGESTED_GROUPS = ["coffee", "food", "shop", "restroom", "elevator"] as const;
+  const activeGroups = new Set<string>();
+  for (const group of SUGGESTED_GROUPS) {
+    const pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "suggestion-pill";
+    pill.dataset.group = group;
+    pill.setAttribute("aria-pressed", "false");
+    const icon = document.createElement("img");
+    icon.src = renderPoiIconDataUrl(group, GROUP_COLORS[group]);
+    icon.alt = "";
+    pill.append(icon, GROUP_LABELS[group]);
+    pill.addEventListener("click", () => {
+      if (activeGroups.has(group)) activeGroups.delete(group);
+      else activeGroups.add(group);
+      const on = activeGroups.has(group);
+      pill.classList.toggle("active", on);
+      pill.setAttribute("aria-pressed", String(on));
+      view.setPoiGroupFilter([...activeGroups]);
     });
-    filterMenu.appendChild(item);
+    suggestionsRow.appendChild(pill);
   }
-
-  filterToggle.addEventListener("click", () => {
-    const open = filterMenu.hidden;
-    filterMenu.hidden = !open;
-    filterToggle.setAttribute("aria-expanded", String(open));
-  });
-  document.addEventListener("click", (e) => {
-    if (poiFilter.contains(e.target as Node)) return;
-    filterMenu.hidden = true;
-    filterToggle.setAttribute("aria-expanded", "false");
-  });
-
-  // Only relevant once you can actually see businesses on the map — same
-  // threshold the POI icon layer itself uses. Fading it in/out (rather
-  // than always-on) is most of what "too much on screen" was about.
-  const POI_FILTER_MINZOOM = 14.8;
-  function updateFilterVisibility() {
-    poiFilter.classList.toggle("zoomed-out", view.map.getZoom() < POI_FILTER_MINZOOM);
-  }
-  view.map.on("zoom", updateFilterVisibility);
-  view.map.on("load", updateFilterVisibility);
-  updateFilterVisibility();
   view.setPoiGroupFilter([]); // nothing shown until the user opts in
 
   // Test/debug handle (drives E2E camera positioning).

@@ -82,6 +82,10 @@
           </div>
           <button class="icon-btn primary" id="btn-route" title="Find route" aria-label="Find route">➜</button>
         </div>
+        <div class="suggestions" id="suggestions">
+          <span class="suggestions-label">Show on map</span>
+          <div class="suggestions-row" id="suggestions-row" role="group" aria-label="Show categories on the map"></div>
+        </div>
         <div class="trip-strip" id="trip-strip" hidden>
           <span class="dot dot-from"></span>
           <span class="trip-label" id="trip-from"></span>
@@ -97,20 +101,6 @@
         <button class="sheet-close" id="sheet-close" aria-label="Close">×</button>
         <div id="sheet-content"></div>
       </section>
-
-      <div class="poi-filter" id="poi-filter">
-        <button
-          class="poi-filter-toggle"
-          id="poi-filter-toggle"
-          type="button"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <span>Nearby</span>
-          <span class="poi-filter-count" id="poi-filter-count" hidden></span>
-        </button>
-        <ul class="poi-filter-menu" id="poi-filter-menu" role="menu" aria-label="Filter map businesses" hidden></ul>
-      </div>
 
     </div>
     <script type="module" src="./src/main.ts"></script>

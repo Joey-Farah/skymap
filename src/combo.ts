@@ -8,12 +8,17 @@ export interface ComboEntry {
   poiId?: string;
   /** "building" for a plain building result, else the POI's group (food, shop, …) — drives the result row icon. */
   icon: string;
+  /** Own coordinates (the business's spot, or the building centroid) —
+   * lets equally-relevant results (chains: four Starbucks, two Grayfox)
+   * sort closest-first to wherever the search is anchored. */
+  lat?: number;
+  lon?: number;
 }
 
 /** Buildings plus their interior businesses, as one searchable, sorted list. */
 export function buildComboEntries(
-  buildings: Pick<Building, "id" | "name" | "address">[],
-  pois: Pick<Poi, "id" | "name" | "buildingId" | "exterior" | "group">[],
+  buildings: (Pick<Building, "id" | "name" | "address"> & Partial<Pick<Building, "lat" | "lon">>)[],
+  pois: (Pick<Poi, "id" | "name" | "buildingId" | "exterior" | "group"> & Partial<Pick<Poi, "lat" | "lon">>)[],
 ): ComboEntry[] {
   const byId = new Map(buildings.map((b) => [b.id, b]));
   const entries: ComboEntry[] = buildings.map((b) => ({
@@ -21,6 +26,8 @@ export function buildComboEntries(
     sublabel: b.address,
     buildingId: b.id,
     icon: "building",
+    lat: b.lat,
+    lon: b.lon,
   }));
   for (const p of pois) {
     if (p.exterior) continue; // bus stops etc. aren't routable destinations
@@ -32,6 +39,8 @@ export function buildComboEntries(
       buildingId: p.buildingId,
       poiId: p.id,
       icon: p.group ?? "building",
+      lat: p.lat ?? host.lat,
+      lon: p.lon ?? host.lon,
     });
   }
   return entries.sort((a, b) => a.label.localeCompare(b.label));
@@ -74,12 +83,32 @@ function score(entry: ComboEntry, words: string[]): number | null {
   return total;
 }
 
-export function searchEntries(entries: ComboEntry[], query: string): ComboEntry[] {
+/** Rough equirectangular distance — plenty for ranking results a few
+ * downtown blocks apart, without pulling the router's full haversine in. */
+function roughDistance(a: { lat?: number; lon?: number }, near: { lat: number; lon: number }): number {
+  if (a.lat === undefined || a.lon === undefined) return Number.POSITIVE_INFINITY;
+  const dLat = a.lat - near.lat;
+  const dLon = (a.lon - near.lon) * Math.cos((near.lat * Math.PI) / 180);
+  return dLat * dLat + dLon * dLon;
+}
+
+/**
+ * `near`, when known (the chosen From, or the live GPS fix), breaks
+ * relevance ties by proximity: searching a chain name ("Starbucks",
+ * "Grayfox") lists the closest branch first instead of whichever sorted
+ * first alphabetically. Only a tie-breaker — a genuinely better text match
+ * still outranks a nearer, weaker one.
+ */
+export function searchEntries(
+  entries: ComboEntry[],
+  query: string,
+  near?: { lat: number; lon: number } | null,
+): ComboEntry[] {
   const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   if (words.length === 0) return entries;
   return entries
-    .map((e) => ({ e, s: score(e, words) }))
-    .filter((r): r is { e: ComboEntry; s: number } => r.s !== null)
-    .sort((a, b) => b.s - a.s || a.e.label.localeCompare(b.e.label))
+    .map((e) => ({ e, s: score(e, words), d: near ? roughDistance(e, near) : 0 }))
+    .filter((r): r is { e: ComboEntry; s: number; d: number } => r.s !== null)
+    .sort((a, b) => b.s - a.s || a.d - b.d || a.e.label.localeCompare(b.e.label))
     .map((r) => r.e);
 }
