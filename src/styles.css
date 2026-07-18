@@ -611,13 +611,20 @@ a:focus-visible {
 }
 
 @keyframes content-enter {
+  /* Opacity only — deliberately no translateY. A non-"none" transform on
+     this element (at any point mid-animation, not just non-zero values)
+     makes it its children's offsetParent instead of the padded .sheet,
+     which silently corrupts every offsetTop-based height measurement
+     that runs while the animation is still playing. That's undetectable
+     from a single show() call (the animation starts only at the very
+     end), but any second show() shortly after — a duplicate call, a
+     live GPS update, anything — can measure mid-animation and undersize
+     the drawer by exactly its own padding. */
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
