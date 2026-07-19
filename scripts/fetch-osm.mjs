@@ -55,6 +55,7 @@ const QUERY = `
   way["highway"~"footway|corridor|steps"]["covered"="yes"](${BBOX});
   way["highway"~"footway|corridor|steps"]["indoor"="yes"](${BBOX});
   way["highway"="corridor"](${BBOX});
+  way["highway"~"footway|corridor|steps"]["name"~"[Ss]kyway"](${BBOX});
 );
 out body;
 >;
@@ -622,6 +623,102 @@ async function main(osm) {
     (e) => mainComponent.has(e.from) && mainComponent.has(e.to),
   );
 
+  // Indoor door-to-door paths: a building with two or more skyway
+  // connections (a "through" building on a route) needs a real walking
+  // path between them, not a straight line jumping between two unrelated
+  // interior points — that straight cut is what read as the route
+  // ignoring the skyway entirely, even though each individual bridge
+  // crossing was already exactly right. Reuses the same node graph the
+  // bridge discovery above walks; the query fetches the indoor corridor
+  // ways too now (Minneapolis Skyway segments split across a chain of
+  // way pieces, same as the bridges themselves).
+  function nearestNodeInBuilding(coord, buildingId) {
+    const nodeIds = nodesByBuilding.get(buildingId);
+    if (!nodeIds) return null;
+    let best = null;
+    let bestDist = Infinity;
+    for (const id of nodeIds) {
+      const n = nodes.get(id);
+      const d = haversine(coord[1], coord[0], n.lat, n.lon);
+      if (d < bestDist) {
+        bestDist = d;
+        best = id;
+      }
+    }
+    return bestDist < 30 ? best : null; // sanity cap: a real door, not a stray far node
+  }
+
+  function shortestPathWithinBuilding(buildingId, startId, endId) {
+    const allowed = nodesByBuilding.get(buildingId);
+    if (!allowed || !allowed.has(startId) || !allowed.has(endId)) return null;
+    const dist = new Map([[startId, 0]]);
+    const prev = new Map();
+    const visited = new Set();
+    const queue = [startId];
+    while (queue.length) {
+      queue.sort((a, b) => (dist.get(a) ?? Infinity) - (dist.get(b) ?? Infinity));
+      const cur = queue.shift();
+      if (visited.has(cur)) continue;
+      visited.add(cur);
+      if (cur === endId) break;
+      for (const edge of nodeGraph.get(cur) ?? []) {
+        if (!allowed.has(edge.to)) continue;
+        const n1 = nodes.get(cur);
+        const n2 = nodes.get(edge.to);
+        const w = haversine(n1.lat, n1.lon, n2.lat, n2.lon);
+        const nd = (dist.get(cur) ?? Infinity) + w;
+        if (nd < (dist.get(edge.to) ?? Infinity)) {
+          dist.set(edge.to, nd);
+          prev.set(edge.to, cur);
+          queue.push(edge.to);
+        }
+      }
+    }
+    if (!dist.has(endId)) return null;
+    const path = [endId];
+    let cur = endId;
+    while (prev.has(cur)) {
+      cur = prev.get(cur);
+      path.unshift(cur);
+    }
+    return path.map(coordOf);
+  }
+
+  const doorsByBuilding = new Map(); // buildingId -> Set(nodeId)
+  for (const e of finalEdges) {
+    const fromDoor = nearestNodeInBuilding(e.geometry[0], e.from);
+    const toDoor = nearestNodeInBuilding(e.geometry[e.geometry.length - 1], e.to);
+    if (fromDoor) {
+      if (!doorsByBuilding.has(e.from)) doorsByBuilding.set(e.from, new Set());
+      doorsByBuilding.get(e.from).add(fromDoor);
+    }
+    if (toDoor) {
+      if (!doorsByBuilding.has(e.to)) doorsByBuilding.set(e.to, new Set());
+      doorsByBuilding.get(e.to).add(toDoor);
+    }
+  }
+
+  const indoorLinks = [];
+  for (const [buildingId, doors] of doorsByBuilding) {
+    const doorList = [...doors];
+    for (let i = 0; i < doorList.length; i++) {
+      for (let j = i + 1; j < doorList.length; j++) {
+        const path = shortestPathWithinBuilding(buildingId, doorList[i], doorList[j]);
+        if (path && path.length >= 2) {
+          indoorLinks.push({
+            buildingId,
+            doorA: coordOf(doorList[i]),
+            doorB: coordOf(doorList[j]),
+            geometry: path,
+          });
+        }
+      }
+    }
+  }
+  console.log(
+    `Indoor door-to-door paths: ${indoorLinks.length} across ${doorsByBuilding.size} through-buildings.`,
+  );
+
   const relevantWikidata = new Map(
     [...wikidataByBuildingId].filter(([id]) => mainComponent.has(id)),
   );
@@ -760,6 +857,7 @@ async function main(osm) {
     buildings: finalBuildings,
     edges: finalEdges,
     pois,
+    indoorLinks,
   };
 
   const outPath = join(

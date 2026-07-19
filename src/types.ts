@@ -66,11 +66,23 @@ export interface Poi {
   logo?: string;
 }
 
+/** Real indoor walking path between two of a building's own skyway doors —
+ * used when a route passes through (arrives via one bridge, leaves via
+ * another) so that stretch traces the actual corridor instead of a
+ * straight line between two unrelated interior points. */
+export interface IndoorLink {
+  buildingId: string;
+  doorA: [number, number];
+  doorB: [number, number];
+  geometry: [number, number][];
+}
+
 export interface SkymapData {
   meta: { name: string; source: string; disclaimer: string; generated: string };
   buildings: Building[];
   edges: Edge[];
   pois?: Poi[];
+  indoorLinks?: IndoorLink[];
 }
 
 export interface RouteStep {
