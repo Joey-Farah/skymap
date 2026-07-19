@@ -925,6 +925,7 @@ a:focus-visible {
   color: var(--ink-400);
   text-decoration: underline;
   text-underline-offset: 2px;
+  text-align: right;
 }
 
 .landmark-photo {
@@ -1005,7 +1006,10 @@ a:focus-visible {
 }
 
 .website-btn {
-  flex: 1;
+  display: block;
+  /* Its own clearance from the hours line above — hours-line's 7px
+     bottom margin alone read as jammed up against this button. */
+  margin-top: 14px;
   padding: 11px;
   border-radius: var(--radius-sm);
   border: 0;

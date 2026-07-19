@@ -74,14 +74,21 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
       break;
     }
     case "restroom": {
-      // Person: head + shoulders.
-      const headR = r * 0.2;
+      // Person: filled head + filled body silhouette — a thin-stroked
+      // rounded rect for the body read as a blob/ring at small icon
+      // sizes since there wasn't enough contrast between the outline
+      // and the fill behind it. Solid shapes hold up much better small.
+      const headR = r * 0.22;
       ctx.beginPath();
-      ctx.arc(cx, cy - r * 0.35, headR, 0, Math.PI * 2);
+      ctx.arc(cx, cy - r * 0.4, headR, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
-      ctx.roundRect(cx - r * 0.32, cy - r * 0.05, r * 0.64, r * 0.6, r * 0.28);
-      ctx.stroke();
+      ctx.moveTo(cx - r * 0.15, cy - r * 0.08);
+      ctx.quadraticCurveTo(cx - r * 0.4, cy - r * 0.05, cx - r * 0.32, cy + r * 0.55);
+      ctx.lineTo(cx + r * 0.32, cy + r * 0.55);
+      ctx.quadraticCurveTo(cx + r * 0.4, cy - r * 0.05, cx + r * 0.15, cy - r * 0.08);
+      ctx.closePath();
+      ctx.fill();
       break;
     }
     case "elevator": {

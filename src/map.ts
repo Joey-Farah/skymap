@@ -486,7 +486,11 @@ export class SkymapView {
       type: "symbol",
       source: "skyway-pois",
       minzoom: 16.2,
-      filter: ["==", ["get", "group"], "transit"],
+      // Hidden until opted into via setPoiGroupFilter, same as every
+      // other category — it used to always show once zoomed in enough,
+      // with no toggle and nothing on screen explaining what the icon
+      // was, which just read as unlabeled clutter.
+      filter: false,
       layout: {
         "icon-image": "poi-icon-transit",
         "icon-size": 0.4,
@@ -625,7 +629,13 @@ export class SkymapView {
   }
 
   focusBuilding(b: Building) {
-    this.map.flyTo({ center: [b.lon, b.lat], zoom: 16 });
+    // Recenter without fighting the zoom level someone's already chosen —
+    // a flat zoom:16 meant tapping a place while zoomed in further always
+    // zoomed back OUT to 16, even though nothing about picking a place
+    // means "show me from farther away." Only zooms IN, and only enough
+    // to make sure the pin isn't buried at a too-far-out view.
+    const zoom = Math.max(this.map.getZoom(), 16);
+    this.map.flyTo({ center: [b.lon, b.lat], zoom });
   }
 
   /** Quick-filter the map to any combination of POI groups (food, restroom,
@@ -633,10 +643,18 @@ export class SkymapView {
    * clean rather than saturated with icons. */
   setPoiGroupFilter(groups: string[]) {
     const apply = () => {
+      // Transit renders through its own dedicated layer (different zoom
+      // threshold, fixed icon size) — excluded here so it doesn't also
+      // paint through this one and double up once both are visible.
+      const nonTransit = groups.filter((g) => g !== "transit");
       const filter: maplibregl.FilterSpecification =
-        groups.length > 0 ? ["in", ["get", "group"], ["literal", groups]] : false;
+        nonTransit.length > 0 ? ["in", ["get", "group"], ["literal", nonTransit]] : false;
       this.map.setFilter("skyway-pois", filter);
       this.map.setFilter("skyway-pois-label", filter);
+      this.map.setFilter(
+        "skyway-pois-transit",
+        groups.includes("transit") ? ["==", ["get", "group"], "transit"] : false,
+      );
     };
     if (this.ready) apply();
     else this.map.once("load", apply);

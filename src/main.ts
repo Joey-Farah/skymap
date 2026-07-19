@@ -146,7 +146,7 @@ async function boot() {
       if (preview) directionsLabel = `Directions · ${Math.max(1, Math.round(preview.totalMinutes))} min`;
     }
     const actions = { onDirections: () => enterPreview(), directionsLabel };
-    if (poi) sheet.showPoi(poi, b, actions);
+    if (poi) sheet.showPoi(poi, b, selectedTime(), actions);
     else sheet.showBuilding(b, selectedTime(), actions, poisByBuilding.get(b.id) ?? []);
     setMode("card");
   }
@@ -480,7 +480,7 @@ async function boot() {
   // exist locked in a height sized for an empty row, clipping them once
   // they actually appeared.
   const suggestionsRow = document.getElementById("suggestions-row")!;
-  const SUGGESTED_GROUPS = ["coffee", "food", "shop", "restroom", "elevator"] as const;
+  const SUGGESTED_GROUPS = ["coffee", "food", "shop", "restroom", "elevator", "transit"] as const;
   const activeGroups = new Set<string>();
   for (const group of SUGGESTED_GROUPS) {
     const pill = document.createElement("button");

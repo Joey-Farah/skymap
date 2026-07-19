@@ -20,7 +20,8 @@ function resultIconUrl(group: PoiGroup): string {
   }
   return url;
 }
-import { closingSoonWarnings, formatMinute, formatWeeklyHours, statusAt } from "./hours.ts";
+import { closingSoonWarnings, formatMinute, formatWeeklyHours, statusAt, statusFromHours } from "./hours.ts";
+import { parseOpeningHours } from "./opening-hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
@@ -598,6 +599,7 @@ export class Sheet {
   showPoi(
     p: Poi,
     host: Building | undefined,
+    when: Date,
     actions: { onDirections: () => void; directionsLabel?: string },
   ) {
     this.content.innerHTML = "";
@@ -605,6 +607,15 @@ export class Sheet {
     this.content.append(el("h2", p.name));
     const where = host ? `${humanCategory(p.category)} · ${host.name}` : humanCategory(p.category);
     this.content.append(el("div", where, "meta"));
+    // Raw OSM opening_hours is arbitrary syntax ("Mo-Fr 07:00-16:00") —
+    // parsed into the same weekly-hours shape a building uses gets it the
+    // same 12-hour formatting and an open/closed read, not just military
+    // time dumped verbatim with no way to tell at a glance.
+    const parsedHours = parseOpeningHours(p.openingHours);
+    if (parsedHours) {
+      const status = statusFromHours(parsedHours, when);
+      this.content.append(el("span", status.label, `badge ${status.open ? "open" : "closed"}`));
+    }
     if (p.level === "1") this.content.append(el("span", "Skyway level", "badge open"));
 
     const actionsRow = document.createElement("div");
@@ -616,7 +627,8 @@ export class Sheet {
 
     const more = document.createElement("div");
     more.className = "sheet-collapsible";
-    if (p.openingHours) more.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
+    if (parsedHours) more.append(el("div", `Hours: ${formatWeeklyHours(parsedHours)}`, "hours-line"));
+    else if (p.openingHours) more.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
     if (p.website) {
       const website = document.createElement("a");
       website.href = p.website;

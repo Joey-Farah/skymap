@@ -28,7 +28,7 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
   service: "Services",
   restroom: "Restrooms",
   landmark: "Landmarks",
-  transit: "Transit nearby",
+  transit: "Transit",
   elevator: "Elevators",
 };
 

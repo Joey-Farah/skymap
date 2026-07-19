@@ -102,11 +102,13 @@ export function closingSoonWarnings(
   return warnings;
 }
 
-/** Human description of the building's status at `when`, e.g. "Open until 10pm". */
-export function statusAt(building: Building, when: Date): { open: boolean; label: string } {
+/** Human description of a weekly-hours status at `when`, e.g. "Open until
+ * 10pm" — the logic `statusAt` uses for buildings, but not tied to one,
+ * so a POI's own (separately parsed) hours can get the same treatment. */
+export function statusFromHours(hours: DayHours[], when: Date): { open: boolean; label: string } {
   const day = when.getDay();
   const minutes = when.getHours() * 60 + when.getMinutes();
-  const today = building.hours[day];
+  const today = hours[day];
   if (today && minutes >= today[0] && minutes < today[1]) {
     return { open: true, label: `Open until ${formatMinute(today[1])}` };
   }
@@ -115,11 +117,16 @@ export function statusAt(building: Building, when: Date): { open: boolean; label
   }
   // Find the next day with hours.
   for (let i = 1; i <= 7; i++) {
-    const h = building.hours[(day + i) % 7];
+    const h = hours[(day + i) % 7];
     if (h) {
       const dayLabel = i === 1 ? "tomorrow" : DAY_NAMES[(day + i) % 7];
       return { open: false, label: `Closed · opens ${dayLabel} ${formatMinute(h[0])}` };
     }
   }
   return { open: false, label: "Closed" };
+}
+
+/** Human description of the building's status at `when`, e.g. "Open until 10pm". */
+export function statusAt(building: Building, when: Date): { open: boolean; label: string } {
+  return statusFromHours(building.hours, when);
 }
