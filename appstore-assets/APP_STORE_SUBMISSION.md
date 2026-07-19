@@ -164,8 +164,10 @@ answering the questionnaire this way at submission).
 
 ## 11. Screenshots
 
-Located in `appstore-assets/screenshots/`, sized 1290×2796 (iPhone 6.7"/6.9" class —
-covers Apple's current largest-required screenshot set):
+Located in `appstore-assets/screenshots/`, sized 1284×2778 (Apple's iPhone
+6.5" display bucket — the one App Store Connect actually validated against
+for this app; an earlier 1290×2796 (6.7"/6.9") set was rejected for wrong
+dimensions):
 
 1. `1-idle-map.png` — the map at rest, search bar + category filters
 2. `2-search.png` — live search results
@@ -173,10 +175,9 @@ covers Apple's current largest-required screenshot set):
 4. `4-route-preview.png` — route summary before starting
 5. `5-navigation.png` — live turn-by-turn navigation
 
-Upload all 5, in that order, under the 6.7" (or 6.9") display size in the
-Screenshots section. If App Store Connect asks for additional smaller device
-sizes (6.1", 5.5"), it will generally accept the same images scaled — try
-uploading the same 5 first; Apple auto-offers to reuse them across sizes.
+Upload all 5, in that order, under the iPhone tab's screenshot section. If
+App Store Connect asks for other device sizes (6.7", 5.5"), it will generally
+accept the same images scaled — try uploading the same 5 first.
 
 ---
 
