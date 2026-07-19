@@ -442,29 +442,16 @@ a:focus-visible {
   width: 18px;
   height: 18px;
   background-size: 14px;
+  /* Shrinking the box without this tiled the icon — 14px doesn't divide
+     evenly into 18px, so the default "repeat" drew extra partial copies
+     of the (i) glyph alongside the real one. */
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .maplibregl-ctrl-attrib {
   font-size: 10px;
   line-height: 14px;
-}
-
-/* Always reachable regardless of mode — same floating-corner treatment
-   and clearance tracking as the attribution control just above it. */
-.feedback-persistent {
-  position: absolute;
-  left: calc(env(safe-area-inset-left, 0px) + 10px);
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 36px);
-  z-index: 10;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent);
-  text-decoration: none;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  transform: translateY(calc(-1 * var(--sheet-clearance, 0px)));
-  transition: transform 0.28s var(--ease);
 }
 
 .maplibregl-ctrl-bottom-right .maplibregl-ctrl-group {
@@ -1175,6 +1162,18 @@ a:focus-visible {
   font-weight: 800;
 }
 
+.feedback-link {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  flex-shrink: 0;
+}
+
 /* Screen 4: the floating From/To editor, Apple's top placement. */
 .route-editor {
   top: calc(env(safe-area-inset-top, 0px) + 10px);
@@ -1310,4 +1309,11 @@ a:focus-visible {
    the End button sits underneath it and stops being clickable. */
 .sheet.nav-mode {
   padding-top: 42px;
+}
+
+/* Idle mode has no drag handle at all (nothing there to expand into, see
+   .no-expand) — none of nav-mode's 40px clearance is needed, so this can
+   sit much closer to the sheet's own top edge. */
+.sheet.idle-mode {
+  padding-top: 18px;
 }

@@ -362,6 +362,7 @@ export class Sheet {
     this.content.style.display = m === "card" || m === "preview" || m === "nav" ? "" : "none";
     this.closeBtn.hidden = m !== "card";
     this.root.classList.toggle("nav-mode", m === "nav");
+    this.root.classList.toggle("idle-mode", m === "idle");
     if (m === "idle") {
       // Category shortcuts + footer, nothing to drag up into — search
       // itself lives in the persistent top bar now, not here.
