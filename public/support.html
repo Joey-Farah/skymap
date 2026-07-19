@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyMap · Support</title>
+    <style>
+      :root {
+        --ink: #14213d;
+        --muted: #58627a;
+        --ground: #eef1f6;
+        --card: #ffffff;
+        --accent: #2258e6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --ink: #f1f4fa;
+          --muted: #aab2c5;
+          --ground: #0d1220;
+          --card: #161b2c;
+          --accent: #6f97ff;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+        background: var(--ground);
+        color: var(--ink);
+        line-height: 1.6;
+      }
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 48px 20px 96px;
+      }
+      h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
+      .sub { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
+      h2 { font-size: 17px; margin: 32px 0 8px; }
+      p, li { font-size: 15px; color: var(--ink); }
+      ul { padding-left: 22px; }
+      a { color: var(--accent); }
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin: 24px 0;
+      }
+      .card a {
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>SkyMap Support</h1>
+      <div class="sub">Minneapolis Skyway navigation</div>
+
+      <div class="card">
+        Something broken, missing, or wrong? Email
+        <a href="mailto:joeyefarah+skymap@gmail.com">joeyefarah+skymap@gmail.com</a>
+        — include the building or route you were looking at and it's much
+        faster to track down.
+      </div>
+
+      <h2>Common questions</h2>
+
+      <p><strong>Why does SkyMap need my location?</strong><br />
+      Only to show where you are on the map and to track your progress along
+      a route. It's optional — SkyMap still works fully for browsing and
+      planning without it.</p>
+
+      <p><strong>A skyway or business shows the wrong hours, or a route looks
+      off.</strong><br />
+      Map data comes from OpenStreetMap, maintained by volunteers, so it's
+      sometimes out of date. Use the Report an issue / Feedback link on the
+      place or route in question, or email the address above.</p>
+
+      <p><strong>Do I need an account?</strong><br />
+      No. SkyMap has no accounts, no sign-in, and no login of any kind.</p>
+
+      <p><strong>Does SkyMap work offline?</strong><br />
+      Map data and app assets are cached after first use, so browsing
+      already-visited areas works without a connection. Live location and
+      fresh map tiles still need one.</p>
+
+      <h2>Privacy</h2>
+      <p>
+        See the <a href="/privacy.html">privacy policy</a> for exactly what
+        the app does and doesn't do with your data (short version: nothing
+        leaves your device).
+      </p>
+    </main>
+  </body>
+</html>
