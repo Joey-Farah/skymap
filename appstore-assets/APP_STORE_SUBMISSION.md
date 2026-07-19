@@ -32,8 +32,7 @@ Everything below is ready to copy straight into App Store Connect. Sections mark
 ## 2. Promotional text (170 char max, editable anytime without a new review)
 
 ```
-Never get turned around in the Skyway again. SkyMap gives clear turn-by-turn
-directions to any coffee shop, restaurant, or building inside it.
+Never get turned around in the Skyway again. SkyMap gives clear turn-by-turn directions to coffee, lunch, or wherever you're headed.
 ```
 *(142 chars)*
 
