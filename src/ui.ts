@@ -49,8 +49,10 @@ export class BuildingCombo {
   onSelect: ((b: Building, poi?: Poi) => void) | null = null;
   /** Fires only for a deliberate, named choice — not the current-location
    * shortcut — so callers can persist it as a recent without also
-   * recording "wherever I happened to be standing" as a place name. */
-  onRecentWorthy: ((b: Building) => void) | null = null;
+   * recording "wherever I happened to be standing" as a place name. poi
+   * is set for the same reason as onSelect's — the specific business
+   * chosen, not just its host building. */
+  onRecentWorthy: ((b: Building, poi?: Poi) => void) | null = null;
 
   constructor(root: HTMLElement, buildings: Building[], pois: Poi[] = [], opts: { currentLocation?: boolean } = {}) {
     this.input = root.querySelector("input")!;
@@ -130,7 +132,7 @@ export class BuildingCombo {
     this.hide();
     if (opts.silent) return;
     this.onSelect?.(b, poi);
-    this.onRecentWorthy?.(b);
+    this.onRecentWorthy?.(b, poi);
   }
 
   private selectEntry(entry: ComboEntry) {
@@ -142,7 +144,7 @@ export class BuildingCombo {
     const poi = entry.poiId ? this.poisById.get(entry.poiId) : undefined;
     this.selectedPoi = poi ?? null;
     this.onSelect?.(b, poi);
-    this.onRecentWorthy?.(b);
+    this.onRecentWorthy?.(b, poi);
   }
 
   /** Public so callers can auto-fill "From" as a direct consequence of a
@@ -171,7 +173,13 @@ export class BuildingCombo {
       : this.recents
           .map((r): ComboEntry | null => {
             const b = this.buildingsById.get(r.id);
-            return b ? { label: b.name, sublabel: b.address, buildingId: b.id, icon: "building" } : null;
+            if (!b) return null;
+            const poi = r.poiId ? this.poisById.get(r.poiId) : undefined;
+            // A recent POI shows and reselects as that exact business, not
+            // the building it happens to live in — same shape a live search
+            // result for it would have.
+            if (poi) return { label: poi.name, sublabel: b.name, buildingId: b.id, poiId: poi.id, icon: poi.group ?? "building" };
+            return { label: b.name, sublabel: b.address, buildingId: b.id, icon: "building" };
           })
           .filter((e): e is ComboEntry => e !== null);
     this.activeIndex = -1;

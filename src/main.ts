@@ -79,8 +79,8 @@ async function boot() {
     comboSearch.setRecents(recents);
   }
   refreshRecents();
-  const onRecentWorthy = (b: Building) => {
-    recordRecent(localStorage, b);
+  const onRecentWorthy = (b: Building, poi?: Poi) => {
+    recordRecent(localStorage, { id: b.id, name: poi?.name ?? b.name, poiId: poi?.id });
     refreshRecents();
   };
   comboFrom.onRecentWorthy = onRecentWorthy;

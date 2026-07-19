@@ -57,3 +57,24 @@ test("corrupt data doesn't throw, just reads as empty", () => {
   store.setItem("skymap.recents", "{not json");
   assert.deepEqual(getRecents(store), []);
 });
+
+test("a selected business is recorded as itself, not just its host building", () => {
+  const store = memoryStore();
+  recordRecent(store, { id: "six-quebec", name: "Vitality Roasting", poiId: "poi-vitality" });
+  const recents = getRecents(store);
+  assert.equal(recents.length, 1);
+  assert.equal(recents[0].name, "Vitality Roasting");
+  assert.equal(recents[0].poiId, "poi-vitality");
+});
+
+test("the building itself and a business inside it are distinct recents", () => {
+  const store = memoryStore();
+  recordRecent(store, { id: "six-quebec", name: "Six Quebec" });
+  recordRecent(store, { id: "six-quebec", name: "Vitality Roasting", poiId: "poi-vitality" });
+  const recents = getRecents(store);
+  assert.equal(recents.length, 2);
+  assert.deepEqual(
+    recents.map((r) => r.name),
+    ["Vitality Roasting", "Six Quebec"],
+  );
+});
