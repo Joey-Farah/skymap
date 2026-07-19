@@ -170,18 +170,6 @@ a:focus-visible {
   letter-spacing: 0.06em;
 }
 
-.feedback-link {
-  margin-left: auto;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent);
-  text-decoration: none;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  flex-shrink: 0;
-}
-
 .field-row {
   display: flex;
   gap: 8px;
@@ -443,6 +431,38 @@ a:focus-visible {
 .maplibregl-ctrl-bottom-left {
   padding-left: env(safe-area-inset-left, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  transform: translateY(calc(-1 * var(--sheet-clearance, 0px)));
+  transition: transform 0.28s var(--ease);
+}
+
+/* Smaller than MapLibre's default 24px "i" button — this is credit text
+   nobody needs to read at a glance, not a control worth full tap-target
+   size. Shrinks the expanded attribution text to match. */
+.maplibregl-ctrl-attrib-button {
+  width: 18px;
+  height: 18px;
+  background-size: 14px;
+}
+
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+  line-height: 14px;
+}
+
+/* Always reachable regardless of mode — same floating-corner treatment
+   and clearance tracking as the attribution control just above it. */
+.feedback-persistent {
+  position: absolute;
+  left: calc(env(safe-area-inset-left, 0px) + 10px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 36px);
+  z-index: 10;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
   transform: translateY(calc(-1 * var(--sheet-clearance, 0px)));
   transition: transform 0.28s var(--ease);
 }
@@ -1025,7 +1045,6 @@ a:focus-visible {
    floating button that inevitably collides with some other panel. */
 .suggestions {
   display: block;
-  margin-top: 14px;
 }
 
 .suggestions-label {
@@ -1156,10 +1175,6 @@ a:focus-visible {
   font-weight: 800;
 }
 
-.drawer-footer .feedback-link {
-  margin-left: auto;
-}
-
 /* Screen 4: the floating From/To editor, Apple's top placement. */
 .route-editor {
   top: calc(env(safe-area-inset-top, 0px) + 10px);
@@ -1228,6 +1243,10 @@ a:focus-visible {
   align-items: center;
   gap: 10px;
   font-variant-numeric: tabular-nums;
+  /* Nav mode opens straight into the expanded turn-by-turn list — without
+     this, the steps' first row (only 8px of its own top padding) sits
+     right under the End button with no breathing room at all. */
+  margin-bottom: 14px;
 }
 
 .nav-bar strong {

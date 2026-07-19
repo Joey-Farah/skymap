@@ -46,6 +46,10 @@
   <body>
     <div id="app">
       <div id="map"></div>
+      <!-- Always reachable, not tucked inside a mode that only shows at
+           rest — most feedback happens right after a search comes up
+           short, which is exactly when the idle sheet isn't showing. -->
+      <a id="feedback-link" class="feedback-persistent">Feedback</a>
       <div class="toast" id="toast" role="status" hidden></div>
       <div class="panel ramp-prompt" id="ramp-prompt" hidden>
         <span id="ramp-prompt-text"></span>
@@ -116,7 +120,6 @@
             <div class="drawer-footer">
               <img class="brand-mark" src="/icons/icon.svg" alt="" />
               <span class="brand-name">SkyMap</span>
-              <a id="feedback-link" class="feedback-link">Feedback</a>
             </div>
           </div>
         </div>
