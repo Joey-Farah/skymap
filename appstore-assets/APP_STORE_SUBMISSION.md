@@ -10,7 +10,7 @@ Everything below is ready to copy straight into App Store Connect. Sections mark
 1. Enroll in the [Apple Developer Program](https://developer.apple.com/programs/enroll/) ($99/year), if not already done.
 2. In [App Store Connect](https://appstoreconnect.apple.com/), create a new app:
    - Platform: iOS
-   - Name: `SkyMap` (see naming note below if taken)
+   - Name: `SkyMap Minneapolis` (bare "SkyMap" was already taken)
    - Primary language: English (U.S.)
    - Bundle ID: `app.skymap.ios` (must already exist under your account — create it in
      [Certificates, Identifiers & Profiles](https://developer.apple.com/account/resources/identifiers/list)
@@ -21,8 +21,8 @@ Everything below is ready to copy straight into App Store Connect. Sections mark
 
 ## 1. App name & subtitle
 
-**Name** (30 char max): `SkyMap`
-*(9 chars used — if "SkyMap" is already taken by another developer, use `SkyMap Minneapolis` or `SkyMap — Skyway Nav`.)*
+**Name** (30 char max): `SkyMap Minneapolis`
+*(19 chars — "SkyMap" alone is already taken by another developer, so this is the App Store listing name. The app itself still says "SkyMap" everywhere — in-app branding, bundle display name, etc. — this only affects the storefront name.)*
 
 **Subtitle** (30 char max): `Minneapolis Skyway Navigator`
 *(29 chars)*
