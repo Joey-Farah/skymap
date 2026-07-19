@@ -32,19 +32,23 @@ Everything below is ready to copy straight into App Store Connect. Sections mark
 ## 2. Promotional text (170 char max, editable anytime without a new review)
 
 ```
-Never step outside in a Minneapolis winter. Real turn-by-turn walking
-directions through the Skyway — accurate times, live hours, no account needed.
+Lost in the Skyway again? SkyMap finds your way — and the nearest coffee or
+lunch spot — when regular maps have no idea it exists.
 ```
-*(152 chars)*
+*(130 chars)*
 
 ---
 
 ## 3. Description (4000 char max)
 
 ```
-SkyMap gets you where you're going through the Minneapolis Skyway — the
-largest contiguous enclosed pedestrian skyway system in the world — without
-ever stepping outside in a Minnesota winter.
+Ever gotten turned around in the Minneapolis Skyway, unsure which bridge
+leads where — or given up trying to find a nearby coffee shop because your
+map app has no idea the skyway even exists? SkyMap fixes that.
+
+SkyMap gets you where you're going through the Skyway — the largest
+contiguous enclosed pedestrian skyway system in the world — without ever
+stepping outside in a Minnesota winter.
 
 Search any building or business connected to the skyway, and SkyMap draws
 turn-by-turn walking directions through the actual indoor route: which
@@ -67,10 +71,12 @@ WHY IT'S DIFFERENT
 
 General-purpose map apps don't know the skyway exists as its own walkable
 network — they'll send you outside, or drop you at a building's street
-address with no idea the real path is one floor up. SkyMap is built
-specifically around the skyway system: real connections, real hours, real
-walking distances, sourced from OpenStreetMap and continuously
-improvable by anyone who spots something off.
+address with no idea the real path is one floor up. Trying to find the
+nearest coffee or lunch spot through a regular map means guessing which
+building it's actually inside of, and hoping you can find your way there.
+SkyMap is built specifically around the skyway system: real connections,
+real hours, real walking distances, sourced from OpenStreetMap and
+continuously improvable by anyone who spots something off.
 
 PRIVACY
 
