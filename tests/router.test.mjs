@@ -230,6 +230,42 @@ test("route steps carry cumulative arrival minutes", () => {
   );
 });
 
+test("a through-building's real indoor distance is added on top of the flat transit penalty, not in place of it", () => {
+  // A -> B -> C, B passed through door-to-door. Bridges are short (10m
+  // each) so the effect of the indoor link is unambiguous in the total.
+  const hours = [[0, 1440]];
+  const mini = {
+    meta: { name: "t", source: "t", disclaimer: "t", generated: "t" },
+    buildings: [
+      { id: "a", name: "A", address: "", category: "office", lat: 0, lon: 0, footprint: [], hours },
+      { id: "b", name: "B", address: "", category: "office", lat: 0.0001, lon: 0, footprint: [], hours },
+      { id: "c", name: "C", address: "", category: "office", lat: 0.0002, lon: 0, footprint: [], hours },
+    ],
+    edges: [
+      { from: "a", to: "b", crossing: "x", geometry: [[0, 0], [0, 0.0001]] },
+      { from: "b", to: "c", crossing: "x", geometry: [[0.0002, 0.0001], [0.0002, 0.0002]] },
+    ],
+    indoorLinks: [
+      // B's own doors: the arrival point from A, and the departure point
+      // toward C — deliberately far apart (a real 100m indoor walk).
+      { buildingId: "b", doorA: [0, 0.0001], doorB: [0.0002, 0.0001], geometry: [[0, 0.0001], [0.001, 0.0001]] },
+    ],
+  };
+  const r = new SkywayRouter(mini);
+  const withLink = r.route("a", "c", null);
+  const without = new SkywayRouter({ ...mini, indoorLinks: [] }).route("a", "c", null);
+  assert.ok(
+    withLink.totalMinutes > without.totalMinutes,
+    "the real indoor detour adds time, not just the flat per-building constant",
+  );
+  const indoorLinkMeters = polylineMeters(mini.indoorLinks[0].geometry);
+  const expectedExtraMinutes = indoorLinkMeters / 78; // WALK_METERS_PER_MIN
+  assert.ok(
+    Math.abs(withLink.totalMinutes - without.totalMinutes - expectedExtraMinutes) < 0.01,
+    "the added time matches the indoor link's own real distance",
+  );
+});
+
 test("closingSoonWarnings flags buildings closing near arrival", () => {
   // Mon–Fri 6:30am–10pm everywhere in the fixture: at 9:45pm Tuesday,
   // everything on the route closes within 30 minutes.

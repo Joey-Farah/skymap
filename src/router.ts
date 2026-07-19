@@ -1,8 +1,38 @@
-import type { Building, RouteResult, RouteStep, SkymapData } from "./types.ts";
+import type { Building, IndoorLink, RouteResult, RouteStep, SkymapData } from "./types.ts";
 import { isOpenAt } from "./hours.ts";
 
 export const WALK_METERS_PER_MIN = 78; // ~2.9 mph indoor pace
-const BUILDING_TRANSIT_MIN = 0.75; // corridors, escalators, doors per building passed
+// Non-distance friction per building passed through — elevators, doors,
+// reading signs, general disorientation. Distinct from (and additive
+// with) the real walking distance through that building: this constant
+// alone used to stand in for the whole thing, silently assuming every
+// building's door-to-door walk was ~58m (0.75min * 78m/min) regardless
+// of how far it actually was — real indoor distance is used when known
+// (see indoorLinkMeters), this stays as the leftover non-distance cost.
+const BUILDING_TRANSIT_MIN = 0.75;
+
+function coordsEqual(a: [number, number], b: [number, number]): boolean {
+  return Math.abs(a[0] - b[0]) < 1e-7 && Math.abs(a[1] - b[1]) < 1e-7;
+}
+
+/** Real walking distance between two of a building's skyway doors, when
+ * we have it — checked in both directions since a link's own doorA/doorB
+ * order doesn't necessarily match the direction of travel. */
+function indoorLinkMeters(
+  links: IndoorLink[],
+  buildingId: string,
+  doorA: [number, number],
+  doorB: [number, number],
+): number | null {
+  for (const link of links) {
+    if (link.buildingId !== buildingId) continue;
+    const matches =
+      (coordsEqual(link.doorA, doorA) && coordsEqual(link.doorB, doorB)) ||
+      (coordsEqual(link.doorB, doorA) && coordsEqual(link.doorA, doorB));
+    if (matches) return polylineMeters(link.geometry);
+  }
+  return null;
+}
 
 export function haversineMeters(aLat: number, aLon: number, bLat: number, bLon: number): number {
   const R = 6371000;
@@ -100,8 +130,10 @@ interface GraphEdge {
 export class SkywayRouter {
   private buildings = new Map<string, Building>();
   private adjacency = new Map<string, GraphEdge[]>();
+  private indoorLinks: IndoorLink[];
 
   constructor(data: SkymapData) {
+    this.indoorLinks = data.indoorLinks ?? [];
     for (const b of data.buildings) {
       this.buildings.set(b.id, b);
       this.adjacency.set(b.id, []);
@@ -277,15 +309,32 @@ export class SkywayRouter {
       });
       cursor = cursor === fromId ? undefined : p?.id;
     }
-    // Arrival at step i: walking time so far, plus the per-building transit
+    // Real indoor distance for each through-building — the walk from the
+    // door it's entered by to the door it's left by, when we have that
+    // data. Previously uncounted entirely; the flat per-building constant
+    // below existed only for non-distance friction, not as a stand-in for
+    // the walk itself.
+    const throughIndoorMeters: number[] = steps.map(() => 0);
+    for (let i = 1; i < steps.length - 1; i++) {
+      const arrival = steps[i].legGeometry;
+      const departure = steps[i + 1].legGeometry;
+      if (!arrival || !departure) continue;
+      const m = indoorLinkMeters(this.indoorLinks, steps[i].building.id, arrival[arrival.length - 1], departure[0]);
+      if (m !== null) throughIndoorMeters[i] = m;
+    }
+    // Arrival at step i: walking distance so far (bridges plus real
+    // indoor detours already crossed), plus the per-building transit
     // penalty for each intermediate building already crossed.
     let walked = 0;
+    let indoorMeters = 0;
     for (let i = 1; i < steps.length; i++) {
       walked += steps[i].legMeters ?? 0;
-      steps[i].arrivalMinutes = walked / WALK_METERS_PER_MIN + (i - 1) * BUILDING_TRANSIT_MIN;
+      indoorMeters += throughIndoorMeters[i];
+      steps[i].arrivalMinutes = (walked + indoorMeters) / WALK_METERS_PER_MIN + (i - 1) * BUILDING_TRANSIT_MIN;
     }
+    const finalMeters = totalMeters + indoorMeters;
     const totalMinutes =
-      totalMeters / WALK_METERS_PER_MIN + Math.max(0, steps.length - 2) * BUILDING_TRANSIT_MIN;
-    return { steps, totalMeters, totalMinutes };
+      finalMeters / WALK_METERS_PER_MIN + Math.max(0, steps.length - 2) * BUILDING_TRANSIT_MIN;
+    return { steps, totalMeters: finalMeters, totalMinutes };
   }
 }

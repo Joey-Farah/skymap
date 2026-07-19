@@ -659,9 +659,6 @@ export class Sheet {
     if (route.steps.some((s) => s.openAir)) {
       this.content.append(el("span", "⚠ May briefly go outside", "badge warn"));
     }
-    if (route.steps.some((s) => s.hasSteps)) {
-      this.content.append(el("span", "Includes stairs", "badge stairs"));
-    }
 
     const totalMin = Math.max(1, Math.round(route.totalMinutes));
     const eta = new Date(when.getTime() + totalMin * 60_000);
