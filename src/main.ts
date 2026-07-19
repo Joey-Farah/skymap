@@ -24,12 +24,16 @@ async function boot() {
   const app = document.getElementById("app")!;
   const routeEditor = document.getElementById("route-editor") as HTMLElement;
   const navBanner = document.getElementById("nav-banner") as HTMLElement;
+  const searchBarTop = document.getElementById("search-bar-top") as HTMLElement;
   const navInstruction = document.getElementById("nav-instruction")!;
   const navInstructionSub = document.getElementById("nav-instruction-sub")!;
 
-  // The five screens of the Apple Maps flow. Mode lives on #app as a class
+  // The four screens of the Apple Maps flow. Mode lives on #app as a class
   // so CSS can hide/show chrome (locate button, editor, banner) per screen.
-  type Mode = "idle" | "search" | "card" | "preview" | "nav";
+  // Search isn't a screen of its own anymore — the top search bar is always
+  // on screen except where the From/To editor or nav banner already own
+  // that same spot.
+  type Mode = "idle" | "card" | "preview" | "nav";
   let mode: Mode = "idle";
   function setMode(m: Mode) {
     app.classList.remove(`mode-${mode}`);
@@ -37,6 +41,7 @@ async function boot() {
     app.classList.add(`mode-${mode}`);
     routeEditor.hidden = m !== "preview";
     navBanner.hidden = m !== "nav";
+    searchBarTop.hidden = m === "preview" || m === "nav";
   }
 
   const style = await resolveStyle();
@@ -121,15 +126,10 @@ async function boot() {
     view.setRoute(null);
     sheet.showIdle();
     setMode("idle");
+    // Back to a blank slate, not the last thing that was searched for —
+    // matches the map itself resetting to no pin, no route.
+    comboSearch.clear();
     history.replaceState(null, "", location.pathname);
-  }
-
-  function enterSearch() {
-    activeRoute = null;
-    view.setRoute(null);
-    sheet.showSearch();
-    setMode("search");
-    (document.getElementById("input-search") as HTMLInputElement).focus();
   }
 
   /** Screen 3: pin + place card. The Directions pill pre-computes the walk
@@ -231,12 +231,8 @@ async function boot() {
 
   // --- Wiring between screens ---------------------------------------------
 
-  const idleBar = document.getElementById("search-idle-bar") as HTMLButtonElement;
-  idleBar.addEventListener("click", () => enterSearch());
-  sheet.onRequestSearch = () => enterSearch();
-  sheet.onDismissSearch = () => enterIdle();
-  sheet.onClose = () => enterSearch(); // card ✕ → back to search, Apple-style
-  document.getElementById("search-cancel")!.addEventListener("click", () => enterIdle());
+  sheet.onClose = () => enterIdle(); // card ✕ → back to idle, Apple-style
+  document.getElementById("search-cancel")!.addEventListener("click", () => comboSearch.clear());
   document.getElementById("editor-close")!.addEventListener("click", () => {
     // Leaving the preview returns to the place card, like closing Apple's
     // directions panel.
@@ -557,7 +553,7 @@ async function boot() {
   // Test/debug handle (drives E2E camera positioning).
   (window as unknown as Record<string, unknown>).__skymap = {
     view, router, data, sheet, onPosition, onRouteTap,
-    modes: { get current() { return mode; }, enterSearch, enterIdle, showPlace, enterPreview, enterNav },
+    modes: { get current() { return mode; }, enterIdle, showPlace, enterPreview, enterNav },
   };
 }
 

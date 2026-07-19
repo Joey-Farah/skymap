@@ -97,13 +97,24 @@ function bridgesFC(data: SkymapData, when: Date): FC {
   };
 }
 
-/** Full route polyline: real bridge geometry when present, centroids otherwise. */
-function routeCoords(route: RouteResult): [number, number][] {
-  const coordinates: [number, number][] = [[route.steps[0].building.lon, route.steps[0].building.lat]];
+/** Full route polyline: real bridge geometry when present, centroids otherwise.
+ * Starts/ends at the actual from/to point (a POI's precise spot, when
+ * there is one) rather than the origin building's centroid — anchoring
+ * the line there instead drew a straight cut from the building's
+ * interior middle out to the skyway door, which reads as the route
+ * "skipping across the building" instead of leaving from where the pin
+ * actually is. */
+function routeCoords(
+  route: RouteResult,
+  fromCoord: [number, number],
+  toCoord: [number, number],
+): [number, number][] {
+  const coordinates: [number, number][] = [fromCoord];
   for (const s of route.steps.slice(1)) {
     if (s.legGeometry) coordinates.push(...s.legGeometry);
     else coordinates.push([s.building.lon, s.building.lat]);
   }
+  coordinates.push(toCoord);
   return coordinates;
 }
 
@@ -168,8 +179,12 @@ export class SkymapView {
       center: DOWNTOWN_CENTER,
       zoom: 14.6,
       pitch: 0,
-      attributionControl: { compact: true },
+      // Off the default bottom-right corner — that's the locate button's
+      // spot, and the two were crowding each other. Own control instead of
+      // the constructor's built-in one so the corner can be chosen.
+      attributionControl: false,
     });
+    this.map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left");
     // Pinch-to-zoom and two-finger-drag-to-tilt are on by default with no
     // button needed. MapLibre draws its own blue "you are here" dot +
     // accuracy ring; the control itself stays off-screen (see
@@ -459,11 +474,11 @@ export class SkymapView {
         return;
       }
 
-      const coords = routeCoords(route);
       const first = route.steps[0].building;
       const last = route.steps[route.steps.length - 1].building;
       const fromCoord = poiCoords?.fromCoord ?? [first.lon, first.lat];
       const toCoord = poiCoords?.toCoord ?? [last.lon, last.lat];
+      const coords = routeCoords(route, fromCoord, toCoord);
       this.markers.push(
         new maplibregl.Marker({ color: "#16a34a" }).setLngLat(fromCoord).addTo(this.map),
         new maplibregl.Marker({ color: "#dc2626" }).setLngLat(toCoord).addTo(this.map),

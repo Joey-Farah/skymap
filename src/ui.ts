@@ -256,23 +256,36 @@ export class BuildingCombo {
   private hide() {
     this.list.hidden = true;
     this.input.setAttribute("aria-expanded", "false");
+    // Selecting a result (or dismissing via Cancel) is a natural point to
+    // give up focus too — closes the on-screen keyboard along with the
+    // dropdown instead of leaving it up with nothing left to type into.
+    this.input.blur();
+  }
+
+  /** The search bar's Cancel button — back to empty/unselected, dropdown
+   * closed. Distinct from select(): this is "never mind," not a choice. */
+  clear() {
+    this.selectedId = null;
+    this.selectedPoi = null;
+    this.input.value = "";
+    this.hide();
   }
 }
 
 /** Bottom sheet renderer. */
-export type DrawerMode = "idle" | "search" | "card" | "preview" | "nav";
+export type DrawerMode = "idle" | "card" | "preview" | "nav";
 
 /**
- * The drawer: one bottom sheet that is, in turn, the search field (idle),
- * the search screen, a place card, the route preview, and the slim
+ * The drawer: one bottom sheet that is, in turn, the idle rest state
+ * (category shortcuts + footer — search itself lives in the persistent
+ * top bar, not here), a place card, the route preview, and the slim
  * navigation bar — Apple Maps' architecture. Mode determines which static
  * section shows, how tall the sheet sits, and what dragging means.
  */
 export class Sheet {
   private root: HTMLElement;
   private content: HTMLElement;
-  private idleBar: HTMLElement;
-  private searchSection: HTMLElement;
+  private idleSection: HTMLElement;
   private closeBtn: HTMLButtonElement;
   private mode: DrawerMode = "idle";
   private activeRoute: RouteResult | null = null;
@@ -289,17 +302,14 @@ export class Sheet {
   private dragStartY = 0;
   private dragStartHeight = 0;
   private dragging = false;
-  /** Search-mode drag-down (or Cancel) → back to idle; card ✕ → back to
-   * search. Owned by main.ts, which runs the mode state machine. */
-  onDismissSearch: (() => void) | null = null;
-  onRequestSearch: (() => void) | null = null;
+  /** Card ✕ → back to idle. Owned by main.ts, which runs the mode state
+   * machine. */
   onClose: (() => void) | null = null;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.content = root.querySelector("#sheet-content")!;
-    this.idleBar = root.querySelector("#search-idle-bar")!;
-    this.searchSection = root.querySelector("#d-search")!;
+    this.idleSection = root.querySelector("#d-idle")!;
     this.closeBtn = root.querySelector("#sheet-close")!;
     this.closeBtn.addEventListener("click", () => this.onClose?.());
 
@@ -321,18 +331,9 @@ export class Sheet {
       this.setClearance(next + 12); // floaters track the drag live, not just at rest
     });
     handle.addEventListener("pointerup", (e) => {
-      const dy = e.clientY - this.dragStartY;
-      const moved = Math.abs(dy) > 8;
+      const moved = Math.abs(e.clientY - this.dragStartY) > 8;
       this.dragging = false;
       this.root.classList.remove("dragging");
-      if (this.mode === "idle") {
-        this.onRequestSearch?.(); // tap or fling up on the pill both open search
-        return;
-      }
-      if (this.mode === "search") {
-        if (dy > 60) this.onDismissSearch?.(); // dragged down: dismiss
-        return;
-      }
       if (!moved) {
         this.setExpanded(!this.expanded); // a plain tap still toggles
         return;
@@ -357,26 +358,19 @@ export class Sheet {
   /** Section visibility + sizing for the current mode. */
   private applyMode() {
     const m = this.mode;
-    this.idleBar.hidden = m !== "idle";
-    this.searchSection.hidden = m !== "search";
+    this.idleSection.hidden = m !== "idle";
     this.content.style.display = m === "card" || m === "preview" || m === "nav" ? "" : "none";
     this.closeBtn.hidden = m !== "card";
     this.root.classList.toggle("nav-mode", m === "nav");
     if (m === "idle") {
+      // Category shortcuts + footer, nothing to drag up into — search
+      // itself lives in the persistent top bar now, not here.
       const pad = parseFloat(getComputedStyle(this.root).paddingBottom) || 0;
-      const h = this.idleBar.offsetTop + this.idleBar.offsetHeight + pad;
+      const h = this.idleSection.offsetTop + this.idleSection.offsetHeight + pad;
       this.root.style.maxHeight = `${h}px`;
       this.root.style.overflowY = "hidden";
       this.setClearance(h + 12);
-    } else if (m === "search") {
-      // Tall fixed sheet, Apple's search detent; the list inside scrolls.
-      const h = Math.round(window.innerHeight * 0.82);
-      this.root.style.maxHeight = `${h}px`;
-      this.root.style.overflowY = "auto";
-      // The locate button itself is hidden in this mode, but other
-      // bottom-anchored floaters (the toast) still need to clear the
-      // sheet's real height, not 0.
-      this.setClearance(h + 12);
+      this.root.classList.add("no-expand");
     } else {
       // card, preview, and nav all size the same way: peek clips at the
       // last always-visible element, expanded (drag-up) reveals the full
@@ -396,13 +390,6 @@ export class Sheet {
 
   showIdle() {
     this.mode = "idle";
-    this.clearRouteProgress();
-    this.content.innerHTML = "";
-    this.applyMode();
-  }
-
-  showSearch() {
-    this.mode = "search";
     this.clearRouteProgress();
     this.content.innerHTML = "";
     this.applyMode();

@@ -62,6 +62,20 @@
         <div id="nav-instruction-sub"></div>
       </div>
 
+      <!-- Screen 2: persistent top search bar, Apple Maps style — always
+           on screen except while the From/To editor or nav banner (below)
+           occupy the same top spot. -->
+      <div class="panel search-bar-top" id="search-bar-top">
+        <div class="search-row">
+          <div class="combo" id="combo-search">
+            <input type="text" id="input-search" placeholder="Search buildings & businesses" autocomplete="off"
+              role="combobox" aria-label="Search" aria-expanded="false" aria-autocomplete="list" />
+            <ul class="combo-list" role="listbox" aria-label="Search results" hidden></ul>
+          </div>
+          <button class="search-cancel" id="search-cancel" type="button">Cancel</button>
+        </div>
+      </div>
+
       <!-- Screen 4: floating From/To editor (Apple's placement: top) -->
       <div class="panel route-editor" id="route-editor" hidden>
         <div class="editor-rows">
@@ -94,19 +108,7 @@
         <button class="sheet-handle" id="sheet-handle" aria-label="Expand or collapse"><span class="grip"></span></button>
         <button class="sheet-close" id="sheet-close" aria-label="Close" hidden>×</button>
         <div id="drawer-static">
-          <button class="search-idle-bar" id="search-idle-bar" type="button">
-            <span class="search-idle-icon">⌕</span>
-            Where to?
-          </button>
-          <div id="d-search" hidden>
-            <div class="search-row">
-              <div class="combo" id="combo-search">
-                <input type="text" id="input-search" placeholder="Search buildings & businesses" autocomplete="off"
-                  role="combobox" aria-label="Search" aria-expanded="false" aria-autocomplete="list" />
-                <ul class="combo-list" role="listbox" aria-label="Search results" hidden></ul>
-              </div>
-              <button class="search-cancel" id="search-cancel" type="button">Cancel</button>
-            </div>
+          <div id="d-idle">
             <div class="suggestions" id="suggestions">
               <span class="suggestions-label">Show on map</span>
               <div class="suggestions-row" id="suggestions-row" role="group" aria-label="Show categories on the map"></div>
