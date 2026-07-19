@@ -469,6 +469,41 @@ async function boot() {
     if (watchState() === "OFF") void applyLocate(locateTransition(locateMode, "end"));
   });
 
+  // --- Category suggestions: "show on map" toggles in the idle sheet ------
+  // Live under the map in the rest state, Apple Maps style — not a floating
+  // button that inevitably ends up colliding with the search bar or the
+  // directions sheet. Opt-in: the map starts with no business icons at all;
+  // toggles are multi-select and whatever's on stays on after the sheet
+  // closes. Built before enterIdle() below (rather than at boot's end,
+  // where this used to live) — enterIdle() measures the idle sheet's real
+  // height from its rendered content, and measuring before these pills
+  // exist locked in a height sized for an empty row, clipping them once
+  // they actually appeared.
+  const suggestionsRow = document.getElementById("suggestions-row")!;
+  const SUGGESTED_GROUPS = ["coffee", "food", "shop", "restroom", "elevator"] as const;
+  const activeGroups = new Set<string>();
+  for (const group of SUGGESTED_GROUPS) {
+    const pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "suggestion-pill";
+    pill.dataset.group = group;
+    pill.setAttribute("aria-pressed", "false");
+    const icon = document.createElement("img");
+    icon.src = renderPoiIconDataUrl(group, GROUP_COLORS[group]);
+    icon.alt = "";
+    pill.append(icon, GROUP_LABELS[group]);
+    pill.addEventListener("click", () => {
+      if (activeGroups.has(group)) activeGroups.delete(group);
+      else activeGroups.add(group);
+      const on = activeGroups.has(group);
+      pill.classList.toggle("active", on);
+      pill.setAttribute("aria-pressed", String(on));
+      view.setPoiGroupFilter([...activeGroups]);
+    });
+    suggestionsRow.appendChild(pill);
+  }
+  view.setPoiGroupFilter([]); // nothing shown until the user opts in
+
   // Restore a shared route from the URL (?from=&to=). Routing time is
   // always "now", so a shared link's own departure time (if any, from an
   // older link) isn't restored.
@@ -518,37 +553,6 @@ async function boot() {
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
   }
-
-  // --- Category suggestions: "show on map" toggles in the search panel ----
-  // They live under the destination field in the picking state (tap "Where
-  // to?"), Apple Maps style — not a floating button that inevitably ends up
-  // colliding with the search panel or the directions sheet. Opt-in: the
-  // map starts with no business icons at all; toggles are multi-select and
-  // whatever's on stays on after the panel closes.
-  const suggestionsRow = document.getElementById("suggestions-row")!;
-  const SUGGESTED_GROUPS = ["coffee", "food", "shop", "restroom", "elevator"] as const;
-  const activeGroups = new Set<string>();
-  for (const group of SUGGESTED_GROUPS) {
-    const pill = document.createElement("button");
-    pill.type = "button";
-    pill.className = "suggestion-pill";
-    pill.dataset.group = group;
-    pill.setAttribute("aria-pressed", "false");
-    const icon = document.createElement("img");
-    icon.src = renderPoiIconDataUrl(group, GROUP_COLORS[group]);
-    icon.alt = "";
-    pill.append(icon, GROUP_LABELS[group]);
-    pill.addEventListener("click", () => {
-      if (activeGroups.has(group)) activeGroups.delete(group);
-      else activeGroups.add(group);
-      const on = activeGroups.has(group);
-      pill.classList.toggle("active", on);
-      pill.setAttribute("aria-pressed", String(on));
-      view.setPoiGroupFilter([...activeGroups]);
-    });
-    suggestionsRow.appendChild(pill);
-  }
-  view.setPoiGroupFilter([]); // nothing shown until the user opts in
 
   // Test/debug handle (drives E2E camera positioning).
   (window as unknown as Record<string, unknown>).__skymap = {

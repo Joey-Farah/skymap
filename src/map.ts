@@ -97,6 +97,48 @@ function bridgesFC(data: SkymapData, when: Date): FC {
   };
 }
 
+/** Closest point on a segment [a, b] to p — the building-edge anchor below
+ * walks every edge of a footprint and keeps the best of these. */
+function nearestOnSegment(
+  p: [number, number],
+  a: [number, number],
+  b: [number, number],
+): [number, number] {
+  const abx = b[0] - a[0];
+  const aby = b[1] - a[1];
+  const lenSq = abx * abx + aby * aby;
+  if (lenSq === 0) return a;
+  const t = Math.max(0, Math.min(1, ((p[0] - a[0]) * abx + (p[1] - a[1]) * aby) / lenSq));
+  return [a[0] + t * abx, a[1] + t * aby];
+}
+
+/** Where a building's own centroid sits inside a footprint, a route drawn
+ * from it cuts straight across the interior on its way to the skyway door
+ * — for a building with any real footprint, that reads as ignoring the
+ * skyway entirely rather than as "walk to the door first." Anchoring at
+ * the footprint point nearest the direction the route actually leaves
+ * (the first/last bridge's own attachment point) keeps that segment to
+ * roughly the width of the building instead of a full diagonal. */
+function buildingExitPoint(building: Building, towards: [number, number]): [number, number] {
+  const ring = building.footprint;
+  if (!ring || ring.length < 2) return [building.lon, building.lat];
+  let best: [number, number] = ring[0];
+  let bestDist = Infinity;
+  for (let i = 0; i < ring.length; i++) {
+    const a = ring[i];
+    const b = ring[(i + 1) % ring.length];
+    const candidate = nearestOnSegment(towards, a, b);
+    const dx = candidate[0] - towards[0];
+    const dy = candidate[1] - towards[1];
+    const dist = dx * dx + dy * dy;
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = candidate;
+    }
+  }
+  return best;
+}
+
 /** Full route polyline: real bridge geometry when present, centroids otherwise.
  * Starts/ends at the actual from/to point (a POI's precise spot, when
  * there is one) rather than the origin building's centroid — anchoring
@@ -475,9 +517,21 @@ export class SkymapView {
       }
 
       const first = route.steps[0].building;
-      const last = route.steps[route.steps.length - 1].building;
-      const fromCoord = poiCoords?.fromCoord ?? [first.lon, first.lat];
-      const toCoord = poiCoords?.toCoord ?? [last.lon, last.lat];
+      const lastStep = route.steps[route.steps.length - 1];
+      const last = lastStep.building;
+      // Direction the route actually leaves each building — the first
+      // bridge's own attachment point at the origin, the last bridge's at
+      // the destination — so a plain building (no POI, no override) exits
+      // toward its own footprint edge instead of its centroid.
+      const firstBridge = route.steps[1]?.legGeometry;
+      const fromTowards: [number, number] = firstBridge?.[0] ?? [
+        route.steps[1]?.building.lon ?? first.lon,
+        route.steps[1]?.building.lat ?? first.lat,
+      ];
+      const lastBridge = lastStep.legGeometry;
+      const toTowards: [number, number] = lastBridge?.[lastBridge.length - 1] ?? [first.lon, first.lat];
+      const fromCoord = poiCoords?.fromCoord ?? buildingExitPoint(first, fromTowards);
+      const toCoord = poiCoords?.toCoord ?? buildingExitPoint(last, toTowards);
       const coords = routeCoords(route, fromCoord, toCoord);
       this.markers.push(
         new maplibregl.Marker({ color: "#16a34a" }).setLngLat(fromCoord).addTo(this.map),
