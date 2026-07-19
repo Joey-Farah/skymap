@@ -32,10 +32,10 @@ Everything below is ready to copy straight into App Store Connect. Sections mark
 ## 2. Promotional text (170 char max, editable anytime without a new review)
 
 ```
-Turn-by-turn walking directions through the Minneapolis Skyway — the largest
-contiguous skyway system in the world. No account, no ads, no tracking.
+Never step outside in a Minneapolis winter. Real turn-by-turn walking
+directions through the Skyway — accurate times, live hours, no account needed.
 ```
-*(169 chars)*
+*(152 chars)*
 
 ---
 
