@@ -28,7 +28,7 @@ export function groupFor(kind: string, category: string): PoiGroup {
 }
 
 export const GROUP_LABELS: Record<PoiGroup, string> = {
-  food: "Restaurants",
+  food: "Food",
   coffee: "Coffee",
   other: "Misc.",
   restroom: "Restrooms",
