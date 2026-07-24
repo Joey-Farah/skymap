@@ -6,9 +6,11 @@ import { fileURLToPath } from "node:url";
 
 import {
   SkywayRouter,
+  buildingExitPoint,
   haversineMeters,
   nearestBuilding,
   polylineMeters,
+  remainingRouteMeters,
   routeStepIndex,
   sliceAlong,
 } from "../src/router.ts";
@@ -582,4 +584,89 @@ test("live dataset's core network is fully connected; smaller real spurs may sta
   const coreSize = Math.max(...reachableCounts);
   assert.ok(coreSize >= 100, `core downtown network only covers ${coreSize} buildings — expected the dominant cluster to stay large`);
   assert.ok(reachableCounts.every((n) => n >= 2), "every building must be reachable from at least one other");
+});
+
+// remainingRouteMeters: reproduces the "frozen ETA" bug seen walking
+// through a large building — a fix landing on the middle of a long leg
+// should read as roughly-half-remaining, not stuck at whatever a coarse
+// per-step guess would show for the whole building.
+test("remainingRouteMeters counts down continuously along a straight leg", () => {
+  const coords = [
+    [-93.27, 44.98],
+    [-93.26, 44.98],
+  ]; // one straight ~830m leg (rough, at this latitude)
+  const total = polylineMeters(coords);
+  const atStart = remainingRouteMeters(coords, 44.98, -93.27);
+  const atMidpoint = remainingRouteMeters(coords, 44.98, -93.265);
+  const atEnd = remainingRouteMeters(coords, 44.98, -93.26);
+  assert.ok(Math.abs(atStart - total) < 1, `expected ~${total}m remaining at the start, got ${atStart}`);
+  assert.ok(Math.abs(atMidpoint - total / 2) < 5, `expected ~${total / 2}m remaining at the midpoint, got ${atMidpoint}`);
+  assert.equal(atEnd, 0);
+});
+
+test("remainingRouteMeters ignores a fix off to the side of the line (indoor GPS wobble)", () => {
+  const coords = [
+    [-93.27, 44.98],
+    [-93.26, 44.98],
+  ];
+  const onLine = remainingRouteMeters(coords, 44.98, -93.265);
+  const offLine = remainingRouteMeters(coords, 44.9802, -93.265); // ~22m north of the line
+  assert.ok(Math.abs(onLine - offLine) < 1, "a fix slightly off the line should still project to the same remaining distance");
+});
+
+test("remainingRouteMeters is monotonically non-increasing along a multi-leg route", () => {
+  const coords = [
+    [-93.27, 44.98],
+    [-93.268, 44.981],
+    [-93.265, 44.9805],
+    [-93.26, 44.982],
+  ];
+  const samples = coords.map(([lon, lat]) => remainingRouteMeters(coords, lat, lon));
+  for (let i = 1; i < samples.length; i++) {
+    assert.ok(samples[i] <= samples[i - 1] + 1e-6, `remaining distance rose from ${samples[i - 1]} to ${samples[i]}`);
+  }
+  assert.equal(samples[samples.length - 1], 0);
+});
+
+// buildingExitPoint: reproduces a real glitch seen walking the skyway —
+// City Center's marker rendering inside the building instead of on the
+// bridge to Gaviidae Common. Root cause isn't our extraction (verified
+// against OSM directly): City Center's hand-traced footprint is a real,
+// complex 28-node shape that just doesn't reach within ~31m of where that
+// bridge's endpoint node was mapped. The fix trusts the real door
+// coordinate over a footprint edge that disagrees with it by that much.
+test("buildingExitPoint falls back to the real door when the footprint disagrees by tens of meters", () => {
+  const cityCenter = live.buildings.find((b) => b.id === "city-center-27346720");
+  assert.ok(cityCenter, "fixture building missing — id may have changed upstream");
+  const gaviidaeEdge = live.edges.find(
+    (e) =>
+      (e.from === cityCenter.id && e.to === "gaviidae-common-156909893") ||
+      (e.to === cityCenter.id && e.from === "gaviidae-common-156909893"),
+  );
+  assert.ok(gaviidaeEdge?.geometry, "City Center <-> Gaviidae Common bridge geometry missing upstream");
+  const realDoor =
+    gaviidaeEdge.from === cityCenter.id
+      ? gaviidaeEdge.geometry[0]
+      : gaviidaeEdge.geometry[gaviidaeEdge.geometry.length - 1];
+
+  const exit = buildingExitPoint(cityCenter, realDoor);
+  assert.deepEqual(exit, realDoor, "should trust the real door, not a distant footprint edge");
+});
+
+test("buildingExitPoint still snaps to the footprint when the door is genuinely close", () => {
+  const building = {
+    lon: 0,
+    lat: 0,
+    footprint: [
+      [0, 0],
+      [0.001, 0],
+      [0.001, 0.001],
+      [0, 0.001],
+    ],
+  };
+  // A door a couple meters outside the wall — snapping to the wall itself
+  // is correct here, not falling back to a point floating outside it.
+  const nearDoor = [0.0005, 0.00002];
+  const exit = buildingExitPoint(building, nearDoor);
+  assert.ok(Math.abs(exit[1] - 0) < 1e-6, "should snap onto the near wall, not fall back");
 });

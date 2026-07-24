@@ -45,6 +45,22 @@ export function haversineMeters(aLat: number, aLon: number, bLat: number, bLon: 
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
+/** Closest point on a segment [a, b] to p — plain linear interpolation in
+ * lon/lat, not geodesic, but segments here (a route leg, a building edge)
+ * are short enough that the difference is noise. */
+export function nearestOnSegment(
+  p: [number, number],
+  a: [number, number],
+  b: [number, number],
+): [number, number] {
+  const abx = b[0] - a[0];
+  const aby = b[1] - a[1];
+  const lenSq = abx * abx + aby * aby;
+  if (lenSq === 0) return a;
+  const t = Math.max(0, Math.min(1, ((p[0] - a[0]) * abx + (p[1] - a[1]) * aby) / lenSq));
+  return [a[0] + t * abx, a[1] + t * aby];
+}
+
 export function polylineMeters(coords: [number, number][]): number {
   let total = 0;
   for (let i = 1; i < coords.length; i++) {
@@ -115,6 +131,83 @@ export function routeStepIndex(route: RouteResult, lat: number, lon: number): nu
     }
   });
   return best;
+}
+
+// No real wall-to-door gap is this big — past it, a "nearest footprint
+// edge" result is almost certainly the wrong side of the building rather
+// than a genuinely distant door.
+const EXIT_POINT_MAX_METERS = 20;
+
+/** Where a building's own centroid sits inside a footprint, a route drawn
+ * from it cuts straight across the interior on its way to the skyway door
+ * — for a building with any real footprint, that reads as ignoring the
+ * skyway entirely rather than as "walk to the door first." Anchoring at
+ * the footprint point nearest the direction the route actually leaves
+ * (the first/last bridge's own attachment point) keeps that segment to
+ * roughly the width of the building instead of a full diagonal.
+ *
+ * Building footprints are hand-traced in OSM and don't always agree with
+ * where a bridge's own endpoint node was placed — usually within a meter
+ * or two, but occasionally tens of meters off (a courtyard or notch the
+ * footprint doesn't cover). When the nearest edge point wildly disagrees
+ * with the real door location, trust the door coordinate itself rather
+ * than snap to a footprint edge that's probably just the wrong side of
+ * the building. */
+export function buildingExitPoint(
+  building: Pick<Building, "lon" | "lat" | "footprint">,
+  towards: [number, number],
+): [number, number] {
+  const ring = building.footprint;
+  if (!ring || ring.length < 2) return [building.lon, building.lat];
+  let best: [number, number] = ring[0];
+  let bestDist = Infinity;
+  for (let i = 0; i < ring.length; i++) {
+    const a = ring[i];
+    const b = ring[(i + 1) % ring.length];
+    const candidate = nearestOnSegment(towards, a, b);
+    const dx = candidate[0] - towards[0];
+    const dy = candidate[1] - towards[1];
+    const dist = dx * dx + dy * dy;
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = candidate;
+    }
+  }
+  if (haversineMeters(best[1], best[0], towards[1], towards[0]) > EXIT_POINT_MAX_METERS) {
+    return towards;
+  }
+  return best;
+}
+
+/**
+ * Distance left to walk along the route's actual drawn polyline, measured
+ * from wherever a live GPS fix projects onto it — not a per-step guess.
+ * A step-fraction estimate (arrival step / total steps) reads as frozen
+ * for a long stretch while crossing a large building: the step doesn't
+ * change until you're closer to the *next* building's centroid than this
+ * one's, even though you've been visibly walking the whole time. Snapping
+ * to the nearest point on the line instead ticks down continuously
+ * regardless of how big any single building along the way is.
+ */
+export function remainingRouteMeters(coords: [number, number][], lat: number, lon: number): number {
+  if (coords.length < 2) return 0;
+  const point: [number, number] = [lon, lat];
+  let walked = 0;
+  let bestOff = Infinity;
+  let bestAlong = 0;
+  for (let i = 1; i < coords.length; i++) {
+    const a = coords[i - 1];
+    const b = coords[i];
+    const proj = nearestOnSegment(point, a, b);
+    const off = haversineMeters(lat, lon, proj[1], proj[0]);
+    const along = walked + haversineMeters(a[1], a[0], proj[1], proj[0]);
+    if (off < bestOff) {
+      bestOff = off;
+      bestAlong = along;
+    }
+    walked += haversineMeters(a[1], a[0], b[1], b[0]);
+  }
+  return Math.max(0, walked - bestAlong);
 }
 
 interface GraphEdge {

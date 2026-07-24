@@ -2,7 +2,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, IndoorLink, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isClosingSoon, isOpenAt } from "./hours.ts";
-import { polylineMeters, sliceAlong } from "./router.ts";
+import { buildingExitPoint, polylineMeters, remainingRouteMeters, sliceAlong } from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS } from "./poi.ts";
 
@@ -97,48 +97,6 @@ function bridgesFC(data: SkymapData, when: Date): FC {
   };
 }
 
-/** Closest point on a segment [a, b] to p — the building-edge anchor below
- * walks every edge of a footprint and keeps the best of these. */
-function nearestOnSegment(
-  p: [number, number],
-  a: [number, number],
-  b: [number, number],
-): [number, number] {
-  const abx = b[0] - a[0];
-  const aby = b[1] - a[1];
-  const lenSq = abx * abx + aby * aby;
-  if (lenSq === 0) return a;
-  const t = Math.max(0, Math.min(1, ((p[0] - a[0]) * abx + (p[1] - a[1]) * aby) / lenSq));
-  return [a[0] + t * abx, a[1] + t * aby];
-}
-
-/** Where a building's own centroid sits inside a footprint, a route drawn
- * from it cuts straight across the interior on its way to the skyway door
- * — for a building with any real footprint, that reads as ignoring the
- * skyway entirely rather than as "walk to the door first." Anchoring at
- * the footprint point nearest the direction the route actually leaves
- * (the first/last bridge's own attachment point) keeps that segment to
- * roughly the width of the building instead of a full diagonal. */
-function buildingExitPoint(building: Building, towards: [number, number]): [number, number] {
-  const ring = building.footprint;
-  if (!ring || ring.length < 2) return [building.lon, building.lat];
-  let best: [number, number] = ring[0];
-  let bestDist = Infinity;
-  for (let i = 0; i < ring.length; i++) {
-    const a = ring[i];
-    const b = ring[(i + 1) % ring.length];
-    const candidate = nearestOnSegment(towards, a, b);
-    const dx = candidate[0] - towards[0];
-    const dy = candidate[1] - towards[1];
-    const dist = dx * dx + dy * dy;
-    if (dist < bestDist) {
-      bestDist = dist;
-      best = candidate;
-    }
-  }
-  return best;
-}
-
 function coordsEqual(a: [number, number], b: [number, number]): boolean {
   return Math.abs(a[0] - b[0]) < 1e-7 && Math.abs(a[1] - b[1]) < 1e-7;
 }
@@ -228,6 +186,21 @@ function poisFC(pois: Poi[]): FC {
   };
 }
 
+/** Route start/end marker — same visual language as the live-position dot
+ * (skyway-walker layer below): filled circle, white ring, soft shadow.
+ * Replaces MapLibre's stock teardrop pin, which is a generic map-pin icon
+ * unrelated to anything else this app draws. */
+function routeMarkerElement(color: string): HTMLDivElement {
+  const el = document.createElement("div");
+  el.style.width = "16px";
+  el.style.height = "16px";
+  el.style.borderRadius = "50%";
+  el.style.background = color;
+  el.style.border = "2.5px solid #ffffff";
+  el.style.boxShadow = "0 1px 3px rgba(0,0,0,0.4)";
+  return el;
+}
+
 function pointFC(coord: [number, number] | null): FC {
   if (!coord) return { type: "FeatureCollection", features: [] };
   return {
@@ -245,6 +218,9 @@ export class SkymapView {
   private markers: maplibregl.Marker[] = [];
   private ready = false;
   private routeAnim = 0;
+  /** The active route's own drawn polyline — what remainingMeters projects
+   * a live GPS fix onto. Empty when there's no active route. */
+  private activeRouteCoords: [number, number][] = [];
 
   constructor(
     container: HTMLElement,
@@ -433,7 +409,13 @@ export class SkymapView {
       id: "skyway-buildings-label",
       type: "symbol",
       source: "skyway-buildings",
-      minzoom: 14.8,
+      // The app's own default framing (initial load, route preview,
+      // navigating) sits at or below zoom 16 — a 14.8 threshold meant
+      // every building's name was on screen at once no matter what you
+      // were doing, which reads as clutter rather than as orientation.
+      // 16.4 keeps labels available a small deliberate zoom-in past that,
+      // not gone entirely.
+      minzoom: 16.4,
       layout: {
         "text-field": ["get", "name"],
         "text-size": 11.5,
@@ -556,6 +538,7 @@ export class SkymapView {
       for (const m of this.markers) m.remove();
       this.markers = [];
       if (!route || route.steps.length < 2) {
+        this.activeRouteCoords = [];
         routeSrc?.setData(lineFC([]));
         walkerSrc?.setData(pointFC(null));
         return;
@@ -578,9 +561,10 @@ export class SkymapView {
       const fromCoord = poiCoords?.fromCoord ?? buildingExitPoint(first, fromTowards);
       const toCoord = poiCoords?.toCoord ?? buildingExitPoint(last, toTowards);
       const coords = routeCoords(route, fromCoord, toCoord, this.data.indoorLinks);
+      this.activeRouteCoords = coords;
       this.markers.push(
-        new maplibregl.Marker({ color: "#16a34a" }).setLngLat(fromCoord).addTo(this.map),
-        new maplibregl.Marker({ color: "#dc2626" }).setLngLat(toCoord).addTo(this.map),
+        new maplibregl.Marker({ element: routeMarkerElement("#16a34a") }).setLngLat(fromCoord).addTo(this.map),
+        new maplibregl.Marker({ element: routeMarkerElement("#dc2626") }).setLngLat(toCoord).addTo(this.map),
       );
       const lons = [...coords.map((c) => c[0]), fromCoord[0], toCoord[0]];
       const lats = [...coords.map((c) => c[1]), fromCoord[1], toCoord[1]];
@@ -626,6 +610,14 @@ export class SkymapView {
   setManualPosition(coord: [number, number] | null) {
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord));
+  }
+
+  /** Meters left to walk along the active route's drawn line, from wherever
+   * a fix (live GPS or a manual tap) projects onto it — null with no route
+   * active. See remainingRouteMeters for why this beats a step count. */
+  remainingMeters(lat: number, lon: number): number | null {
+    if (this.activeRouteCoords.length < 2) return null;
+    return remainingRouteMeters(this.activeRouteCoords, lat, lon);
   }
 
   focusBuilding(b: Building) {

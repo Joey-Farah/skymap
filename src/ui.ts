@@ -752,19 +752,35 @@ export class Sheet {
 
   /**
    * Live navigation update: refreshes the bottom bar's arrival/remaining
-   * numbers and returns the instruction for the top banner. Remaining is
-   * a step-fraction estimate — plenty for indoor walking distances.
+   * numbers and returns the instruction for the top banner.
+   *
+   * `liveRemainingMeters`, when given (a live GPS fix or manual tap
+   * projected onto the route's own line), drives the numbers directly —
+   * continuous, so it keeps ticking down while crossing even a large
+   * building. Without one (nav just started, no fix yet) falls back to a
+   * step-fraction estimate, coarse but fine for that single moment.
    */
-  updateNav(stepIndex: number, now: Date): { title: string; sub: HTMLElement | null } | null {
+  updateNav(
+    stepIndex: number,
+    now: Date,
+    liveRemainingMeters?: number | null,
+  ): { title: string; sub: HTMLElement | null } | null {
     if (!this.activeRoute || this.mode !== "nav") return null;
     const route = this.activeRoute;
     this.navStepsListEl?.querySelectorAll("li").forEach((li, i) => {
       li.classList.toggle("current", i === stepIndex);
     });
-    const lastIdx = route.steps.length - 1;
-    const frac = lastIdx > 0 ? Math.min(1, stepIndex / lastIdx) : 1;
-    const remainingMin = Math.round(route.totalMinutes * (1 - frac));
-    const remainingMeters = route.totalMeters * (1 - frac);
+    let remainingMeters: number;
+    if (liveRemainingMeters != null) {
+      remainingMeters = liveRemainingMeters;
+    } else {
+      const lastIdx = route.steps.length - 1;
+      const frac = lastIdx > 0 ? Math.min(1, stepIndex / lastIdx) : 1;
+      remainingMeters = route.totalMeters * (1 - frac);
+    }
+    const remainingMin = Math.round(
+      route.totalMeters > 0 ? route.totalMinutes * (remainingMeters / route.totalMeters) : 0,
+    );
     const eta = new Date(now.getTime() + remainingMin * 60_000);
     if (this.navBarArrival) {
       this.navBarArrival.textContent = formatMinute(eta.getHours() * 60 + eta.getMinutes());

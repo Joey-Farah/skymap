@@ -182,7 +182,18 @@ async function boot() {
     }
     if (!toId) return;
     if (fromId === toId) {
-      sheet.showMessage("Same building", "Pick two different places.");
+      // Not an invalid pick — the router just has no interior path to draw
+      // between two spots in one building. You're already there.
+      activeRoute = null;
+      view.setRoute(null);
+      const building = router.building(fromId);
+      const toPoi = comboTo.poi;
+      sheet.showMessage(
+        "You're already here",
+        toPoi
+          ? `${toPoi.name} is in ${building?.name ?? "this building"} — 0 min away.`
+          : `You're already at ${building?.name ?? "this building"}.`,
+      );
       return;
     }
     const when = selectedTime();
@@ -222,8 +233,9 @@ async function boot() {
     applyNavProgress(0);
   }
 
-  function applyNavProgress(stepIndex: number) {
-    const info = sheet.updateNav(stepIndex, new Date());
+  function applyNavProgress(stepIndex: number, at?: { lat: number; lon: number }) {
+    const remaining = at ? view.remainingMeters(at.lat, at.lon) : null;
+    const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;
     navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
@@ -294,7 +306,7 @@ async function boot() {
   function onRouteTap(lat: number, lon: number) {
     // A navigation-mode concern: previews are for reading, not walking.
     if (!activeRoute || mode !== "nav") return;
-    applyNavProgress(routeStepIndex(activeRoute, lat, lon));
+    applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
     view.setManualPosition([lon, lat]);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
   }
@@ -302,7 +314,7 @@ async function boot() {
   function onPosition(lat: number, lon: number) {
     nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
-      applyNavProgress(routeStepIndex(activeRoute, lat, lon));
+      applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
       view.setManualPosition(null); // real GPS is back in control
     }
     maybePromptSaveRamp(nearBuilding);
