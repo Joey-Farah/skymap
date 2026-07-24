@@ -492,7 +492,7 @@ async function boot() {
   // exist locked in a height sized for an empty row, clipping them once
   // they actually appeared.
   const suggestionsRow = document.getElementById("suggestions-row")!;
-  const SUGGESTED_GROUPS = ["coffee", "food", "shop", "restroom", "elevator"] as const;
+  const SUGGESTED_GROUPS = ["coffee", "food", "other", "restroom", "elevator"] as const;
   const activeGroups = new Set<string>();
   for (const group of SUGGESTED_GROUPS) {
     const pill = document.createElement("button");

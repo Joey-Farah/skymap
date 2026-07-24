@@ -57,8 +57,10 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
       ctx.stroke();
       break;
     }
-    case "shop": {
-      // Shopping bag: trapezoid body + handle arc.
+    case "other": {
+      // Shopping bag: trapezoid body + handle arc. Stands in for the
+      // whole misc bucket (shops and services alike) — most of what
+      // lands here still reads as "a place with a storefront."
       const w = r * 0.8;
       const h = r * 0.75;
       ctx.beginPath();
@@ -139,7 +141,7 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
       break;
     }
     default: {
-      // service (and any future group): a small circled dot.
+      // Any future group: a small circled dot.
       ctx.beginPath();
       ctx.arc(cx, cy, r * 0.28, 0, Math.PI * 2);
       ctx.stroke();

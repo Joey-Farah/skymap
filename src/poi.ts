@@ -1,12 +1,15 @@
 /** POI grouping: one place that decides how a business/feature is classed,
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
-export type PoiGroup = "food" | "coffee" | "shop" | "service" | "restroom" | "landmark" | "transit" | "elevator";
+export type PoiGroup = "food" | "coffee" | "other" | "restroom" | "landmark" | "transit" | "elevator";
 
 // Coffee split out from food generally: someone who wants "where can I get
 // a coffee" doesn't want a restaurant list to dig through, and vice versa.
 const COFFEE = /^(cafe|coffee)$/;
-const FOOD = /^(restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli)$/;
+// Convenience stores read as "food" to someone deciding where to grab a
+// snack — the same instinct that reaches for a restaurant, not a filter
+// most people would think to check under "shopping."
+const FOOD = /^(restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli|convenience)$/;
 const LANDMARK_AMENITY = /^(library|townhall|courthouse|place_of_worship|theatre|cinema)$/;
 const TRANSIT = /^(bus_stop|station|tram_stop|stop)$/;
 
@@ -17,15 +20,17 @@ export function groupFor(kind: string, category: string): PoiGroup {
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
   if (COFFEE.test(category)) return "coffee";
   if (FOOD.test(category)) return "food";
-  if (kind === "shop") return "shop";
-  return "service";
+  // Everything else that isn't food/coffee/wayfinding — clothing and
+  // jewelry stores alongside banks, dentists, chiropractors: whether a
+  // place is a "shop" or a "service" isn't a distinction anyone filtering
+  // while walking around actually cares about.
+  return "other";
 }
 
 export const GROUP_LABELS: Record<PoiGroup, string> = {
   food: "Restaurants",
   coffee: "Coffee",
-  shop: "Shops",
-  service: "Services",
+  other: "Misc.",
   restroom: "Restrooms",
   landmark: "Landmarks",
   transit: "Transit",
@@ -37,8 +42,7 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
 export const GROUP_COLORS: Record<PoiGroup, string> = {
   food: "#e08a00",
   coffee: "#7c4a2d",
-  shop: "#17356e",
-  service: "#5b6b84",
+  other: "#17356e",
   restroom: "#0d9488",
   landmark: "#7c3aed",
   transit: "#178740",

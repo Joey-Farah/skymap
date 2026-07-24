@@ -534,8 +534,9 @@ test("poi grouping and building categories", async () => {
   const { groupFor, buildingCategory } = await import("../src/poi.ts");
   assert.equal(groupFor("amenity", "cafe"), "coffee");
   assert.equal(groupFor("amenity", "restaurant"), "food");
-  assert.equal(groupFor("shop", "clothes"), "shop");
-  assert.equal(groupFor("amenity", "bank"), "service");
+  assert.equal(groupFor("shop", "clothes"), "other");
+  assert.equal(groupFor("shop", "convenience"), "food", "convenience stores read as food, not misc shopping");
+  assert.equal(groupFor("amenity", "bank"), "other", "banks/chiropractors/etc share the misc bucket with shops");
   assert.equal(groupFor("amenity", "toilets"), "restroom");
   assert.equal(groupFor("elevator", "elevator"), "elevator");
   assert.equal(groupFor("tourism", "museum"), "landmark");
