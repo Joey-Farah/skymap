@@ -41,9 +41,12 @@ is kept for history — don't follow it for updates.)
    above" — SkyMap only uses system HTTPS, no custom or linked crypto) and
    hasn't needed re-answering on later builds.
 
-Screenshots and description only need updating when the UI in them actually
-changed. The 1.1 changes are subtle enough at screenshot scale that the
-existing 1.0 screenshots still represent the app honestly.
+Screenshots only need updating when the UI in them actually changed — but
+for 1.1 it did. `screenshots/3-place-card.png` shows the POI card as it was
+before the reframe, a layout the app no longer has. Recapture at minimum
+that one, and keep the whole set in a single appearance: the App Store
+can't serve a light and a dark variant, so a mixed set just looks
+inconsistent.
 
 ## Metadata gotchas found the hard way (2026-07-29)
 
