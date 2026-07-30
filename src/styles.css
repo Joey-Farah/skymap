@@ -734,17 +734,20 @@ a:focus-visible {
 }
 
 .hours-row {
+  /* Day left, time hard right, so the row spans the card instead of both
+     columns huddling on the left with dead space beside them. */
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: 12px;
-  padding: 3px 6px;
+  padding: 3px 8px;
   border-radius: 5px;
   font-size: 13px;
   color: var(--ink-600);
 }
 
 .hours-day {
-  flex: 0 0 2.6rem;
+  flex: 0 0 auto;
   font-weight: 600;
 }
 
@@ -753,6 +756,7 @@ a:focus-visible {
      day labels differ in width — the thing that made the old single line
      feel unconsidered was that nothing lined up. */
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
 .hours-val.is-closed {
