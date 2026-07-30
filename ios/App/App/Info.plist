@@ -24,6 +24,13 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<!-- SkyMap uses only the system's own HTTPS; no custom or linked
+	     cryptography. Declaring it here means every new build is
+	     immediately testable and submittable, instead of sitting in
+	     App Store Connect waiting for the export-compliance question to
+	     be answered by hand. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>SkyMap uses your location to show where you are on the skyway map and guide you along routes.</string>
 	<key>UILaunchStoryboardName</key>
