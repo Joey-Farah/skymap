@@ -1,6 +1,13 @@
 import type { Building, Poi, RouteResult } from "./types.ts";
 import { reportIssueUrl } from "./share.ts";
-import { CATEGORY_LABELS, GROUP_COLORS, GROUP_LABELS, landmarkNear, type PoiGroup } from "./poi.ts";
+import {
+  CATEGORY_LABELS,
+  GROUP_COLORS,
+  GROUP_LABELS,
+  landmarkNear,
+  safeWebsiteUrl,
+  type PoiGroup,
+} from "./poi.ts";
 import { haversineMeters, WALK_METERS_PER_MIN } from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
 import type { RecentEntry } from "./recents.ts";
@@ -581,9 +588,10 @@ export class Sheet {
     for (const p of [...pois].sort((a, b) => a.name.localeCompare(b.name))) {
       const li = document.createElement("li");
       li.append(el("span", p.name), el("span", humanCategory(p.category), "poi-cat"));
-      if (p.website) {
+      const safeUrl = safeWebsiteUrl(p.website);
+      if (safeUrl) {
         const link = document.createElement("a");
-        link.href = p.website;
+        link.href = safeUrl;
         link.target = "_blank";
         link.rel = "noopener";
         link.className = "poi-website";
@@ -629,9 +637,10 @@ export class Sheet {
     more.className = "sheet-collapsible";
     if (parsedHours) more.append(el("div", `Hours: ${formatWeeklyHours(parsedHours)}`, "hours-line"));
     else if (p.openingHours) more.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
-    if (p.website) {
+    const safeUrl = safeWebsiteUrl(p.website);
+    if (safeUrl) {
       const website = document.createElement("a");
-      website.href = p.website;
+      website.href = safeUrl;
       website.target = "_blank";
       website.rel = "noopener";
       website.className = "website-btn";

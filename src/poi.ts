@@ -50,6 +50,28 @@ export const GROUP_COLORS: Record<PoiGroup, string> = {
 };
 
 /** OSM building-way tags -> our building category. */
+/** OSM's `website` tag is free text from a publicly editable dataset, and
+ * it lands directly in an anchor's href — so a `javascript:` or `data:`
+ * value would run in the app's own context the moment someone taps the
+ * link. Only http(s) is ever a legitimate website here; anything else
+ * returns undefined and the caller omits the link rather than rendering a
+ * dead or dangerous one. Every website value in the current extraction is
+ * already http(s), so nothing real is lost. */
+export function safeWebsiteUrl(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  const trimmed = raw.trim();
+  let url: URL;
+  try {
+    url = new URL(trimmed);
+  } catch {
+    return undefined;
+  }
+  // Checked against the parsed protocol, not the raw string: the URL
+  // parser strips tabs and newlines, so "java\nscript:" normalizes to
+  // something a prefix test on the original text would wave through.
+  return url.protocol === "http:" || url.protocol === "https:" ? trimmed : undefined;
+}
+
 export function buildingCategory(tags: Record<string, string>): string {
   const b = tags.building ?? "";
   if (/^(parking|garage)$/.test(b) || tags.amenity === "parking") return "parking";
