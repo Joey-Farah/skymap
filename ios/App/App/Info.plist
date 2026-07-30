@@ -31,6 +31,14 @@
 	     be answered by hand. -->
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<!-- Required by ITMS-90683 even though SkyMap never asks for "always":
+	     the geolocation plugin links IONGeolocationLib, whose binary
+	     references the always-authorization API, and Apple requires a
+	     purpose string for any referenced API. Worded to match what the
+	     app actually does — when-in-use only, no background tracking — so
+	     it stays honest if it is ever shown. -->
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>SkyMap uses your location while you have it open, to show where you are on the skyway map and guide you along routes. It never tracks your location in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>SkyMap uses your location to show where you are on the skyway map and guide you along routes.</string>
 	<key>UILaunchStoryboardName</key>
