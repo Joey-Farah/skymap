@@ -98,6 +98,32 @@ function bridgesFC(data: SkymapData, when: Date): FC {
   };
 }
 
+/** The indoor half of the network — the door-to-door path through each
+ * building, already computed for routing and already spliced into the route
+ * line, but never drawn as part of the network itself. Without it the map
+ * shows a chain of disconnected bridges rather than a system: bridges are
+ * only 3.85 of the network's 13.8 miles.
+ *
+ * Carries the same open/closed state as a bridge so a shut building greys
+ * out continuously rather than leaving its indoor stretch looking passable.
+ */
+function indoorFC(data: SkymapData, when: Date): FC {
+  const byId = new Map(data.buildings.map((b) => [b.id, b]));
+  return {
+    type: "FeatureCollection",
+    features: (data.indoorLinks ?? [])
+      .filter((l) => l.geometry && l.geometry.length > 1)
+      .map((l) => {
+        const host = byId.get(l.buildingId);
+        return {
+          type: "Feature",
+          properties: { open: host ? isOpenAt(host, when) : true },
+          geometry: { type: "LineString", coordinates: l.geometry },
+        };
+      }),
+  };
+}
+
 function coordsEqual(a: [number, number], b: [number, number]): boolean {
   return Math.abs(a[0] - b[0]) < 1e-7 && Math.abs(a[1] - b[1]) < 1e-7;
 }
@@ -386,6 +412,7 @@ export class SkymapView {
 
   private addLayers() {
     this.map.addSource("skyway-bridges", { type: "geojson", data: bridgesFC(this.data, this.when) });
+    this.map.addSource("skyway-indoor", { type: "geojson", data: indoorFC(this.data, this.when) });
     this.map.addSource("skyway-buildings", { type: "geojson", data: buildingsFC(this.data, this.when) });
     this.map.addSource("skyway-route", { type: "geojson", data: lineFC([]) });
     this.map.addSource("skyway-walker", { type: "geojson", data: pointFC(null) });
@@ -417,6 +444,29 @@ export class SkymapView {
         "line-color": ["case", ["get", "closingSoon"], ROUTE, ["get", "open"], NETWORK, CLOSED],
         "line-width": ["case", ["get", "closingSoon"], 2.2, ["get", "open"], 1.6, 1],
         "line-opacity": 0.7,
+      },
+    });
+
+    // The network reads as one continuous line: indoor stretches drawn in
+    // the same colour and weight as the bridges they join, casing and all,
+    // so a door-to-door walk through a building doesn't look like a gap.
+    // Deliberately solid rather than dashed — dashes already mean "closed"
+    // on the bridge layer, and overloading that would say the wrong thing.
+    this.map.addLayer({
+      id: "skyway-indoor-casing",
+      type: "line",
+      source: "skyway-indoor",
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": "#ffffff", "line-width": 8, "line-opacity": 0.9 },
+    });
+    this.map.addLayer({
+      id: "skyway-indoor-line",
+      type: "line",
+      source: "skyway-indoor",
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: {
+        "line-color": ["case", ["get", "open"], NETWORK, CLOSED],
+        "line-width": ["case", ["get", "open"], 4.5, 3],
       },
     });
 
@@ -467,19 +517,25 @@ export class SkymapView {
 
     // Route draws under the businesses/labels it passes, not over them — a
     // thick line painted last used to blot out whatever it crossed.
+    // The active route has to win against a network that is now drawn
+    // everywhere rather than in isolated bridge stubs. It gets a wider
+    // casing than the network's, so there's a clear gutter either side
+    // where it runs along the same corridor, and a heavier stroke so the
+    // orange reads as "this is your way" at a glance rather than as one
+    // more line on a busy map.
     this.map.addLayer({
       id: "skyway-route-casing",
       type: "line",
       source: "skyway-route",
       layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#ffffff", "line-width": 9, "line-opacity": 0.95 },
+      paint: { "line-color": "#ffffff", "line-width": 11.5, "line-opacity": 0.95 },
     });
     this.map.addLayer({
       id: "skyway-route-line",
       type: "line",
       source: "skyway-route",
       layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": ROUTE, "line-width": 4.5 },
+      paint: { "line-color": ROUTE, "line-width": 6 },
     });
 
     // Businesses appear as you zoom in: icons first, names closer. A glyph
@@ -557,6 +613,12 @@ export class SkymapView {
     );
     (this.map.getSource("skyway-bridges") as maplibregl.GeoJSONSource)?.setData(
       bridgesFC(this.data, when),
+    );
+    // Indoor stretches carry the same open/closed state, so they have to be
+    // refreshed with the rest — otherwise changing the departure time greys
+    // out a building's bridges while its interior stays looking passable.
+    (this.map.getSource("skyway-indoor") as maplibregl.GeoJSONSource)?.setData(
+      indoorFC(this.data, when),
     );
   }
 
