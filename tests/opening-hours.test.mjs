@@ -49,6 +49,24 @@ test("PH (public holiday) clauses are ignored, not modeled", () => {
   assert.equal(h[6], null);
 });
 
+test("a later 'off' clause overrides an earlier day span", () => {
+  // "open all week except one day" is a normal OSM pattern, and the later
+  // rule has to win — same as a later span overrides an earlier one. A
+  // building that reports itself open on its closed day gets routed
+  // through, which is the one thing the network map must never do.
+  const h = parseOpeningHours("Mo-Fr 08:00-17:00; Tu off");
+  assert.equal(h[2], null, "Tuesday should be closed");
+  assert.deepEqual(h[1], [480, 1020], "Monday keeps the earlier span");
+  assert.deepEqual(h[3], [480, 1020], "Wednesday keeps the earlier span");
+});
+
+test("an earlier 'off' clause is still overridden by a later span", () => {
+  // The mirror case — later-rule-wins has to hold in both directions.
+  const h = parseOpeningHours("Mo-Su off; Sa 10:00-18:00");
+  assert.deepEqual(h[6], [600, 1080], "Saturday reopened by the later rule");
+  assert.equal(h[1], null, "Monday stays closed");
+});
+
 test("an overnight wrap on even one clause discards the whole value", () => {
   // Fr and Sa/Su close after midnight (close <= open) — a day the model
   // can't represent. Rather than keep the good Mo-Th data and silently

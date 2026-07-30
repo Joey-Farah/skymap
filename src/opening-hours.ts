@@ -94,7 +94,11 @@ export function parseOpeningHours(value: string | undefined | null): DayHours[] 
     const dayIndices = days.filter((d) => d !== "PH").map((d) => DAY_INDEX[d]);
     if (!dayIndices.length) continue; // PH-only clause: not modeled
     if (/^off$/i.test(rest)) {
-      for (const i of dayIndices) if (result[i] === undefined) result[i] = null;
+      // Later rule wins, exactly as it does for a time span below. Guarding
+      // this on "untouched so far" made `off` the one clause type that
+      // couldn't override an earlier rule, so the common "open all week
+      // except Tuesday" pattern left Tuesday reading as open.
+      for (const i of dayIndices) result[i] = null;
       continue;
     }
     const span = parseTimeSpan(rest);
