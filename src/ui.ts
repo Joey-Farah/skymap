@@ -699,7 +699,7 @@ export class Sheet {
     route: RouteResult,
     when: Date,
     pois: Poi[],
-    actions: { onGo: () => void; onShare: () => void },
+    actions: { onGo: () => void },
   ) {
     this.routePois = pois;
     this.content.innerHTML = "";
@@ -732,10 +732,6 @@ export class Sheet {
       el("span", formatDistance(route.totalMeters), "sub"),
       el("span", `${route.steps.length} buildings`, "sub"),
     );
-    const share = el("button", "Share", "share-btn");
-    share.setAttribute("aria-label", "Share this route");
-    share.addEventListener("click", actions.onShare);
-    summary.append(share);
     this.content.append(summary);
 
     const go = el("button", "GO", "go-btn");

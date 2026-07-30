@@ -102,26 +102,6 @@ async function boot() {
   /** The place the user picked (screen 3) — what Directions routes to. */
   let destination: { b: Building; poi?: Poi } | null = null;
 
-  /** The URL already encodes any route (?from=&to=) — sharing is just
-   * surfacing it. Inside the native shell location.origin is
-   * capacitor://localhost, which is meaningless to a recipient, so links
-   * are always built against the public web origin. */
-  async function shareRoute(label: string) {
-    const base = Capacitor.isNativePlatform()
-      ? "https://skymap-alpha.vercel.app/"
-      : location.origin + location.pathname;
-    const url = base + location.search;
-    try {
-      if (navigator.share) await navigator.share({ title: `SkyMap: ${label}`, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        showToast("Route link copied");
-      }
-    } catch {
-      // Share sheet dismissed, or clipboard denied — neither needs a scold.
-    }
-  }
-
   // --- The mode transitions -----------------------------------------------
 
   function enterIdle() {
@@ -226,13 +206,10 @@ async function boot() {
       fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
       toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
     });
-    const fromLabel = comboFrom.label ?? router.building(fromId)!.name;
-    const toLabel = comboTo.label ?? router.building(toId)!.name;
-    sheet.showRoutePreview(route, when, data.pois ?? [], {
-      onGo: () => enterNav(),
-      onShare: () => void shareRoute(`${fromLabel} → ${toLabel}`),
-    });
-    // Make the address bar shareable: the URL always describes this route.
+    sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() });
+    // The URL still describes the route even without a Share button: it
+    // keeps the browser's own share/copy working on web, and inbound
+    // ?from=&to= links (parsed at boot) still open straight into a preview.
     history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));
   }
 
