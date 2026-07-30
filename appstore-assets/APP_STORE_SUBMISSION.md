@@ -41,48 +41,37 @@ Never get turned around in the Skyway again. SkyMap gives clear turn-by-turn dir
 ## 3. Description (4000 char max)
 
 ```
-Ever gotten turned around in the Minneapolis Skyway, unsure which bridge
-leads where or where the nearest coffee shop actually is? SkyMap fixes that.
+Ever gotten turned around in the Minneapolis Skyway, unsure which bridge leads where or where the nearest coffee shop actually is? SkyMap fixes that.
 
-SkyMap gets you where you're going through the Skyway — the largest
-contiguous enclosed pedestrian skyway system in the world — without ever
-stepping outside in a Minnesota winter.
+SkyMap gets you where you're going through the Skyway — the largest contiguous enclosed pedestrian skyway system in the world — without ever stepping outside in a Minnesota winter.
 
-Search any building or business connected to the skyway, and SkyMap draws
-turn-by-turn walking directions through the actual indoor route: which
-bridge to cross, which building to walk through, and when you'll need an
-elevator or escalator along the way.
+Search any building or business connected to the skyway, and SkyMap draws turn-by-turn walking directions through the actual indoor route: which bridge to cross, which building to walk through, and when you'll need an elevator or escalator along the way.
 
 WHAT SKYMAP DOES
 
 • Turn-by-turn skyway walking directions between any two connected buildings
-• Real walking-time estimates, based on actual indoor path distances — not
-  a straight-line guess
+• Real walking-time estimates, based on actual indoor path distances — not a straight-line guess
 • Live building hours, so you're not routed into somewhere that's closed
-• Warnings when a building on your route is closing soon, or when a stretch
-  of your walk briefly goes outdoors
-• Search restaurants, coffee shops, restrooms, elevators, and landmarks
-  along the way
-• Share a route with a link — no account needed on either end
+• Warnings when a building on your route is closing soon, or when a stretch of your walk briefly goes outdoors
+• Search restaurants, coffee shops, restrooms, elevators, and landmarks along the way
+• Tap any business to see how far it is, how long the walk takes, what floor it's on, and when the skyway itself is open
 
 WHY IT'S DIFFERENT
 
-SkyMap is built specifically around the skyway system: real connections,
-real hours, real walking distances — routed through the actual indoor path,
-not a straight line — sourced from OpenStreetMap and continuously
-improvable by anyone who spots something off.
+SkyMap is built specifically around the skyway system: real connections, real hours, real walking distances — routed through the actual indoor path, not a straight line — sourced from OpenStreetMap and continuously improvable by anyone who spots something off.
 
 PRIVACY
 
-SkyMap has no account, no sign-in, and no analytics or tracking of any
-kind. Location is used only on your device to show where you are and guide
-your route — it's never stored or sent anywhere. Full privacy policy at
-skymap-alpha.vercel.app/privacy.html.
+SkyMap has no account, no sign-in, and no analytics or tracking of any kind. Location is used only on your device to show where you are and guide your route — it's never stored or sent anywhere. Full privacy policy at skymap-alpha.vercel.app/privacy.html.
 
 Minneapolis Skyway data from OpenStreetMap contributors.
 ```
-*(~1,700 chars — comfortably under the 4000 limit; trim the "WHY IT'S DIFFERENT"
-section first if you want it shorter.)*
+*(~1,800 chars, under the 4000 limit.)*
+
+**Paragraphs must stay on one line each.** The App Store renders literal
+newlines *and* soft-wraps to the device width, so a hard-wrapped paragraph
+comes out ragged — long line, short line, long line. Only blank lines between
+paragraphs, never inside one.
 
 ---
 

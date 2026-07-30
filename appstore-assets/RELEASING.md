@@ -45,6 +45,22 @@ Screenshots and description only need updating when the UI in them actually
 changed. The 1.1 changes are subtle enough at screenshot scale that the
 existing 1.0 screenshots still represent the app honestly.
 
+## Metadata gotchas found the hard way (2026-07-29)
+
+- **Paragraphs in the description must each be one unbroken line.** The App
+  Store renders literal newlines *and* soft-wraps to the device, so a
+  hard-wrapped paragraph comes out ragged — long line, short line, long
+  line. Only blank lines between paragraphs, never inside one.
+- **The "Developer Website" link on the listing is `marketingUrl`**, not
+  anything in your Apple account. It pointed at the web build of the app;
+  it now points at joeyfarah.dev.
+- **`supportUrl` must actually resolve.** It 404'd on the live listing for
+  the whole of 1.0: production on Vercel was deployed hours *before*
+  `public/support.html` was added, so the page had never shipped. Re-check
+  it after any release — `curl -o /dev/null -w '%{http_code}'`.
+- Metadata for a released version can't be edited; the fixes above live on
+  the next version's record.
+
 ## What's New — 1.1
 
 ```
