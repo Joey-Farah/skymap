@@ -41,12 +41,28 @@ is kept for history — don't follow it for updates.)
    above" — SkyMap only uses system HTTPS, no custom or linked crypto) and
    hasn't needed re-answering on later builds.
 
-Screenshots only need updating when the UI in them actually changed — but
-for 1.1 it did. `screenshots/3-place-card.png` shows the POI card as it was
-before the reframe, a layout the app no longer has. Recapture at minimum
-that one, and keep the whole set in a single appearance: the App Store
-can't serve a light and a dark variant, so a mixed set just looks
-inconsistent.
+## Screenshots
+
+Run `npm run screenshots` with the dev server up (`npm run dev -- --port
+5180`). It renders headless at a 428x926 viewport with deviceScaleFactor 3,
+landing exactly on Apple's 1284x2778 with no resize pass. Add `--light` for
+the light appearance. Don't capture with macOS screenshot: that gives
+physical screen pixels, which is how one attempt came out at 646x1396 —
+right aspect, half the resolution, unusable.
+
+Keep the whole set in a single appearance. The App Store can't serve a
+light and a dark variant, so a mixed set just looks inconsistent.
+
+**Screenshots cannot be changed once the version is `WAITING_FOR_REVIEW`** —
+the API returns 409 `STATE_ERROR`, "Can't Create Screenshot while Waiting
+For Review". Upload them *before* submitting, or they wait for the next
+version. Editing a live version's screenshots also requires a new version,
+so there's no back door once it's shipped.
+
+The set committed on 2026-07-30 was captured against 1.1's UI but **is not
+on the 1.1 listing** — 1.1 was already in review and Joey chose to ship
+rather than reset the queue a third time. Upload them as the first step of
+the next version.
 
 ## Metadata gotchas found the hard way (2026-07-29)
 
