@@ -37,6 +37,7 @@ import {
   weeklyHoursRows,
 } from "./hours.ts";
 import { parseOpeningHours } from "./opening-hours.ts";
+import { shouldExpand } from "./sheet-snap.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
@@ -326,6 +327,11 @@ export class Sheet {
   private dragStartY = 0;
   private dragStartHeight = 0;
   private dragging = false;
+  /** Last sampled pointer position/time and the resulting px/ms, so a
+   * release can tell a flick from a slow placement. */
+  private lastDragY = 0;
+  private lastDragAt = 0;
+  private dragVelocity = 0;
   /** Card ✕ → back to idle. Owned by main.ts, which runs the mode state
    * machine. */
   onClose: (() => void) | null = null;
@@ -343,6 +349,9 @@ export class Sheet {
       this.root.classList.add("dragging");
       this.dragStartY = e.clientY;
       this.dragStartHeight = this.root.getBoundingClientRect().height;
+      this.lastDragY = e.clientY;
+      this.lastDragAt = e.timeStamp;
+      this.dragVelocity = 0;
       handle.setPointerCapture(e.pointerId);
     });
     handle.addEventListener("pointermove", (e) => {
@@ -353,6 +362,13 @@ export class Sheet {
       const next = Math.min(this.expandedHeight, Math.max(this.peekHeight, this.dragStartHeight + delta));
       this.root.style.maxHeight = `${next}px`;
       this.setClearance(next + 12); // floaters track the drag live, not just at rest
+      // Velocity from the last move only, not the whole gesture: a long
+      // slow drag that ends in a flick should read as a flick, and an
+      // average over the whole drag would bury that.
+      const dt = e.timeStamp - this.lastDragAt;
+      if (dt > 0) this.dragVelocity = (this.lastDragY - e.clientY) / dt;
+      this.lastDragY = e.clientY;
+      this.lastDragAt = e.timeStamp;
     });
     handle.addEventListener("pointerup", (e) => {
       const moved = Math.abs(e.clientY - this.dragStartY) > 8;
@@ -362,11 +378,17 @@ export class Sheet {
         this.setExpanded(!this.expanded); // a plain tap still toggles
         return;
       }
-      // Released mid-drag: snap to whichever end is closer, animated by
-      // the CSS transition (re-enabled now that .dragging is off).
-      const current = this.root.getBoundingClientRect().height;
-      const midpoint = (this.peekHeight + this.expandedHeight) / 2;
-      this.setExpanded(current > midpoint);
+      // A flick commits in its own direction; anything slower settles to
+      // the nearer end. Animated by the CSS transition, re-enabled now
+      // that .dragging is off.
+      this.setExpanded(
+        shouldExpand({
+          height: this.root.getBoundingClientRect().height,
+          velocity: this.dragVelocity,
+          peekHeight: this.peekHeight,
+          expandedHeight: this.expandedHeight,
+        }),
+      );
     });
 
     // Rotation / split-view resize invalidates the measured heights (the
