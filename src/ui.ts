@@ -770,7 +770,13 @@ export class Sheet {
     ol.className = "steps sheet-collapsible";
     route.steps.forEach((step) => {
       const li = document.createElement("li");
-      const closedHere = !isOpenLabelOk(step.building, when);
+      // Against the time you actually reach this step, not the time you set
+      // off: on a 20-minute route the last buildings were being judged by
+      // the clock at the first. closingSoonWarnings() directly above already
+      // works off arrivalMinutes, so the two halves of the same card
+      // disagreed about whether a building would be open.
+      const arriveAt = new Date(when.getTime() + step.arrivalMinutes * 60_000);
+      const closedHere = !isOpenLabelOk(step.building, arriveAt);
       const landmark = landmarkNear(pois, step.building.id);
       li.append(el("span", step.building.name + (closedHere ? " (closed)" : "")));
       if (landmark) li.append(" — ", landmarkCue(landmark));
