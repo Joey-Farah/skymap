@@ -48,13 +48,20 @@ existing 1.0 screenshots still represent the app honestly.
 ## What's New — 1.1
 
 ```
-Better walking times and a cleaner map.
+Better walking times, a cleaner map, and place cards that tell you what
+you actually want to know.
 
+• Tap a restaurant or shop and you'll now see how far it is, how long it
+  takes to walk there, what floor it's on, and when the skyway itself is
+  open — plus its logo and a link to its menu.
 • Live arrival times now follow your real position along the route, instead
   of jumping a step at a time — no more times that looked frozen while you
   crossed a large building.
 • The map shows building names only when you zoom in, so the default view
   isn't crowded with text.
+• "Back to Ramp" now takes you back. It previously did nothing unless you
+  were already planning a route.
+• Location is only asked for once, and it asks in the app's own words.
 • Picking a destination in the building you're already standing in tells you
   you're there, instead of failing to search.
 • Route start and end points now land on the actual skyway door.
