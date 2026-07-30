@@ -422,8 +422,15 @@ export class SkywayRouter {
     let indoorMeters = 0;
     for (let i = 1; i < steps.length; i++) {
       walked += steps[i].legMeters ?? 0;
-      indoorMeters += throughIndoorMeters[i];
+      // Record the arrival before folding in this building's own indoor
+      // crossing: you reach step i at its entry door, having walked through
+      // every building *before* it but not yet through it. Adding it first
+      // inflated every intermediate arrival by that building's own walk,
+      // which closingSoonWarnings() then read as a later arrival than the
+      // real one. The final total is unaffected — by the last step every
+      // crossing really has happened.
       steps[i].arrivalMinutes = (walked + indoorMeters) / WALK_METERS_PER_MIN + (i - 1) * BUILDING_TRANSIT_MIN;
+      indoorMeters += throughIndoorMeters[i];
     }
     const finalMeters = totalMeters + indoorMeters;
     const totalMinutes =

@@ -268,6 +268,43 @@ test("a through-building's real indoor distance is added on top of the flat tran
   );
 });
 
+test("arriving at a through-building doesn't count the walk through it yet", () => {
+  // Same A -> B -> C shape as above. Arrival at B happens at B's entry
+  // door, before its 100m indoor crossing — so B's own indoor distance
+  // must not be in steps[1].arrivalMinutes. It belongs to everything
+  // downstream of B, which is why arrival at C does include it.
+  // closingSoonWarnings() reads these per-step arrivals directly, so an
+  // inflated one can invent a "closing soon" warning that isn't real.
+  const hours = [[0, 1440]];
+  const mini = {
+    meta: { name: "t", source: "t", disclaimer: "t", generated: "t" },
+    buildings: [
+      { id: "a", name: "A", address: "", category: "office", lat: 0, lon: 0, footprint: [], hours },
+      { id: "b", name: "B", address: "", category: "office", lat: 0.0001, lon: 0, footprint: [], hours },
+      { id: "c", name: "C", address: "", category: "office", lat: 0.0002, lon: 0, footprint: [], hours },
+    ],
+    edges: [
+      { from: "a", to: "b", crossing: "x", geometry: [[0, 0], [0, 0.0001]] },
+      { from: "b", to: "c", crossing: "x", geometry: [[0.0002, 0.0001], [0.0002, 0.0002]] },
+    ],
+    indoorLinks: [
+      { buildingId: "b", doorA: [0, 0.0001], doorB: [0.0002, 0.0001], geometry: [[0, 0.0001], [0.001, 0.0001]] },
+    ],
+  };
+  const withLink = new SkywayRouter(mini).route("a", "c", null);
+  const without = new SkywayRouter({ ...mini, indoorLinks: [] }).route("a", "c", null);
+
+  assert.ok(
+    Math.abs(withLink.steps[1].arrivalMinutes - without.steps[1].arrivalMinutes) < 1e-9,
+    "arrival at B is unchanged by B's own indoor crossing",
+  );
+  const expectedExtra = polylineMeters(mini.indoorLinks[0].geometry) / 78;
+  assert.ok(
+    Math.abs(withLink.steps[2].arrivalMinutes - without.steps[2].arrivalMinutes - expectedExtra) < 0.01,
+    "arrival at C does include the crossing of B",
+  );
+});
+
 test("closingSoonWarnings flags buildings closing near arrival", () => {
   // Mon–Fri 6:30am–10pm everywhere in the fixture: at 9:45pm Tuesday,
   // everything on the route closes within 30 minutes.
