@@ -126,6 +126,38 @@ export function statusFromHours(hours: DayHours[], when: Date): { open: boolean;
   return { open: false, label: "Closed" };
 }
 
+/** When you can physically reach a place through the skyway, which is a
+ * different question from whether the business itself is serving — and the
+ * only one we can answer for every POI, since every building has hours
+ * while most businesses don't.
+ *
+ * Deliberately worded "Access …" rather than "Open …": the business's own
+ * open/closed badge already owns that phrasing, and a second "Open until"
+ * on the same card is exactly how someone reads the building's hours as
+ * the restaurant's. Returns null when there's nothing usable, so the caller
+ * omits the row instead of guessing.
+ */
+export function skywayAccessLabel(hours: DayHours[] | undefined, when: Date): string | null {
+  if (!hours || hours.every((h) => !h)) return null;
+  const day = when.getDay();
+  const minutes = when.getHours() * 60 + when.getMinutes();
+  const today = hours[day];
+  if (today && minutes >= today[0] && minutes < today[1]) {
+    return `Access until ${formatMinute(today[1])}`;
+  }
+  if (today && minutes < today[0]) {
+    return `Access from ${formatMinute(today[0])}`;
+  }
+  for (let i = 1; i <= 7; i++) {
+    const h = hours[(day + i) % 7];
+    if (h) {
+      const dayLabel = i === 1 ? "tomorrow" : DAY_NAMES[(day + i) % 7];
+      return `Access from ${formatMinute(h[0])} ${dayLabel}`;
+    }
+  }
+  return null;
+}
+
 /** Human description of the building's status at `when`, e.g. "Open until 10pm". */
 export function statusAt(building: Building, when: Date): { open: boolean; label: string } {
   return statusFromHours(building.hours, when);
