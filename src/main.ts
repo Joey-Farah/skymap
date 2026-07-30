@@ -9,11 +9,15 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
+import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
 
 async function boot() {
   console.log("[skymap-build-marker] " + new Date().toISOString());
+  // Before anything can touch navigator.geolocation — MapLibre's
+  // GeolocateControl captures it when the map is constructed below.
+  installNativeGeolocation();
   const res = await fetch("./data/skymap-data.json");
   if (!res.ok) throw new Error(`Could not load skyway data (${res.status})`);
   const data: SkymapData = await res.json();
