@@ -54,6 +54,36 @@ export function formatWeeklyHours(hours: DayHours[]): string {
     .join(" · ");
 }
 
+export interface WeeklyHoursRow {
+  day: string;
+  value: string;
+  closed: boolean;
+  today: boolean;
+}
+
+/** The week as seven rows, for rendering as an actual table.
+ *
+ * formatWeeklyHours() collapses runs into "Mon–Fri 7am–4pm · Sat–Sun closed",
+ * which is compact but reads as a run-on sentence — you have to parse a
+ * string to answer "what about Thursday?". A row per day is scannable at a
+ * glance and is what every other maps app shows. The grouped string stays
+ * for the issue-report text, where one line is the point.
+ */
+export function weeklyHoursRows(hours: DayHours[], when: Date): WeeklyHoursRow[] {
+  const today = when.getDay();
+  // Monday-first: the working week reads as a block rather than being split
+  // across the top and bottom of the list.
+  return [1, 2, 3, 4, 5, 6, 0].map((d) => {
+    const h = hours[d];
+    return {
+      day: DAY_NAMES[d],
+      value: h ? `${formatMinute(h[0])}–${formatMinute(h[1])}` : "Closed",
+      closed: !h,
+      today: d === today,
+    };
+  });
+}
+
 /**
  * The next date falling on `day` (0=Sun) at `minuteOfDay`, at or after `from`.
  * A slot earlier today rolls to the same weekday next week.

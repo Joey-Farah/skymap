@@ -1,4 +1,4 @@
-import type { Building, Poi, RouteResult } from "./types.ts";
+import type { Building, DayHours, Poi, RouteResult } from "./types.ts";
 import { reportIssueUrl } from "./share.ts";
 import {
   CATEGORY_LABELS,
@@ -34,6 +34,7 @@ import {
   skywayAccessLabel,
   statusAt,
   statusFromHours,
+  weeklyHoursRows,
 } from "./hours.ts";
 import { parseOpeningHours } from "./opening-hours.ts";
 
@@ -524,7 +525,7 @@ export class Sheet {
 
     const more = document.createElement("div");
     more.className = "sheet-collapsible";
-    const hours = el("div", `Hours: ${formatWeeklyHours(b.hours)}`, "hours-line");
+    const hours = hoursTable(b.hours, when);
     // Real per-building hours come from OSM tags when present; the generic
     // schedule is a guess, and guesses should say so rather than pass as fact.
     if (b.hoursNote.startsWith("Default")) {
@@ -683,7 +684,9 @@ export class Sheet {
 
     const more = document.createElement("div");
     more.className = "sheet-collapsible";
-    if (parsedHours) more.append(el("div", `Hours: ${formatWeeklyHours(parsedHours)}`, "hours-line"));
+    if (parsedHours) more.append(hoursTable(parsedHours, when));
+    // Unparseable OSM syntax still beats hiding it — shown verbatim so a
+    // user can at least read it, and report it as wrong if it is.
     else if (p.openingHours) more.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
     more.append(this.reportLink({ name: p.name, id: p.id }));
     this.content.append(more);
@@ -912,6 +915,22 @@ function poiMark(p: Poi): HTMLElement | null {
   img.addEventListener("error", () => mark.remove());
   mark.append(img);
   return mark;
+}
+
+/** The week as a two-column table, today picked out. Replaces a single
+ * run-on line of grouped ranges — answering "what about Thursday?" should
+ * be a glance down a column, not parsing a sentence. */
+function hoursTable(hours: DayHours[], when: Date): HTMLElement {
+  const table = el("div", undefined, "hours-table");
+  for (const row of weeklyHoursRows(hours, when)) {
+    const line = el("div", undefined, `hours-row${row.today ? " is-today" : ""}`);
+    line.append(
+      el("span", row.day, "hours-day"),
+      el("span", row.value, `hours-val${row.closed ? " is-closed" : ""}`),
+    );
+    table.append(line);
+  }
+  return table;
 }
 
 /** One labelled fact in the access block: a small caps key and its value.
