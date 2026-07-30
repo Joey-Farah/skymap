@@ -145,12 +145,20 @@ async function boot() {
     view.setRoute(null);
     view.focusBuilding(b);
     let directionsLabel: string | undefined;
+    // The same preview drives the button label and the card's "From you"
+    // row — one route computation, two readings of it. Stays null when
+    // there's no live location, and the row is omitted rather than guessed.
+    let walk: { minutes: number; meters: number } | null = null;
     if (nearBuilding && nearBuilding.id !== b.id) {
       const preview = router.route(nearBuilding.id, b.id, selectedTime());
-      if (preview) directionsLabel = `Directions · ${Math.max(1, Math.round(preview.totalMinutes))} min`;
+      if (preview) {
+        const minutes = Math.max(1, Math.round(preview.totalMinutes));
+        directionsLabel = `Directions · ${minutes} min`;
+        walk = { minutes, meters: preview.totalMeters };
+      }
     }
     const actions = { onDirections: () => enterPreview(), directionsLabel };
-    if (poi) sheet.showPoi(poi, b, selectedTime(), actions);
+    if (poi) sheet.showPoi(poi, b, selectedTime(), actions, walk);
     else sheet.showBuilding(b, selectedTime(), actions, poisByBuilding.get(b.id) ?? []);
     setMode("card");
   }

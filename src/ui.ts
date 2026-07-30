@@ -27,7 +27,14 @@ function resultIconUrl(group: PoiGroup): string {
   }
   return url;
 }
-import { closingSoonWarnings, formatMinute, formatWeeklyHours, statusAt, statusFromHours } from "./hours.ts";
+import {
+  closingSoonWarnings,
+  formatMinute,
+  formatWeeklyHours,
+  skywayAccessLabel,
+  statusAt,
+  statusFromHours,
+} from "./hours.ts";
 import { parseOpeningHours } from "./opening-hours.ts";
 
 /** Searchable building picker attached to an existing .combo element. */
@@ -609,12 +616,27 @@ export class Sheet {
     host: Building | undefined,
     when: Date,
     actions: { onDirections: () => void; directionsLabel?: string },
+    walk?: { minutes: number; meters: number } | null,
   ) {
     this.content.innerHTML = "";
     this.clearRouteProgress();
-    this.content.append(el("h2", p.name));
-    const where = host ? `${humanCategory(p.category)} · ${host.name}` : humanCategory(p.category);
-    this.content.append(el("div", where, "meta"));
+
+    // The business's own mark, when the build bundled one. It's the fastest
+    // way to confirm you tapped the right place, and 113 of these already
+    // ship — until now they only ever appeared as ~16px chips inside route
+    // steps, never on the card you actually open.
+    const head = el("div", undefined, "poi-head");
+    const mark = poiMark(p);
+    if (mark) head.append(mark);
+    head.append(el("h2", p.name));
+    this.content.append(head);
+
+    const where = [humanCategory(p.category)];
+    if (host) where.push(host.name);
+    const level = levelLabel(p.level);
+    if (level) where.push(level);
+    this.content.append(el("div", where.join(" · "), "meta"));
+
     // Raw OSM opening_hours is arbitrary syntax ("Mo-Fr 07:00-16:00") —
     // parsed into the same weekly-hours shape a building uses gets it the
     // same 12-hour formatting and an open/closed read, not just military
@@ -623,30 +645,46 @@ export class Sheet {
     if (parsedHours) {
       const status = statusFromHours(parsedHours, when);
       this.content.append(el("span", status.label, `badge ${status.open ? "open" : "closed"}`));
+    } else {
+      // Stating the gap beats leaving it silent: without this the card just
+      // skips from name to directions and reads as though it failed to
+      // load. Neutral grey on purpose — it is not an open/closed verdict.
+      this.content.append(el("span", "Hours unknown", "badge unknown"));
     }
-    if (p.level === "1") this.content.append(el("span", "Skyway level", "badge open"));
+
+    // What we can always answer, versus what we usually can't. Access is a
+    // labelled row rather than a coloured badge so it can never be misread
+    // as the business's own open/closed state.
+    const access = el("div", undefined, "poi-access");
+    if (walk) access.append(accessLine("From you", `${walk.minutes} min walk · ${formatDistance(walk.meters)}`));
+    const skyway = host ? skywayAccessLabel(host.hours, when) : null;
+    if (skyway) access.append(accessLine("Skyway", skyway));
+    if (access.childElementCount) this.content.append(access);
 
     const actionsRow = document.createElement("div");
     actionsRow.className = "actions";
     const directionsBtn = el("button", actions.directionsLabel ?? "Directions", "primary");
     directionsBtn.addEventListener("click", actions.onDirections);
     actionsRow.append(directionsBtn);
-    this.content.append(actionsRow);
-
-    const more = document.createElement("div");
-    more.className = "sheet-collapsible";
-    if (parsedHours) more.append(el("div", `Hours: ${formatWeeklyHours(parsedHours)}`, "hours-line"));
-    else if (p.openingHours) more.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
+    // Promoted out of the collapsible: when the business's own hours are
+    // missing, its site is the only place left to find them, so burying it
+    // behind a drag was hiding the card's most useful remaining link.
     const safeUrl = safeWebsiteUrl(p.website);
     if (safeUrl) {
       const website = document.createElement("a");
       website.href = safeUrl;
       website.target = "_blank";
       website.rel = "noopener";
-      website.className = "website-btn";
+      website.className = "secondary";
       website.textContent = "Website / menu ↗";
-      more.append(website);
+      actionsRow.append(website);
     }
+    this.content.append(actionsRow);
+
+    const more = document.createElement("div");
+    more.className = "sheet-collapsible";
+    if (parsedHours) more.append(el("div", `Hours: ${formatWeeklyHours(parsedHours)}`, "hours-line"));
+    else if (p.openingHours) more.append(el("div", `Hours: ${p.openingHours}`, "hours-line"));
     more.append(this.reportLink({ name: p.name, id: p.id }));
     this.content.append(more);
     this.show("card", false);
@@ -847,6 +885,41 @@ function formatDistance(meters: number): string {
 function formatWalk(meters: number): string {
   const minutes = Math.max(1, Math.round(meters / WALK_METERS_PER_MIN));
   return `${minutes} min walk · ${formatDistance(meters)}`;
+}
+
+/** OSM's `level` is a floor number as a string. "1" is the skyway level —
+ * the whole reason the network exists — so it gets named rather than
+ * numbered. Unknown levels say nothing instead of guessing a floor. */
+function levelLabel(level: string | undefined): string | null {
+  if (level === undefined || level === "") return null;
+  if (level === "1") return "Skyway level";
+  if (level === "0") return "Street level";
+  const n = Number(level);
+  return Number.isFinite(n) ? `Level ${level}` : null;
+}
+
+/** The business's bundled favicon at card size. Same source as the inline
+ * route-step chip, just given the room it earns when it's the thing you
+ * just tapped. No logo means no element — a monogram placeholder would
+ * imply data we don't have. */
+function poiMark(p: Poi): HTMLElement | null {
+  if (!p.logo) return null;
+  const mark = el("span", undefined, "poi-mark");
+  const img = document.createElement("img");
+  img.src = `logos/${p.logo}.png`;
+  img.alt = "";
+  img.loading = "lazy";
+  img.addEventListener("error", () => mark.remove());
+  mark.append(img);
+  return mark;
+}
+
+/** One labelled fact in the access block: a small caps key and its value.
+ * Typographic, never a coloured pill — see skywayAccessLabel. */
+function accessLine(key: string, value: string): HTMLElement {
+  const line = el("div", undefined, "access-line");
+  line.append(el("span", key, "access-k"), el("span", value, "access-v"));
+  return line;
 }
 
 function el(tag: string, text?: string, className?: string): HTMLElement {
