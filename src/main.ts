@@ -361,8 +361,18 @@ async function boot() {
     const ramp = getSavedRamp(localStorage);
     const rampBuilding = ramp ? router.building(ramp.id) : undefined;
     if (!rampBuilding) return;
-    if (nearBuilding) comboFrom.select(nearBuilding);
-    comboTo.select(rampBuilding);
+    // The button is visible in idle and card mode, which is where someone
+    // who parked and walked away actually is. Without this the whole
+    // handler was a silent no-op: computePreview() returns immediately
+    // unless mode is already "preview", so the combo fields changed and
+    // nothing else did.
+    setMode("preview");
+    // Both selects are silent so the route is computed once, at the end —
+    // a non-silent select fires its own computePreview(), and two passes
+    // back to back race the sheet's entrance animation (see enterPreview).
+    if (nearBuilding) comboFrom.select(nearBuilding, undefined, { silent: true });
+    comboTo.select(rampBuilding, undefined, { silent: true });
+    computePreview();
   });
 
   // --- Heading-up tracking: Apple-Maps locate cycle -----------------------
