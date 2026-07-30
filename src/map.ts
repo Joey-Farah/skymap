@@ -5,6 +5,7 @@ import { isClosingSoon, isOpenAt } from "./hours.ts";
 import { buildingExitPoint, polylineMeters, remainingRouteMeters, sliceAlong } from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS } from "./poi.ts";
+import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 
 // Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look
 // than Positron's grayscale. Dark: OpenFreeMap's own dark counterpart — a
@@ -279,31 +280,36 @@ export class SkymapView {
       geolocate.trigger(); // prompts for permission once, then tracks continuously
     });
 
-    this.map.on("click", "skyway-buildings-fill", (e) => {
-      // Let a POI hit win over the building underneath it.
-      const poiHit = this.map
-        .queryRenderedFeatures(e.point, { layers: ["skyway-pois"] })
-        .length;
-      if (poiHit) return;
-      const id = e.features?.[0]?.properties?.id as string | undefined;
-      const b = this.data.buildings.find((x) => x.id === id);
-      if (b) onBuildingClick(b);
-    });
-    this.map.on("click", "skyway-pois", (e) => {
-      const id = e.features?.[0]?.properties?.id as string | undefined;
-      const p = this.data.pois?.find((x) => x.id === id);
-      if (p && onPoiClick) onPoiClick(p);
-    });
-    // GPS drifts indoors, sometimes badly enough to put you on the wrong
-    // step of a route — a manual correction is the fallback (borrowed
-    // from Sky Walker's "tap your dot back onto the route" idea). Lowest
-    // priority of the three tap targets: a building or POI under the same
-    // point still wins, since those are more specific intents.
-    this.map.on("click", "skyway-route-casing", (e) => {
-      const poiHit = this.map.queryRenderedFeatures(e.point, { layers: ["skyway-pois"] }).length;
-      const buildingHit = this.map.queryRenderedFeatures(e.point, { layers: ["skyway-buildings-fill"] }).length;
-      if (poiHit || buildingHit) return;
-      onRouteTap?.(e.lngLat.lat, e.lngLat.lng);
+    // One handler decides what a tap meant, in priority order. Previously
+    // each layer had its own listener and re-derived the ordering by
+    // re-querying the others, which made "what wins?" a question you had to
+    // answer three times.
+    this.map.on("click", (e) => {
+      const poi = this.poiNearPoint(e.point);
+      if (poi && onPoiClick) {
+        onPoiClick(poi);
+        return;
+      }
+      const buildingFeature = this.map.queryRenderedFeatures(e.point, {
+        layers: ["skyway-buildings-fill"],
+      })[0];
+      if (buildingFeature) {
+        const id = buildingFeature.properties?.id as string | undefined;
+        const b = this.data.buildings.find((x) => x.id === id);
+        if (b) {
+          onBuildingClick(b);
+          return;
+        }
+      }
+      // GPS drifts indoors, sometimes badly enough to put you on the wrong
+      // step of a route — a manual correction is the fallback (borrowed
+      // from Sky Walker's "tap your dot back onto the route" idea). Lowest
+      // priority: a building or POI under the same point is a more
+      // specific intent.
+      const onRoute = this.map.queryRenderedFeatures(e.point, {
+        layers: ["skyway-route-casing"],
+      }).length;
+      if (onRoute) onRouteTap?.(e.lngLat.lat, e.lngLat.lng);
     });
     for (const layer of ["skyway-buildings-fill", "skyway-pois", "skyway-route-casing"]) {
       this.map.on("mouseenter", layer, () => {
@@ -313,6 +319,35 @@ export class SkymapView {
         this.map.getCanvas().style.cursor = "";
       });
     }
+  }
+
+  /** The business a tap was aiming at, allowing for the fact that fingers
+   * are wider than icons. Searches a box around the touch point rather than
+   * the single pixel under it — without this you have to land on the icon
+   * exactly, and every near miss falls through to the building polygon
+   * underneath, which is why tapping a restaurant so often opened its
+   * building instead. Transit is included so that when the filter is on,
+   * its icons are as tappable as any other. */
+  private poiNearPoint(point: { x: number; y: number }): Poi | undefined {
+    const box: [maplibregl.PointLike, maplibregl.PointLike] = [
+      [point.x - TAP_SLOP_PX, point.y - TAP_SLOP_PX],
+      [point.x + TAP_SLOP_PX, point.y + TAP_SLOP_PX],
+    ];
+    const features = this.map.queryRenderedFeatures(box, {
+      layers: ["skyway-pois", "skyway-pois-transit"],
+    });
+    const candidates: { id: string; x: number; y: number; poi: Poi }[] = [];
+    for (const f of features) {
+      const id = f.properties?.id as string | undefined;
+      const poi = id ? this.data.pois?.find((p) => p.id === id) : undefined;
+      if (!poi) continue;
+      // Project the POI's own coordinate rather than trusting the feature's
+      // rendered geometry: it's the icon's anchor, which is what the user
+      // was aiming at.
+      const at = this.map.project([poi.lon, poi.lat]);
+      candidates.push({ id: poi.id, x: at.x, y: at.y, poi });
+    }
+    return nearestCandidate(candidates, point)?.poi;
   }
 
   private registerPoiIcons() {
