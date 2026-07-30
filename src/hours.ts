@@ -25,6 +25,15 @@ export function formatMinute(min: number): string {
 }
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAY_NAMES_FULL = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 /** e.g. "Tue 12:15pm" */
 export function formatWhen(d: Date): string {
@@ -76,7 +85,10 @@ export function weeklyHoursRows(hours: DayHours[], when: Date): WeeklyHoursRow[]
   return [1, 2, 3, 4, 5, 6, 0].map((d) => {
     const h = hours[d];
     return {
-      day: DAY_NAMES[d],
+      // Full names here, unlike the abbreviations used inline in sentences
+      // elsewhere: in a table each name sits on its own row with room to
+      // spare, and "Wednesday" is read without the beat of expanding "Wed".
+      day: DAY_NAMES_FULL[d],
       value: h ? `${formatMinute(h[0])}–${formatMinute(h[1])}` : "Closed",
       closed: !h,
       today: d === today,

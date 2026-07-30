@@ -43,12 +43,12 @@ test("no usable hours yields null so the row is omitted rather than guessed", ()
 // Mon-Fri 7am-4pm, closed weekends — the exact shape of Vitality Roasting.
 const weekdayCafe = [null, [420, 960], [420, 960], [420, 960], [420, 960], [420, 960], null];
 
-test("returns all seven days, Monday first", () => {
+test("returns all seven days by full name, Monday first", () => {
   const rows = weeklyHoursRows(weekdayCafe, monday1pm);
   assert.equal(rows.length, 7);
   assert.deepEqual(
     rows.map((r) => r.day),
-    ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
   );
 });
 
@@ -64,7 +64,7 @@ test("exactly one row is flagged as today", () => {
   const rows = weeklyHoursRows(weekdayCafe, monday1pm);
   assert.deepEqual(
     rows.filter((r) => r.today).map((r) => r.day),
-    ["Mon"],
+    ["Monday"],
   );
 });
 
@@ -72,6 +72,6 @@ test("today tracks the real weekday, including a closed one", () => {
   const sunday = new Date(2026, 6, 26, 13, 0);
   const rows = weeklyHoursRows(weekdayCafe, sunday);
   const today = rows.find((r) => r.today);
-  assert.equal(today.day, "Sun");
+  assert.equal(today.day, "Sunday");
   assert.equal(today.closed, true);
 });
