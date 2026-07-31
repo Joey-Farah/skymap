@@ -1,6 +1,8 @@
 /** POI grouping: one place that decides how a business/feature is classed,
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
+import { haversineMeters } from "./router.ts";
+
 export type PoiGroup = "food" | "coffee" | "other" | "restroom" | "landmark" | "transit" | "elevator";
 
 // Coffee split out from food generally: someone who wants "where can I get
@@ -48,6 +50,71 @@ export const GROUP_COLORS: Record<PoiGroup, string> = {
   transit: "#178740",
   elevator: "#475569",
 };
+
+interface HostCandidate {
+  id: string;
+  lat: number;
+  lon: number;
+  footprint?: [number, number][];
+}
+
+export interface PoiHost<T> {
+  building: T;
+  /** True when the place isn't actually inside its host — it's the nearest
+   * building the skyway reaches. Callers must say so rather than implying
+   * containment. */
+  nearby: boolean;
+}
+
+/** Even-odd ray cast in lon/lat; footprints are small enough that treating
+ * them as planar is noise. */
+function pointInRing(lon: number, lat: number, ring: [number, number][]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/**
+ * Which network building a place belongs to.
+ *
+ * Point-in-polygon first: that's the honest answer when it's available. But
+ * requiring it discarded real places wholesale — the downtown Target sits
+ * inside a building the skyway graph never captured, so it resolved to
+ * nothing and simply ceased to exist, with no signal that anything was
+ * missing. Transit stops and landmark buildings already had a nearest-host
+ * fallback; ordinary businesses didn't, and that gap is what the first
+ * external bug report found.
+ *
+ * So: fall back to the nearest building within `maxNearbyMeters`, flagged
+ * `nearby` so the place card can say *nearest skyway access* instead of
+ * claiming the place is somewhere it isn't. Beyond that radius, still
+ * nothing — a place the skyway can't plausibly reach shouldn't be attached
+ * to it just to avoid an empty result.
+ */
+export function resolvePoiHost<T extends HostCandidate>(
+  lat: number,
+  lon: number,
+  buildings: T[],
+  maxNearbyMeters: number,
+): PoiHost<T> | null {
+  const inside = buildings.find((b) => b.footprint && pointInRing(lon, lat, b.footprint));
+  if (inside) return { building: inside, nearby: false };
+
+  let best: T | null = null;
+  let bestMeters = maxNearbyMeters;
+  for (const b of buildings) {
+    const meters = haversineMeters(lat, lon, b.lat, b.lon);
+    if (meters <= bestMeters) {
+      bestMeters = meters;
+      best = b;
+    }
+  }
+  return best ? { building: best, nearby: true } : null;
+}
 
 /** OSM building-way tags -> our building category. */
 /** OSM's `website` tag is free text from a publicly editable dataset, and
