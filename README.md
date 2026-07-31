@@ -18,9 +18,9 @@ Add to Home Screen; a native iOS wrapper for App Store distribution lives in
   stretches.
 - **Live position on the route** — turn-by-turn progress follows your GPS
   fix; tap the route line to correct GPS drift indoors (holds for 45s).
-- **What's nearby** — "Show on map" categories (coffee, food, shops,
-  restrooms, elevators) in the search sheet; same-name chains rank
-  closest-first.
+- **What's nearby** — "Show on map" categories (coffee, food, hotels,
+  landmarks, shops, restrooms, elevators) in the search sheet; same-name
+  chains rank closest-first.
 - **Save My Ramp** — noticed near a parking ramp, one tap to save it and one
   tap to route back later.
 - **Offline-first PWA** — the service worker precaches the app, the full
@@ -35,7 +35,7 @@ All data ships as static JSON. Basemap tiles from
 ## Data
 
 Everything comes from OpenStreetMap, extracted by `scripts/fetch-osm.mjs`:
-178 buildings, 185 skyway connections, 411 businesses/POIs. The script
+179 buildings, 186 skyway connections, 678 businesses/POIs. The script
 stitches multipolygon relations, builds the connection graph from the raw
 skyway ways (BFS over shared nodes), attaches nearby landmarks (Target
 Field, U.S. Bank Stadium…) to their closest connected building, tags edges
@@ -46,6 +46,19 @@ from Wikimedia Commons.
 npm run data:osm    # re-extract from Overpass (writes public/data/)
 npm run data:seed   # tiny synthetic dataset for tests/dev
 ```
+
+### Places just outside the network
+
+Not every business sits inside a building the skyway graph captured. Those
+resolve to their nearest network building within 120 m and carry
+`nearby: true` — searchable and routable, but shown as *"Skyway access via
+X"* and listed under *"Just outside"*, never as though they were inside it.
+The route line stops at the building; only the pin sits at the real place.
+
+Restrooms and elevators are deliberately excluded from this fallback: an
+elevator listed under a building it isn't in is worse than one not listed
+at all, because the people filtering for it are usually doing accessible
+wayfinding.
 
 ## Development
 
