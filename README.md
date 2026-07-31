@@ -71,7 +71,13 @@ open ios/App/App.xcodeproj            # build/run from Xcode
 
 The Feedback button and each place's "Report an issue" open an in-app form
 that posts to `api/feedback.js`, a Vercel Function that mails the report on
-via Resend. It needs `RESEND_API_KEY` in the Vercel project environment.
+via Resend. It needs `RESEND_API_KEY` in the Vercel project environment. Two optional
+vars tune it without a deploy: `FEEDBACK_TO` (recipient) and
+`FEEDBACK_FROM` (sender, once a domain is verified in Resend).
+
+Note: Resend's shared `onboarding@resend.dev` sender only delivers to the
+address the Resend account was registered with. Verifying a domain in
+Resend removes that restriction.
 
 Two things to know before changing it:
 

@@ -19,10 +19,17 @@
  * rather than with a secret.
  */
 
-const TO = "joeyefarah+skymap@gmail.com";
-// Resend's shared sender: no DNS to configure, works the moment the key
-// exists. Swap for an address on a verified domain if SkyMap ever has one.
-const FROM = "SkyMap Feedback <onboarding@resend.dev>";
+/** Both overridable without a code change, because the right values depend
+ * on the mail account rather than on this file.
+ *
+ * Resend's shared `onboarding@resend.dev` sender only delivers to the
+ * address the Resend account was registered with, and a Gmail `+tag` may
+ * not count as that address — so FEEDBACK_TO exists to correct the
+ * recipient without a deploy. Once a sending domain is verified in Resend,
+ * set FEEDBACK_FROM (e.g. "SkyMap <skymap@mail.joeyfarah.dev>") and the
+ * recipient restriction goes away entirely. */
+const TO = process.env.FEEDBACK_TO || "joeyefarah+skymap@gmail.com";
+const FROM = process.env.FEEDBACK_FROM || "SkyMap Feedback <onboarding@resend.dev>";
 
 const MAX_MESSAGE = 4000;
 const RATE_LIMIT = 5; // reports per IP per window
