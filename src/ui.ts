@@ -561,7 +561,11 @@ export class Sheet {
     more.append(hours);
     if (b.image) more.append(this.landmarkPhoto(b.image));
 
-    const interior = pois.filter((p) => !p.exterior);
+    // `nearby` places are attached to this building but aren't in it, so
+    // they can't be listed among what's inside — that's the whole reason
+    // the flag exists. They get their own section below.
+    const interior = pois.filter((p) => !p.exterior && !p.nearby);
+    const nearby = pois.filter((p) => p.nearby);
     const transit = pois.filter((p) => p.exterior);
     const order: PoiGroup[] = ["coffee", "food", "other", "restroom", "elevator", "landmark"];
     for (const group of order) {
@@ -569,6 +573,13 @@ export class Sheet {
       if (members.length === 0) continue;
       more.append(el("h3", `${GROUP_LABELS[group]} (${members.length})`, "poi-heading"));
       more.append(this.poiList(members));
+    }
+    if (nearby.length > 0) {
+      // Named for what it means to a walker: the skyway ends here and the
+      // rest is on you. Better than burying these in the interior list and
+      // letting someone discover the gap at the door.
+      more.append(el("h3", `Just outside (${nearby.length})`, "poi-heading"));
+      more.append(this.poiList(nearby));
     }
     if (transit.length > 0) {
       more.append(el("h3", GROUP_LABELS.transit, "poi-heading"));
@@ -671,7 +682,12 @@ export class Sheet {
     this.content.append(head);
 
     const where = [humanCategory(p.category)];
-    if (host) where.push(host.name);
+    // A `nearby` place isn't inside its host building — the host is just
+    // the closest the skyway gets. Naming it flat, the way a genuinely
+    // interior POI does, asserts something false and makes routing look
+    // broken when it stops a block short. Saying which building you come
+    // out of is also the answer to "why did it stop here?".
+    if (host) where.push(p.nearby ? `Skyway access via ${host.name}` : host.name);
     const level = levelLabel(p.level);
     if (level) where.push(level);
     this.content.append(el("div", where.join(" · "), "meta"));
@@ -902,7 +918,31 @@ export class Sheet {
 }
 
 /** "fast_food" -> "Fast food". */
+/** OSM tag values that title-case into nonsense on a card. `office=yes`
+ * reads as "Yes · Target Plaza" and `office=it` as "It · Target Plaza" —
+ * the tag is describing the shape of the data, not the place. */
+const CATEGORY_OVERRIDES: Record<string, string> = {
+  yes: "Office",
+  it: "IT services",
+  company: "Office",
+  lawyer: "Law office",
+  consulting: "Consulting",
+  coworking: "Coworking",
+  estate_agent: "Real estate",
+  financial_advisor: "Financial advisor",
+  property_management: "Property management",
+  advertising_agency: "Advertising",
+  graphic_design: "Design studio",
+  guide: "Tour guide",
+  association: "Association",
+  newspaper: "Newspaper",
+  fast_food: "Fast food",
+  department_store: "Department store",
+};
+
 function humanCategory(cat: string): string {
+  const override = CATEGORY_OVERRIDES[cat.toLowerCase()];
+  if (override) return override;
   const words = cat.replace(/_/g, " ");
   return words.charAt(0).toUpperCase() + words.slice(1);
 }

@@ -205,6 +205,10 @@ async function boot() {
     view.setRoute(route, {
       fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
       toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
+      // A `nearby` place sits outside the network, so the last stretch to
+      // its door isn't skyway and mustn't be drawn as though it were.
+      fromNearby: comboFrom.poi?.nearby,
+      toNearby: comboTo.poi?.nearby,
     });
     sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() });
     // The URL still describes the route even without a Share button: it
@@ -296,7 +300,7 @@ async function boot() {
     // A navigation-mode concern: previews are for reading, not walking.
     if (!activeRoute || mode !== "nav") return;
     applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
-    view.setManualPosition([lon, lat]);
+    view.setWalkerPosition([lon, lat]);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
   }
 
@@ -304,7 +308,11 @@ async function boot() {
     nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
-      view.setManualPosition(null); // real GPS is back in control
+      // Real GPS is back in control — but drawn on the skyway rather than
+      // wherever the fix landed. Past the snap threshold this goes back to
+      // null and MapLibre's own dot takes over, which is the honest answer
+      // for someone who has actually walked off the route.
+      view.setWalkerPosition(view.snapToActiveRoute(lat, lon));
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(nearBuilding);
@@ -478,6 +486,11 @@ async function boot() {
       // trackuserlocationend — clean up ourselves or a live compass keeps
       // rotating a map no tap can ever reach again.
       void applyLocate(locateTransition(locateMode, "end"));
+      // The snapped dot is only ever refreshed by a position callback, so
+      // without this it stays frozen on the skyway looking like a live fix
+      // long after tracking stopped — a confident lie, which is exactly
+      // what the snap is supposed to prevent.
+      view.setWalkerPosition(null);
       showToast("Location is off — allow access in your browser settings to route from where you stand.");
     } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
       toldAboutTimeout = true;
@@ -487,7 +500,12 @@ async function boot() {
   view.geolocate.on("trackuserlocationend", () => {
     // Fires both for real off AND for pan-to-background; only the former is
     // "end" (lostfocus already covers the background case).
-    if (watchState() === "OFF") void applyLocate(locateTransition(locateMode, "end"));
+    if (watchState() === "OFF") {
+      void applyLocate(locateTransition(locateMode, "end"));
+      // Nothing will update the corrected dot once tracking is off, so it
+      // has to go — see the error handler above.
+      view.setWalkerPosition(null);
+    }
   });
 
   // --- Category suggestions: "show on map" toggles in the idle sheet ------
@@ -501,7 +519,9 @@ async function boot() {
   // exist locked in a height sized for an empty row, clipping them once
   // they actually appeared.
   const suggestionsRow = document.getElementById("suggestions-row")!;
-  const SUGGESTED_GROUPS = ["coffee", "food", "other", "restroom", "elevator"] as const;
+  // Hotels and landmarks earn chips too: they were searchable but
+  // unbrowsable, which for a visitor is close to not being there.
+  const SUGGESTED_GROUPS = ["coffee", "food", "hotel", "landmark", "other", "restroom", "elevator"] as const;
   const activeGroups = new Set<string>();
   for (const group of SUGGESTED_GROUPS) {
     const pill = document.createElement("button");

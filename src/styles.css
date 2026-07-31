@@ -412,6 +412,16 @@ a:focus-visible {
   display: none;
 }
 
+/* While a corrected position is drawn (setWalkerPosition), MapLibre's own
+   dot is still tracking the raw fix — a floor below, usually out in the
+   street. Hiding it is the point of the correction: one dot on the skyway
+   beats two dots half a block apart, one of which is known to be wrong.
+   The accuracy circle goes with it; it's drawn around the raw fix. */
+.walker-snapped .maplibregl-user-location-dot,
+.walker-snapped .maplibregl-user-location-accuracy-circle {
+  display: none;
+}
+
 /* Bottom-right holds the locate button (above) and the attribution credit
    (below). column-reverse flips DOM order so the later-added locate control
    renders on top; the translateY rides the whole stack above the bottom

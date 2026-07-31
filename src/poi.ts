@@ -1,7 +1,17 @@
 /** POI grouping: one place that decides how a business/feature is classed,
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
-export type PoiGroup = "food" | "coffee" | "other" | "restroom" | "landmark" | "transit" | "elevator";
+import { haversineMeters, nearestOnSegment } from "./router.ts";
+
+export type PoiGroup =
+  | "food"
+  | "coffee"
+  | "other"
+  | "restroom"
+  | "landmark"
+  | "hotel"
+  | "transit"
+  | "elevator";
 
 // Coffee split out from food generally: someone who wants "where can I get
 // a coffee" doesn't want a restaurant list to dig through, and vice versa.
@@ -11,12 +21,21 @@ const COFFEE = /^(cafe|coffee)$/;
 // most people would think to check under "shopping."
 const FOOD = /^(restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli|convenience)$/;
 const LANDMARK_AMENITY = /^(library|townhall|courthouse|place_of_worship|theatre|cinema)$/;
+// Somewhere to sleep is its own errand. Filed under Landmarks a hotel is
+// technically findable and practically invisible — and a visitor with a
+// reservation is exactly the person a skyway map is most useful to.
+const LODGING = /^(hotel|hostel|motel|guest_house)$/;
 const TRANSIT = /^(bus_stop|station|tram_stop|stop)$/;
+// Parks, plazas and historic markers are things you navigate *to* and
+// point at, which is what the Landmarks group is for.
+const LANDMARK_PLACE = /^(park|garden|memorial|monument|sign|ruins|archaeological_site)$/;
 
 export function groupFor(kind: string, category: string): PoiGroup {
   if (category === "elevator") return "elevator";
   if (category === "toilets") return "restroom";
   if (kind === "transit" || TRANSIT.test(category)) return "transit";
+  if (LODGING.test(category)) return "hotel";
+  if (kind === "historic" || LANDMARK_PLACE.test(category)) return "landmark";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
   if (COFFEE.test(category)) return "coffee";
   if (FOOD.test(category)) return "food";
@@ -33,6 +52,7 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
   other: "Misc.",
   restroom: "Restrooms",
   landmark: "Landmarks",
+  hotel: "Hotels",
   transit: "Transit",
   elevator: "Elevators",
 };
@@ -45,9 +65,92 @@ export const GROUP_COLORS: Record<PoiGroup, string> = {
   other: "#17356e",
   restroom: "#0d9488",
   landmark: "#7c3aed",
+  hotel: "#b3306e",
   transit: "#178740",
   elevator: "#475569",
 };
+
+interface HostCandidate {
+  id: string;
+  lat: number;
+  lon: number;
+  footprint?: [number, number][];
+}
+
+export interface PoiHost<T> {
+  building: T;
+  /** True when the place isn't actually inside its host — it's the nearest
+   * building the skyway reaches. Callers must say so rather than implying
+   * containment. */
+  nearby: boolean;
+}
+
+/** Even-odd ray cast in lon/lat; footprints are small enough that treating
+ * them as planar is noise. */
+function pointInRing(lon: number, lat: number, ring: [number, number][]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/** How far a point is from a building's actual outline — the nearest point
+ * on any footprint edge, falling back to the centroid for a building with
+ * no footprint at all. */
+function distanceToFootprint(lat: number, lon: number, b: HostCandidate): number {
+  if (!b.footprint || b.footprint.length < 2) return haversineMeters(lat, lon, b.lat, b.lon);
+  let best = Infinity;
+  for (let i = 0; i < b.footprint.length; i++) {
+    const p = nearestOnSegment([lon, lat], b.footprint[i], b.footprint[(i + 1) % b.footprint.length]);
+    best = Math.min(best, haversineMeters(lat, lon, p[1], p[0]));
+  }
+  return best;
+}
+
+/**
+ * Which network building a place belongs to.
+ *
+ * Point-in-polygon first: that's the honest answer when it's available. But
+ * requiring it discarded real places wholesale — the downtown Target sits
+ * inside a building the skyway graph never captured, so it resolved to
+ * nothing and simply ceased to exist, with no signal that anything was
+ * missing. Transit stops and landmark buildings already had a nearest-host
+ * fallback; ordinary businesses didn't, and that gap is what the first
+ * external bug report found.
+ *
+ * So: fall back to the nearest building within `maxNearbyMeters`, flagged
+ * `nearby` so the place card can say *nearest skyway access* instead of
+ * claiming the place is somewhere it isn't. Beyond that radius, still
+ * nothing — a place the skyway can't plausibly reach shouldn't be attached
+ * to it just to avoid an empty result.
+ */
+export function resolvePoiHost<T extends HostCandidate>(
+  lat: number,
+  lon: number,
+  buildings: T[],
+  maxNearbyMeters: number,
+): PoiHost<T> | null {
+  const inside = buildings.find((b) => b.footprint && pointInRing(lon, lat, b.footprint));
+  if (inside) return { building: inside, nearby: false };
+
+  let best: T | null = null;
+  let bestMeters = maxNearbyMeters;
+  for (const b of buildings) {
+    // Distance to the footprint, not the centroid. A centroid measurement
+    // makes a big tower "far" from a place pressed against its own wall and
+    // hands the place to a smaller building across the street — which then
+    // routes you out of the wrong door onto the wrong block.
+    const meters = distanceToFootprint(lat, lon, b);
+    if (meters <= bestMeters) {
+      bestMeters = meters;
+      best = b;
+    }
+  }
+  return best ? { building: best, nearby: true } : null;
+}
 
 /** OSM building-way tags -> our building category. */
 /** OSM's `website` tag is free text from a publicly editable dataset, and

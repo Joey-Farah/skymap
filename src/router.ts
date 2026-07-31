@@ -210,6 +210,44 @@ export function remainingRouteMeters(coords: [number, number][], lat: number, lo
   return Math.max(0, walked - bestAlong);
 }
 
+export interface SnappedPosition {
+  /** Point on the route line, [lon, lat]. */
+  coord: [number, number];
+  /** How far the raw fix was from the line — the drift being corrected. */
+  offsetMeters: number;
+}
+
+/**
+ * Project a GPS fix onto the drawn route, or refuse to.
+ *
+ * Skyways sit a floor above the street and GPS can't tell the difference, so
+ * indoors a fix routinely lands 20-50 m away — on the road below, which is
+ * exactly where a walker doesn't want to see themselves. The route line is
+ * the strongest hint available about where they actually are: if they're
+ * walking it, they're on it.
+ *
+ * Beyond `maxMeters` this returns null rather than a projection. Past that
+ * distance the premise has failed — they've left the route, or the fix is
+ * junk — and a confidently wrong position is worse than the honest drift,
+ * because it hides the error instead of showing it.
+ */
+export function snapToRoute(
+  coords: [number, number][],
+  lat: number,
+  lon: number,
+  maxMeters: number,
+): SnappedPosition | null {
+  if (coords.length < 2) return null;
+  const point: [number, number] = [lon, lat];
+  let best: SnappedPosition | null = null;
+  for (let i = 1; i < coords.length; i++) {
+    const proj = nearestOnSegment(point, coords[i - 1], coords[i]);
+    const offsetMeters = haversineMeters(lat, lon, proj[1], proj[0]);
+    if (!best || offsetMeters < best.offsetMeters) best = { coord: proj, offsetMeters };
+  }
+  return best && best.offsetMeters <= maxMeters ? best : null;
+}
+
 interface GraphEdge {
   to: string;
   meters: number;
