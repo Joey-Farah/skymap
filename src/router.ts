@@ -96,23 +96,118 @@ export function sliceAlong(coords: [number, number][], meters: number): [number,
   return out;
 }
 
-/** Closest building to a GPS fix, within `maxMeters`, or null if nothing's close. */
+/** A thing with a position and, usually, an outline — a building, or
+ * anything else callers want measured the same way. */
+export interface Footprinted {
+  lat: number;
+  lon: number;
+  footprint?: [number, number][];
+}
+
+/** Even-odd ray cast in lon/lat; footprints are small enough that treating
+ * them as planar is noise. */
+export function pointInRing(lon: number, lat: number, ring: [number, number][]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/**
+ * How far a point is from a building's actual outline — 0 anywhere inside
+ * it, else the nearest point on any footprint edge, falling back to the
+ * centroid for a building with no footprint at all.
+ */
+export function distanceToFootprint(lat: number, lon: number, b: Footprinted): number {
+  if (!b.footprint || b.footprint.length < 2) return haversineMeters(lat, lon, b.lat, b.lon);
+  if (b.footprint.length > 2 && pointInRing(lon, lat, b.footprint)) return 0;
+  let best = Infinity;
+  for (let i = 0; i < b.footprint.length; i++) {
+    const p = nearestOnSegment([lon, lat], b.footprint[i], b.footprint[(i + 1) % b.footprint.length]);
+    best = Math.min(best, haversineMeters(lat, lon, p[1], p[0]));
+  }
+  return best;
+}
+
+/**
+ * Closest building to a GPS fix, within `maxMeters` of its outline, or null
+ * if nothing's close.
+ *
+ * Measured to the footprint, not the centroid. A centroid measurement asks
+ * "are you near the middle of this building", which is the wrong question
+ * for a downtown block: 62 of the 179 real buildings extend more than 60m
+ * from their own centre, so standing at the far end of Ramp A or City
+ * Center resolved to *no* building at all — and the "Current Location" row
+ * this feeds is omitted rather than guessed, so it simply never appeared in
+ * the places people most often start a trip from.
+ */
 export function nearestBuilding(
   lat: number,
   lon: number,
   buildings: Building[],
   maxMeters: number,
 ): Building | null {
+  return nearestApproach(lat, lon, buildings, maxMeters)?.building ?? null;
+}
+
+/**
+ * Downtown streets run on a grid, so the walk to a building is never the
+ * straight line to it — you go along one block and up another. 1.3x is the
+ * standard grid detour factor, and it is the honest direction to err: a
+ * time that reads slightly long makes you early, one that reads short
+ * makes you late.
+ */
+export const STREET_DETOUR_FACTOR = 1.3;
+
+/** Below this, you're against the building — GPS wobble, not a walk. */
+export const AT_BUILDING_METERS = 15;
+
+export interface Approach {
+  building: Building;
+  /** Straight-line metres to the building's outline; 0 when inside it. */
+  straightMeters: number;
+  /** Walking metres, straight line inflated for the street grid. */
+  meters: number;
+  /** Walking minutes for `meters`, at the app's usual pace. */
+  minutes: number;
+}
+
+/**
+ * The nearest building you could enter the skyway through, and what it
+ * costs to get to it on foot.
+ *
+ * The skyway is a network you have to *join*, and most of the time you are
+ * not standing in it yet: across a grid of downtown, the median distance
+ * to the nearest network building is 95m, and only 40% of the area is
+ * within 60m. Offering "Current Location" only when you were already
+ * inside therefore hid it in the majority of the cases someone would want
+ * it — outdoors, deciding where to go.
+ *
+ * What this deliberately does *not* claim is which door to use. OSM's
+ * entrance data can't support that (docs/street-access-research.md), so
+ * the answer stops at the building, and the caller says so.
+ */
+export function nearestApproach(
+  lat: number,
+  lon: number,
+  buildings: Building[],
+  maxMeters: number,
+): Approach | null {
   let best: Building | null = null;
   let bestDist = maxMeters;
   for (const b of buildings) {
-    const d = haversineMeters(lat, lon, b.lat, b.lon);
+    const d = distanceToFootprint(lat, lon, b);
     if (d <= bestDist) {
       bestDist = d;
       best = b;
     }
   }
-  return best;
+  if (!best) return null;
+  const meters = bestDist * STREET_DETOUR_FACTOR;
+  return { building: best, straightMeters: bestDist, meters, minutes: meters / WALK_METERS_PER_MIN };
 }
 
 /**
@@ -475,4 +570,85 @@ export class SkywayRouter {
       finalMeters / WALK_METERS_PER_MIN + Math.max(0, steps.length - 2) * BUILDING_TRANSIT_MIN;
     return { steps, totalMeters: finalMeters, totalMinutes };
   }
+}
+
+/**
+ * Attach the outdoor walk that gets you onto the network.
+ *
+ * Kept as a separate leg rather than folded into totalMeters/totalMinutes
+ * on purpose. Those two drive turn-by-turn progress, which measures how
+ * far along the *skyway* you are — and by the time you're navigating, the
+ * outdoor leg is already behind you. Adding it to them would make the
+ * remaining distance read high for the whole trip.
+ *
+ * So the route keeps describing the skyway, and the approach rides
+ * alongside it for the one thing it's needed for: the total a person plans
+ * by, via tripMinutes/tripMeters.
+ */
+export function withApproach(route: RouteResult, approach: Approach | null): RouteResult {
+  if (!approach || approach.straightMeters <= AT_BUILDING_METERS) return route;
+  return {
+    ...route,
+    approach: {
+      meters: approach.meters,
+      minutes: approach.minutes,
+      buildingName: approach.building.name,
+    },
+  };
+}
+
+/** Door-to-door minutes: the outdoor approach plus the skyway walk. */
+export function tripMinutes(route: RouteResult): number {
+  return route.totalMinutes + (route.approach?.minutes ?? 0);
+}
+
+/** Door-to-door metres, same reasoning as tripMinutes. */
+export function tripMeters(route: RouteResult): number {
+  return route.totalMeters + (route.approach?.meters ?? 0);
+}
+
+/**
+ * The buildings on the one big connected skyway, dropping the small
+ * isolated clusters.
+ *
+ * The extraction is not a single network: the live data is 19 components —
+ * 133 buildings downtown, plus 18 little islands of two or three (Archdale
+ * and Glendale; Mill City Museum and Humboldt Annex; the HCMC ramp group).
+ * Each island is a real skyway bridge, but nothing on it reaches the
+ * network people mean when they say "the skyway".
+ *
+ * That matters for choosing where a trip starts. Picking the nearest
+ * building outright offers an island 47% of the time across downtown, and
+ * every one of those offers ends in "No route found" the moment you tap it
+ * — the option that fails when used, which is exactly what the current
+ * location row is built to avoid. Restricting to this component covers
+ * less ground (67% of downtown rather than 93%) and everything it offers
+ * actually goes somewhere.
+ */
+export function mainNetworkBuildings(data: SkymapData): Building[] {
+  const adjacency = new Map<string, string[]>(data.buildings.map((b) => [b.id, []]));
+  for (const edge of data.edges) {
+    adjacency.get(edge.from)?.push(edge.to);
+    adjacency.get(edge.to)?.push(edge.from);
+  }
+  const seen = new Set<string>();
+  let largest: string[] = [];
+  for (const b of data.buildings) {
+    if (seen.has(b.id)) continue;
+    const stack = [b.id];
+    seen.add(b.id);
+    const component: string[] = [];
+    while (stack.length) {
+      const id = stack.pop()!;
+      component.push(id);
+      for (const next of adjacency.get(id) ?? []) {
+        if (seen.has(next)) continue;
+        seen.add(next);
+        stack.push(next);
+      }
+    }
+    if (component.length > largest.length) largest = component;
+  }
+  const ids = new Set(largest);
+  return data.buildings.filter((b) => ids.has(b.id));
 }

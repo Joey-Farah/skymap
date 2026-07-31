@@ -1,7 +1,16 @@
 import "./styles.css";
 import { Capacitor } from "@capacitor/core";
 import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
-import { SkywayRouter, nearestBuilding, routeStepIndex } from "./router.ts";
+import {
+  SkywayRouter,
+  mainNetworkBuildings,
+  nearestApproach,
+  routeStepIndex,
+  tripMeters,
+  tripMinutes,
+  withApproach,
+  type Approach,
+} from "./router.ts";
 import { SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
@@ -14,6 +23,14 @@ import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
 
+/**
+ * How far off the network "Current Location" will still offer to start a
+ * trip. Measured across a grid of downtown, 300m covers 85% of the area
+ * and 400m nearly all of it; past that you are outside the district the
+ * skyway serves, and the nearest building stops being a useful answer.
+ */
+const MAX_APPROACH_METERS = 400;
+
 async function boot() {
   console.log("[skymap-build-marker] " + new Date().toISOString());
   // Before anything can touch navigator.geolocation — MapLibre's
@@ -24,6 +41,10 @@ async function boot() {
   const data: SkymapData = await res.json();
 
   const router = new SkywayRouter(data);
+  // Candidates for "where would I get on the skyway": the one big network,
+  // not the isolated two-building bridges. Starting a trip on an island
+  // strands you — see mainNetworkBuildings.
+  const routableOrigins = mainNetworkBuildings(data);
   const sheet = new Sheet(document.getElementById("sheet")!);
   const app = document.getElementById("app")!;
   const routeEditor = document.getElementById("route-editor") as HTMLElement;
@@ -129,12 +150,17 @@ async function boot() {
     // row — one route computation, two readings of it. Stays null when
     // there's no live location, and the row is omitted rather than guessed.
     let walk: { minutes: number; meters: number } | null = null;
-    if (nearBuilding && nearBuilding.id !== b.id) {
-      const preview = router.route(nearBuilding.id, b.id, selectedTime());
+    // Quoted from where you actually are, which now includes being outside
+    // the network — so the estimate carries the walk to reach it, the same
+    // number the route preview will show once you tap through.
+    const origin = currentApproach;
+    if (origin && origin.building.id !== b.id) {
+      const preview = router.route(origin.building.id, b.id, selectedTime());
       if (preview) {
-        const minutes = Math.max(1, Math.round(preview.totalMinutes));
+        const trip = withApproach(preview, origin);
+        const minutes = Math.max(1, Math.round(tripMinutes(trip)));
         directionsLabel = `Directions · ${minutes} min`;
-        walk = { minutes, meters: preview.totalMeters };
+        walk = { minutes, meters: tripMeters(trip) };
       }
     }
     const actions = { onDirections: () => enterPreview(), directionsLabel };
@@ -156,9 +182,14 @@ async function boot() {
     // entrance-animation transform and, on some runs, measured content
     // heights against the wrong offsetParent, undersizing the drawer by
     // exactly its own padding and clipping the GO button.
-    if (!comboFrom.value && nearBuilding) {
+    // Gated on the approach, not the tight "are you in this building"
+    // radius: outdoors that radius is empty, so tapping Directions from the
+    // street left From blank and answered with "Choose a starting point" —
+    // the app declining to route from where you plainly are.
+    if (!comboFrom.value && currentApproach) {
       comboFrom.selectCurrentLocation({ silent: true });
-      comboTo.setSearchAnchor({ lat: nearBuilding.lat, lon: nearBuilding.lon });
+      const { lat, lon } = currentApproach.building;
+      comboTo.setSearchAnchor({ lat, lon });
     }
     computePreview();
   }
@@ -189,7 +220,10 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const route = router.route(fromId, toId, when);
+    const skywayRoute = router.route(fromId, toId, when);
+    // Charge the outdoor walk only when From *is* the live position. Picking
+    // that same building by name means you consider yourself already in it.
+    const route = skywayRoute && withApproach(skywayRoute, comboFrom.approach);
     if (!route) {
       activeRoute = null;
       view.setRoute(null);
@@ -285,7 +319,13 @@ async function boot() {
   // be something you choose, not something that happens to you, and having
   // three of them meant the auto-fill usually raced ahead of the other two
   // and quietly claimed the field before you saw either.
+  /** Where a fix puts you for the Save My Ramp prompt: essentially at the
+   * building, or nothing. */
   let nearBuilding: Building | null = null;
+  /** Where a fix puts you for routing: the nearest way onto the network,
+   * reaching well beyond the building you're standing in — see
+   * MAX_APPROACH_METERS. */
+  let currentApproach: Approach | null = null;
 
   // GPS drifts indoors — sometimes badly enough to land on the wrong step
   // of a route. Borrowed from Sky Walker (iOS competitor): tapping the
@@ -305,7 +345,15 @@ async function boot() {
   }
 
   function onPosition(lat: number, lon: number) {
-    nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
+    // Two different questions, so two different budgets. "Am I parked in
+    // this ramp?" has to mean essentially at it, or Save My Ramp offers to
+    // remember a ramp you merely walked past. "Where would I join the
+    // skyway?" is answerable from much further out — most of downtown is
+    // more than 60m from the network, so the tight budget was withholding
+    // the From row exactly when someone outdoors wanted it.
+    const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS);
+    currentApproach = approach;
+    nearBuilding = approach && approach.straightMeters <= 60 ? approach.building : null;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
       // Real GPS is back in control — but drawn on the skyway rather than
@@ -315,12 +363,30 @@ async function boot() {
       view.setWalkerPosition(view.snapToActiveRoute(lat, lon));
     }
     maybePromptSaveRamp(nearBuilding);
-    comboFrom.setCurrentLocation(nearBuilding);
+    comboFrom.setCurrentLocation(approach);
     // Same-name chains rank closest-first from where you actually are;
     // the To field prefers the chosen origin as its anchor when one's set.
     comboFrom.setSearchAnchor({ lat, lon });
     const fromB = comboFrom.value ? router.building(comboFrom.value) : null;
     comboTo.setSearchAnchor(fromB ? { lat: fromB.lat, lon: fromB.lon } : { lat, lon });
+  }
+
+  /**
+   * Location has stopped: drop everything derived from a fix.
+   *
+   * The "Current Location" row is the one part of the UI that turns a
+   * position into a routing decision, so leaving it on screen after
+   * tracking ends offers to route you from wherever you last happened to
+   * be — the same confident lie as a frozen walker dot, but harder to
+   * notice, since a stale row looks exactly like a live one. The row is
+   * built to be absent when there's no fix; this is what makes "no fix"
+   * true again.
+   */
+  function forgetPosition() {
+    nearBuilding = null;
+    currentApproach = null;
+    comboFrom.setCurrentLocation(null);
+    comboFrom.setSearchAnchor(null);
   }
 
   // --- Save My Ramp: notice when you're parked, offer a one-tap way back --
@@ -367,7 +433,10 @@ async function boot() {
     // Both selects are silent so the route is computed once, at the end —
     // a non-silent select fires its own computePreview(), and two passes
     // back to back race the sheet's entrance animation (see enterPreview).
-    if (nearBuilding) comboFrom.select(nearBuilding, undefined, { silent: true });
+    // Same reasoning as enterPreview: whoever is walking back to their ramp
+    // is often outdoors, where the tight radius is empty — and selecting it
+    // as the *current location* is what charges the walk back to the door.
+    if (currentApproach) comboFrom.selectCurrentLocation({ silent: true });
     comboTo.select(rampBuilding, undefined, { silent: true });
     computePreview();
   });
@@ -491,6 +560,7 @@ async function boot() {
       // long after tracking stopped — a confident lie, which is exactly
       // what the snap is supposed to prevent.
       view.setWalkerPosition(null);
+      forgetPosition();
       showToast("Location is off — allow access in your browser settings to route from where you stand.");
     } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
       toldAboutTimeout = true;
@@ -505,6 +575,7 @@ async function boot() {
       // Nothing will update the corrected dot once tracking is off, so it
       // has to go — see the error handler above.
       view.setWalkerPosition(null);
+      forgetPosition();
     }
   });
 

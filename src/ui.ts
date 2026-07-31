@@ -8,10 +8,34 @@ import {
   safeWebsiteUrl,
   type PoiGroup,
 } from "./poi.ts";
-import { haversineMeters, WALK_METERS_PER_MIN } from "./router.ts";
+import {
+  AT_BUILDING_METERS,
+  haversineMeters,
+  tripMeters,
+  tripMinutes,
+  WALK_METERS_PER_MIN,
+  type Approach,
+} from "./router.ts";
 import { buildComboEntries, searchEntries, type ComboEntry } from "./combo.ts";
 import type { RecentEntry } from "./recents.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
+
+/**
+ * What the "Current Location" row says underneath itself.
+ *
+ * Inside a building, the building's name is the whole story. Outside it,
+ * the name alone would read as a claim you're already there — so the walk
+ * to reach it leads, because that walk is real time the skyway route
+ * (which starts at the door) can't include on its own.
+ *
+ * 15m of slack absorbs ordinary GPS wobble against a wall; below that,
+ * announcing a "1 min walk" to the building you're standing in would be
+ * noise.
+ */
+export function approachLabel(a: Approach): string {
+  if (a.straightMeters <= AT_BUILDING_METERS) return a.building.name;
+  return `${Math.max(1, Math.round(a.minutes))} min walk to ${a.building.name}`;
+}
 
 // "building" is the one result icon that isn't a real POI group (buildings
 // are the polygons on the map, not icon markers) — it keeps the plain
@@ -55,7 +79,12 @@ export class BuildingCombo {
   private activeIndex = -1;
   /** Only the "From" combo offers this — you don't route *to* where you are. */
   private showCurrentLocation: boolean;
-  private currentLocationBuilding: Building | null = null;
+  /** Where a live fix puts you, and the walk onto the network from there —
+   * null whenever there is no usable fix, which is what keeps the row from
+   * offering a position the app doesn't actually have. */
+  private currentApproach: Approach | null = null;
+  /** True only while the current selection came from the pinned row. */
+  private pickedCurrentLocation = false;
   private recents: RecentEntry[] = [];
   /** Where "closest" is measured from for equally-relevant results — the
    * live GPS fix, or (for the To field) the chosen origin. */
@@ -103,9 +132,17 @@ export class BuildingCombo {
    * focused) so the option appears the moment a fix arrives, not just on
    * the next focus.
    */
-  setCurrentLocation(b: Building | null) {
-    this.currentLocationBuilding = b;
+  setCurrentLocation(approach: Approach | null) {
+    this.currentApproach = approach;
     if (!this.list.hidden) this.render(this.input.value);
+  }
+
+  /** The approach behind a "Current Location" selection, so the caller can
+   * add the outdoor walk to the trip. Null for every other selection —
+   * picking that same building *by name* means you consider yourself
+   * already there, and must not be charged the walk. */
+  get approach(): Approach | null {
+    return this.pickedCurrentLocation ? this.currentApproach : null;
   }
 
   /** Anchor for closest-first ordering of same-name results (chains). */
@@ -144,6 +181,7 @@ export class BuildingCombo {
    * immediately re-collapse the very form you just wanted to keep open. */
   select(b: Building, poi?: Poi, opts: { silent?: boolean } = {}) {
     this.selectedId = b.id;
+    this.pickedCurrentLocation = false;
     this.selectedPoi = poi ?? null;
     this.input.value = poi?.name ?? b.name;
     this.hide();
@@ -156,6 +194,7 @@ export class BuildingCombo {
     const b = this.buildingsById.get(entry.buildingId);
     if (!b) return;
     this.selectedId = entry.buildingId;
+    this.pickedCurrentLocation = false;
     this.input.value = entry.label;
     this.hide();
     const poi = entry.poiId ? this.poisById.get(entry.poiId) : undefined;
@@ -168,9 +207,10 @@ export class BuildingCombo {
    * deliberate action (e.g. tapping Directions) — distinct from the old
    * silent auto-fill this replaced, which fired before anyone asked. */
   selectCurrentLocation(opts: { silent?: boolean } = {}) {
-    const b = this.currentLocationBuilding;
+    const b = this.currentApproach?.building;
     if (!b) return;
     this.selectedId = b.id;
+    this.pickedCurrentLocation = true;
     this.selectedPoi = null;
     // Name the building the GPS fix snapped to: indoors, drift can cross a
     // street, and a plain "Current Location" hides a wrong snap until the
@@ -206,7 +246,7 @@ export class BuildingCombo {
     // and a position fix has actually resolved to a building. No fix yet
     // means no row, rather than a "Current Location" option that fails
     // when tapped.
-    if (this.showCurrentLocation && !query.trim() && this.currentLocationBuilding) {
+    if (this.showCurrentLocation && !query.trim() && this.currentApproach) {
       const li = document.createElement("li");
       li.className = "current-location-row";
       const icon = document.createElement("span");
@@ -217,8 +257,11 @@ export class BuildingCombo {
       text.append(
         el("span", "Current Location", "result-name"),
         // Which building the fix resolved to — a wrong indoor snap should
-        // be visible before routing, not discovered mid-route.
-        el("span", this.currentLocationBuilding.name, "addr"),
+        // be visible before routing, not discovered mid-route. When you
+        // aren't on the network yet, lead with the walk to reach it: the
+        // route itself begins at the building, so an unmentioned outdoor
+        // leg is time the trip silently doesn't account for.
+        el("span", approachLabel(this.currentApproach), "addr"),
       );
       li.append(icon, text);
       li.addEventListener("mousedown", (e) => {
@@ -776,14 +819,24 @@ export class Sheet {
       this.content.append(el("span", "⚠ May briefly go outside", "badge warn"));
     }
 
-    const totalMin = Math.max(1, Math.round(route.totalMinutes));
+    // Door to door, so the outdoor walk onto the network is counted. The
+    // route below still describes the skyway alone — this is the number
+    // you'd plan by, and leaving the approach out of it would quietly run
+    // every such trip late by the length of that walk.
+    if (route.approach) {
+      const mins = Math.max(1, Math.round(route.approach.minutes));
+      this.content.append(
+        el("span", `↑ ${mins} min walk outside to ${route.approach.buildingName} first`, "badge"),
+      );
+    }
+    const totalMin = Math.max(1, Math.round(tripMinutes(route)));
     const eta = new Date(when.getTime() + totalMin * 60_000);
     const summary = document.createElement("div");
     summary.className = "route-summary";
     summary.append(
       el("span", `${totalMin} min walk`, "big"),
       el("span", `Arrive ${formatMinute(eta.getHours() * 60 + eta.getMinutes())}`, "sub"),
-      el("span", formatDistance(route.totalMeters), "sub"),
+      el("span", formatDistance(tripMeters(route)), "sub"),
       el("span", `${route.steps.length} buildings`, "sub"),
     );
     this.content.append(summary);

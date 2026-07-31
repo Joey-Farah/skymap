@@ -8,12 +8,16 @@ import {
   SkywayRouter,
   buildingExitPoint,
   haversineMeters,
+  mainNetworkBuildings,
+  nearestApproach,
   nearestBuilding,
   polylineMeters,
   remainingRouteMeters,
   routeStepIndex,
   sliceAlong,
   snapToRoute,
+  tripMinutes,
+  withApproach,
 } from "../src/router.ts";
 import { closingSoonWarnings, isClosingSoon, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
@@ -125,6 +129,109 @@ test("nearestBuilding snaps a GPS fix to the closest building within range", () 
 
   // Far from everything: no snap within a tight budget.
   assert.equal(nearestBuilding(0, 0, data.buildings, 60), null);
+});
+
+// A ~470m-long block — the shape of Ramp A, the Convention Center, City
+// Center. Measured to the centroid, standing at one end of your own
+// building reads as "nowhere near a building", which silently withheld the
+// "Current Location" row exactly where trips start. 62 of 179 real
+// buildings reach further than 60m from their own centroid.
+const LONG_BLOCK = [
+  {
+    id: "long-block",
+    name: "Long Block",
+    lat: 44.9705,
+    lon: -93.272,
+    footprint: [
+      [-93.275, 44.97],
+      [-93.269, 44.97],
+      [-93.269, 44.971],
+      [-93.275, 44.971],
+    ],
+  },
+];
+
+test("nearestBuilding matches anywhere inside a footprint, however far the centroid", () => {
+  // Inside, near the east end: ~197m from the centroid.
+  assert.ok(haversineMeters(44.9705, -93.2695, 44.9705, -93.272) > 150);
+  assert.equal(nearestBuilding(44.9705, -93.2695, LONG_BLOCK, 60)?.id, "long-block");
+});
+
+test("nearestBuilding measures the range budget from the footprint edge", () => {
+  // ~16m off the east wall — outside, but plainly at this building.
+  assert.equal(nearestBuilding(44.9705, -93.2688, LONG_BLOCK, 60)?.id, "long-block");
+  // ~173m off it: past the budget, so no claim is made.
+  assert.equal(nearestBuilding(44.9705, -93.2668, LONG_BLOCK, 60), null);
+});
+
+test("nearestApproach reports how far off the network you are", () => {
+  // Inside: zero to walk before the skyway starts.
+  assert.equal(nearestApproach(44.9705, -93.2695, LONG_BLOCK, 400)?.meters, 0);
+
+  // Outside: the straight-line gap, inflated for the street grid, since you
+  // walk around blocks rather than through them.
+  const out = nearestApproach(44.9705, -93.2668, LONG_BLOCK, 400);
+  assert.equal(out?.building.id, "long-block");
+  assert.ok(out.straightMeters > 165 && out.straightMeters < 180, `straight ${out.straightMeters}`);
+  assert.ok(out.meters > out.straightMeters, "grid detour inflates the straight line");
+  assert.ok(Math.abs(out.minutes - out.meters / 78) < 0.01, "same walking pace as the rest of the app");
+
+  // Past the budget entirely.
+  assert.equal(nearestApproach(0, 0, LONG_BLOCK, 400), null);
+});
+
+test("mainNetworkBuildings keeps the big network and drops the dead-end islands", () => {
+  const mini = {
+    meta: data.meta,
+    buildings: ["a", "b", "c", "x", "y"].map((id, i) => ({
+      ...data.buildings[0],
+      id,
+      lat: 44.97 + i * 0.001,
+      lon: -93.27,
+    })),
+    // a-b-c is the network; x-y is an isolated pair, like Archdale/Glendale.
+    edges: [
+      { from: "a", to: "b", crossing: "1st", geometry: [] },
+      { from: "b", to: "c", crossing: "2nd", geometry: [] },
+      { from: "x", to: "y", crossing: "3rd", geometry: [] },
+    ],
+  };
+  assert.deepEqual(
+    mainNetworkBuildings(mini).map((b) => b.id).sort(),
+    ["a", "b", "c"],
+  );
+});
+
+test("the real network is one dominant component with small islands off it", () => {
+  const live = JSON.parse(readFileSync(join(ROOT, "public/data/skymap-data.json"), "utf8"));
+  const main = mainNetworkBuildings(live);
+  // Offering an island building as a starting point strands you: nothing in
+  // the main network is reachable from it.
+  assert.ok(main.length > live.buildings.length * 0.6, `main component only ${main.length}`);
+  assert.ok(main.length < live.buildings.length, "there really are islands to exclude");
+});
+
+test("withApproach adds the outdoor walk without disturbing the skyway legs", () => {
+  const route = router.route("ids-center", "gaviidae-common", TUE_10AM);
+  const far = nearestApproach(44.9705, -93.2668, LONG_BLOCK, 400);
+
+  const trip = withApproach(route, far);
+  assert.equal(trip.approach?.buildingName, "Long Block");
+  assert.ok(Math.abs(trip.approach.minutes - far.minutes) < 1e-9);
+
+  // The skyway portion is untouched: nav progress measures against these,
+  // and by the time you're navigating the outdoor leg is already behind you.
+  assert.equal(trip.totalMeters, route.totalMeters);
+  assert.equal(trip.totalMinutes, route.totalMinutes);
+
+  // But the trip as a whole is longer, which is the number a person plans by.
+  assert.ok(tripMinutes(trip) > tripMinutes(route));
+  assert.equal(tripMinutes(route), route.totalMinutes);
+
+  // Already at the building: nothing to add, and no leg to mention.
+  const inside = nearestApproach(44.9705, -93.2695, LONG_BLOCK, 400);
+  assert.equal(withApproach(route, inside).approach, undefined);
+  assert.equal(withApproach(route, null).approach, undefined);
 });
 
 test("sliceAlong cuts a polyline at a distance", () => {
