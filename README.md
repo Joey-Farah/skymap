@@ -67,10 +67,30 @@ npm run build && npx cap sync ios     # refresh native web assets
 open ios/App/App.xcodeproj            # build/run from Xcode
 ```
 
+## Feedback
+
+The Feedback button and each place's "Report an issue" open an in-app form
+that posts to `api/feedback.js`, a Vercel Function that mails the report on
+via Resend. It needs `RESEND_API_KEY` in the Vercel project environment.
+
+Two things to know before changing it:
+
+- **The endpoint must stay plain JavaScript.** `vercel build` fails to
+  compile `api/*.ts` against this project's TypeScript, and the symptom in
+  production is a 404 on the endpoint and a silent fall back to `mailto:`
+  for every user. Run `vercel build` after touching anything in `api/`.
+- **Native builds need an absolute URL.** iOS is served from
+  `capacitor://localhost`, so a relative path posts into the void. Set
+  `VITE_FEEDBACK_ENDPOINT=https://<host>/api/feedback` at build time.
+  Without it the native app goes straight to `mailto:` rather than opening
+  a form it can't submit.
+
 ## Privacy
 
 No accounts, no analytics, no tracking. Location never leaves the device.
-See [public/privacy.html](public/privacy.html) (served at `/privacy.html`).
+The one thing that does leave is a feedback report, and only when someone
+taps Send — see [public/privacy.html](public/privacy.html) (served at
+`/privacy.html`).
 
 ## Docs
 
