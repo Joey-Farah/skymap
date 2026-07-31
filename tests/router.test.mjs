@@ -8,6 +8,7 @@ import {
   SkywayRouter,
   buildingExitPoint,
   haversineMeters,
+  nearestApproach,
   nearestBuilding,
   polylineMeters,
   remainingRouteMeters,
@@ -156,8 +157,24 @@ test("nearestBuilding matches anywhere inside a footprint, however far the centr
 test("nearestBuilding measures the range budget from the footprint edge", () => {
   // ~16m off the east wall — outside, but plainly at this building.
   assert.equal(nearestBuilding(44.9705, -93.2688, LONG_BLOCK, 60)?.id, "long-block");
-  // ~158m off it: past the budget, so no claim is made.
+  // ~173m off it: past the budget, so no claim is made.
   assert.equal(nearestBuilding(44.9705, -93.2668, LONG_BLOCK, 60), null);
+});
+
+test("nearestApproach reports how far off the network you are", () => {
+  // Inside: zero to walk before the skyway starts.
+  assert.equal(nearestApproach(44.9705, -93.2695, LONG_BLOCK, 400)?.meters, 0);
+
+  // Outside: the straight-line gap, inflated for the street grid, since you
+  // walk around blocks rather than through them.
+  const out = nearestApproach(44.9705, -93.2668, LONG_BLOCK, 400);
+  assert.equal(out?.building.id, "long-block");
+  assert.ok(out.straightMeters > 165 && out.straightMeters < 180, `straight ${out.straightMeters}`);
+  assert.ok(out.meters > out.straightMeters, "grid detour inflates the straight line");
+  assert.ok(Math.abs(out.minutes - out.meters / 78) < 0.01, "same walking pace as the rest of the app");
+
+  // Past the budget entirely.
+  assert.equal(nearestApproach(0, 0, LONG_BLOCK, 400), null);
 });
 
 test("sliceAlong cuts a polyline at a distance", () => {

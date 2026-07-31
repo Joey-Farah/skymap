@@ -150,6 +150,49 @@ export function nearestBuilding(
   buildings: Building[],
   maxMeters: number,
 ): Building | null {
+  return nearestApproach(lat, lon, buildings, maxMeters)?.building ?? null;
+}
+
+/**
+ * Downtown streets run on a grid, so the walk to a building is never the
+ * straight line to it — you go along one block and up another. 1.3x is the
+ * standard grid detour factor, and it is the honest direction to err: a
+ * time that reads slightly long makes you early, one that reads short
+ * makes you late.
+ */
+export const STREET_DETOUR_FACTOR = 1.3;
+
+export interface Approach {
+  building: Building;
+  /** Straight-line metres to the building's outline; 0 when inside it. */
+  straightMeters: number;
+  /** Walking metres, straight line inflated for the street grid. */
+  meters: number;
+  /** Walking minutes for `meters`, at the app's usual pace. */
+  minutes: number;
+}
+
+/**
+ * The nearest building you could enter the skyway through, and what it
+ * costs to get to it on foot.
+ *
+ * The skyway is a network you have to *join*, and most of the time you are
+ * not standing in it yet: across a grid of downtown, the median distance
+ * to the nearest network building is 95m, and only 40% of the area is
+ * within 60m. Offering "Current Location" only when you were already
+ * inside therefore hid it in the majority of the cases someone would want
+ * it — outdoors, deciding where to go.
+ *
+ * What this deliberately does *not* claim is which door to use. OSM's
+ * entrance data can't support that (docs/street-access-research.md), so
+ * the answer stops at the building, and the caller says so.
+ */
+export function nearestApproach(
+  lat: number,
+  lon: number,
+  buildings: Building[],
+  maxMeters: number,
+): Approach | null {
   let best: Building | null = null;
   let bestDist = maxMeters;
   for (const b of buildings) {
@@ -159,7 +202,9 @@ export function nearestBuilding(
       best = b;
     }
   }
-  return best;
+  if (!best) return null;
+  const meters = bestDist * STREET_DETOUR_FACTOR;
+  return { building: best, straightMeters: bestDist, meters, minutes: meters / WALK_METERS_PER_MIN };
 }
 
 /**
