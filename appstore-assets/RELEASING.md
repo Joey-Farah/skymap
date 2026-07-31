@@ -151,8 +151,9 @@ send without leaving the app.
 • New Hotels and Landmarks filters on the map.
 • Your location now follows the skyway you're walking, instead of drifting
   into the street below.
-• "Current Location" is now offered as your starting point anywhere inside
-  a building — including the far ends of the big parking ramps, where it
-  used to go missing.
+• You can now start a route from where you are, even out on the street —
+  the app picks the nearest skyway building and includes the walk to reach
+  it in the trip time. It used to offer this only if you were already
+  standing inside a mapped building.
 • The Feedback button opens a form right in the app — no mail app needed.
 ```
