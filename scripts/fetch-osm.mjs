@@ -29,7 +29,7 @@
 import { writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildingCategory, groupFor, resolvePoiHost } from "../src/poi.ts";
+import { buildingCategory, dedupePois, groupFor, resolvePoiHost } from "../src/poi.ts";
 import { parseOpeningHours } from "../src/opening-hours.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -106,6 +106,10 @@ out body;
 // block, which is the range where "the skyway gets you to the door" is
 // still a true statement.
 const MAX_NEARBY_POI_METERS = 120;
+
+// Two records of the same name closer than this are one place mapped twice.
+// Real same-name branches downtown are never nearer than ~180 m.
+const DUPLICATE_POI_METERS = 25;
 
 const DEFAULT_HOURS = [
   [720, 1080],
@@ -878,6 +882,17 @@ async function main(osm) {
       `${pois.filter((p) => p.exterior && p.kind === "transit").length} transit stops, ` +
       `${landmarksAttached} nearby landmarks.`,
   );
+
+  // One business held twice by OSM (a node and a way, or two unmerged
+  // nodes) shows up as two identical search results. Distance, not name,
+  // decides it — see dedupePois.
+  const beforeDedupe = pois.length;
+  const deduped = dedupePois(pois, DUPLICATE_POI_METERS);
+  if (beforeDedupe !== deduped.length) {
+    console.log(`Duplicates collapsed: ${beforeDedupe - deduped.length}.`);
+  }
+  pois.length = 0;
+  pois.push(...deduped);
 
   const data = {
     meta: {

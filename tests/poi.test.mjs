@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
+import { dedupePois, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
 
 test("ordinary http and https links pass through unchanged", () => {
   assert.equal(safeWebsiteUrl("https://example.com/menu"), "https://example.com/menu");
@@ -81,4 +81,54 @@ test("a place beyond the radius is still not invented into the network", () => {
 test("nearest wins when two buildings are both in range", () => {
   const host = resolvePoiHost(44.9762, -93.2724, buildings, 200);
   assert.equal(host?.building.id, "far-tower");
+});
+
+// --- dedupePois: the same place mapped twice -----------------------------
+// Calibrated against the real extraction: genuine duplicates sit at ~0 m
+// (one business, two OSM objects), while the closest pair of same-name
+// chain branches downtown is 182 m apart. 25 m sits between them with a lot
+// of room, so collapsing by name alone is never necessary.
+const at = (name, lat, lon, extra = {}) => ({
+  id: `${name}-${lat}-${lon}`,
+  name,
+  category: "cafe",
+  group: "coffee",
+  lat,
+  lon,
+  buildingId: "b1",
+  ...extra,
+});
+
+test("the same business mapped twice collapses to one", () => {
+  const kept = dedupePois([at("CRAVE", 44.975, -93.27), at("CRAVE", 44.975, -93.27)], 25);
+  assert.equal(kept.length, 1);
+});
+
+test("two branches of a chain both survive", () => {
+  // ~180 m apart, the real Starbucks spacing downtown. Collapsing these
+  // would delete a shop someone is standing next to.
+  const kept = dedupePois([at("Starbucks", 44.975, -93.27), at("Starbucks", 44.9766, -93.27)], 25);
+  assert.equal(kept.length, 2);
+});
+
+test("generically-named features are never collapsed", () => {
+  // "Elevator" and "Public restroom" are our own fallback names for unnamed
+  // OSM features — two elevators 17 m apart in one lobby are two elevators,
+  // not one mapped twice.
+  const lifts = [
+    at("Elevator", 44.975, -93.27, { category: "elevator", group: "elevator" }),
+    at("Elevator", 44.975, -93.27, { category: "elevator", group: "elevator" }),
+  ];
+  assert.equal(dedupePois(lifts, 25).length, 2);
+});
+
+test("different names at the same spot are both kept", () => {
+  const kept = dedupePois([at("CRAVE", 44.975, -93.27), at("Muffin Top", 44.975, -93.27)], 25);
+  assert.equal(kept.length, 2);
+});
+
+test("the first occurrence is the one kept", () => {
+  const first = at("CRAVE", 44.975, -93.27, { website: "https://crave.example" });
+  const second = at("CRAVE", 44.975, -93.27);
+  assert.equal(dedupePois([first, second], 25)[0].id, first.id);
 });
