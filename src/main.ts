@@ -4,7 +4,8 @@ import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { SkywayRouter, nearestBuilding, routeStepIndex } from "./router.ts";
 import { SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
-import { encodeRouteState, feedbackUrl, parseRouteState } from "./share.ts";
+import { encodeRouteState, parseRouteState } from "./share.ts";
+import { FeedbackForm } from "./feedback-form.ts";
 import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
@@ -24,7 +25,6 @@ async function boot() {
 
   const router = new SkywayRouter(data);
   const sheet = new Sheet(document.getElementById("sheet")!);
-  (document.getElementById("feedback-link") as HTMLAnchorElement).href = feedbackUrl();
   const app = document.getElementById("app")!;
   const routeEditor = document.getElementById("route-editor") as HTMLElement;
   const navBanner = document.getElementById("nav-banner") as HTMLElement;
@@ -422,6 +422,16 @@ async function boot() {
       toast.hidden = true;
     }, 5000);
   }
+
+  // Feedback goes through the in-app form now. The mailto: it replaced is
+  // still in there as the fallback for a failed send or an unconfigured
+  // native endpoint — see FeedbackForm.
+  const feedbackForm = new FeedbackForm(showToast);
+  document.getElementById("feedback-link")!.addEventListener("click", (e) => {
+    e.preventDefault();
+    feedbackForm.open();
+  });
+  sheet.onReport = (target, hours) => feedbackForm.open(target, hours);
 
   let locateMode: LocateMode = "off";
   let compassUnavailable = false; // denied once → cycle degrades to plain on/off

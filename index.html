@@ -56,6 +56,29 @@
       </div>
       <button class="panel ramp-return" id="ramp-return" hidden></button>
 
+      <!-- Feedback, in-app. This used to be a mailto: link, which did
+           nothing at all for anyone without a mail client configured — a
+           silent failure at the exact moment someone was trying to help. -->
+      <div class="feedback-backdrop" id="feedback-backdrop" hidden></div>
+      <div class="panel feedback-form" id="feedback-form" role="dialog" aria-modal="true"
+           aria-labelledby="feedback-title" hidden>
+        <h2 id="feedback-title">Send feedback</h2>
+        <p class="feedback-sub" id="feedback-sub">What's working, what's not, what would make this better?</p>
+        <textarea id="feedback-message" rows="4" placeholder="Type it here"
+                  aria-label="Your feedback"></textarea>
+        <input type="email" id="feedback-email" placeholder="Email (only if you want a reply)"
+               autocomplete="email" aria-label="Your email, optional" />
+        <!-- Honeypot: off-screen, never announced, never tabbed to. A person
+             won't fill this in; the things we're keeping out will. -->
+        <input type="text" id="feedback-website" class="feedback-hp" tabindex="-1"
+               autocomplete="off" aria-hidden="true" />
+        <p class="feedback-error" id="feedback-error" role="alert" aria-live="assertive" hidden></p>
+        <div class="feedback-actions">
+          <button id="feedback-cancel" class="ghost" type="button">Cancel</button>
+          <button id="feedback-send" type="button">Send</button>
+        </div>
+      </div>
+
       <!-- Screen 5: turn-by-turn instruction banner -->
       <div class="panel nav-banner" id="nav-banner" hidden>
         <div id="nav-instruction"></div>
@@ -116,7 +139,10 @@
             <div class="drawer-footer">
               <img class="brand-mark" src="/icons/icon.svg" alt="" />
               <span class="brand-name">SkyMap</span>
-              <a id="feedback-link" class="feedback-link">Feedback</a>
+              <!-- A real button: an <a> with no href isn't focusable, has no
+                   link role, and ignores Enter — which silently put Feedback
+                   out of reach of keyboard and VoiceOver users. -->
+              <button id="feedback-link" class="feedback-link" type="button">Feedback</button>
             </div>
           </div>
         </div>
