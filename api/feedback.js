@@ -99,7 +99,10 @@ export async function POST(req) {
 
   if (rateLimited(ip)) return json({ error: "Too many reports just now — try again shortly." }, 429);
 
-  const key = process.env.RESEND_API_KEY;
+  // Trimmed: a key pasted into a dashboard field routinely arrives wrapped
+  // in quotes or with a trailing newline, which authenticates as garbage and
+  // fails in a way that looks nothing like "your key is malformed".
+  const key = process.env.RESEND_API_KEY?.trim().replace(/^["']|["']$/g, "");
   if (!key) {
     // Loud on the server, honest to the client: the app falls back to
     // mailto: on a failure, so the report still has somewhere to go.
@@ -147,8 +150,14 @@ export async function POST(req) {
   });
 
   if (!res.ok) {
-    console.error("Resend rejected the message:", res.status, await res.text().catch(() => ""));
-    return json({ error: "Couldn't send that just now." }, 502);
+    const detail = await res.text().catch(() => "");
+    console.error("Resend rejected the message:", res.status, detail);
+    // The upstream status travels back to the caller — the number only, never
+    // the provider's body. Without it a delivery failure is indistinguishable
+    // from a rejected API key from outside, and diagnosing it means going
+    // hunting in a dashboard. 401/403 here means the key is wrong; 4xx on a
+    // send usually means the recipient or sender isn't allowed.
+    return json({ error: "Couldn't send that just now.", upstream: res.status }, 502);
   }
   return json({ ok: true }, 202);
 }
