@@ -1463,3 +1463,141 @@ a:focus-visible {
 .sheet.idle-mode {
   padding-top: 18px;
 }
+
+/* --- Feedback form ------------------------------------------------------
+   Centered dialog rather than another bottom sheet: the drawer is already
+   the app's busiest surface, and a report interrupts whatever was on it. */
+.feedback-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 33, 61, 0.32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 20;
+}
+
+.feedback-backdrop[hidden],
+.feedback-form[hidden] {
+  display: none;
+}
+
+.feedback-form {
+  top: 50%;
+  left: 12px;
+  right: 12px;
+  transform: translateY(-50%);
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 18px;
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* The keyboard eats the lower half of a phone screen; without this the
+     Send button ends up under it with no way to scroll to it. */
+  max-height: 82svh;
+  overflow-y: auto;
+}
+
+.feedback-form h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.feedback-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.feedback-form textarea,
+.feedback-form input[type="email"] {
+  width: 100%;
+  font-family: inherit;
+  /* 16px exactly: anything smaller and iOS Safari zooms the viewport on
+     focus, which on a map screen is disorienting to undo. */
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.feedback-form textarea::placeholder,
+.feedback-form input[type="email"]::placeholder {
+  color: var(--ink-500, var(--muted));
+}
+
+/* Out of sight, out of the tab order, out of the accessibility tree —
+   but still filled in by the things this is here to catch. */
+.feedback-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.feedback-error {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--red);
+}
+
+.feedback-error[hidden] {
+  display: none;
+}
+
+.feedback-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.feedback-actions button {
+  flex: 1;
+  padding: 11px;
+  border-radius: var(--radius-sm);
+  border: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease);
+}
+
+.feedback-actions button:active {
+  transform: scale(0.97);
+}
+
+.feedback-actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+.feedback-actions button.ghost {
+  background: rgba(20, 33, 61, 0.06);
+  color: var(--ink-600);
+}
+
+@media (prefers-color-scheme: dark) {
+  .feedback-backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .feedback-form textarea,
+  .feedback-form input[type="email"] {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .feedback-actions button.ghost {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}

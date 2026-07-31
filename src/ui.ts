@@ -336,6 +336,11 @@ export class Sheet {
    * machine. */
   onClose: (() => void) | null = null;
 
+  /** Opens the in-app report form for a place. Left null in tests and any
+   * context without the dialog mounted, where the link falls back to the
+   * mailto: it used to be. */
+  onReport: ((target: { name: string; id: string }, hours?: string) => void) | null = null;
+
   constructor(root: HTMLElement) {
     this.root = root;
     this.content = root.querySelector("#sheet-content")!;
@@ -588,9 +593,20 @@ export class Sheet {
 
   private reportLink(target: { name: string; id: string }, hours?: string): HTMLElement {
     const link = document.createElement("a");
-    link.href = reportIssueUrl(target, hours);
     link.className = "report-link";
     link.textContent = "Report an issue";
+    // The in-app form when it's mounted; the mailto: only as the fallback
+    // it should always have been. Reporting a wrong closing time shouldn't
+    // depend on whether someone's mail client is set up.
+    if (this.onReport) {
+      link.href = "#";
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.onReport?.(target, hours);
+      });
+    } else {
+      link.href = reportIssueUrl(target, hours);
+    }
     return link;
   }
 
