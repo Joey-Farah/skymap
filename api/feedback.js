@@ -1,5 +1,11 @@
 /**
- * Feedback intake. Receives a report from the app and mails it on.
+ * Feedback intake.
+ *
+ * Plain JavaScript on purpose. Vercel compiles `api/*.ts` with its own
+ * toolchain, and this project's TypeScript 7 makes that step fail — a
+ * failure whose symptom is a 404 here and a silent fall back to `mailto:`
+ * for every web user, which is the bug this endpoint exists to fix. Not
+ * worth the static types on one small file. Verified with `vercel build`. Receives a report from the app and mails it on.
  *
  * The app used to hand this job to `mailto:`, which silently did nothing
  * for anyone without a mail client configured. This endpoint exists so the
@@ -35,9 +41,9 @@ const CORS = {
  * the repeat-submit case it's meant to catch, while a distributed flood would
  * need a real store. Worth having anyway: it's free and it stops the
  * accidental double-tap as well as the bored one. */
-const recent = new Map<string, number[]>();
+const recent = new Map();
 
-function rateLimited(ip: string): boolean {
+function rateLimited(ip) {
   const now = Date.now();
   // Sweep expired callers as we go — Fluid Compute keeps an instance alive
   // for a long time, and a Map that only ever grows is a slow leak.
@@ -55,8 +61,8 @@ function rateLimited(ip: string): boolean {
   return limited;
 }
 
-export async function POST(req: Request): Promise<Response> {
-  let body: Record<string, unknown>;
+export async function POST(req) {
+  let body;
   try {
     body = await req.json();
   } catch {
@@ -98,7 +104,7 @@ export async function POST(req: Request): Promise<Response> {
   // it is trusted just because the app's own form happens to send it well-
   // formed. Newlines are stripped from anything that reaches a mail header:
   // a `ref` of "x\nBcc: someone@example.com" is a header-injection attempt.
-  const header = (v: unknown, max: number) =>
+  const header = (v, max) =>
     typeof v === "string" ? v.replace(/[\r\n]+/g, " ").trim().slice(0, max) : "";
 
   const rawEmail = header(body.email, 254);
@@ -140,11 +146,11 @@ export async function POST(req: Request): Promise<Response> {
   return json({ ok: true }, 202);
 }
 
-export async function OPTIONS(): Promise<Response> {
+export async function OPTIONS() {
   return new Response(null, { status: 204, headers: CORS });
 }
 
-function json(body: unknown, status: number): Response {
+function json(body, status) {
   return new Response(JSON.stringify(body), {
     status,
     headers: { "Content-Type": "application/json", ...CORS },
