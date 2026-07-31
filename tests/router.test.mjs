@@ -127,6 +127,39 @@ test("nearestBuilding snaps a GPS fix to the closest building within range", () 
   assert.equal(nearestBuilding(0, 0, data.buildings, 60), null);
 });
 
+// A ~470m-long block — the shape of Ramp A, the Convention Center, City
+// Center. Measured to the centroid, standing at one end of your own
+// building reads as "nowhere near a building", which silently withheld the
+// "Current Location" row exactly where trips start. 62 of 179 real
+// buildings reach further than 60m from their own centroid.
+const LONG_BLOCK = [
+  {
+    id: "long-block",
+    name: "Long Block",
+    lat: 44.9705,
+    lon: -93.272,
+    footprint: [
+      [-93.275, 44.97],
+      [-93.269, 44.97],
+      [-93.269, 44.971],
+      [-93.275, 44.971],
+    ],
+  },
+];
+
+test("nearestBuilding matches anywhere inside a footprint, however far the centroid", () => {
+  // Inside, near the east end: ~197m from the centroid.
+  assert.ok(haversineMeters(44.9705, -93.2695, 44.9705, -93.272) > 150);
+  assert.equal(nearestBuilding(44.9705, -93.2695, LONG_BLOCK, 60)?.id, "long-block");
+});
+
+test("nearestBuilding measures the range budget from the footprint edge", () => {
+  // ~16m off the east wall — outside, but plainly at this building.
+  assert.equal(nearestBuilding(44.9705, -93.2688, LONG_BLOCK, 60)?.id, "long-block");
+  // ~158m off it: past the budget, so no claim is made.
+  assert.equal(nearestBuilding(44.9705, -93.2668, LONG_BLOCK, 60), null);
+});
+
 test("sliceAlong cuts a polyline at a distance", () => {
   // ~222m of eastward line at the equator, two equal legs.
   const line = [

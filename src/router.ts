@@ -96,7 +96,54 @@ export function sliceAlong(coords: [number, number][], meters: number): [number,
   return out;
 }
 
-/** Closest building to a GPS fix, within `maxMeters`, or null if nothing's close. */
+/** A thing with a position and, usually, an outline — a building, or
+ * anything else callers want measured the same way. */
+export interface Footprinted {
+  lat: number;
+  lon: number;
+  footprint?: [number, number][];
+}
+
+/** Even-odd ray cast in lon/lat; footprints are small enough that treating
+ * them as planar is noise. */
+export function pointInRing(lon: number, lat: number, ring: [number, number][]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/**
+ * How far a point is from a building's actual outline — 0 anywhere inside
+ * it, else the nearest point on any footprint edge, falling back to the
+ * centroid for a building with no footprint at all.
+ */
+export function distanceToFootprint(lat: number, lon: number, b: Footprinted): number {
+  if (!b.footprint || b.footprint.length < 2) return haversineMeters(lat, lon, b.lat, b.lon);
+  if (b.footprint.length > 2 && pointInRing(lon, lat, b.footprint)) return 0;
+  let best = Infinity;
+  for (let i = 0; i < b.footprint.length; i++) {
+    const p = nearestOnSegment([lon, lat], b.footprint[i], b.footprint[(i + 1) % b.footprint.length]);
+    best = Math.min(best, haversineMeters(lat, lon, p[1], p[0]));
+  }
+  return best;
+}
+
+/**
+ * Closest building to a GPS fix, within `maxMeters` of its outline, or null
+ * if nothing's close.
+ *
+ * Measured to the footprint, not the centroid. A centroid measurement asks
+ * "are you near the middle of this building", which is the wrong question
+ * for a downtown block: 62 of the 179 real buildings extend more than 60m
+ * from their own centre, so standing at the far end of Ramp A or City
+ * Center resolved to *no* building at all — and the "Current Location" row
+ * this feeds is omitted rather than guessed, so it simply never appeared in
+ * the places people most often start a trip from.
+ */
 export function nearestBuilding(
   lat: number,
   lon: number,
@@ -106,7 +153,7 @@ export function nearestBuilding(
   let best: Building | null = null;
   let bestDist = maxMeters;
   for (const b of buildings) {
-    const d = haversineMeters(lat, lon, b.lat, b.lon);
+    const d = distanceToFootprint(lat, lon, b);
     if (d <= bestDist) {
       bestDist = d;
       best = b;

@@ -1,7 +1,7 @@
 /** POI grouping: one place that decides how a business/feature is classed,
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
-import { haversineMeters, nearestOnSegment } from "./router.ts";
+import { distanceToFootprint, haversineMeters, pointInRing } from "./router.ts";
 
 export type PoiGroup =
   | "food"
@@ -83,31 +83,6 @@ export interface PoiHost<T> {
    * building the skyway reaches. Callers must say so rather than implying
    * containment. */
   nearby: boolean;
-}
-
-/** Even-odd ray cast in lon/lat; footprints are small enough that treating
- * them as planar is noise. */
-function pointInRing(lon: number, lat: number, ring: [number, number][]): boolean {
-  let inside = false;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const [xi, yi] = ring[i];
-    const [xj, yj] = ring[j];
-    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
-  }
-  return inside;
-}
-
-/** How far a point is from a building's actual outline — the nearest point
- * on any footprint edge, falling back to the centroid for a building with
- * no footprint at all. */
-function distanceToFootprint(lat: number, lon: number, b: HostCandidate): number {
-  if (!b.footprint || b.footprint.length < 2) return haversineMeters(lat, lon, b.lat, b.lon);
-  let best = Infinity;
-  for (let i = 0; i < b.footprint.length; i++) {
-    const p = nearestOnSegment([lon, lat], b.footprint[i], b.footprint[(i + 1) % b.footprint.length]);
-    best = Math.min(best, haversineMeters(lat, lon, p[1], p[0]));
-  }
-  return best;
 }
 
 /**
