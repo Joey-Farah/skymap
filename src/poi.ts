@@ -26,12 +26,16 @@ const LANDMARK_AMENITY = /^(library|townhall|courthouse|place_of_worship|theatre
 // reservation is exactly the person a skyway map is most useful to.
 const LODGING = /^(hotel|hostel|motel|guest_house)$/;
 const TRANSIT = /^(bus_stop|station|tram_stop|stop)$/;
+// Parks, plazas and historic markers are things you navigate *to* and
+// point at, which is what the Landmarks group is for.
+const LANDMARK_PLACE = /^(park|garden|memorial|monument|sign|ruins|archaeological_site)$/;
 
 export function groupFor(kind: string, category: string): PoiGroup {
   if (category === "elevator") return "elevator";
   if (category === "toilets") return "restroom";
   if (kind === "transit" || TRANSIT.test(category)) return "transit";
   if (LODGING.test(category)) return "hotel";
+  if (kind === "historic" || LANDMARK_PLACE.test(category)) return "landmark";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
   if (COFFEE.test(category)) return "coffee";
   if (FOOD.test(category)) return "food";

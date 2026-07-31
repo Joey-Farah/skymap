@@ -68,15 +68,15 @@ relation["building"]["name"](${BBOX});
 out body;
 >;
 out skel qt;
-node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|car_rental|bicycle_rental|bureau_de_change|childcare|marketplace)$"]["name"](${BBOX});
+node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|stripclub|car_rental|bicycle_rental|bureau_de_change|childcare|kindergarten|school|college|university|music_school|driving_school|marketplace|animal_boarding|studio|prison)$"]["name"](${BBOX});
 out body;
 node["shop"]["name"](${BBOX});
 out body;
-node["leisure"~"^(fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game)$"]["name"](${BBOX});
+node["leisure"~"^(fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game|park|garden)$"]["name"](${BBOX});
 out body;
 node["amenity"="toilets"](${BBOX});
 out body;
-node["tourism"~"^(attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house)$"]["name"](${BBOX});
+node["tourism"~"^(attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house|information)$"]["name"](${BBOX});
 out body;
 // Named offices and healthcare practices: a skyway walker looking for "the
 // Hyatt" is doing the same thing as one looking for a law firm or a clinic
@@ -85,6 +85,13 @@ out body;
 node["office"]["name"](${BBOX});
 out body;
 node["healthcare"]["name"](${BBOX});
+out body;
+// Trades and historic markers. Shoe repair and a shine stand are as
+// skyway as a business gets — both of these are *in* the skyway — and the
+// Grain Belt sign is a Minneapolis landmark people navigate by.
+node["craft"]["name"](${BBOX});
+out body;
+node["historic"~"^(memorial|monument|sign|ruins|archaeological_site|building)$"]["name"](${BBOX});
 out body;
 node["highway"="bus_stop"]["name"](${BBOX});
 out body;
@@ -390,7 +397,7 @@ async function main(osm) {
       } else if (
         t.amenity === "toilets" ||
         t.highway === "elevator" ||
-        (t.name && (t.amenity || t.shop || t.leisure || t.tourism || t.office || t.healthcare))
+        (t.name && (t.amenity || t.shop || t.leisure || t.tourism || t.office || t.healthcare || t.craft || t.historic))
       ) {
         poiNodes.push(el);
       }
@@ -759,8 +766,8 @@ async function main(osm) {
     const host = resolvePoiHost(n.lat, n.lon, finalBuildings, insideOnly ? 0 : MAX_NEARBY_POI_METERS);
     if (!host || (insideOnly && host.nearby)) continue;
     if (host.nearby) nearbyHosted++;
-    const kind = n.tags.highway === "elevator" ? "elevator" : n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : n.tags.office ? "office" : n.tags.healthcare ? "healthcare" : "leisure";
-    const category = n.tags.highway === "elevator" ? "elevator" : (n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.office ?? n.tags.healthcare ?? n.tags.leisure);
+    const kind = n.tags.highway === "elevator" ? "elevator" : n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : n.tags.office ? "office" : n.tags.healthcare ? "healthcare" : n.tags.craft ? "craft" : n.tags.historic ? "historic" : "leisure";
+    const category = n.tags.highway === "elevator" ? "elevator" : (n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.office ?? n.tags.healthcare ?? n.tags.craft ?? n.tags.historic ?? n.tags.leisure);
     pois.push({
       id: `poi-${n.id}`,
       name: n.tags.name ?? (category === "toilets" ? "Public restroom" : category === "elevator" ? "Elevator" : category),

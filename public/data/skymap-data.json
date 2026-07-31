@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-31T16:43:56.653Z"
+  "generated": "2026-07-31T17:06:45.144Z"
  },
  "buildings": [
   {
@@ -23123,6 +23123,17 @@
    "logo": "thecapitalgrille-com"
   },
   {
+   "id": "poi-2387569338",
+   "name": "The Seville",
+   "category": "stripclub",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.978735,
+   "lon": -93.27707,
+   "buildingId": "7th-street-ramp-a-r2100894",
+   "nearby": true
+  },
+  {
    "id": "poi-2427534130",
    "name": "The Brother's Deli",
    "category": "fast_food",
@@ -23134,6 +23145,19 @@
    "level": "1",
    "website": "https://www.thebrothersdeli.com/",
    "logo": "thebrothersdeli-com"
+  },
+  {
+   "id": "poi-2527309568",
+   "name": "Slam Academy",
+   "category": "music_school",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.97312,
+   "lon": -93.273785,
+   "buildingId": "hilton-minneapolis-28490639",
+   "nearby": true,
+   "website": "https://slamacademy.com/",
+   "logo": "slamacademy-com"
   },
   {
    "id": "poi-2600380079",
@@ -23185,6 +23209,19 @@
    "openingHours": "Su-Th 08:00-21:00; Fr-Sa 08:00-22:00",
    "website": "https://www.hellskitcheninc.com/",
    "logo": "hellskitcheninc-com"
+  },
+  {
+   "id": "poi-3200995447",
+   "name": "Downtown Cabaret",
+   "category": "stripclub",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.978714,
+   "lon": -93.267813,
+   "buildingId": "farmers-and-mechanics-savings-bank-157025240",
+   "openingHours": "Mo-Fr 11:00-03:00; Sa-Su 18:00-03:00",
+   "website": "https://dtcabaret.com",
+   "logo": "dtcabaret-com"
   },
   {
    "id": "poi-3233781288",
@@ -23252,6 +23289,17 @@
    "openingHours": "Mo-Fr 07:00-15:00; Sa,Su 07:30-14:00",
    "website": "https://henhouseeatery.com/",
    "logo": "henhouseeatery-com"
+  },
+  {
+   "id": "poi-3403172118",
+   "name": "Rick's Cabaret Minneapolis",
+   "category": "stripclub",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.979062,
+   "lon": -93.264545,
+   "buildingId": "united-states-courthouse-and-federal-building-44684856",
+   "nearby": true
   },
   {
    "id": "poi-3452611420",
@@ -23396,6 +23444,16 @@
    "openingHours": "Mo-Th 17:00-21:00; Fr,Sa 17:00-20:00",
    "website": "https://www.112eatery.com/",
    "logo": "112eatery-com"
+  },
+  {
+   "id": "poi-4564574481",
+   "name": "Hennepin County Jail",
+   "category": "prison",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.976618,
+   "lon": -93.264381,
+   "buildingId": "hennepin-county-public-safety-center-126015106"
   },
   {
    "id": "poi-4564577437",
@@ -23812,6 +23870,17 @@
    "nearby": true
   },
   {
+   "id": "poi-6780251057",
+   "name": "Dreamgirls",
+   "category": "stripclub",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.980014,
+   "lon": -93.272825,
+   "buildingId": "lumber-exchange-30263208",
+   "nearby": true
+  },
+  {
    "id": "poi-6780251060",
    "name": "The Loon Cafe",
    "category": "bar",
@@ -23940,6 +24009,30 @@
    "logo": "pizzaluce-com"
   },
   {
+   "id": "poi-9394789068",
+   "name": "Wellstone International High School",
+   "category": "school",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.975668,
+   "lon": -93.277436,
+   "buildingId": "fair-school-for-arts-45680534",
+   "website": "https://wellstone.mpschools.org/",
+   "logo": "wellstone-mpschools-org"
+  },
+  {
+   "id": "poi-9509044247",
+   "name": "Stringline Pictures",
+   "category": "studio",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.986131,
+   "lon": -93.277617,
+   "buildingId": "the-newell-1530645870",
+   "website": "https://stringlinepictures.com/",
+   "logo": "stringlinepictures-com"
+  },
+  {
    "id": "poi-10270382209",
    "name": "Wood + Paddle Eatery",
    "category": "restaurant",
@@ -23975,6 +24068,19 @@
    "buildingId": "shelby-commons-1388384208",
    "nearby": true,
    "openingHours": "Tu-Fr 16:00-21:00; Sa 13:00-20:00; Su 13:00-18:00"
+  },
+  {
+   "id": "poi-10925436338",
+   "name": "New Horizon Academy",
+   "category": "kindergarten",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.974131,
+   "lon": -93.282786,
+   "buildingId": "technical-building-89061902",
+   "nearby": true,
+   "website": "https://newhorizonacademy.net/",
+   "logo": "newhorizonacademy-net"
   },
   {
    "id": "poi-10943230875",
@@ -24143,6 +24249,18 @@
    "openingHours": "Su-Th 11:00-21:00; Fr,Sa 11:00-22:00",
    "website": "https://www.gainoimpls.com/",
    "logo": "gainoimpls-com"
+  },
+  {
+   "id": "poi-11664061541",
+   "name": "Stadium View",
+   "category": "school",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.974678,
+   "lon": -93.261635,
+   "buildingId": "juvenile-justice-center-101549026",
+   "website": "https://stadiumview.mpschools.org/",
+   "logo": "stadiumview-mpschools-org"
   },
   {
    "id": "poi-11735212313",
@@ -24933,6 +25051,17 @@
    "buildingId": "orchestra-hall-43607930"
   },
   {
+   "id": "poi-12902687650",
+   "name": "Choice",
+   "category": "stripclub",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.983303,
+   "lon": -93.272181,
+   "buildingId": "lee-lofts-45758932",
+   "nearby": true
+  },
+  {
    "id": "poi-12903097787",
    "name": "The News Room",
    "category": "restaurant",
@@ -25006,6 +25135,16 @@
    "nearby": true,
    "website": "https://www.millerslandingseniorliving.com",
    "logo": "millerslandingseniorliving-com"
+  },
+  {
+   "id": "poi-12914862886",
+   "name": "Wellstone International High School",
+   "category": "school",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.972146,
+   "lon": -93.284389,
+   "buildingId": "kopp-hall-89061932"
   },
   {
    "id": "poi-12919741649",
@@ -25576,6 +25715,19 @@
    "openingHours": "Mo-Fr 08:00-17:00; Sa-Su off",
    "website": "https://www.bmo.com",
    "logo": "bmo-com"
+  },
+  {
+   "id": "poi-13451748991",
+   "name": "Gartner School",
+   "category": "kindergarten",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.976055,
+   "lon": -93.274576,
+   "buildingId": "811-lasalle-357279465",
+   "level": "0",
+   "website": "https://www.thegardnerschool.com/schools/minneapolis/",
+   "logo": "thegardnerschool-com"
   },
   {
    "id": "poi-13451748992",
@@ -26174,6 +26326,18 @@
    "nearby": true,
    "openingHours": "Mo-Tu,Th-Sa 09:00-19:00; We 09:00-18:00; Su off",
    "website": "https://los3costenos.com"
+  },
+  {
+   "id": "poi-14061985870",
+   "name": "Dog Wellness Club",
+   "category": "animal_boarding",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.980483,
+   "lon": -93.285597,
+   "buildingId": "shelby-commons-1388384208",
+   "nearby": true,
+   "openingHours": "Mo-Fr 07:30-19:30; Sa,Su 08:00-18:00"
   },
   {
    "id": "poi-1352105236",
@@ -27550,6 +27714,16 @@
    "logo": "hclib-org"
   },
   {
+   "id": "poi-2514620358",
+   "name": "Community Information Board",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.980553,
+   "lon": -93.269855,
+   "buildingId": "minneapolis-central-library-r21107574"
+  },
+  {
    "id": "poi-3624150279",
    "name": "Residence Inn Minneapolis Downtown/City Center",
    "category": "hotel",
@@ -27665,6 +27839,28 @@
    "nearby": true
   },
   {
+   "id": "poi-11929912789",
+   "name": "Loring Greenway",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.971024,
+   "lon": -93.280549,
+   "buildingId": "110-grant-apartments-resident-parking-358537233",
+   "nearby": true
+  },
+  {
+   "id": "poi-12777807328",
+   "name": "Beauty and Nature at the Falls",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.978943,
+   "lon": -93.255781,
+   "buildingId": "guthrie-theater-129937715",
+   "nearby": true
+  },
+  {
    "id": "poi-12895857119",
    "name": "Bell of Two Friends",
    "category": "artwork",
@@ -27723,6 +27919,61 @@
    "buildingId": "stadium-parking-ramp-40774167",
    "nearby": true,
    "website": "https://canopy3.hilton.com"
+  },
+  {
+   "id": "poi-13996575243",
+   "name": "Welcome to the Railway Maze",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.980447,
+   "lon": -93.261579,
+   "buildingId": "macphail-center-for-music-81049070",
+   "nearby": true
+  },
+  {
+   "id": "poi-14017737710",
+   "name": "A Milling District Timeline",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.979398,
+   "lon": -93.256775,
+   "buildingId": "mill-city-museum-157035918",
+   "nearby": true
+  },
+  {
+   "id": "poi-14017737711",
+   "name": "The West Side Mills",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.979417,
+   "lon": -93.256823,
+   "buildingId": "mill-city-museum-157035918",
+   "nearby": true
+  },
+  {
+   "id": "poi-14017737712",
+   "name": "A Changing Landscape",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.979951,
+   "lon": -93.25808,
+   "buildingId": "stone-arch-lofts-1394864167",
+   "nearby": true
+  },
+  {
+   "id": "poi-14017737713",
+   "name": "Water Power on the East Side",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.983965,
+   "lon": -93.254392,
+   "buildingId": "minneapolis-event-centers-92905847",
+   "nearby": true
   },
   {
    "id": "poi-1077152564",
@@ -28619,6 +28870,135 @@
    "lon": -93.268836,
    "buildingId": "fifth-street-towers-29080597",
    "level": "1"
+  },
+  {
+   "id": "poi-4041072789",
+   "name": "CRAVE",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.976382,
+   "lon": -93.276576,
+   "buildingId": "lasalle-plaza-461227727",
+   "openingHours": "Tu-Th 16:00-21:00; Fr-Sa 16:00-22:00; Mo,Su off",
+   "website": "https://craveamerica.com",
+   "logo": "craveamerica-com"
+  },
+  {
+   "id": "poi-12569712437",
+   "name": "Fastsigns",
+   "category": "printing",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.97527,
+   "lon": -93.271112,
+   "buildingId": "733-building-126116972",
+   "openingHours": "Mo-Fr 08:00-16:30",
+   "website": "https://www.fastsigns.com/minneapolis-mn",
+   "logo": "fastsigns-com"
+  },
+  {
+   "id": "poi-12862806761",
+   "name": "Fixology",
+   "category": "electronics_repair",
+   "kind": "craft",
+   "group": "other",
+   "lat": 44.977207,
+   "lon": -93.27098,
+   "buildingId": "gaviidae-common-156909893",
+   "level": "1",
+   "website": "https://fixologyrepair.com/minneapolis/",
+   "logo": "fixologyrepair-com"
+  },
+  {
+   "id": "poi-13410756368",
+   "name": "Skyway Shoe Repair",
+   "category": "shoemaker",
+   "kind": "craft",
+   "group": "other",
+   "lat": 44.975097,
+   "lon": -93.272756,
+   "buildingId": "metro-apartments-156912887",
+   "level": "0"
+  },
+  {
+   "id": "poi-13448274439",
+   "name": "Minneapolis Roofing Expert",
+   "category": "company",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.985351,
+   "lon": -93.271957,
+   "buildingId": "intersect-apartments-1216920711",
+   "nearby": true,
+   "website": "https://www.minneapolisroofingexperts.com/",
+   "logo": "minneapolisroofingexperts-com"
+  },
+  {
+   "id": "poi-13451758102",
+   "name": "Napoleon's Shoe Shine",
+   "category": "shoemaker",
+   "kind": "craft",
+   "group": "other",
+   "lat": 44.977911,
+   "lon": -93.27019,
+   "buildingId": "the-westin-minneapolis-156912892",
+   "level": "1"
+  },
+  {
+   "id": "poi-1844431590",
+   "name": "Mill Ruins Park",
+   "category": "archaeological_site",
+   "kind": "historic",
+   "group": "landmark",
+   "lat": 44.980213,
+   "lon": -93.258013,
+   "buildingId": "stone-arch-lofts-1394864167",
+   "nearby": true
+  },
+  {
+   "id": "poi-2123014274",
+   "name": "Washburn A Mill Ruins",
+   "category": "ruins",
+   "kind": "historic",
+   "group": "landmark",
+   "lat": 44.979117,
+   "lon": -93.257009,
+   "buildingId": "mill-city-museum-157035918",
+   "nearby": true
+  },
+  {
+   "id": "poi-12895850117",
+   "name": "North Star Blankets",
+   "category": "sign",
+   "kind": "historic",
+   "group": "landmark",
+   "lat": 44.979774,
+   "lon": -93.258524,
+   "buildingId": "stone-arch-lofts-1394864167",
+   "nearby": true
+  },
+  {
+   "id": "poi-12895850118",
+   "name": "Gold Metal Flour",
+   "category": "sign",
+   "kind": "historic",
+   "group": "landmark",
+   "lat": 44.978875,
+   "lon": -93.256456,
+   "buildingId": "humboldt-annex-157035925",
+   "nearby": true
+  },
+  {
+   "id": "poi-12895850119",
+   "name": "Gold Metal Flour",
+   "category": "sign",
+   "kind": "historic",
+   "group": "landmark",
+   "lat": 44.978752,
+   "lon": -93.25616,
+   "buildingId": "humboldt-annex-157035925",
+   "nearby": true
   },
   {
    "id": "poi-302097618",
