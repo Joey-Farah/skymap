@@ -3,7 +3,15 @@
 
 import { haversineMeters, nearestOnSegment } from "./router.ts";
 
-export type PoiGroup = "food" | "coffee" | "other" | "restroom" | "landmark" | "transit" | "elevator";
+export type PoiGroup =
+  | "food"
+  | "coffee"
+  | "other"
+  | "restroom"
+  | "landmark"
+  | "hotel"
+  | "transit"
+  | "elevator";
 
 // Coffee split out from food generally: someone who wants "where can I get
 // a coffee" doesn't want a restaurant list to dig through, and vice versa.
@@ -13,12 +21,17 @@ const COFFEE = /^(cafe|coffee)$/;
 // most people would think to check under "shopping."
 const FOOD = /^(restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli|convenience)$/;
 const LANDMARK_AMENITY = /^(library|townhall|courthouse|place_of_worship|theatre|cinema)$/;
+// Somewhere to sleep is its own errand. Filed under Landmarks a hotel is
+// technically findable and practically invisible — and a visitor with a
+// reservation is exactly the person a skyway map is most useful to.
+const LODGING = /^(hotel|hostel|motel|guest_house)$/;
 const TRANSIT = /^(bus_stop|station|tram_stop|stop)$/;
 
 export function groupFor(kind: string, category: string): PoiGroup {
   if (category === "elevator") return "elevator";
   if (category === "toilets") return "restroom";
   if (kind === "transit" || TRANSIT.test(category)) return "transit";
+  if (LODGING.test(category)) return "hotel";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
   if (COFFEE.test(category)) return "coffee";
   if (FOOD.test(category)) return "food";
@@ -35,6 +48,7 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
   other: "Misc.",
   restroom: "Restrooms",
   landmark: "Landmarks",
+  hotel: "Hotels",
   transit: "Transit",
   elevator: "Elevators",
 };
@@ -47,6 +61,7 @@ export const GROUP_COLORS: Record<PoiGroup, string> = {
   other: "#17356e",
   restroom: "#0d9488",
   landmark: "#7c3aed",
+  hotel: "#b3306e",
   transit: "#178740",
   elevator: "#475569",
 };
