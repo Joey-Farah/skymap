@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-31T17:06:45.144Z"
+  "generated": "2026-07-31T18:57:27.496Z"
  },
  "buildings": [
   {
@@ -25888,20 +25888,6 @@
    "logo": "mezzomezzompls-com"
   },
   {
-   "id": "poi-13787355763",
-   "name": "Mezzo Mezzo",
-   "category": "cafe",
-   "kind": "amenity",
-   "group": "coffee",
-   "lat": 44.978872,
-   "lon": -93.275239,
-   "buildingId": "mayo-clinic-square-27346712",
-   "nearby": true,
-   "openingHours": "06:00-14:00",
-   "website": "https://www.mezzomezzompls.com/",
-   "logo": "mezzomezzompls-com"
-  },
-  {
    "id": "poi-13806722530",
    "name": "Confetti Blossom",
    "category": "fast_food",
@@ -26340,6 +26326,17 @@
    "openingHours": "Mo-Fr 07:30-19:30; Sa,Su 08:00-18:00"
   },
   {
+   "id": "poi-14064521583",
+   "name": "Glass House",
+   "category": "events_venue",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.979662,
+   "lon": -93.284377,
+   "buildingId": "shelby-commons-1388384208",
+   "nearby": true
+  },
+  {
    "id": "poi-1352105236",
    "name": "Flutter Bridal Co.",
    "category": "clothes",
@@ -26385,20 +26382,6 @@
    "openingHours": "Mo-Su 08:00-21:00",
    "website": "https://www.wholefoodsmarket.com/stores/hennepin",
    "logo": "wholefoodsmarket-com"
-  },
-  {
-   "id": "poi-3452611420",
-   "name": "Muffin Top Cafe",
-   "category": "restaurant",
-   "kind": "amenity",
-   "group": "food",
-   "lat": 44.967944,
-   "lon": -93.278076,
-   "buildingId": "archdale-apartments-92810569",
-   "nearby": true,
-   "openingHours": "Mo-Th 07:00-22:00; Fr 07:00-23:00; Sa 08:00-23:00; Su 08:00-22:00",
-   "website": "https://muffintopcafe.com/",
-   "logo": "muffintopcafe-com"
   },
   {
    "id": "poi-4679771192",
@@ -26574,18 +26557,6 @@
    "openingHours": "Mo-Fr 10:00-15:00",
    "website": "https://anasalchemy.com/",
    "logo": "anasalchemy-com"
-  },
-  {
-   "id": "poi-5955582351",
-   "name": "The UPS Store",
-   "category": "post_office",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.978092,
-   "lon": -93.273465,
-   "buildingId": "city-center-27346720",
-   "website": "https://www.theupsstore.com/",
-   "logo": "theupsstore-com"
   },
   {
    "id": "poi-5955586677",
@@ -28723,43 +28694,6 @@
    "level": "9"
   },
   {
-   "id": "poi-3633786146",
-   "name": "Mill City Clinic",
-   "category": "clinic",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.97722,
-   "lon": -93.254938,
-   "buildingId": "riverfront-municipal-parking-ramp-99717608",
-   "nearby": true,
-   "openingHours": "Mo-Fr 08:00-17:00",
-   "website": "https://mphysicians.org/our-clinics/mill-city-clinic",
-   "logo": "mphysicians-org"
-  },
-  {
-   "id": "poi-5955586664",
-   "name": "CVS Pharmacy",
-   "category": "pharmacy",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.973408,
-   "lon": -93.276089,
-   "buildingId": "target-plaza-45452119",
-   "openingHours": "Mo-Fr 07:00-19:00; Sa 09:00-18:00; Su 10:00-18:00",
-   "website": "https://www.cvs.com/",
-   "logo": "cvs-com"
-  },
-  {
-   "id": "poi-11014986808",
-   "name": "Passport Health Minneapolis Travel Clinic",
-   "category": "clinic",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.977581,
-   "lon": -93.263688,
-   "buildingId": "grain-exchange-main-building-45452111"
-  },
-  {
    "id": "poi-11328332532",
    "name": "Core Lifestyle Center",
    "category": "physiotherapist",
@@ -28769,19 +28703,6 @@
    "lon": -93.270116,
    "buildingId": "intersect-apartments-1216920711",
    "nearby": true
-  },
-  {
-   "id": "poi-12569712465",
-   "name": "J&D Dental",
-   "category": "dentist",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.976007,
-   "lon": -93.270555,
-   "buildingId": "705-building-126116975",
-   "openingHours": "Mo-We 07:00-17:00; Th 07:00-15:30",
-   "website": "https://www.jandddental.com",
-   "logo": "jandddental-com"
   },
   {
    "id": "poi-12754418801",
@@ -28836,31 +28757,6 @@
    "logo": "reviving-roots-com"
   },
   {
-   "id": "poi-13965983641",
-   "name": "CityScape Dental",
-   "category": "dentist",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.981073,
-   "lon": -93.262866,
-   "buildingId": "rivergate-apartments-81049129",
-   "nearby": true
-  },
-  {
-   "id": "poi-14003692659",
-   "name": "Optimal Brain MN Clinic",
-   "category": "doctors",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.981349,
-   "lon": -93.263411,
-   "buildingId": "rivergate-apartments-81049129",
-   "nearby": true,
-   "openingHours": "Mo-Fr 08:00-17:00",
-   "website": "https://optimalbrainmnclinic.com",
-   "logo": "optimalbrainmnclinic-com"
-  },
-  {
    "id": "poi-14022958833",
    "name": "Chiroway",
    "category": "alternative",
@@ -28870,32 +28766,6 @@
    "lon": -93.268836,
    "buildingId": "fifth-street-towers-29080597",
    "level": "1"
-  },
-  {
-   "id": "poi-4041072789",
-   "name": "CRAVE",
-   "category": "restaurant",
-   "kind": "amenity",
-   "group": "food",
-   "lat": 44.976382,
-   "lon": -93.276576,
-   "buildingId": "lasalle-plaza-461227727",
-   "openingHours": "Tu-Th 16:00-21:00; Fr-Sa 16:00-22:00; Mo,Su off",
-   "website": "https://craveamerica.com",
-   "logo": "craveamerica-com"
-  },
-  {
-   "id": "poi-12569712437",
-   "name": "Fastsigns",
-   "category": "printing",
-   "kind": "shop",
-   "group": "other",
-   "lat": 44.97527,
-   "lon": -93.271112,
-   "buildingId": "733-building-126116972",
-   "openingHours": "Mo-Fr 08:00-16:30",
-   "website": "https://www.fastsigns.com/minneapolis-mn",
-   "logo": "fastsigns-com"
   },
   {
    "id": "poi-12862806761",
@@ -28920,19 +28790,6 @@
    "lon": -93.272756,
    "buildingId": "metro-apartments-156912887",
    "level": "0"
-  },
-  {
-   "id": "poi-13448274439",
-   "name": "Minneapolis Roofing Expert",
-   "category": "company",
-   "kind": "office",
-   "group": "other",
-   "lat": 44.985351,
-   "lon": -93.271957,
-   "buildingId": "intersect-apartments-1216920711",
-   "nearby": true,
-   "website": "https://www.minneapolisroofingexperts.com/",
-   "logo": "minneapolisroofingexperts-com"
   },
   {
    "id": "poi-13451758102",

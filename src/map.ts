@@ -47,6 +47,9 @@ const NETWORK = "#2257c9";
 const NETWORK_DEEP = "#17356e";
 const CLOSED = "#a5adbd";
 const ROUTE = "#e08a00";
+// The platform-conventional "you are here" blue, kept clear of NETWORK so a
+// position never reads as a piece of the skyway drawn under it.
+const LOCATION = "#0a84ff";
 const INK = "#17243a";
 
 /** Use the remote basemap when reachable, else the local fallback. Picks
@@ -238,11 +241,17 @@ function routeMarkerElement(color: string): HTMLDivElement {
   return el;
 }
 
-function pointFC(coord: [number, number] | null): FC {
+/** The walker layer does double duty: the moving head of the route-draw
+ * animation, and the corrected "you are here" dot. `drawing` tells them
+ * apart so each can be coloured for what it means — the animation head
+ * belongs to the route, the position dot belongs to you. */
+function pointFC(coord: [number, number] | null, drawing = false): FC {
   if (!coord) return { type: "FeatureCollection", features: [] };
   return {
     type: "FeatureCollection",
-    features: [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: coord } }],
+    features: [
+      { type: "Feature", properties: { drawing }, geometry: { type: "Point", coordinates: coord } },
+    ],
   };
 }
 
@@ -608,7 +617,11 @@ export class SkymapView {
       source: "skyway-walker",
       paint: {
         "circle-radius": 8,
-        "circle-color": ROUTE,
+        // Amber while it's tracing the route, locator-blue when it's you.
+        // A position dot in the route's own colour reads as part of the
+        // line rather than as yourself on it — and "where am I" is the
+        // question the dot exists to answer.
+        "circle-color": ["case", ["get", "drawing"], ROUTE, LOCATION],
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": 2.5,
       },
@@ -722,7 +735,7 @@ export class SkymapView {
         // directly would leave .walker-snapped set from a previous route,
         // ending the animation with no walker AND MapLibre's dot still
         // hidden — no position marker on screen at all.
-        this.setWalkerPosition(t > 0 && t < 1 ? partial[partial.length - 1] : null);
+        this.setWalkerHead(t > 0 && t < 1 ? partial[partial.length - 1] : null);
         if (t < 1) this.routeAnim = requestAnimationFrame(frame);
         else this.routeAnim = 0;
       };
@@ -746,6 +759,14 @@ export class SkymapView {
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord));
     this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
+  }
+
+  /** The route-draw animation's moving head — same layer, but it isn't a
+   * position, so it stays route-coloured and never hides MapLibre's dot. */
+  private setWalkerHead(coord: [number, number] | null) {
+    const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
+    walkerSrc?.setData(pointFC(coord, true));
+    this.map.getContainer().classList.remove("walker-snapped");
   }
 
   /** Where a fix should be *drawn* while navigating: on the route line if

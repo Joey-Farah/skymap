@@ -152,6 +152,44 @@ export function resolvePoiHost<T extends HostCandidate>(
   return best ? { building: best, nearby: true } : null;
 }
 
+/** Categories whose "name" is our own fallback rather than something a
+ * mapper typed — two of these in a lobby are two real facilities. */
+const GENERICALLY_NAMED = new Set(["elevator", "toilets"]);
+
+/**
+ * Collapse a place that OSM holds twice — a node and a way for one shop,
+ * or two nodes nobody merged — while leaving chain branches alone.
+ *
+ * Name alone can't decide it: downtown has six Starbucks, and deleting five
+ * would remove shops people are standing next to. Distance settles it. In
+ * the real extraction the duplicates sit at ~0 m and the closest pair of
+ * genuine same-name branches is 182 m apart, so a 25 m cut has an order of
+ * magnitude of headroom on both sides.
+ *
+ * The first occurrence wins, which keeps whichever record the extraction
+ * saw first — in practice the more complete one, since the richer OSM
+ * object tends to be the one that also carries the tags we query on.
+ */
+export function dedupePois<T extends { name: string; category: string; lat: number; lon: number }>(
+  pois: T[],
+  maxMeters: number,
+): T[] {
+  const kept: T[] = [];
+  const byName = new Map<string, T[]>();
+  for (const p of pois) {
+    if (GENERICALLY_NAMED.has(p.category)) {
+      kept.push(p);
+      continue;
+    }
+    const seen = byName.get(p.name);
+    if (seen?.some((q) => haversineMeters(p.lat, p.lon, q.lat, q.lon) <= maxMeters)) continue;
+    if (seen) seen.push(p);
+    else byName.set(p.name, [p]);
+    kept.push(p);
+  }
+  return kept;
+}
+
 /** OSM building-way tags -> our building category. */
 /** OSM's `website` tag is free text from a publicly editable dataset, and
  * it lands directly in an anchor's href — so a `javascript:` or `data:`
