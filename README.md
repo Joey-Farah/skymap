@@ -47,6 +47,19 @@ npm run data:osm    # re-extract from Overpass (writes public/data/)
 npm run data:seed   # tiny synthetic dataset for tests/dev
 ```
 
+### Places just outside the network
+
+Not every business sits inside a building the skyway graph captured. Those
+resolve to their nearest network building within 120 m and carry
+`nearby: true` — searchable and routable, but shown as *"Skyway access via
+X"* and listed under *"Just outside"*, never as though they were inside it.
+The route line stops at the building; only the pin sits at the real place.
+
+Restrooms and elevators are deliberately excluded from this fallback: an
+elevator listed under a building it isn't in is worse than one not listed
+at all, because the people filtering for it are usually doing accessible
+wayfinding.
+
 ## Development
 
 ```
