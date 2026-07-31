@@ -205,6 +205,10 @@ async function boot() {
     view.setRoute(route, {
       fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
       toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
+      // A `nearby` place sits outside the network, so the last stretch to
+      // its door isn't skyway and mustn't be drawn as though it were.
+      fromNearby: comboFrom.poi?.nearby,
+      toNearby: comboTo.poi?.nearby,
     });
     sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() });
     // The URL still describes the route even without a Share button: it
@@ -491,7 +495,9 @@ async function boot() {
   // exist locked in a height sized for an empty row, clipping them once
   // they actually appeared.
   const suggestionsRow = document.getElementById("suggestions-row")!;
-  const SUGGESTED_GROUPS = ["coffee", "food", "other", "restroom", "elevator"] as const;
+  // Hotels and landmarks earn chips too: they were searchable but
+  // unbrowsable, which for a visitor is close to not being there.
+  const SUGGESTED_GROUPS = ["coffee", "food", "hotel", "landmark", "other", "restroom", "elevator"] as const;
   const activeGroups = new Set<string>();
   for (const group of SUGGESTED_GROUPS) {
     const pill = document.createElement("button");

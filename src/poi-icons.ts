@@ -127,6 +127,26 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
       ctx.fill();
       break;
     }
+    case "hotel": {
+      // Bed: headboard, mattress, pillow.
+      const w = r * 0.92;
+      const h = r * 0.52;
+      const x = cx - w / 2;
+      const y = cy - h / 2;
+      ctx.beginPath();
+      ctx.moveTo(x, y - r * 0.12);
+      ctx.lineTo(x, y + h);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y + h * 0.34);
+      ctx.lineTo(x + w, y + h * 0.34);
+      ctx.lineTo(x + w, y + h);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(x + w * 0.3, y + h * 0.1, r * 0.13, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+    }
     case "transit": {
       // Bus: body + two wheels.
       const w = r * 0.9;

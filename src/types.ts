@@ -56,6 +56,11 @@ export interface Poi {
   buildingId: string;
   /** True for street-level features attached to their nearest building (transit). */
   exterior?: boolean;
+  /** True when the place isn't inside buildingId — that's just the nearest
+   * building the skyway reaches. Stays searchable (unlike `exterior`), but
+   * the card must say "nearest skyway access" rather than name it as the
+   * place's own building. */
+  nearby?: boolean;
   /** Raw OSM level tag when present ("1", "0-1", …); "1" is the skyway level. */
   level?: string;
   /** Raw OSM opening_hours when present. */
