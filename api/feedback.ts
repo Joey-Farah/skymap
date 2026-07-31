@@ -39,10 +39,20 @@ const recent = new Map<string, number[]>();
 
 function rateLimited(ip: string): boolean {
   const now = Date.now();
+  // Sweep expired callers as we go — Fluid Compute keeps an instance alive
+  // for a long time, and a Map that only ever grows is a slow leak.
+  for (const [key, times] of recent) {
+    if (times.every((t) => now - t >= RATE_WINDOW_MS)) recent.delete(key);
+  }
   const hits = (recent.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
-  hits.push(now);
-  recent.set(ip, hits);
-  return hits.length > RATE_LIMIT;
+  const limited = hits.length >= RATE_LIMIT;
+  // A rejected attempt isn't recorded: otherwise someone who hits the limit
+  // keeps extending their own block with every retry and never gets out.
+  if (!limited) {
+    hits.push(now);
+    recent.set(ip, hits);
+  }
+  return limited;
 }
 
 export async function POST(req: Request): Promise<Response> {
@@ -53,15 +63,27 @@ export async function POST(req: Request): Promise<Response> {
     return json({ error: "Malformed request." }, 400);
   }
 
-  // A hidden field a person never sees and a bot fills in. Accepted, not
-  // rejected: telling a bot it failed just teaches it to try again.
-  if (typeof body.website === "string" && body.website.trim()) return json({ ok: true }, 202);
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+
+  // A hidden field a person never sees and a bot fills in. Answered with a
+  // success shape, since telling a bot it failed just teaches it to retry —
+  // but logged, because a false positive here means a real person was told
+  // "sent" and wasn't, and that has to be recoverable rather than invisible.
+  if (typeof body.website === "string" && body.website.trim()) {
+    console.warn("feedback: honeypot filled, message dropped", {
+      ip,
+      preview: typeof body.message === "string" ? body.message.slice(0, 200) : "",
+    });
+    // Counted against the rate limit too — otherwise filling the honeypot
+    // buys unlimited free requests.
+    rateLimited(ip);
+    return json({ ok: true }, 202);
+  }
 
   const message = typeof body.message === "string" ? body.message.trim() : "";
   if (!message) return json({ error: "A message is required." }, 400);
   if (message.length > MAX_MESSAGE) return json({ error: "That message is too long." }, 413);
 
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
   if (rateLimited(ip)) return json({ error: "Too many reports just now — try again shortly." }, 429);
 
   const key = process.env.RESEND_API_KEY;
@@ -72,9 +94,21 @@ export async function POST(req: Request): Promise<Response> {
     return json({ error: "Feedback delivery isn't configured." }, 503);
   }
 
-  const email = typeof body.email === "string" ? body.email.trim() : "";
-  const ref = typeof body.ref === "string" ? body.ref.trim() : "";
-  const build = typeof body.build === "string" ? body.build.trim() : "";
+  // Everything below is attacker-controlled on a public endpoint, so none of
+  // it is trusted just because the app's own form happens to send it well-
+  // formed. Newlines are stripped from anything that reaches a mail header:
+  // a `ref` of "x\nBcc: someone@example.com" is a header-injection attempt.
+  const header = (v: unknown, max: number) =>
+    typeof v === "string" ? v.replace(/[\r\n]+/g, " ").trim().slice(0, max) : "";
+
+  const rawEmail = header(body.email, 254);
+  // Only used as Reply-To if it's actually shaped like an address —
+  // otherwise a stranger could make mail land in a personal inbox with a
+  // Reply-To of their choosing, which is a tidy phishing setup against the
+  // one person who reads it.
+  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail) ? rawEmail : "";
+  const ref = header(body.ref, 120);
+  const build = header(body.build, 40);
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",

@@ -72,7 +72,7 @@
              won't fill this in; the things we're keeping out will. -->
         <input type="text" id="feedback-website" class="feedback-hp" tabindex="-1"
                autocomplete="off" aria-hidden="true" />
-        <p class="feedback-error" id="feedback-error" hidden></p>
+        <p class="feedback-error" id="feedback-error" role="alert" aria-live="assertive" hidden></p>
         <div class="feedback-actions">
           <button id="feedback-cancel" class="ghost" type="button">Cancel</button>
           <button id="feedback-send" type="button">Send</button>
@@ -139,7 +139,10 @@
             <div class="drawer-footer">
               <img class="brand-mark" src="/icons/icon.svg" alt="" />
               <span class="brand-name">SkyMap</span>
-              <a id="feedback-link" class="feedback-link">Feedback</a>
+              <!-- A real button: an <a> with no href isn't focusable, has no
+                   link role, and ignores Enter — which silently put Feedback
+                   out of reach of keyboard and VoiceOver users. -->
+              <button id="feedback-link" class="feedback-link" type="button">Feedback</button>
             </div>
           </div>
         </div>

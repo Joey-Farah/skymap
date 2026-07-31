@@ -1310,6 +1310,11 @@ a:focus-visible {
 
 .feedback-link {
   margin-left: auto;
+  /* Now a <button> for keyboard/VoiceOver reachability — reset the chrome
+     a button brings so it still reads as the quiet text link it looks like. */
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 700;
   color: var(--accent);
@@ -1473,7 +1478,7 @@ a:focus-visible {
   background: rgba(20, 33, 61, 0.32);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  z-index: 20;
+  z-index: 40;
 }
 
 .feedback-backdrop[hidden],
@@ -1489,7 +1494,9 @@ a:focus-visible {
   max-width: 420px;
   margin: 0 auto;
   padding: 18px;
-  z-index: 21;
+  /* Above .combo-list (30) — a search dropdown left open would otherwise
+     paint over the dialog that's supposed to be modal. */
+  z-index: 41;
   display: flex;
   flex-direction: column;
   gap: 10px;

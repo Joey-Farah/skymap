@@ -45,13 +45,19 @@ export class FeedbackForm {
   /** Restored on close: a dialog that steals focus and doesn't give it back
    * strands anyone navigating by keyboard or switch control. */
   private returnFocusTo: HTMLElement | null = null;
+  private sending = false;
 
   constructor(private toast: (text: string) => void) {
     this.sendBtn.addEventListener("click", () => void this.submit());
     this.cancelBtn.addEventListener("click", () => this.close());
     this.backdrop.addEventListener("click", () => this.close());
+    // Escape is bound to the document, not the dialog: bound to the dialog
+    // it stops working the moment focus is anywhere else, which is exactly
+    // when someone reaches for it.
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !this.root.hidden) this.close();
+    });
     this.root.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") this.close();
       // Enter submits from the single-line email field, matching every other
       // form; the textarea keeps Enter for newlines, where it belongs.
       if (e.key === "Enter" && e.target === this.email) void this.submit();
@@ -62,6 +68,12 @@ export class FeedbackForm {
   open(target?: Target, hours?: string) {
     this.target = target ?? null;
     this.hours = hours;
+    // No endpoint (a native build without VITE_FEEDBACK_ENDPOINT) means the
+    // form can't send anything. Going straight to mail is worse than the
+    // form but far better than opening it: letting someone write out a
+    // paragraph and *then* dumping them into a mail client they may not
+    // have configured loses the report and their effort with it.
+    if (!endpoint()) return this.handOffToMail();
     this.returnFocusTo = document.activeElement as HTMLElement | null;
     this.title.textContent = target ? "Report an issue" : "Send feedback";
     this.sub.textContent = target
@@ -83,6 +95,7 @@ export class FeedbackForm {
   }
 
   private setBusy(busy: boolean) {
+    this.sending = busy;
     this.sendBtn.disabled = busy;
     this.sendBtn.textContent = busy ? "Sending…" : "Send";
   }
@@ -93,6 +106,9 @@ export class FeedbackForm {
   }
 
   private async submit() {
+    // Disabling the button doesn't stop the Enter-key path, so a held Enter
+    // in the email field would fire a second send mid-flight.
+    if (this.sending) return;
     const draft = { message: this.message.value, email: this.email.value, ref: this.target?.id };
     const problem = feedbackProblem(draft);
     if (problem) return this.fail(problem);
