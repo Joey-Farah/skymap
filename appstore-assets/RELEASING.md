@@ -87,6 +87,31 @@ The API equivalent is PATCH /v1/reviewSubmissions/{id} with canceled:true.
 - Metadata for a released version can't be edited; the fixes above live on
   the next version's record.
 
+## 1.2 — staged, waiting on 1.1 (as of 2026-07-31)
+
+Everything for 1.2 is ready; the only blocker is Apple's rule that a new
+version can't be created while another is in review. **The moment 1.1
+reaches Ready for Distribution**, this is the whole job:
+
+1. **+ next to "iOS App"** in the sidebar → version string `1.2`.
+   (`MARKETING_VERSION` is already 1.2 in the project file.)
+2. **Upload the 5 screenshots** from `appstore-assets/screenshots/` —
+   captured 2026-07-31 against the 1.2 UI. Do this *before* submitting;
+   after submission the API returns 409 and they wait another release.
+3. **Paste "What's New — 1.2"** from below.
+4. **Attach the 1.2 build** (already uploaded and TestFlight-tested).
+5. Save → Add for Review → Submit.
+
+To shorten the gap, set 1.1's Version Release to **"Automatically release
+this version"** — on manual release it parks in Pending Developer Release
+after approval and blocks 1.2 until someone notices.
+
+Watch for: uploading a 1.2 build while 1.1 sat in review is a documented
+way to disturb the in-review version's metadata
+(developer.apple.com/forums/thread/745702). It was done deliberately here
+to get 1.2 onto TestFlight early — re-check that 1.1 still reads 1.1 and
+is still Waiting for Review.
+
 ## What's New — 1.1
 
 ```
