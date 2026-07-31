@@ -472,6 +472,11 @@ async function boot() {
       // trackuserlocationend — clean up ourselves or a live compass keeps
       // rotating a map no tap can ever reach again.
       void applyLocate(locateTransition(locateMode, "end"));
+      // The snapped dot is only ever refreshed by a position callback, so
+      // without this it stays frozen on the skyway looking like a live fix
+      // long after tracking stopped — a confident lie, which is exactly
+      // what the snap is supposed to prevent.
+      view.setWalkerPosition(null);
       showToast("Location is off — allow access in your browser settings to route from where you stand.");
     } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
       toldAboutTimeout = true;
@@ -481,7 +486,12 @@ async function boot() {
   view.geolocate.on("trackuserlocationend", () => {
     // Fires both for real off AND for pan-to-background; only the former is
     // "end" (lostfocus already covers the background case).
-    if (watchState() === "OFF") void applyLocate(locateTransition(locateMode, "end"));
+    if (watchState() === "OFF") {
+      void applyLocate(locateTransition(locateMode, "end"));
+      // Nothing will update the corrected dot once tracking is off, so it
+      // has to go — see the error handler above.
+      view.setWalkerPosition(null);
+    }
   });
 
   // --- Category suggestions: "show on map" toggles in the idle sheet ------

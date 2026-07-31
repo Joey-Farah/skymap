@@ -15,11 +15,15 @@ const LIGHT_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const DARK_STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 const DOWNTOWN_CENTER: [number, number] = [-93.2697, 44.976];
 /** How far off the route a fix can be and still be treated as drift rather
- * than a walker who's left it. Wide enough to absorb the 20-50 m error a
- * skyway (one floor up, roof and steel overhead) produces; tight enough that
- * stepping outside stops the correction instead of pinning you to a line
- * you're no longer walking. */
-const SNAP_MAX_METERS = 40;
+ * than a walker who's left it.
+ *
+ * Indoor skyway error runs 20-50 m, so 40 would reject the top of the very
+ * band this exists to absorb — someone whose drift ran to 45 m would watch
+ * the dot drop back into the street, which is the reported bug. 60 covers
+ * the band with headroom and is still well under a downtown block (~100 m),
+ * so stepping outside still stops the correction rather than pinning you to
+ * a line you're no longer walking. */
+const SNAP_MAX_METERS = 60;
 
 function prefersDark(): boolean {
   return typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: dark)").matches;
@@ -637,7 +641,6 @@ export class SkymapView {
       if (this.routeAnim) cancelAnimationFrame(this.routeAnim);
       this.routeAnim = 0;
       const routeSrc = this.map.getSource("skyway-route") as maplibregl.GeoJSONSource;
-      const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
       for (const m of this.markers) m.remove();
       this.markers = [];
       if (!route || route.steps.length < 2) {
@@ -699,7 +702,11 @@ export class SkymapView {
         const t = Math.min(1, Math.max(0, (now - begin) / duration));
         const partial = sliceAlong(coords, total * easeInOut(t));
         routeSrc?.setData(lineFC(partial));
-        walkerSrc?.setData(pointFC(t > 0 && t < 1 ? partial[partial.length - 1] : null));
+        // Through setWalkerPosition, not the source: writing the source
+        // directly would leave .walker-snapped set from a previous route,
+        // ending the animation with no walker AND MapLibre's dot still
+        // hidden — no position marker on screen at all.
+        this.setWalkerPosition(t > 0 && t < 1 ? partial[partial.length - 1] : null);
         if (t < 1) this.routeAnim = requestAnimationFrame(frame);
         else this.routeAnim = 0;
       };
