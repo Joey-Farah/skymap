@@ -59,10 +59,11 @@ For Review". Upload them *before* submitting, or they wait for the next
 version. Editing a live version's screenshots also requires a new version,
 so there's no back door once it's shipped.
 
-The set committed on 2026-07-30 was captured against 1.1's UI but **is not
-on the 1.1 listing** — 1.1 was already in review and Joey chose to ship
-rather than reset the queue a third time. Upload them as the first step of
-the next version.
+The set was recaptured on 2026-07-31 against the post-feedback UI (the
+chip row now carries Hotels and Landmarks, so the 07-30 set was stale
+again). 1.1 was pulled back from review to carry them, so this time the
+screenshots do ship with the release — upload them *while the version is
+back in Prepare for Submission*, before re-submitting.
 
 ## Metadata gotchas found the hard way (2026-07-29)
 
@@ -82,10 +83,22 @@ the next version.
 
 ## What's New — 1.1
 
-```
-Better walking times, a cleaner map, and place cards that tell you what
-you actually want to know.
+Rewritten 2026-07-31: 1.1 was pulled back from review to fold in the first
+round of user feedback (missing places, the position dot, the feedback
+button). Lead with what a reader will notice — the places — rather than
+with the older internal fixes.
 
+```
+Far more places, a position that stays on the skyway, and feedback you can
+send without leaving the app.
+
+• Search now finds hundreds more places — hotels, the downtown Target,
+  shops, clinics, offices, even the skyway shoe repair. Somewhere just off
+  the network says so, and tells you which building to walk out of.
+• New Hotels and Landmarks filters on the map.
+• Your location now follows the skyway you're walking, instead of drifting
+  into the street below.
+• The Feedback button opens a form right in the app — no mail app needed.
 • Tap a restaurant or shop and you'll now see how far it is, how long it
   takes to walk there, what floor it's on, and when the skyway itself is
   open — plus its logo and a link to its menu.
@@ -100,6 +113,4 @@ you actually want to know.
 • Picking a destination in the building you're already standing in tells you
   you're there, instead of failing to search.
 • Route start and end points now land on the actual skyway door.
-• Simplified the filters: "Food" now covers restaurants and convenience
-  stores, and shops and services are combined under "Misc."
 ```
