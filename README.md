@@ -80,10 +80,17 @@ Two things to know before changing it:
   production is a 404 on the endpoint and a silent fall back to `mailto:`
   for every user. Run `vercel build` after touching anything in `api/`.
 - **Native builds need an absolute URL.** iOS is served from
-  `capacitor://localhost`, so a relative path posts into the void. Set
-  `VITE_FEEDBACK_ENDPOINT=https://<host>/api/feedback` at build time.
-  Without it the native app goes straight to `mailto:` rather than opening
-  a form it can't submit.
+  `capacitor://localhost`, so a relative path posts into the void. Build
+  with:
+
+  ```
+  VITE_FEEDBACK_ENDPOINT=https://skymap-alpha.vercel.app/api/feedback npm run build
+  ```
+
+  That alias is the project's stable production URL and is publicly
+  reachable (the `skymap-<hash>-<org>.vercel.app` form always 302s to SSO —
+  it is not a usable endpoint). Without the variable the native app goes
+  straight to `mailto:` rather than opening a form it can't submit.
 
 ## Privacy
 
