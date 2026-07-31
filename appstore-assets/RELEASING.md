@@ -61,9 +61,15 @@ so there's no back door once it's shipped.
 
 The set was recaptured on 2026-07-31 against the post-feedback UI (the
 chip row now carries Hotels and Landmarks, so the 07-30 set was stale
-again). 1.1 was pulled back from review to carry them, so this time the
-screenshots do ship with the release — upload them *while the version is
-back in Prepare for Submission*, before re-submitting.
+again). It belongs to **1.2**: 1.1 was already WAITING_FOR_REVIEW and
+pulling it back would have thrown away two days of queue for a screenshot
+refresh, so it ships as-is a second time. Upload this set as the first
+step of 1.2, before submitting.
+
+Withdrawing a submission, if it ever *is* worth it, is not on the version
+page — the modern flow puts "Remove from Review" on the **review
+submission** (App Store tab banner / Review Submission in the sidebar).
+The API equivalent is PATCH /v1/reviewSubmissions/{id} with canceled:true.
 
 ## Metadata gotchas found the hard way (2026-07-29)
 
@@ -83,22 +89,10 @@ back in Prepare for Submission*, before re-submitting.
 
 ## What's New — 1.1
 
-Rewritten 2026-07-31: 1.1 was pulled back from review to fold in the first
-round of user feedback (missing places, the position dot, the feedback
-button). Lead with what a reader will notice — the places — rather than
-with the older internal fixes.
-
 ```
-Far more places, a position that stays on the skyway, and feedback you can
-send without leaving the app.
+Better walking times, a cleaner map, and place cards that tell you what
+you actually want to know.
 
-• Search now finds hundreds more places — hotels, the downtown Target,
-  shops, clinics, offices, even the skyway shoe repair. Somewhere just off
-  the network says so, and tells you which building to walk out of.
-• New Hotels and Landmarks filters on the map.
-• Your location now follows the skyway you're walking, instead of drifting
-  into the street below.
-• The Feedback button opens a form right in the app — no mail app needed.
 • Tap a restaurant or shop and you'll now see how far it is, how long it
   takes to walk there, what floor it's on, and when the skyway itself is
   open — plus its logo and a link to its menu.
@@ -113,4 +107,24 @@ send without leaving the app.
 • Picking a destination in the building you're already standing in tells you
   you're there, instead of failing to search.
 • Route start and end points now land on the actual skyway door.
+• Simplified the filters: "Food" now covers restaurants and convenience
+  stores, and shops and services are combined under "Misc."
+```
+
+## What's New — 1.2
+
+The first release driven by user feedback. Leads with the places, because
+that's what the reporter actually wrote in about.
+
+```
+Far more places, a position that stays on the skyway, and feedback you can
+send without leaving the app.
+
+• Search now finds hundreds more places — hotels, the downtown Target,
+  shops, clinics, offices, even the skyway shoe repair. Somewhere just off
+  the network says so, and tells you which building to walk out of.
+• New Hotels and Landmarks filters on the map.
+• Your location now follows the skyway you're walking, instead of drifting
+  into the street below.
+• The Feedback button opens a form right in the app — no mail app needed.
 ```
