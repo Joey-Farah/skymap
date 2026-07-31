@@ -2,7 +2,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, IndoorLink, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isClosingSoon, isOpenAt } from "./hours.ts";
-import { buildingExitPoint, polylineMeters, remainingRouteMeters, sliceAlong } from "./router.ts";
+import { buildingExitPoint, polylineMeters, remainingRouteMeters, sliceAlong, snapToRoute } from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS } from "./poi.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
@@ -14,6 +14,12 @@ import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 const LIGHT_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const DARK_STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 const DOWNTOWN_CENTER: [number, number] = [-93.2697, 44.976];
+/** How far off the route a fix can be and still be treated as drift rather
+ * than a walker who's left it. Wide enough to absorb the 20-50 m error a
+ * skyway (one floor up, roof and steel overhead) produces; tight enough that
+ * stepping outside stops the correction instead of pinning you to a line
+ * you're no longer walking. */
+const SNAP_MAX_METERS = 40;
 
 function prefersDark(): boolean {
   return typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: dark)").matches;
@@ -637,7 +643,10 @@ export class SkymapView {
       if (!route || route.steps.length < 2) {
         this.activeRouteCoords = [];
         routeSrc?.setData(lineFC([]));
-        walkerSrc?.setData(pointFC(null));
+        // Via setWalkerPosition, not the source directly: it also un-hides
+        // MapLibre's dot, which must come back when there's no route left
+        // to snap to.
+        this.setWalkerPosition(null);
         return;
       }
 
@@ -675,7 +684,7 @@ export class SkymapView {
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         routeSrc?.setData(lineFC(coords));
-        walkerSrc?.setData(pointFC(null));
+        this.setWalkerPosition(null); // a fresh route starts uncorrected
         return;
       }
 
@@ -700,13 +709,27 @@ export class SkymapView {
     else this.map.once("load", apply);
   }
 
-  /** Manual GPS-drift correction: MapLibre's own blue dot is driven by the
-   * Geolocation API and can't be placed programmatically, so a tap
-   * correction gets its own marker on the same dot layer the route-draw
-   * animation already uses. `null` clears it once real GPS resumes. */
-  setManualPosition(coord: [number, number] | null) {
+  /** Corrected position: MapLibre's own blue dot is driven by the
+   * Geolocation API and can't be placed programmatically, so any correction
+   * — a tap on the route, or a snapped GPS fix — gets its own marker on the
+   * same dot layer the route-draw animation already uses. `null` clears it
+   * and hands the display back to MapLibre's dot.
+   *
+   * While a correction is drawn, MapLibre's raw dot is hidden (see
+   * .walker-snapped in styles.css). It would be showing the very position
+   * we've decided is wrong, and two dots disagreeing by half a block is
+   * worse than one dot that's occasionally unsure. */
+  setWalkerPosition(coord: [number, number] | null) {
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord));
+    this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
+  }
+
+  /** Where a fix should be *drawn* while navigating: on the route line if
+   * it's close enough to believe, otherwise null — leaving MapLibre's raw
+   * dot to tell the truth about a walker who has genuinely left the route. */
+  snapToActiveRoute(lat: number, lon: number): [number, number] | null {
+    return snapToRoute(this.activeRouteCoords, lat, lon, SNAP_MAX_METERS)?.coord ?? null;
   }
 
   /** Meters left to walk along the active route's drawn line, from wherever

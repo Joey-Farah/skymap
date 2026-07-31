@@ -296,7 +296,7 @@ async function boot() {
     // A navigation-mode concern: previews are for reading, not walking.
     if (!activeRoute || mode !== "nav") return;
     applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
-    view.setManualPosition([lon, lat]);
+    view.setWalkerPosition([lon, lat]);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
   }
 
@@ -304,7 +304,11 @@ async function boot() {
     nearBuilding = nearestBuilding(lat, lon, data.buildings, 60);
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
-      view.setManualPosition(null); // real GPS is back in control
+      // Real GPS is back in control — but drawn on the skyway rather than
+      // wherever the fix landed. Past the snap threshold this goes back to
+      // null and MapLibre's own dot takes over, which is the honest answer
+      // for someone who has actually walked off the route.
+      view.setWalkerPosition(view.snapToActiveRoute(lat, lon));
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(nearBuilding);
