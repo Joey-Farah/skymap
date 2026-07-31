@@ -162,6 +162,9 @@ export function nearestBuilding(
  */
 export const STREET_DETOUR_FACTOR = 1.3;
 
+/** Below this, you're against the building — GPS wobble, not a walk. */
+export const AT_BUILDING_METERS = 15;
+
 export interface Approach {
   building: Building;
   /** Straight-line metres to the building's outline; 0 when inside it. */
@@ -567,4 +570,85 @@ export class SkywayRouter {
       finalMeters / WALK_METERS_PER_MIN + Math.max(0, steps.length - 2) * BUILDING_TRANSIT_MIN;
     return { steps, totalMeters: finalMeters, totalMinutes };
   }
+}
+
+/**
+ * Attach the outdoor walk that gets you onto the network.
+ *
+ * Kept as a separate leg rather than folded into totalMeters/totalMinutes
+ * on purpose. Those two drive turn-by-turn progress, which measures how
+ * far along the *skyway* you are — and by the time you're navigating, the
+ * outdoor leg is already behind you. Adding it to them would make the
+ * remaining distance read high for the whole trip.
+ *
+ * So the route keeps describing the skyway, and the approach rides
+ * alongside it for the one thing it's needed for: the total a person plans
+ * by, via tripMinutes/tripMeters.
+ */
+export function withApproach(route: RouteResult, approach: Approach | null): RouteResult {
+  if (!approach || approach.straightMeters <= AT_BUILDING_METERS) return route;
+  return {
+    ...route,
+    approach: {
+      meters: approach.meters,
+      minutes: approach.minutes,
+      buildingName: approach.building.name,
+    },
+  };
+}
+
+/** Door-to-door minutes: the outdoor approach plus the skyway walk. */
+export function tripMinutes(route: RouteResult): number {
+  return route.totalMinutes + (route.approach?.minutes ?? 0);
+}
+
+/** Door-to-door metres, same reasoning as tripMinutes. */
+export function tripMeters(route: RouteResult): number {
+  return route.totalMeters + (route.approach?.meters ?? 0);
+}
+
+/**
+ * The buildings on the one big connected skyway, dropping the small
+ * isolated clusters.
+ *
+ * The extraction is not a single network: the live data is 19 components —
+ * 133 buildings downtown, plus 18 little islands of two or three (Archdale
+ * and Glendale; Mill City Museum and Humboldt Annex; the HCMC ramp group).
+ * Each island is a real skyway bridge, but nothing on it reaches the
+ * network people mean when they say "the skyway".
+ *
+ * That matters for choosing where a trip starts. Picking the nearest
+ * building outright offers an island 47% of the time across downtown, and
+ * every one of those offers ends in "No route found" the moment you tap it
+ * — the option that fails when used, which is exactly what the current
+ * location row is built to avoid. Restricting to this component covers
+ * less ground (67% of downtown rather than 93%) and everything it offers
+ * actually goes somewhere.
+ */
+export function mainNetworkBuildings(data: SkymapData): Building[] {
+  const adjacency = new Map<string, string[]>(data.buildings.map((b) => [b.id, []]));
+  for (const edge of data.edges) {
+    adjacency.get(edge.from)?.push(edge.to);
+    adjacency.get(edge.to)?.push(edge.from);
+  }
+  const seen = new Set<string>();
+  let largest: string[] = [];
+  for (const b of data.buildings) {
+    if (seen.has(b.id)) continue;
+    const stack = [b.id];
+    seen.add(b.id);
+    const component: string[] = [];
+    while (stack.length) {
+      const id = stack.pop()!;
+      component.push(id);
+      for (const next of adjacency.get(id) ?? []) {
+        if (seen.has(next)) continue;
+        seen.add(next);
+        stack.push(next);
+      }
+    }
+    if (component.length > largest.length) largest = component;
+  }
+  const ids = new Set(largest);
+  return data.buildings.filter((b) => ids.has(b.id));
 }

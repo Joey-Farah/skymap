@@ -8,6 +8,7 @@ import {
   SkywayRouter,
   buildingExitPoint,
   haversineMeters,
+  mainNetworkBuildings,
   nearestApproach,
   nearestBuilding,
   polylineMeters,
@@ -15,6 +16,8 @@ import {
   routeStepIndex,
   sliceAlong,
   snapToRoute,
+  tripMinutes,
+  withApproach,
 } from "../src/router.ts";
 import { closingSoonWarnings, isClosingSoon, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
@@ -175,6 +178,60 @@ test("nearestApproach reports how far off the network you are", () => {
 
   // Past the budget entirely.
   assert.equal(nearestApproach(0, 0, LONG_BLOCK, 400), null);
+});
+
+test("mainNetworkBuildings keeps the big network and drops the dead-end islands", () => {
+  const mini = {
+    meta: data.meta,
+    buildings: ["a", "b", "c", "x", "y"].map((id, i) => ({
+      ...data.buildings[0],
+      id,
+      lat: 44.97 + i * 0.001,
+      lon: -93.27,
+    })),
+    // a-b-c is the network; x-y is an isolated pair, like Archdale/Glendale.
+    edges: [
+      { from: "a", to: "b", crossing: "1st", geometry: [] },
+      { from: "b", to: "c", crossing: "2nd", geometry: [] },
+      { from: "x", to: "y", crossing: "3rd", geometry: [] },
+    ],
+  };
+  assert.deepEqual(
+    mainNetworkBuildings(mini).map((b) => b.id).sort(),
+    ["a", "b", "c"],
+  );
+});
+
+test("the real network is one dominant component with small islands off it", () => {
+  const live = JSON.parse(readFileSync(join(ROOT, "public/data/skymap-data.json"), "utf8"));
+  const main = mainNetworkBuildings(live);
+  // Offering an island building as a starting point strands you: nothing in
+  // the main network is reachable from it.
+  assert.ok(main.length > live.buildings.length * 0.6, `main component only ${main.length}`);
+  assert.ok(main.length < live.buildings.length, "there really are islands to exclude");
+});
+
+test("withApproach adds the outdoor walk without disturbing the skyway legs", () => {
+  const route = router.route("ids-center", "gaviidae-common", TUE_10AM);
+  const far = nearestApproach(44.9705, -93.2668, LONG_BLOCK, 400);
+
+  const trip = withApproach(route, far);
+  assert.equal(trip.approach?.buildingName, "Long Block");
+  assert.ok(Math.abs(trip.approach.minutes - far.minutes) < 1e-9);
+
+  // The skyway portion is untouched: nav progress measures against these,
+  // and by the time you're navigating the outdoor leg is already behind you.
+  assert.equal(trip.totalMeters, route.totalMeters);
+  assert.equal(trip.totalMinutes, route.totalMinutes);
+
+  // But the trip as a whole is longer, which is the number a person plans by.
+  assert.ok(tripMinutes(trip) > tripMinutes(route));
+  assert.equal(tripMinutes(route), route.totalMinutes);
+
+  // Already at the building: nothing to add, and no leg to mention.
+  const inside = nearestApproach(44.9705, -93.2695, LONG_BLOCK, 400);
+  assert.equal(withApproach(route, inside).approach, undefined);
+  assert.equal(withApproach(route, null).approach, undefined);
 });
 
 test("sliceAlong cuts a polyline at a distance", () => {

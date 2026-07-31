@@ -109,8 +109,19 @@ export interface RouteStep {
 
 export interface RouteResult {
   steps: RouteStep[];
+  /** The skyway walk only. Turn-by-turn progress measures against these,
+   * so they must not include the outdoor approach below — by the time
+   * you're navigating, that leg is already behind you. */
   totalMeters: number;
   totalMinutes: number;
   /** True when the route was only possible by ignoring closures. */
   ignoredClosures: boolean;
+  /** The outdoor walk onto the network, when the trip started from a
+   * position that wasn't on it yet. Absent when you were already there.
+   * See tripMinutes/tripMeters for the door-to-door totals. */
+  approach?: {
+    meters: number;
+    minutes: number;
+    buildingName: string;
+  };
 }
