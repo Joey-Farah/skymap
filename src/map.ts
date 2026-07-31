@@ -626,7 +626,19 @@ export class SkymapView {
    * a specific business rather than a bare building — the route line itself
    * still runs building-to-building (that's the graph the skyway network
    * actually models), only the pin moves to the business's own spot. */
-  setRoute(route: RouteResult | null, poiCoords?: { fromCoord?: [number, number]; toCoord?: [number, number] }) {
+  /** `fromNearby`/`toNearby` mark an endpoint that isn't in the network:
+   * its pin still goes at the real place, but the drawn line stops at the
+   * building, because the stretch between them isn't skyway and drawing it
+   * in the skyway's own line style would invent one. */
+  setRoute(
+    route: RouteResult | null,
+    poiCoords?: {
+      fromCoord?: [number, number];
+      toCoord?: [number, number];
+      fromNearby?: boolean;
+      toNearby?: boolean;
+    },
+  ) {
     const apply = () => {
       if (this.routeAnim) cancelAnimationFrame(this.routeAnim);
       this.routeAnim = 0;
@@ -657,7 +669,11 @@ export class SkymapView {
       const toTowards: [number, number] = lastBridge?.[lastBridge.length - 1] ?? [first.lon, first.lat];
       const fromCoord = poiCoords?.fromCoord ?? buildingExitPoint(first, fromTowards);
       const toCoord = poiCoords?.toCoord ?? buildingExitPoint(last, toTowards);
-      const coords = routeCoords(route, fromCoord, toCoord, this.data.indoorLinks);
+      // Where the walkable skyway actually starts and ends — the same as
+      // the pins, except at an endpoint that's outside the network.
+      const lineFrom = poiCoords?.fromNearby ? buildingExitPoint(first, fromTowards) : fromCoord;
+      const lineTo = poiCoords?.toNearby ? buildingExitPoint(last, toTowards) : toCoord;
+      const coords = routeCoords(route, lineFrom, lineTo, this.data.indoorLinks);
       this.activeRouteCoords = coords;
       this.markers.push(
         new maplibregl.Marker({ element: routeMarkerElement("#16a34a") }).setLngLat(fromCoord).addTo(this.map),

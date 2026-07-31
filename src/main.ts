@@ -205,6 +205,10 @@ async function boot() {
     view.setRoute(route, {
       fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
       toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
+      // A `nearby` place sits outside the network, so the last stretch to
+      // its door isn't skyway and mustn't be drawn as though it were.
+      fromNearby: comboFrom.poi?.nearby,
+      toNearby: comboTo.poi?.nearby,
     });
     sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() });
     // The URL still describes the route even without a Share button: it

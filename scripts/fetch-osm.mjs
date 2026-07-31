@@ -750,8 +750,14 @@ async function main(osm) {
   const pois = [];
   let nearbyHosted = 0;
   for (const n of poiNodes) {
-    const host = resolvePoiHost(n.lat, n.lon, finalBuildings, MAX_NEARBY_POI_METERS);
-    if (!host) continue;
+    // Restrooms and elevators never take the nearby fallback. Someone
+    // filtering for an elevator is usually doing accessible wayfinding, and
+    // sending them to a lift that's in a different building than the card
+    // says is the highest-consequence version of a wrong host — worse than
+    // simply not listing it. Same for a restroom you can't actually reach.
+    const insideOnly = n.tags.highway === "elevator" || n.tags.amenity === "toilets";
+    const host = resolvePoiHost(n.lat, n.lon, finalBuildings, insideOnly ? 0 : MAX_NEARBY_POI_METERS);
+    if (!host || (insideOnly && host.nearby)) continue;
     if (host.nearby) nearbyHosted++;
     const kind = n.tags.highway === "elevator" ? "elevator" : n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : n.tags.office ? "office" : n.tags.healthcare ? "healthcare" : "leisure";
     const category = n.tags.highway === "elevator" ? "elevator" : (n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.office ?? n.tags.healthcare ?? n.tags.leisure);

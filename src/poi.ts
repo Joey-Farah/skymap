@@ -1,7 +1,7 @@
 /** POI grouping: one place that decides how a business/feature is classed,
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
-import { haversineMeters } from "./router.ts";
+import { haversineMeters, nearestOnSegment } from "./router.ts";
 
 export type PoiGroup = "food" | "coffee" | "other" | "restroom" | "landmark" | "transit" | "elevator";
 
@@ -78,6 +78,19 @@ function pointInRing(lon: number, lat: number, ring: [number, number][]): boolea
   return inside;
 }
 
+/** How far a point is from a building's actual outline — the nearest point
+ * on any footprint edge, falling back to the centroid for a building with
+ * no footprint at all. */
+function distanceToFootprint(lat: number, lon: number, b: HostCandidate): number {
+  if (!b.footprint || b.footprint.length < 2) return haversineMeters(lat, lon, b.lat, b.lon);
+  let best = Infinity;
+  for (let i = 0; i < b.footprint.length; i++) {
+    const p = nearestOnSegment([lon, lat], b.footprint[i], b.footprint[(i + 1) % b.footprint.length]);
+    best = Math.min(best, haversineMeters(lat, lon, p[1], p[0]));
+  }
+  return best;
+}
+
 /**
  * Which network building a place belongs to.
  *
@@ -107,7 +120,11 @@ export function resolvePoiHost<T extends HostCandidate>(
   let best: T | null = null;
   let bestMeters = maxNearbyMeters;
   for (const b of buildings) {
-    const meters = haversineMeters(lat, lon, b.lat, b.lon);
+    // Distance to the footprint, not the centroid. A centroid measurement
+    // makes a big tower "far" from a place pressed against its own wall and
+    // hands the place to a smaller building across the street — which then
+    // routes you out of the wrong door onto the wrong block.
+    const meters = distanceToFootprint(lat, lon, b);
     if (meters <= bestMeters) {
       bestMeters = meters;
       best = b;

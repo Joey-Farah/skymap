@@ -902,7 +902,31 @@ export class Sheet {
 }
 
 /** "fast_food" -> "Fast food". */
+/** OSM tag values that title-case into nonsense on a card. `office=yes`
+ * reads as "Yes · Target Plaza" and `office=it` as "It · Target Plaza" —
+ * the tag is describing the shape of the data, not the place. */
+const CATEGORY_OVERRIDES: Record<string, string> = {
+  yes: "Office",
+  it: "IT services",
+  company: "Office",
+  lawyer: "Law office",
+  consulting: "Consulting",
+  coworking: "Coworking",
+  estate_agent: "Real estate",
+  financial_advisor: "Financial advisor",
+  property_management: "Property management",
+  advertising_agency: "Advertising",
+  graphic_design: "Design studio",
+  guide: "Tour guide",
+  association: "Association",
+  newspaper: "Newspaper",
+  fast_food: "Fast food",
+  department_store: "Department store",
+};
+
 function humanCategory(cat: string): string {
+  const override = CATEGORY_OVERRIDES[cat.toLowerCase()];
+  if (override) return override;
   const words = cat.replace(/_/g, " ");
   return words.charAt(0).toUpperCase() + words.slice(1);
 }

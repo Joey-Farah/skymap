@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-31T16:00:07.644Z"
+  "generated": "2026-07-31T16:27:58.661Z"
  },
  "buildings": [
   {
@@ -22839,7 +22839,7 @@
    "group": "coffee",
    "lat": 44.985758,
    "lon": -93.276264,
-   "buildingId": "graze-food-hall-by-travail-1223123290",
+   "buildingId": "the-falk-45449596",
    "nearby": true,
    "openingHours": "Mo-Fr 07:00-17:00; Sa 08:00-17:00",
    "website": "https://corner.coffee",
@@ -22951,7 +22951,7 @@
    "group": "food",
    "lat": 44.978018,
    "lon": -93.274315,
-   "buildingId": "minneapolis-marriott-city-center-27346715",
+   "buildingId": "city-center-27346720",
    "nearby": true,
    "openingHours": "Mo-Th 11:00-21:30; Fr-Sa 11:00-22:30; Su 11:00-21:00",
    "website": "https://fogodechao.com/",
@@ -22979,6 +22979,17 @@
    "buildingId": "target-plaza-45452119",
    "nearby": true,
    "openingHours": "Mo-Fr 06:30-10:00; Sa-Su 07:00-10:30"
+  },
+  {
+   "id": "poi-661686890",
+   "name": "Sawatdee",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.977922,
+   "lon": -93.259661,
+   "buildingId": "depot-office-center-81049079",
+   "nearby": true
   },
   {
    "id": "poi-1077152385",
@@ -23023,7 +23034,7 @@
    "group": "landmark",
    "lat": 44.976825,
    "lon": -93.276745,
-   "buildingId": "pence-building-156912891",
+   "buildingId": "lasalle-plaza-461227727",
    "nearby": true
   },
   {
@@ -23159,7 +23170,7 @@
    "group": "food",
    "lat": 44.976133,
    "lon": -93.277008,
-   "buildingId": "orpheum-theatre-41763764",
+   "buildingId": "lasalle-plaza-461227727",
    "nearby": true
   },
   {
@@ -23183,7 +23194,7 @@
    "group": "food",
    "lat": 44.978322,
    "lon": -93.261192,
-   "buildingId": "depot-office-center-81049079",
+   "buildingId": "gateway-municipal-garage-81049104",
    "nearby": true,
    "website": "https://www.crookedpint.com/minneapolis/",
    "logo": "crookedpint-com"
@@ -23241,6 +23252,34 @@
    "openingHours": "Mo-Fr 07:00-15:00; Sa,Su 07:30-14:00",
    "website": "https://henhouseeatery.com/",
    "logo": "henhouseeatery-com"
+  },
+  {
+   "id": "poi-3452611420",
+   "name": "Muffin Top Cafe",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.967944,
+   "lon": -93.278076,
+   "buildingId": "archdale-apartments-92810569",
+   "nearby": true,
+   "openingHours": "Mo-Th 07:00-22:00; Fr 07:00-23:00; Sa 08:00-23:00; Su 08:00-22:00",
+   "website": "https://muffintopcafe.com/",
+   "logo": "muffintopcafe-com"
+  },
+  {
+   "id": "poi-3452611421",
+   "name": "Mother Clucker's Pizza",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.967858,
+   "lon": -93.278077,
+   "buildingId": "archdale-apartments-92810569",
+   "nearby": true,
+   "openingHours": "Mo-Su 11:00-02:00",
+   "website": "https://mothercluckerspizza.com/",
+   "logo": "mothercluckerspizza-com"
   },
   {
    "id": "poi-3524709447",
@@ -23331,6 +23370,18 @@
    "buildingId": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
    "website": "https://www.monellompls.com/",
    "logo": "monellompls-com"
+  },
+  {
+   "id": "poi-4121552922",
+   "name": "Spice & Tonic",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.976304,
+   "lon": -93.255899,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "openingHours": "Mo-Fr 11:00-15:00,16:00-22:00; Sa-Su 11:00-22:00"
   },
   {
    "id": "poi-4121737093",
@@ -23683,7 +23734,7 @@
    "group": "food",
    "lat": 44.974555,
    "lon": -93.272139,
-   "buildingId": "deluxe-plaza-1462073358",
+   "buildingId": "metro-apartments-156912887",
    "nearby": true,
    "website": "https://mannyssteakhouse.com/",
    "logo": "mannyssteakhouse-com"
@@ -23746,7 +23797,7 @@
    "group": "food",
    "lat": 44.980429,
    "lon": -93.273373,
-   "buildingId": "cowboy-jacks-157031168",
+   "buildingId": "butler-square-29060521",
    "nearby": true
   },
   {
@@ -23768,7 +23819,7 @@
    "group": "food",
    "lat": 44.980408,
    "lon": -93.274007,
-   "buildingId": "cowboy-jacks-157031168",
+   "buildingId": "butler-square-29060521",
    "nearby": true,
    "openingHours": "Tu-Th 11:30-22:00; Fr-Sa 11:30-23:00",
    "website": "https://www.looncafe.com"
@@ -23784,6 +23835,18 @@
    "buildingId": "lumber-exchange-30263208",
    "nearby": true,
    "openingHours": "Mo-Su 22:00-02:00"
+  },
+  {
+   "id": "poi-6835606810",
+   "name": "Fawkes Alley Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.971964,
+   "lon": -93.285805,
+   "buildingId": "kopp-hall-89061932",
+   "nearby": true,
+   "openingHours": "Mo-Su 08:00-16:00"
   },
   {
    "id": "poi-7089974885",
@@ -23820,9 +23883,35 @@
    "group": "food",
    "lat": 44.979067,
    "lon": -93.273768,
-   "buildingId": "plymouth-building-156909952",
+   "buildingId": "mayo-clinic-square-27346712",
    "nearby": true,
    "website": "https://goldroommn.com/"
+  },
+  {
+   "id": "poi-7838159628",
+   "name": "Breakfast Bar",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.981474,
+   "lon": -93.271949,
+   "buildingId": "textile-building-89080618",
+   "nearby": true,
+   "website": "https://www.breakfastbarofmn.com/"
+  },
+  {
+   "id": "poi-7838159754",
+   "name": "Cobble Minneapolis",
+   "category": "bar",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.98477,
+   "lon": -93.27148,
+   "buildingId": "intersect-apartments-1216920711",
+   "nearby": true,
+   "openingHours": "Tu-Th 16:00-23:00; Fr-Sa 16:00-25:00",
+   "website": "https://cobblempls.com/",
+   "logo": "cobblempls-com"
   },
   {
    "id": "poi-8668963316",
@@ -23959,7 +24048,7 @@
    "group": "food",
    "lat": 44.978532,
    "lon": -93.273565,
-   "buildingId": "33-south-sixth-27346721",
+   "buildingId": "city-center-27346720",
    "nearby": true,
    "website": "https://tomswatchbar.com/location/minneapolis/",
    "logo": "tomswatchbar-com"
@@ -24040,6 +24129,20 @@
    "nearby": true,
    "website": "https://www.fairgrounds.cafe/cafe-minneapolis-north-loop/",
    "logo": "fairgrounds-cafe"
+  },
+  {
+   "id": "poi-11625251738",
+   "name": "Gai Noi",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.971569,
+   "lon": -93.285428,
+   "buildingId": "kopp-hall-89061932",
+   "nearby": true,
+   "openingHours": "Su-Th 11:00-21:00; Fr,Sa 11:00-22:00",
+   "website": "https://www.gainoimpls.com/",
+   "logo": "gainoimpls-com"
   },
   {
    "id": "poi-11735212313",
@@ -24227,6 +24330,20 @@
    "logo": "mplsdid-com"
   },
   {
+   "id": "poi-12265838774",
+   "name": "Street Voices of Change",
+   "category": "social_facility",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.96954,
+   "lon": -93.270697,
+   "buildingId": "minneapolis-convention-center-42837791",
+   "nearby": true,
+   "openingHours": "Th 08:30-10:00",
+   "website": "https://www.alignmpls.org/svoc",
+   "logo": "alignmpls-org"
+  },
+  {
    "id": "poi-12270381550",
    "name": "In Love, Word, & Deed",
    "category": "social_facility",
@@ -24260,8 +24377,21 @@
    "group": "other",
    "lat": 44.978248,
    "lon": -93.261255,
-   "buildingId": "depot-office-center-81049079",
+   "buildingId": "gateway-municipal-garage-81049104",
    "nearby": true
+  },
+  {
+   "id": "poi-12333223454",
+   "name": "Starbucks",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.977244,
+   "lon": -93.258037,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "website": "https://www.starbucks.com/",
+   "logo": "starbucks-com"
   },
   {
    "id": "poi-12335262724",
@@ -24284,7 +24414,7 @@
    "group": "food",
    "lat": 44.976733,
    "lon": -93.276974,
-   "buildingId": "orpheum-theatre-41763764",
+   "buildingId": "lasalle-plaza-461227727",
    "nearby": true,
    "website": "https://www.saloonmn.com/",
    "logo": "saloonmn-com"
@@ -24371,6 +24501,30 @@
    "lat": 44.974627,
    "lon": -93.272658,
    "buildingId": "metro-apartments-156912887"
+  },
+  {
+   "id": "poi-12726468697",
+   "name": "Mad Chicken",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.981248,
+   "lon": -93.272274,
+   "buildingId": "textile-building-89080618",
+   "nearby": true,
+   "website": "https://madchickenusa.com/",
+   "logo": "madchickenusa-com"
+  },
+  {
+   "id": "poi-12726468698",
+   "name": "Maison Margaux",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.986131,
+   "lon": -93.269777,
+   "buildingId": "rock-island-lofts-45758926",
+   "nearby": true
   },
   {
    "id": "poi-12726468699",
@@ -24538,6 +24692,20 @@
    "level": "1",
    "website": "https://www.greenandthegrain.com/locations",
    "logo": "greenandthegrain-com"
+  },
+  {
+   "id": "poi-12793964537",
+   "name": "La Madre",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.977876,
+   "lon": -93.258261,
+   "buildingId": "mill-city-museum-157035918",
+   "nearby": true,
+   "openingHours": "Tu-Fr 15:00-21:00; Sa-Su 11:00-21:00",
+   "website": "https://lamadremn.com/",
+   "logo": "lamadremn-com"
   },
   {
    "id": "poi-12825025520",
@@ -24711,7 +24879,7 @@
    "group": "food",
    "lat": 44.980826,
    "lon": -93.273946,
-   "buildingId": "cowboy-jacks-157031168",
+   "buildingId": "5th-street-ramp-b-30062750",
    "nearby": true
   },
   {
@@ -24840,6 +25008,17 @@
    "logo": "millerslandingseniorliving-com"
   },
   {
+   "id": "poi-12919741649",
+   "name": "Currie Food Hall",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.97772,
+   "lon": -93.279921,
+   "buildingId": "hawthorne-transportation-center-r2100925",
+   "nearby": true
+  },
+  {
    "id": "poi-12971774442",
    "name": "Dagwood's",
    "category": "fast_food",
@@ -24910,7 +25089,7 @@
    "group": "food",
    "lat": 44.978456,
    "lon": -93.257723,
-   "buildingId": "washburn-lofts-101549023",
+   "buildingId": "mill-city-museum-157035918",
    "nearby": true,
    "website": "https://motherdoughbakery.com/",
    "logo": "motherdoughbakery-com"
@@ -25043,7 +25222,7 @@
    "group": "food",
    "lat": 44.980844,
    "lon": -93.273417,
-   "buildingId": "cowboy-jacks-157031168",
+   "buildingId": "textile-building-89080618",
    "nearby": true
   },
   {
@@ -25515,6 +25694,20 @@
    "logo": "hewinghotel-com"
   },
   {
+   "id": "poi-13741168272",
+   "name": "Albi Kitchen",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.968473,
+   "lon": -93.277636,
+   "buildingId": "minneapolis-convention-center-42837791",
+   "nearby": true,
+   "openingHours": "Mo-Th,Su 12:00-22:00; Fr-Sa 12:00-24:00",
+   "website": "https://albikitchen.com/",
+   "logo": "albikitchen-com"
+  },
+  {
    "id": "poi-13743764997",
    "name": "Powl Smoothies and Bowls",
    "category": "cafe",
@@ -25584,6 +25777,17 @@
    "logo": "fillmoreminneapolis-com"
   },
   {
+   "id": "poi-13812237869",
+   "name": "Trax",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.98401,
+   "lon": -93.279035,
+   "buildingId": "ford-center-29060527",
+   "nearby": true
+  },
+  {
    "id": "poi-13823736884",
    "name": "Nolo's Kitchen & Bar",
    "category": "restaurant",
@@ -25595,6 +25799,20 @@
    "nearby": true,
    "website": "https://noloskitchen.com/",
    "logo": "noloskitchen-com"
+  },
+  {
+   "id": "poi-13850108423",
+   "name": "Wing Xscape by Hot Potato 1.2.3. Express",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.977691,
+   "lon": -93.279922,
+   "buildingId": "hawthorne-transportation-center-r2100925",
+   "nearby": true,
+   "openingHours": "Fr 11:00-22:00; Sa-Th 11:00-21:00",
+   "website": "https://www.hotpotato123express.com/",
+   "logo": "hotpotato123express-com"
   },
   {
    "id": "poi-13914791292",
@@ -25619,6 +25837,18 @@
    "lon": -93.262866,
    "buildingId": "rivergate-apartments-81049129",
    "nearby": true
+  },
+  {
+   "id": "poi-13965983648",
+   "name": "First Resource Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.976595,
+   "lon": -93.256746,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "openingHours": "Mo-Fr 08:30-16:30; Sa-Su off"
   },
   {
    "id": "poi-13965983651",
@@ -25654,6 +25884,34 @@
    "buildingId": "330-south-second-45452108",
    "level": "1",
    "openingHours": "Mo-Fr 10:30-14:00"
+  },
+  {
+   "id": "poi-13969475874",
+   "name": "Fathead Bill’s",
+   "category": "pub",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.976269,
+   "lon": -93.255749,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "openingHours": "11:00-02:00",
+   "website": "https://fatheadbills.com",
+   "logo": "fatheadbills-com"
+  },
+  {
+   "id": "poi-13969475875",
+   "name": "American National Bank",
+   "category": "bank",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.976103,
+   "lon": -93.255873,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "openingHours": "Mo-Fr 08:30-16:30; Sa-Su off",
+   "website": "https://www.american.bank/location/minneapolis/",
+   "logo": "american-bank"
   },
   {
    "id": "poi-13969475876",
@@ -25965,6 +26223,20 @@
    "logo": "wholefoodsmarket-com"
   },
   {
+   "id": "poi-3452611420",
+   "name": "Muffin Top Cafe",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.967944,
+   "lon": -93.278076,
+   "buildingId": "archdale-apartments-92810569",
+   "nearby": true,
+   "openingHours": "Mo-Th 07:00-22:00; Fr 07:00-23:00; Sa 08:00-23:00; Su 08:00-22:00",
+   "website": "https://muffintopcafe.com/",
+   "logo": "muffintopcafe-com"
+  },
+  {
    "id": "poi-4679771192",
    "name": "Sew Biz Tailoring",
    "category": "tailor",
@@ -25999,6 +26271,20 @@
    "buildingId": "ids-center-1385236413",
    "level": "1",
    "openingHours": "Mo-Fr 07:30-13:30,14:00-17:00"
+  },
+  {
+   "id": "poi-5859974970",
+   "name": "Trader Joe's",
+   "category": "supermarket",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.977064,
+   "lon": -93.257723,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "openingHours": "09:00-21:00",
+   "website": "https://locations.traderjoes.com/mn/minneapolis/725/",
+   "logo": "locations-traderjoes-com"
   },
   {
    "id": "poi-5908476287",
@@ -26157,7 +26443,7 @@
    "group": "other",
    "lat": 44.980661,
    "lon": -93.273714,
-   "buildingId": "cowboy-jacks-157031168",
+   "buildingId": "5th-street-ramp-b-30062750",
    "nearby": true,
    "website": "https://www.kickernickgallery.com/",
    "logo": "kickernickgallery-com"
@@ -26186,6 +26472,32 @@
    "openingHours": "Tu-Su 07:00-13:00",
    "website": "https://www.risebagel.com/",
    "logo": "risebagel-com"
+  },
+  {
+   "id": "poi-9128515925",
+   "name": "HiFi Sound",
+   "category": "hifi",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.979553,
+   "lon": -93.290859,
+   "buildingId": "international-market-square-45498285",
+   "nearby": true,
+   "website": "https://hifi-sound.com/",
+   "logo": "hifi-sound-com"
+  },
+  {
+   "id": "poi-9128515926",
+   "name": "PURIS",
+   "category": "supermarket",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.979305,
+   "lon": -93.290273,
+   "buildingId": "international-market-square-45498285",
+   "nearby": true,
+   "website": "https://www.puris.com/",
+   "logo": "puris-com"
   },
   {
    "id": "poi-9128515927",
@@ -26262,6 +26574,32 @@
    "buildingId": "lee-lofts-45758932",
    "nearby": true,
    "website": "https://shoprequisite.com"
+  },
+  {
+   "id": "poi-11298730912",
+   "name": "Warby Parker",
+   "category": "optician",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.983149,
+   "lon": -93.270904,
+   "buildingId": "lee-lofts-45758932",
+   "nearby": true,
+   "website": "https://stores.warbyparker.com/mn/minneapolis/113-n.-washington-ave.",
+   "logo": "stores-warbyparker-com"
+  },
+  {
+   "id": "poi-11328332528",
+   "name": "Wildflower",
+   "category": "cannabis",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.98503,
+   "lon": -93.270554,
+   "buildingId": "intersect-apartments-1216920711",
+   "nearby": true,
+   "website": "https://wildflower.cc",
+   "logo": "wildflower-cc"
   },
   {
    "id": "poi-11328332529",
@@ -26401,6 +26739,17 @@
    "logo": "augsburgfortresspublishers-org"
   },
   {
+   "id": "poi-12754418502",
+   "name": "North Loop Wine & Spirits",
+   "category": "alcohol",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.984353,
+   "lon": -93.271885,
+   "buildingId": "deja-vu-89080678",
+   "nearby": true
+  },
+  {
    "id": "poi-12754418701",
    "name": "Public Storage",
    "category": "storage_rental",
@@ -26408,7 +26757,7 @@
    "group": "other",
    "lat": 44.982309,
    "lon": -93.275928,
-   "buildingId": "north-loop-green-commercial-1281801622",
+   "buildingId": "5th-street-ramp-b-30062750",
    "nearby": true,
    "website": "https://publicstorage.com/",
    "logo": "publicstorage-com"
@@ -26578,7 +26927,7 @@
    "group": "other",
    "lat": 44.981915,
    "lon": -93.264762,
-   "buildingId": "rivergate-apartments-81049129",
+   "buildingId": "the-churchill-460860491",
    "nearby": true
   },
   {
@@ -26682,7 +27031,7 @@
    "group": "other",
    "lat": 44.980743,
    "lon": -93.27356,
-   "buildingId": "cowboy-jacks-157031168",
+   "buildingId": "textile-building-89080618",
    "nearby": true
   },
   {
@@ -26769,7 +27118,7 @@
    "group": "other",
    "lat": 44.978214,
    "lon": -93.273911,
-   "buildingId": "minneapolis-marriott-city-center-27346715",
+   "buildingId": "city-center-27346720",
    "nearby": true,
    "level": "1",
    "openingHours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00; Su off"
@@ -26937,6 +27286,17 @@
    "openingHours": "Mo-Fr 12:00-17:00"
   },
   {
+   "id": "poi-13961359856",
+   "name": "Bradley Douglas Salon Spa",
+   "category": "hairdresser",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.97632,
+   "lon": -93.254666,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true
+  },
+  {
    "id": "poi-13965983645",
    "name": "Massage Envy",
    "category": "massage",
@@ -26958,6 +27318,20 @@
    "lon": -93.266176,
    "buildingId": "the-crossings-1411646515",
    "level": "1"
+  },
+  {
+   "id": "poi-13969475873",
+   "name": "Anthem Hair Co",
+   "category": "hairdresser",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.976315,
+   "lon": -93.255819,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "openingHours": "Mo,Su off; Tu,Th 09:00-18:00; We,Fr 09:00-17:00; Sa 09:00-15:00",
+   "website": "https://www.anthemhaircompany.com",
+   "logo": "anthemhaircompany-com"
   },
   {
    "id": "poi-13993589136",
@@ -27005,6 +27379,20 @@
    "lon": -93.275948,
    "buildingId": "pence-building-156912891",
    "nearby": true
+  },
+  {
+   "id": "poi-3344218389",
+   "name": "Anytime Fitness",
+   "category": "fitness_centre",
+   "kind": "leisure",
+   "group": "other",
+   "lat": 44.983088,
+   "lon": -93.270833,
+   "buildingId": "lee-lofts-45758932",
+   "nearby": true,
+   "openingHours": "24/7",
+   "website": "https://www.anytimefitness.com/gyms/281/minneapolis-mn-55401/",
+   "logo": "anytimefitness-com"
   },
   {
    "id": "poi-5646457667",
@@ -27080,28 +27468,6 @@
    "buildingId": "target-plaza-45452119"
   },
   {
-   "id": "poi-7817666484",
-   "name": "Public restroom",
-   "category": "toilets",
-   "kind": "amenity",
-   "group": "restroom",
-   "lat": 44.975475,
-   "lon": -93.260707,
-   "buildingId": "4th-park-1223123289",
-   "nearby": true
-  },
-  {
-   "id": "poi-11254268764",
-   "name": "Public restroom",
-   "category": "toilets",
-   "kind": "amenity",
-   "group": "restroom",
-   "lat": 44.969474,
-   "lon": -93.259925,
-   "buildingId": "miller-hall-122795138",
-   "nearby": true
-  },
-  {
    "id": "poi-13993589139",
    "name": "Public restroom",
    "category": "toilets",
@@ -27159,6 +27525,17 @@
    "buildingId": "centre-village-44164774",
    "website": "http://hyattplaceminneapolisdowntown.com",
    "logo": "hyattplaceminneapolisdowntown-com"
+  },
+  {
+   "id": "poi-2317828868",
+   "name": "Mound",
+   "category": "viewpoint",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.977805,
+   "lon": -93.253318,
+   "buildingId": "guthrie-theater-129937715",
+   "nearby": true
   },
   {
    "id": "poi-2499762597",
@@ -27221,6 +27598,17 @@
    "nearby": true
   },
   {
+   "id": "poi-6560597382",
+   "name": "Molecule",
+   "category": "artwork",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.97758,
+   "lon": -93.254077,
+   "buildingId": "guthrie-theater-129937715",
+   "nearby": true
+  },
+  {
    "id": "poi-6779262341",
    "name": "Mary Tyler Moore Statue",
    "category": "artwork",
@@ -27228,7 +27616,7 @@
    "group": "landmark",
    "lat": 44.976796,
    "lon": -93.272394,
-   "buildingId": "gaviidae-common-156909893",
+   "buildingId": "ids-center-1385236413",
    "nearby": true
   },
   {
@@ -27277,6 +27665,17 @@
    "nearby": true
   },
   {
+   "id": "poi-12895857119",
+   "name": "Bell of Two Friends",
+   "category": "artwork",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.985115,
+   "lon": -93.261576,
+   "buildingId": "nicollet-island-inn-80313504",
+   "nearby": true
+  },
+  {
    "id": "poi-12919709245",
    "name": "Cambria Hotel Minneapolis Downtown",
    "category": "hotel",
@@ -27284,10 +27683,23 @@
    "group": "landmark",
    "lat": 44.976872,
    "lon": -93.279133,
-   "buildingId": "orpheum-theatre-41763764",
+   "buildingId": "hawthorne-transportation-center-r2100925",
    "nearby": true,
    "website": "https://www.choicehotels.com/minnesota/minneapolis/cambria-hotels/mn206",
    "logo": "choicehotels-com"
+  },
+  {
+   "id": "poi-12919709246",
+   "name": "Fairfield Inn & Suites Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.976634,
+   "lon": -93.279702,
+   "buildingId": "hawthorne-transportation-center-r2100925",
+   "nearby": true,
+   "website": "https://www.marriott.com/en-us/hotels/mspfd-fairfield-inn-and-suites-minneapolis-downtown/overview/",
+   "logo": "marriott-com"
   },
   {
    "id": "poi-12998345224",
@@ -27380,6 +27792,19 @@
    "logo": "startribune-com"
   },
   {
+   "id": "poi-4620068026",
+   "name": "Goal Pyramid",
+   "category": "company",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.984992,
+   "lon": -93.27037,
+   "buildingId": "intersect-apartments-1216920711",
+   "nearby": true,
+   "website": "https://goalpyramid.com/",
+   "logo": "goalpyramid-com"
+  },
+  {
    "id": "poi-5279043010",
    "name": "Trust Point",
    "category": "financial",
@@ -27387,7 +27812,7 @@
    "group": "other",
    "lat": 44.986322,
    "lon": -93.258119,
-   "buildingId": "aster-house-125437510",
+   "buildingId": "riverplace-125437526",
    "nearby": true,
    "openingHours": "Mo-Fr 08:00-17:00",
    "website": "https://www.trustpointinc.com/minneapolis-wealth-management",
@@ -27508,6 +27933,19 @@
    "openingHours": "Mo-Fr 08:00-17:00"
   },
   {
+   "id": "poi-6604331345",
+   "name": "The Cooper Law Firm, Chartered",
+   "category": "lawyer",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.972273,
+   "lon": -93.278871,
+   "buildingId": "school-of-law-92810608",
+   "nearby": true,
+   "openingHours": "Mo-Fr 08:30-18:00",
+   "website": "https://www.stephencooperlawfirm.com/"
+  },
+  {
    "id": "poi-6661087680",
    "name": "McKinsey & Company",
    "category": "consulting",
@@ -27610,6 +28048,17 @@
    "level": "3"
   },
   {
+   "id": "poi-11328332534",
+   "name": "Prestige",
+   "category": "company",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.985792,
+   "lon": -93.269869,
+   "buildingId": "intersect-apartments-1216920711",
+   "nearby": true
+  },
+  {
    "id": "poi-11676404426",
    "name": "Madia Law LLC",
    "category": "lawyer",
@@ -27621,6 +28070,17 @@
    "openingHours": "Mo-Fr 08:30-17:00; Sa-Su closed",
    "website": "https://madialaw.com/",
    "logo": "madialaw-com"
+  },
+  {
+   "id": "poi-11927201463",
+   "name": "Lola Red",
+   "category": "yes",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.981359,
+   "lon": -93.272159,
+   "buildingId": "textile-building-89080618",
+   "nearby": true
   },
   {
    "id": "poi-12389011101",
@@ -27670,7 +28130,7 @@
    "group": "other",
    "lat": 44.980629,
    "lon": -93.274309,
-   "buildingId": "cowboy-jacks-157031168",
+   "buildingId": "5th-street-ramp-b-30062750",
    "nearby": true,
    "website": "https://www.centralmnlegal.org/contact/minneapolis/",
    "logo": "centralmnlegal-org"
@@ -27756,7 +28216,8 @@
    "lat": 44.977616,
    "lon": -93.263642,
    "buildingId": "grain-exchange-main-building-45452111",
-   "website": "https://altago.com/"
+   "website": "https://altago.com/",
+   "logo": "altago-com"
   },
   {
    "id": "poi-13448274439",
@@ -27783,6 +28244,19 @@
    "openingHours": "Mo-Fr 09:00-17:00",
    "website": "https://bcprnorth.com/",
    "logo": "bcprnorth-com"
+  },
+  {
+   "id": "poi-13628477786",
+   "name": "Owámniyomni Okhódayapi",
+   "category": "association",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.980297,
+   "lon": -93.259197,
+   "buildingId": "metropolitan-lofts-81049075",
+   "nearby": true,
+   "website": "https://owamniyomni.org/about/#the-project",
+   "logo": "owamniyomni-org"
   },
   {
    "id": "poi-13629208522",
@@ -28059,6 +28533,19 @@
    "logo": "jandddental-com"
   },
   {
+   "id": "poi-12754418801",
+   "name": "InVision Distinctive Eyewear",
+   "category": "optometrist",
+   "kind": "healthcare",
+   "group": "other",
+   "lat": 44.984028,
+   "lon": -93.271422,
+   "buildingId": "lee-lofts-45758932",
+   "nearby": true,
+   "website": "https://invision-optical.com/",
+   "logo": "invision-optical-com"
+  },
+  {
    "id": "poi-13030049621",
    "name": "Take Care Chiropractic & Wellness",
    "category": "alternative",
@@ -28083,6 +28570,19 @@
    "level": "1",
    "website": "https://www.projectwellness.com/bakercenter",
    "logo": "projectwellness-com"
+  },
+  {
+   "id": "poi-13639106473",
+   "name": "Reviving Roots Therapy & Wellness",
+   "category": "psychotherapist",
+   "kind": "healthcare",
+   "group": "other",
+   "lat": 44.971819,
+   "lon": -93.285851,
+   "buildingId": "kopp-hall-89061932",
+   "nearby": true,
+   "website": "https://reviving-roots.com/",
+   "logo": "reviving-roots-com"
   },
   {
    "id": "poi-13965983641",
@@ -28170,17 +28670,6 @@
    "lat": 44.978023,
    "lon": -93.273776,
    "buildingId": "city-center-27346720"
-  },
-  {
-   "id": "poi-5955582356",
-   "name": "Elevator",
-   "category": "elevator",
-   "kind": "elevator",
-   "group": "elevator",
-   "lat": 44.978127,
-   "lon": -93.273889,
-   "buildingId": "minneapolis-marriott-city-center-27346715",
-   "nearby": true
   },
   {
    "id": "poi-5955586647",
