@@ -29,7 +29,7 @@
 import { writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildingCategory, groupFor } from "../src/poi.ts";
+import { buildingCategory, groupFor, resolvePoiHost } from "../src/poi.ts";
 import { parseOpeningHours } from "../src/opening-hours.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -68,15 +68,23 @@ relation["building"]["name"](${BBOX});
 out body;
 >;
 out skel qt;
-node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|bank|pharmacy|clinic|dentist|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship)$"]["name"](${BBOX});
+node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|car_rental|bicycle_rental|bureau_de_change|childcare|marketplace)$"]["name"](${BBOX});
 out body;
 node["shop"]["name"](${BBOX});
 out body;
-node["leisure"~"^(fitness_centre|bowling_alley|sports_centre)$"]["name"](${BBOX});
+node["leisure"~"^(fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game)$"]["name"](${BBOX});
 out body;
 node["amenity"="toilets"](${BBOX});
 out body;
-node["tourism"~"^(attraction|museum|artwork|gallery|viewpoint)$"]["name"](${BBOX});
+node["tourism"~"^(attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house)$"]["name"](${BBOX});
+out body;
+// Named offices and healthcare practices: a skyway walker looking for "the
+// Hyatt" is doing the same thing as one looking for a law firm or a clinic
+// — searching for a name they were given. Excluding these whole tag
+// families is why the first bug report couldn't find its hotel.
+node["office"]["name"](${BBOX});
+out body;
+node["healthcare"]["name"](${BBOX});
 out body;
 node["highway"="bus_stop"]["name"](${BBOX});
 out body;
@@ -85,6 +93,12 @@ out body;
 node["highway"="elevator"](${BBOX});
 out body;
 `;
+
+// How far outside every footprint a business can sit and still be attached
+// to the network. Same 120 m transit stops already use: about a downtown
+// block, which is the range where "the skyway gets you to the door" is
+// still a true statement.
+const MAX_NEARBY_POI_METERS = 120;
 
 const DEFAULT_HOURS = [
   [720, 1080],
@@ -376,7 +390,7 @@ async function main(osm) {
       } else if (
         t.amenity === "toilets" ||
         t.highway === "elevator" ||
-        (t.name && (t.amenity || t.shop || t.leisure || t.tourism))
+        (t.name && (t.amenity || t.shop || t.leisure || t.tourism || t.office || t.healthcare))
       ) {
         poiNodes.push(el);
       }
@@ -730,13 +744,17 @@ async function main(osm) {
   }
   console.log(`Landmark photos attached: ${imageByBuildingId.size}.`);
 
-  // Businesses/features inside network buildings (point-in-polygon).
+  // Businesses/features in network buildings, or near enough to one that
+  // the skyway plausibly gets you there (see resolvePoiHost — the old
+  // inside-only rule silently discarded the downtown Target).
   const pois = [];
+  let nearbyHosted = 0;
   for (const n of poiNodes) {
-    const host = finalBuildings.find((b) => pointInRing(n.lon, n.lat, b.footprint));
+    const host = resolvePoiHost(n.lat, n.lon, finalBuildings, MAX_NEARBY_POI_METERS);
     if (!host) continue;
-    const kind = n.tags.highway === "elevator" ? "elevator" : n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : "leisure";
-    const category = n.tags.highway === "elevator" ? "elevator" : (n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.leisure);
+    if (host.nearby) nearbyHosted++;
+    const kind = n.tags.highway === "elevator" ? "elevator" : n.tags.amenity ? "amenity" : n.tags.shop ? "shop" : n.tags.tourism ? "tourism" : n.tags.office ? "office" : n.tags.healthcare ? "healthcare" : "leisure";
+    const category = n.tags.highway === "elevator" ? "elevator" : (n.tags.amenity ?? n.tags.shop ?? n.tags.tourism ?? n.tags.office ?? n.tags.healthcare ?? n.tags.leisure);
     pois.push({
       id: `poi-${n.id}`,
       name: n.tags.name ?? (category === "toilets" ? "Public restroom" : category === "elevator" ? "Elevator" : category),
@@ -745,7 +763,8 @@ async function main(osm) {
       group: groupFor(kind, category),
       lat: +n.lat.toFixed(6),
       lon: +n.lon.toFixed(6),
-      buildingId: host.id,
+      buildingId: host.building.id,
+      ...(host.nearby ? { nearby: true } : {}),
       ...(n.tags.level ? { level: n.tags.level } : {}),
       ...(n.tags.opening_hours ? { openingHours: n.tags.opening_hours } : {}),
       ...(n.tags.website || n.tags["contact:website"]
@@ -841,7 +860,8 @@ async function main(osm) {
   }
 
   console.log(
-    `POIs: ${pois.filter((p) => !p.exterior).length} inside the network, ` +
+    `POIs: ${pois.filter((p) => !p.exterior && !p.nearby).length} inside the network, ` +
+      `${nearbyHosted} just outside it, ` +
       `${pois.filter((p) => p.exterior && p.kind === "transit").length} transit stops, ` +
       `${landmarksAttached} nearby landmarks.`,
   );
