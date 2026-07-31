@@ -323,6 +323,23 @@ async function boot() {
     comboTo.setSearchAnchor(fromB ? { lat: fromB.lat, lon: fromB.lon } : { lat, lon });
   }
 
+  /**
+   * Location has stopped: drop everything derived from a fix.
+   *
+   * The "Current Location" row is the one part of the UI that turns a
+   * position into a routing decision, so leaving it on screen after
+   * tracking ends offers to route you from wherever you last happened to
+   * be — the same confident lie as a frozen walker dot, but harder to
+   * notice, since a stale row looks exactly like a live one. The row is
+   * built to be absent when there's no fix; this is what makes "no fix"
+   * true again.
+   */
+  function forgetPosition() {
+    nearBuilding = null;
+    comboFrom.setCurrentLocation(null);
+    comboFrom.setSearchAnchor(null);
+  }
+
   // --- Save My Ramp: notice when you're parked, offer a one-tap way back --
   const rampPrompt = document.getElementById("ramp-prompt") as HTMLElement;
   const rampPromptText = document.getElementById("ramp-prompt-text")!;
@@ -491,6 +508,7 @@ async function boot() {
       // long after tracking stopped — a confident lie, which is exactly
       // what the snap is supposed to prevent.
       view.setWalkerPosition(null);
+      forgetPosition();
       showToast("Location is off — allow access in your browser settings to route from where you stand.");
     } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
       toldAboutTimeout = true;
@@ -505,6 +523,7 @@ async function boot() {
       // Nothing will update the corrected dot once tracking is off, so it
       // has to go — see the error handler above.
       view.setWalkerPosition(null);
+      forgetPosition();
     }
   });
 
