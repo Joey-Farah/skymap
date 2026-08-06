@@ -19,7 +19,7 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
-import { settleRemaining } from "./nav-progress.ts";
+import { ARRIVAL_LINGER_MS, hasArrived, settleRemaining } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -127,6 +127,12 @@ async function boot() {
   // --- The mode transitions -----------------------------------------------
 
   function enterIdle() {
+    // However the trip ended, a pending auto-dismiss must not fire into
+    // whatever comes next and clear it out from under someone.
+    if (arrivalTimer) {
+      clearTimeout(arrivalTimer);
+      arrivalTimer = 0;
+    }
     activeRoute = null;
     destination = null;
     view.setRoute(null);
@@ -258,6 +264,7 @@ async function boot() {
     setMode("nav");
     manualPositionUntil = 0;
     settledRemaining = null; // a new trip starts with nothing to hold against
+    arrivalDismissCancelled = false; // ...and earns its own auto-dismiss again
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
   }
@@ -272,6 +279,35 @@ async function boot() {
     if (!info) return;
     navInstruction.textContent = info.title;
     navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
+    if (activeRoute && hasArrived(stepIndex, activeRoute.steps.length)) scheduleArrivalDismiss();
+  }
+
+  /** Arrival ends the trip on its own after a beat. Left alone, "You've
+   * arrived" stays on screen with the route still drawn until End is
+   * tapped — in the recorded walk that was ~50s of a finished trip still
+   * claiming to be under way.
+   *
+   * Any touch cancels it: the one thing worse than a banner that overstays
+   * is the map resetting under someone's finger while they read the step
+   * list. Re-arriving after a cancel doesn't reschedule, so a deliberate
+   * "leave it up" survives the next position callback. */
+  let arrivalTimer = 0;
+  let arrivalDismissCancelled = false;
+  function scheduleArrivalDismiss() {
+    if (arrivalTimer || arrivalDismissCancelled) return;
+    arrivalTimer = window.setTimeout(() => {
+      arrivalTimer = 0;
+      if (mode === "nav") enterIdle();
+    }, ARRIVAL_LINGER_MS);
+  }
+  function cancelArrivalDismiss() {
+    if (!arrivalTimer) return;
+    clearTimeout(arrivalTimer);
+    arrivalTimer = 0;
+    arrivalDismissCancelled = true;
+  }
+  for (const evt of ["pointerdown", "keydown", "wheel"]) {
+    document.addEventListener(evt, cancelArrivalDismiss, { passive: true });
   }
 
   // --- Wiring between screens ---------------------------------------------

@@ -1,7 +1,22 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DETOUR_METERS, settleRemaining } from "../src/nav-progress.ts";
+import { DETOUR_METERS, hasArrived, settleRemaining } from "../src/nav-progress.ts";
+
+test("arrival is the last step, not the last instruction", () => {
+  // A three-building trip: steps 0 and 1 still have somewhere to head into.
+  assert.equal(hasArrived(0, 3), false);
+  assert.equal(hasArrived(1, 3), false);
+  assert.equal(hasArrived(2, 3), true);
+
+  // Past the end counts as arrived rather than as a missing step — a step
+  // index is derived from position and can overshoot.
+  assert.equal(hasArrived(5, 3), true);
+
+  // No route is not an arrival; nothing was ever under way.
+  assert.equal(hasArrived(0, 0), false);
+  assert.equal(hasArrived(0, 1), false);
+});
 
 test("the first fix of a trip is taken as-is", () => {
   assert.equal(settleRemaining(null, 240), 240);

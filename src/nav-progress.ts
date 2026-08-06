@@ -35,3 +35,24 @@ export function settleRemaining(settled: number | null, raw: number): number {
   if (raw <= settled) return raw;
   return raw - settled > DETOUR_METERS ? raw : settled;
 }
+
+/**
+ * Whether a trip is over: there is no further building to head into.
+ *
+ * Shared so the banner and the auto-dismiss timer agree by construction.
+ * The alternative — the timer matching on the words "You've arrived" —
+ * makes a copy edit silently stop navigation from ever ending itself.
+ *
+ * A single-step route is a destination you are already standing in, which
+ * the app answers before navigation starts; it never becomes an arrival.
+ */
+export function hasArrived(stepIndex: number, stepCount: number): boolean {
+  if (stepCount < 2) return false;
+  return stepIndex >= stepCount - 1;
+}
+
+/** How long "You've arrived" stays up before navigation ends itself. Long
+ * enough to read and to look up at the building; short enough that the
+ * screen isn't still claiming a finished trip on the walk back. In the
+ * recorded walk the banner sat for ~50s until it was dismissed by hand. */
+export const ARRIVAL_LINGER_MS = 10_000;
