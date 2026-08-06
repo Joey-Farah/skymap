@@ -862,7 +862,11 @@ async function main(osm) {
       name: b.name,
       category: b.category,
       kind: "landmark",
-      group: "landmark",
+      // Ask the classifier rather than asserting. Hardcoding "landmark"
+      // here is what put 13 hotels in the Landmarks filter: this block
+      // runs for every off-network building in LANDMARK_CATEGORIES, and
+      // that set includes "hotel".
+      group: groupFor("landmark", b.category),
       lat: b.lat,
       lon: b.lon,
       buildingId: host.id,

@@ -59,12 +59,11 @@ For Review". Upload them *before* submitting, or they wait for the next
 version. Editing a live version's screenshots also requires a new version,
 so there's no back door once it's shipped.
 
-The set was recaptured on 2026-07-31 against the post-feedback UI (the
-chip row now carries Hotels and Landmarks, so the 07-30 set was stale
-again). It belongs to **1.2**: 1.1 was already WAITING_FOR_REVIEW and
-pulling it back would have thrown away two days of queue for a screenshot
-refresh, so it ships as-is a second time. Upload this set as the first
-step of 1.2, before submitting.
+The set in `appstore-assets/screenshots/` was recaptured **2026-08-06 for
+1.3**, against the six-chip row (Landmarks folded into Misc.). The 07-31
+set shipped with 1.2 and showed seven chips including Landmarks, so it is
+stale the moment 1.3's filter change lands — recapture is not optional
+here, the change is visible in shots 1 and 2.
 
 Withdrawing a submission, if it ever *is* worth it, is not on the version
 page — the modern flow puts "Remove from Review" on the **review
@@ -110,36 +109,22 @@ takes about four minutes.** It is much faster than it looks like it
 should be, and reasoning from "a build must take longer than that" will
 mislead you every time.
 
-## 1.2 — unblocked, 1.1 is live (as of 2026-08-06)
+## 1.2 — SHIPPED 2026-08-06
 
-1.1 reached **Ready for Sale on 2026-07-29**, so Apple's one-version-at-a-
-time rule no longer blocks 1.2, and no 1.2 version record exists yet.
+Submitted 19:24 UTC, `READY_FOR_SALE` roughly an hour later with build 36.
+**Review is not reliably slow.** 1.0 and 1.1 each took days, so the plan was
+to submit and test on TestFlight during review, withdrawing if the walk
+found something. Approval beat the walk. Anything that has to be verified on
+real hardware must be verified *before* submitting — the withdraw path
+(`PATCH /v1/reviewSubmissions/{id}` `{canceled: true}`) only exists until
+review completes.
 
-`MARKETING_VERSION` is already 1.2. The job:
+## 1.3 — prepared, holding for a device walk
 
-1. **Merge to `main`** and let Xcode Cloud build it. Confirm the commit
-   — see the section above.
-2. **Confirm the run built the commit you think it did**, then wait
-   10–30 min for processing.
-3. **+ next to "iOS App"** in the sidebar → version string `1.2`.
-4. **Upload the 5 screenshots** from `appstore-assets/screenshots/` —
-   captured 2026-07-31 against the 1.2 UI. Do this *before* submitting;
-   after submission the API returns 409 and they wait another release.
-5. **Paste "What's New — 1.2"** from below.
-6. **Attach the new build**, then Save → Add for Review → Submit.
-
-Set Version Release to **"Automatically release this version"** — on
-manual release it parks in Pending Developer Release after approval and
-blocks the next version until someone notices.
-
-The build stays testable on TestFlight for the whole time 1.2 sits in
-review, which is the cheapest way to catch anything the recording didn't.
-
-Watch for: uploading a build while another version sits in review is a
-documented way to disturb the in-review version's metadata
-(developer.apple.com/forums/thread/745702). Not a concern while nothing
-else is in review, but re-check the live version still reads correctly
-after any upload.
+`MARKETING_VERSION` is 1.3. Screenshots recaptured against the six-chip row.
+Do NOT submit until the TestFlight build has been walked: 1.2 shipped with a
+compass change that was never run on hardware, and this release is the first
+chance to confirm it.
 
 ## What's New — 1.1
 
@@ -163,6 +148,15 @@ you actually want to know.
 • Route start and end points now land on the actual skyway door.
 • Simplified the filters: "Food" now covers restaurants and convenience
   stores, and shops and services are combined under "Misc."
+```
+
+## What's New — 1.3
+
+```
+Hotels are where you'd expect them, and the map filters are simpler.
+
+• Every downtown hotel now shows under the Hotels filter. Most of them were filed under Landmarks by mistake, so the filter meant for them was turning up nearly empty.
+• Fewer filter buttons: landmarks like theatres, museums and public art now appear under Misc. rather than taking a row of their own.
 ```
 
 ## What's New — 1.2

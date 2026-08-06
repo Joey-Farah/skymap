@@ -685,9 +685,24 @@ async function boot() {
   // exist locked in a height sized for an empty row, clipping them once
   // they actually appeared.
   const suggestionsRow = document.getElementById("suggestions-row")!;
-  // Hotels and landmarks earn chips too: they were searchable but
-  // unbrowsable, which for a visitor is close to not being there.
-  const SUGGESTED_GROUPS = ["coffee", "food", "hotel", "landmark", "other", "restroom", "elevator"] as const;
+  // Hotels earn a chip: they were searchable but unbrowsable, which for a
+  // visitor is close to not being there.
+  //
+  // Landmarks deliberately have no chip of their own — seven pills wrapped
+  // onto three lines and made the panel taller than the map it describes.
+  // They ride along with Misc. instead. The *group* stays: landmarkNear
+  // picks turn-instruction cues ("past Bill & Marty's") from food, coffee
+  // and landmark POIs, so collapsing it in the data would have the nav
+  // banner citing dentists and banks as the thing to walk past.
+  const CHIP_GROUPS = {
+    coffee: ["coffee"],
+    food: ["food"],
+    hotel: ["hotel"],
+    other: ["other", "landmark"],
+    restroom: ["restroom"],
+    elevator: ["elevator"],
+  } as const;
+  const SUGGESTED_GROUPS = Object.keys(CHIP_GROUPS) as (keyof typeof CHIP_GROUPS)[];
   const activeGroups = new Set<string>();
   for (const group of SUGGESTED_GROUPS) {
     const pill = document.createElement("button");
@@ -705,7 +720,8 @@ async function boot() {
       const on = activeGroups.has(group);
       pill.classList.toggle("active", on);
       pill.setAttribute("aria-pressed", String(on));
-      view.setPoiGroupFilter([...activeGroups]);
+      // A chip can stand for more than one group — Misc. carries landmarks.
+      view.setPoiGroupFilter([...activeGroups].flatMap((g) => CHIP_GROUPS[g as keyof typeof CHIP_GROUPS]));
     });
     suggestionsRow.appendChild(pill);
   }
