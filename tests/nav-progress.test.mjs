@@ -1,7 +1,23 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DETOUR_METERS, canDismissArrival, hasArrived, settleArrival, settleRemaining } from "../src/nav-progress.ts";
+import { DETOUR_METERS, canDismissArrival, hasArrived, highlightedStep, settleArrival, settleRemaining } from "../src/nav-progress.ts";
+
+test("the highlighted step is the one the banner is naming", () => {
+  // On the recorded walk the banner read "Head into Forum" while the list
+  // highlighted "Deluxe Plaza" — the building already behind you. Both were
+  // individually correct (banner = next, list = current) and together they
+  // read as a bug. The list now follows the banner.
+  assert.equal(highlightedStep(0, 3), 1, "heading into the second building");
+  assert.equal(highlightedStep(1, 3), 2, "heading into the last");
+
+  // Arrived: there is no next step, so the destination stays highlighted
+  // rather than the highlight falling off the end of the list.
+  assert.equal(highlightedStep(2, 3), 2);
+  assert.equal(highlightedStep(9, 3), 2, "an overshooting step index clamps");
+
+  assert.equal(highlightedStep(0, 0), 0, "no route, nothing to point at");
+});
 
 test("arrival is the last step, not the last instruction", () => {
   // A three-building trip: steps 0 and 1 still have somewhere to head into.
