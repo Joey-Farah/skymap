@@ -87,30 +87,56 @@ The API equivalent is PATCH /v1/reviewSubmissions/{id} with canceled:true.
 - Metadata for a released version can't be edited; the fixes above live on
   the next version's record.
 
-## 1.2 — staged, waiting on 1.1 (as of 2026-07-31)
+## Always check the build predates nothing it claims (2026-08-06)
 
-Everything for 1.2 is ready; the only blocker is Apple's rule that a new
-version can't be created while another is in review. **The moment 1.1
-reaches Ready for Distribution**, this is the whole job:
+**A build only contains commits that landed before its run started.** This
+is obvious and was still nearly missed: build 32 was uploaded at 18:21 CDT
+on 07-31, and `b3d3a30` — the street-routing work that "What's New — 1.2"
+advertises by name — was committed at 18:17, four minutes earlier. An
+Xcode Cloud run (npm build, Capacitor sync, archive, upload) takes far
+longer than four minutes, so build 32 cannot contain it. Submitting it
+would have shipped release notes the binary didn't honor.
 
-1. **+ next to "iOS App"** in the sidebar → version string `1.2`.
-   (`MARKETING_VERSION` is already 1.2 in the project file.)
-2. **Upload the 5 screenshots** from `appstore-assets/screenshots/` —
+Before attaching a build, confirm what it actually built:
+
+- Compare the build's upload time against `git log -1 --format=%cd` for
+  the last commit the notes depend on. If the gap is under ~20 minutes,
+  assume the build is older than the commit.
+- Xcode → View → Navigators → Report → **Cloud** tab shows each run's
+  source commit directly. That's the authoritative answer.
+
+When in doubt, push and rebuild. Half an hour beats a review cycle.
+
+## 1.2 — unblocked, 1.1 is live (as of 2026-08-06)
+
+1.1 reached **Ready for Sale on 2026-07-29**, so Apple's one-version-at-a-
+time rule no longer blocks 1.2, and no 1.2 version record exists yet.
+
+`MARKETING_VERSION` is already 1.2. The job:
+
+1. **Merge to `main`** and let Xcode Cloud build it. Do not reuse build 32
+   — see the section above.
+2. **Confirm the run built the commit you think it did**, then wait
+   10–30 min for processing.
+3. **+ next to "iOS App"** in the sidebar → version string `1.2`.
+4. **Upload the 5 screenshots** from `appstore-assets/screenshots/` —
    captured 2026-07-31 against the 1.2 UI. Do this *before* submitting;
    after submission the API returns 409 and they wait another release.
-3. **Paste "What's New — 1.2"** from below.
-4. **Attach the 1.2 build** (already uploaded and TestFlight-tested).
-5. Save → Add for Review → Submit.
+5. **Paste "What's New — 1.2"** from below.
+6. **Attach the new build**, then Save → Add for Review → Submit.
 
-To shorten the gap, set 1.1's Version Release to **"Automatically release
-this version"** — on manual release it parks in Pending Developer Release
-after approval and blocks 1.2 until someone notices.
+Set Version Release to **"Automatically release this version"** — on
+manual release it parks in Pending Developer Release after approval and
+blocks the next version until someone notices.
 
-Watch for: uploading a 1.2 build while 1.1 sat in review is a documented
-way to disturb the in-review version's metadata
-(developer.apple.com/forums/thread/745702). It was done deliberately here
-to get 1.2 onto TestFlight early — re-check that 1.1 still reads 1.1 and
-is still Waiting for Review.
+The build stays testable on TestFlight for the whole time 1.2 sits in
+review, which is the cheapest way to catch anything the recording didn't.
+
+Watch for: uploading a build while another version sits in review is a
+documented way to disturb the in-review version's metadata
+(developer.apple.com/forums/thread/745702). Not a concern while nothing
+else is in review, but re-check the live version still reads correctly
+after any upload.
 
 ## What's New — 1.1
 

@@ -17,6 +17,7 @@ import {
   sliceAlong,
   snapToRoute,
   tripMinutes,
+  walkedPrefix,
   withApproach,
 } from "../src/router.ts";
 import { closingSoonWarnings, isClosingSoon, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
@@ -252,6 +253,47 @@ test("sliceAlong cuts a polyline at a distance", () => {
 
   assert.deepEqual(sliceAlong(line, 0)[0], [0, 0]);
   assert.deepEqual(sliceAlong(line, total * 2), line, "clamps past the end");
+});
+
+test("walkedPrefix returns the part of the route already behind you", () => {
+  // ~222m of eastward line at the equator, two equal legs.
+  const line = [
+    [0, 0],
+    [0.001, 0],
+    [0.002, 0],
+  ];
+
+  const total = polylineMeters(line);
+
+  // Half the trip left: everything up to the middle vertex is walked.
+  const half = walkedPrefix(line, total / 2);
+  assert.equal(half.length, 2, "cut lands on the middle vertex");
+  assert.ok(Math.abs(half[1][0] - 0.001) < 1e-6);
+
+  // At the destination the whole line is behind you.
+  const done = walkedPrefix(line, 0);
+  assert.ok(Math.abs(done[done.length - 1][0] - 0.002) < 1e-6, "walked to the end");
+
+  // At the start there is nothing to dim — a single point draws no line.
+  assert.equal(walkedPrefix(line, total).length, 1, "nothing walked yet");
+
+  // Past the destination clamps rather than running off the end.
+  assert.deepEqual(walkedPrefix(line, -50), line, "overshoot clamps to the full line");
+
+  // Zero-length legs: routeCoords emits these where a bridge endpoint
+  // coincides with a building exit point, and they hit sliceAlong's
+  // divide-by-leg branch.
+  const dupes = [
+    [0, 0],
+    [0, 0],
+    [0.001, 0],
+    [0.001, 0],
+    [0.002, 0],
+  ];
+  const cut = walkedPrefix(dupes, polylineMeters(dupes) / 2);
+  assert.ok(Math.abs(cut[cut.length - 1][0] - 0.001) < 1e-6, "duplicate vertices don't derail the cut");
+
+  assert.deepEqual(walkedPrefix([], 0), [], "no route, no prefix");
 });
 
 test("accessible routing avoids stairs edges even when they're the shortest path", () => {

@@ -305,6 +305,27 @@ export function remainingRouteMeters(coords: [number, number][], lat: number, lo
   return Math.max(0, walked - bestAlong);
 }
 
+/**
+ * The stretch of route already behind a walker, as its own polyline —
+ * everything from the start up to whatever is left to walk.
+ *
+ * Drawn dimmed over the route, this is the only thing on screen that says
+ * how far along you are at a glance: without it the whole line stays lit
+ * from origin to destination and only the dot moves, which reads as a
+ * route that hasn't started.
+ *
+ * Takes a distance rather than a position on purpose. The caller decides
+ * which remaining figure to believe, and during navigation that is the
+ * *settled* one the arrival bar uses — feeding this the raw projection
+ * instead put two disagreeing accounts of progress on the same screen,
+ * with the grey line un-walking a bridge under drift while the arrival
+ * time held still.
+ */
+export function walkedPrefix(coords: [number, number][], remainingMeters: number): [number, number][] {
+  if (coords.length < 2) return coords.slice(0, 1);
+  return sliceAlong(coords, polylineMeters(coords) - remainingMeters);
+}
+
 export interface SnappedPosition {
   /** Point on the route line, [lon, lat]. */
   coord: [number, number];

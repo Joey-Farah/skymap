@@ -4,3 +4,9 @@ dist/
 .DS_Store
 public/data/skymap-data.osm.json
 .vercel
+
+# Screen recordings dropped in for review — never part of the build.
+*.mp4
+*.MP4
+*.mov
+*.MOV

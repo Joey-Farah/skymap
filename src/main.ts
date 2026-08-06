@@ -19,6 +19,7 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
+import { ARRIVAL_LINGER_MS, canDismissArrival, hasArrived, settleRemaining } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -126,6 +127,12 @@ async function boot() {
   // --- The mode transitions -----------------------------------------------
 
   function enterIdle() {
+    // However the trip ended, a pending auto-dismiss must not fire into
+    // whatever comes next and clear it out from under someone.
+    if (arrivalTimer) {
+      clearTimeout(arrivalTimer);
+      arrivalTimer = 0;
+    }
     activeRoute = null;
     destination = null;
     view.setRoute(null);
@@ -256,16 +263,59 @@ async function boot() {
     if (!activeRoute) return;
     setMode("nav");
     manualPositionUntil = 0;
+    settledRemaining = null; // a new trip starts with nothing to hold against
+    walkedHighWater = null;
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
   }
 
   function applyNavProgress(stepIndex: number, at?: { lat: number; lon: number }) {
-    const remaining = at ? view.remainingMeters(at.lat, at.lon) : null;
+    const raw = at ? view.remainingMeters(at.lat, at.lon) : null;
+    // Held to non-increasing across the trip, so indoor GPS drift can't walk
+    // the arrival time backwards — see nav-progress.ts.
+    if (raw != null) settledRemaining = settleRemaining(settledRemaining, raw);
+    if (settledRemaining != null) {
+      walkedHighWater = walkedHighWater == null ? settledRemaining : Math.min(walkedHighWater, settledRemaining);
+    }
+    const remaining = raw == null ? null : settledRemaining;
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;
     navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
+    const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);
+    if (canDismissArrival(arrived, remaining)) scheduleArrivalDismiss();
+  }
+
+  /** Arrival ends the trip on its own after a beat. Left alone, "You've
+   * arrived" stays on screen with the route still drawn until End is
+   * tapped — in the recorded walk that was ~50s of a finished trip still
+   * claiming to be under way.
+   *
+   * Any touch cancels it: the one thing worse than a banner that overstays
+   * is the map resetting under someone's finger while they read the step
+   * list. Re-arriving after a cancel doesn't reschedule, so a deliberate
+   * "leave it up" survives the next position callback. */
+  let arrivalTimer = 0;
+  function scheduleArrivalDismiss() {
+    if (arrivalTimer) return;
+    arrivalTimer = window.setTimeout(() => {
+      arrivalTimer = 0;
+      if (mode === "nav") enterIdle();
+    }, ARRIVAL_LINGER_MS);
+  }
+  /** Touching restarts the countdown rather than cancelling it. Interacting
+   * means "not yet", not "never": a latch would let one incidental tap on
+   * the map leave the finished trip up until End is pressed, which is the
+   * exact defect the timer exists to fix. Keep touching and it keeps
+   * waiting; stop, and it ends the trip a beat later. */
+  function deferArrivalDismiss() {
+    if (!arrivalTimer) return;
+    clearTimeout(arrivalTimer);
+    arrivalTimer = 0;
+    scheduleArrivalDismiss();
+  }
+  for (const evt of ["pointerdown", "keydown", "wheel"]) {
+    document.addEventListener(evt, deferArrivalDismiss, { passive: true });
   }
 
   // --- Wiring between screens ---------------------------------------------
@@ -335,12 +385,22 @@ async function boot() {
   // all; automatic updates resume on their own once the window passes.
   const MANUAL_POSITION_GRACE_MS = 45_000;
   let manualPositionUntil = 0;
+  /** Smoothed metres-to-go for the trip in progress; null between trips. */
+  let settledRemaining: number | null = null;
+  /** Closest to the destination this trip has ever got. The dimmed line is
+   * drawn from this rather than from the live figure: skyways run parallel
+   * a block apart, so a drifting fix can project onto a neighbouring leg
+   * and read as a real detour, which would visibly un-walk a bridge you
+   * just crossed. The arrival bar still tells the truth about a detour;
+   * the grey line is a record of ground covered, and ground stays covered. */
+  let walkedHighWater: number | null = null;
 
   function onRouteTap(lat: number, lon: number) {
     // A navigation-mode concern: previews are for reading, not walking.
     if (!activeRoute || mode !== "nav") return;
     applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
     view.setWalkerPosition([lon, lat]);
+    view.setWalkedProgress(walkedHighWater);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
   }
 
@@ -360,7 +420,13 @@ async function boot() {
       // wherever the fix landed. Past the snap threshold this goes back to
       // null and MapLibre's own dot takes over, which is the honest answer
       // for someone who has actually walked off the route.
-      view.setWalkerPosition(view.snapToActiveRoute(lat, lon));
+      // Only dim from a fix the snapper was willing to believe. Past the
+      // threshold the dot honestly falls back to MapLibre's raw position,
+      // and drawing a confident grey prefix off that same rejected fix
+      // would contradict it on the same screen.
+      const snapped = view.snapToActiveRoute(lat, lon);
+      view.setWalkerPosition(snapped);
+      view.setWalkedProgress(snapped ? walkedHighWater : null);
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(approach);
@@ -560,6 +626,7 @@ async function boot() {
       // long after tracking stopped — a confident lie, which is exactly
       // what the snap is supposed to prevent.
       view.setWalkerPosition(null);
+      view.setWalkedProgress(null); // same reason: nothing left to keep it honest
       forgetPosition();
       showToast("Location is off — allow access in your browser settings to route from where you stand.");
     } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
@@ -575,6 +642,7 @@ async function boot() {
       // Nothing will update the corrected dot once tracking is off, so it
       // has to go — see the error handler above.
       view.setWalkerPosition(null);
+      view.setWalkedProgress(null);
       forgetPosition();
     }
   });
