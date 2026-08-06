@@ -51,6 +51,28 @@ export function hasArrived(stepIndex: number, stepCount: number): boolean {
   return stepIndex >= stepCount - 1;
 }
 
+/** How close the destination has to be before an "arrived" step index is
+ * believed enough to close the map. routeStepIndex picks the nearest
+ * building centroid, so a large destination reads as arrived from its far
+ * edge — in the recorded walk the banner flipped over while the walk
+ * carried on. Showing the banner early is harmless; ending navigation
+ * early is not. */
+const ARRIVAL_METERS = 30;
+
+/**
+ * Whether an arrival is solid enough to end the trip without being asked.
+ *
+ * @param arrived   what hasArrived says about the step index
+ * @param remaining metres still to walk, or null when there's no live fix
+ */
+export function canDismissArrival(arrived: boolean, remaining: number | null): boolean {
+  if (!arrived) return false;
+  // No fix to second-guess the step index with — trust it rather than
+  // leave a finished trip on screen indefinitely, which is the bug this
+  // whole path exists to fix.
+  return remaining === null || remaining <= ARRIVAL_METERS;
+}
+
 /** How long "You've arrived" stays up before navigation ends itself. Long
  * enough to read and to look up at the building; short enough that the
  * screen isn't still claiming a finished trip on the walk back. In the

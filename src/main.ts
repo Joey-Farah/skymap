@@ -19,7 +19,7 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
-import { ARRIVAL_LINGER_MS, hasArrived, settleRemaining } from "./nav-progress.ts";
+import { ARRIVAL_LINGER_MS, canDismissArrival, hasArrived, settleRemaining } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -279,7 +279,8 @@ async function boot() {
     if (!info) return;
     navInstruction.textContent = info.title;
     navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
-    if (activeRoute && hasArrived(stepIndex, activeRoute.steps.length)) scheduleArrivalDismiss();
+    const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);
+    if (canDismissArrival(arrived, remaining)) scheduleArrivalDismiss();
   }
 
   /** Arrival ends the trip on its own after a beat. Left alone, "You've

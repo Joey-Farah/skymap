@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DETOUR_METERS, hasArrived, settleRemaining } from "../src/nav-progress.ts";
+import { DETOUR_METERS, canDismissArrival, hasArrived, settleRemaining } from "../src/nav-progress.ts";
 
 test("arrival is the last step, not the last instruction", () => {
   // A three-building trip: steps 0 and 1 still have somewhere to head into.
@@ -16,6 +16,22 @@ test("arrival is the last step, not the last instruction", () => {
   // No route is not an arrival; nothing was ever under way.
   assert.equal(hasArrived(0, 0), false);
   assert.equal(hasArrived(0, 1), false);
+});
+
+test("a trip only ends itself once you're actually there", () => {
+  // routeStepIndex picks the nearest building centroid, so a big
+  // destination reads as "arrived" from its far edge — visible in the
+  // recorded walk, where the banner flipped while the walk continued.
+  // Ending navigation on that would close the map mid-trip.
+  assert.equal(canDismissArrival(true, 120), false, "step says arrived, distance disagrees");
+  assert.equal(canDismissArrival(true, 8), true, "at the door");
+
+  // Not arrived is never dismissable, however close the destination is.
+  assert.equal(canDismissArrival(false, 0), false);
+
+  // No fix to check against: the step index is all there is, so trust it
+  // rather than leaving the banner up forever.
+  assert.equal(canDismissArrival(true, null), true);
 });
 
 test("the first fix of a trip is taken as-is", () => {
