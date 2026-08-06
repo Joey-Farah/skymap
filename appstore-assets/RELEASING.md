@@ -87,25 +87,28 @@ The API equivalent is PATCH /v1/reviewSubmissions/{id} with canceled:true.
 - Metadata for a released version can't be edited; the fixes above live on
   the next version's record.
 
-## Always check the build predates nothing it claims (2026-08-06)
+## Ask the API which commit a build came from (2026-08-06)
 
-**A build only contains commits that landed before its run started.** This
-is obvious and was still nearly missed: build 32 was uploaded at 18:21 CDT
-on 07-31, and `b3d3a30` — the street-routing work that "What's New — 1.2"
-advertises by name — was committed at 18:17, four minutes earlier. An
-Xcode Cloud run (npm build, Capacitor sync, archive, upload) takes far
-longer than four minutes, so build 32 cannot contain it. Submitting it
-would have shipped release notes the binary didn't honor.
+Before attaching a build, confirm what it actually built. There is an
+exact answer, so don't estimate:
 
-Before attaching a build, confirm what it actually built:
+```
+python asc.py runs 205BBDD8-A502-4B7C-9298-4A9758C03362
+```
 
-- Compare the build's upload time against `git log -1 --format=%cd` for
-  the last commit the notes depend on. If the gap is under ~20 minutes,
-  assume the build is older than the commit.
-- Xcode → View → Navigators → Report → **Cloud** tab shows each run's
-  source commit directly. That's the authoritative answer.
+or, for the commit itself, `GET /v1/ciProducts/{id}/buildRuns` with
+`sort=-number` and read `attributes.sourceCommit.commitSha`. Match that
+against the commits the release notes depend on.
 
-When in doubt, push and rebuild. Half an hour beats a review cycle.
+**Do not infer it from timestamps.** That was tried here and got the
+wrong answer: build 32 was uploaded four minutes after the commit its
+notes advertised, which looked impossible, so it was written off as
+stale. The API said otherwise — run #32 started at 23:17:30Z and
+uploaded at 23:21:44Z, having built exactly that commit. **A full Xcode
+Cloud run on this project — npm build, Capacitor sync, archive, upload —
+takes about four minutes.** It is much faster than it looks like it
+should be, and reasoning from "a build must take longer than that" will
+mislead you every time.
 
 ## 1.2 — unblocked, 1.1 is live (as of 2026-08-06)
 
@@ -114,7 +117,7 @@ time rule no longer blocks 1.2, and no 1.2 version record exists yet.
 
 `MARKETING_VERSION` is already 1.2. The job:
 
-1. **Merge to `main`** and let Xcode Cloud build it. Do not reuse build 32
+1. **Merge to `main`** and let Xcode Cloud build it. Confirm the commit
    — see the section above.
 2. **Confirm the run built the commit you think it did**, then wait
    10–30 min for processing.
