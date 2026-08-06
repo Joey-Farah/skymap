@@ -1,5 +1,6 @@
 import type { Building, DayHours, Poi, RouteResult } from "./types.ts";
 import { reportIssueUrl } from "./share.ts";
+import { hasArrived, settleArrival } from "./nav-progress.ts";
 import {
   CATEGORY_LABELS,
   GROUP_COLORS,
@@ -359,6 +360,8 @@ export class Sheet {
   private activeRoute: RouteResult | null = null;
   private routePois: Poi[] = [];
   private navBarArrival: HTMLElement | null = null;
+  /** Arrival instant currently on screen; null between trips. */
+  private settledEta: number | null = null;
   private navBarRemaining: HTMLElement | null = null;
   private navStepsListEl: HTMLUListElement | null = null;
   /** Measured, not guessed — see measureHeights(). Peek is however tall the
@@ -892,6 +895,7 @@ export class Sheet {
   showNavigating(route: RouteResult, when: Date, pois: Poi[], actions: { onEnd: () => void }) {
     this.routePois = pois;
     this.activeRoute = route;
+    this.settledEta = null; // a new trip must not inherit the last one's clock
     this.content.innerHTML = "";
     const bar = document.createElement("div");
     bar.className = "nav-bar";
@@ -937,16 +941,21 @@ export class Sheet {
       const frac = lastIdx > 0 ? Math.min(1, stepIndex / lastIdx) : 1;
       remainingMeters = route.totalMeters * (1 - frac);
     }
-    const remainingMin = Math.round(
-      route.totalMeters > 0 ? route.totalMinutes * (remainingMeters / route.totalMeters) : 0,
-    );
-    const eta = new Date(now.getTime() + remainingMin * 60_000);
+    // Settle the arrival *instant*, then read the minute count back off it.
+    // Rounding the minutes first and adding them to a moving `now` is what
+    // made the clock sawtooth — see settleArrival. Deriving both from one
+    // settled timestamp also stops the clock and the "N min" disagreeing.
+    const rawMinutes = route.totalMeters > 0 ? route.totalMinutes * (remainingMeters / route.totalMeters) : 0;
+    this.settledEta = settleArrival(this.settledEta, now.getTime() + rawMinutes * 60_000);
+    const eta = new Date(this.settledEta);
+    const remainingMin = Math.max(0, Math.round((this.settledEta - now.getTime()) / 60_000));
     if (this.navBarArrival) {
       this.navBarArrival.textContent = formatMinute(eta.getHours() * 60 + eta.getMinutes());
     }
     if (this.navBarRemaining) {
-      this.navBarRemaining.textContent = `arrival · ${Math.max(0, remainingMin)} min · ${formatDistance(remainingMeters)}`;
+      this.navBarRemaining.textContent = `arrival · ${remainingMin} min · ${formatDistance(remainingMeters)}`;
     }
+    if (hasArrived(stepIndex, route.steps.length)) return { title: "You've arrived", sub: null };
     const next = route.steps[stepIndex + 1];
     if (!next) return { title: "You've arrived", sub: null };
     const crossing = next.viaCrossing ?? "";

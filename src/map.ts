@@ -793,16 +793,16 @@ export class SkymapView {
   /** Dim the stretch of route already behind a walker. `null` clears it,
    * which a fresh route and the end of navigation both need: a grey stub
    * left over from the last trip reads as a route you've half-finished. */
-  setWalkedProgress(at: { lat: number; lon: number } | null) {
+  setWalkedProgress(remainingMeters: number | null) {
     const src = this.map.getSource("skyway-route-done") as maplibregl.GeoJSONSource;
     if (!src) return;
-    if (!at || this.activeRouteCoords.length < 2) {
+    if (remainingMeters == null || this.activeRouteCoords.length < 2) {
       src.setData(lineFC([]));
       return;
     }
     // A single point is a walker still standing at the origin — nothing
     // walked yet, and lineFC would emit a degenerate one-vertex line.
-    const prefix = walkedPrefix(this.activeRouteCoords, at.lat, at.lon);
+    const prefix = walkedPrefix(this.activeRouteCoords, remainingMeters);
     src.setData(lineFC(prefix.length > 1 ? prefix : []));
   }
 
