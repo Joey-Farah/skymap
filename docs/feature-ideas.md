@@ -76,6 +76,27 @@ Sources: [Sky Walker (App Store)](https://apps.apple.com/us/app/sky-walker-minne
   the two things testers noticed first in SkyMap. That's the moat;
   deepen it before widening.
 
+## Deferred out of 1.2 (found walking the route, 2026-08-06)
+
+A screen recording of a real 733 Building → Forum walk on 1.1 turned up
+six things. Three were fixed for 1.2 (dimmed the walked route, settled
+the arrival time, arrival now ends the trip); the drifting position dot
+was already fixed. These two were left:
+
+- **No locate or heading control while navigating.** `styles.css` hides
+  `.maplibregl-ctrl-bottom-right` in `mode-nav` — deliberately, so the
+  banner and bar own the screen. But heading-up mode already exists in
+  `locate-mode.ts` and is unreachable in the one situation that most
+  wants it: standing in a skyway corridor asking which way to turn. The
+  map stays north-up for the whole trip. This is the biggest functional
+  gap the recording exposed, and the one worth doing next.
+- **The banner and the step list disagree by one.** The banner names the
+  *next* building ("Head into Forum") while the list highlights the
+  *current* one ("Deluxe Plaza"). Both are correct and the pairing is
+  intentional, but on screen together they read as a bug. Either
+  highlight the row the banner is naming, or make the list's current-row
+  styling read as "you are here" rather than as a selection.
+
 ## Parking-lot (needs a backend or real ops)
 
 - Crowdsourced closure reports with actual distribution (the client-side
