@@ -305,6 +305,26 @@ export function remainingRouteMeters(coords: [number, number][], lat: number, lo
   return Math.max(0, walked - bestAlong);
 }
 
+/**
+ * The stretch of route already behind a walker, as its own polyline —
+ * everything from the start up to where a fix projects onto the line.
+ *
+ * Drawn dimmed over the route, this is the only thing on screen that says
+ * how far along you are at a glance: without it the whole line stays lit
+ * from origin to destination and only the dot moves, which reads as a
+ * route that hasn't started. Measured by projection rather than by step,
+ * for the same reason remainingRouteMeters is.
+ */
+export function walkedPrefix(
+  coords: [number, number][],
+  lat: number,
+  lon: number,
+): [number, number][] {
+  if (coords.length < 2) return coords.slice(0, 1);
+  const walked = polylineMeters(coords) - remainingRouteMeters(coords, lat, lon);
+  return sliceAlong(coords, walked);
+}
+
 export interface SnappedPosition {
   /** Point on the route line, [lon, lat]. */
   coord: [number, number];

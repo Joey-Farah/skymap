@@ -17,6 +17,7 @@ import {
   sliceAlong,
   snapToRoute,
   tripMinutes,
+  walkedPrefix,
   withApproach,
 } from "../src/router.ts";
 import { closingSoonWarnings, isClosingSoon, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
@@ -252,6 +253,35 @@ test("sliceAlong cuts a polyline at a distance", () => {
 
   assert.deepEqual(sliceAlong(line, 0)[0], [0, 0]);
   assert.deepEqual(sliceAlong(line, total * 2), line, "clamps past the end");
+});
+
+test("walkedPrefix returns the part of the route already behind you", () => {
+  // ~222m of eastward line at the equator, two equal legs.
+  const line = [
+    [0, 0],
+    [0.001, 0],
+    [0.002, 0],
+  ];
+
+  // Standing on the middle vertex: everything up to it is walked.
+  const half = walkedPrefix(line, 0, 0.001);
+  assert.equal(half.length, 2, "cut lands on the middle vertex");
+  assert.ok(Math.abs(half[1][0] - 0.001) < 1e-6);
+
+  // A fix off to the side still projects onto the line rather than
+  // stretching the prefix out to meet it — GPS on a skyway is never exact.
+  const offset = walkedPrefix(line, 0.0002, 0.001);
+  assert.equal(offset.length, 2);
+  assert.ok(Math.abs(offset[1][0] - 0.001) < 1e-6, "projects a drifting fix onto the route");
+
+  // At the destination the whole line is behind you.
+  const done = walkedPrefix(line, 0, 0.002);
+  assert.ok(Math.abs(done[done.length - 1][0] - 0.002) < 1e-6, "walked to the end");
+
+  // At the start there is nothing to dim — a single point draws no line.
+  assert.equal(walkedPrefix(line, 0, 0).length, 1, "nothing walked yet");
+
+  assert.deepEqual(walkedPrefix([], 0, 0), [], "no route, no prefix");
 });
 
 test("accessible routing avoids stairs edges even when they're the shortest path", () => {

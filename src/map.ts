@@ -2,7 +2,14 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, IndoorLink, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isClosingSoon, isOpenAt } from "./hours.ts";
-import { buildingExitPoint, polylineMeters, remainingRouteMeters, sliceAlong, snapToRoute } from "./router.ts";
+import {
+  buildingExitPoint,
+  polylineMeters,
+  remainingRouteMeters,
+  sliceAlong,
+  snapToRoute,
+  walkedPrefix,
+} from "./router.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS } from "./poi.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
@@ -434,6 +441,7 @@ export class SkymapView {
     this.map.addSource("skyway-indoor", { type: "geojson", data: indoorFC(this.data, this.when) });
     this.map.addSource("skyway-buildings", { type: "geojson", data: buildingsFC(this.data, this.when) });
     this.map.addSource("skyway-route", { type: "geojson", data: lineFC([]) });
+    this.map.addSource("skyway-route-done", { type: "geojson", data: lineFC([]) });
     this.map.addSource("skyway-walker", { type: "geojson", data: pointFC(null) });
     this.map.addSource("skyway-pois", { type: "geojson", data: poisFC(this.data.pois ?? []) });
 
@@ -556,6 +564,17 @@ export class SkymapView {
       layout: { "line-cap": "round", "line-join": "round" },
       paint: { "line-color": ROUTE, "line-width": 6 },
     });
+    // The stretch already walked, painted over the amber in the same grey a
+    // closed bridge uses. Narrower than the line beneath it so a sliver of
+    // route colour survives at the edges: the walked part should read as
+    // spent, not as a different route.
+    this.map.addLayer({
+      id: "skyway-route-done",
+      type: "line",
+      source: "skyway-route-done",
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": CLOSED, "line-width": 5, "line-opacity": 0.85 },
+    });
 
     // Businesses appear as you zoom in: icons first, names closer. A glyph
     // (cup, bag, person, star…) says what's there without a tap; a plain
@@ -671,6 +690,7 @@ export class SkymapView {
       if (!route || route.steps.length < 2) {
         this.activeRouteCoords = [];
         routeSrc?.setData(lineFC([]));
+        this.setWalkedProgress(null);
         // Via setWalkerPosition, not the source directly: it also un-hides
         // MapLibre's dot, which must come back when there's no route left
         // to snap to.
@@ -700,6 +720,7 @@ export class SkymapView {
       const lineTo = poiCoords?.toNearby ? buildingExitPoint(last, toTowards) : toCoord;
       const coords = routeCoords(route, lineFrom, lineTo, this.data.indoorLinks);
       this.activeRouteCoords = coords;
+      this.setWalkedProgress(null); // a fresh route has nothing behind you yet
       this.markers.push(
         new maplibregl.Marker({ element: routeMarkerElement("#16a34a") }).setLngLat(fromCoord).addTo(this.map),
         new maplibregl.Marker({ element: routeMarkerElement("#dc2626") }).setLngLat(toCoord).addTo(this.map),
@@ -767,6 +788,22 @@ export class SkymapView {
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord, true));
     this.map.getContainer().classList.remove("walker-snapped");
+  }
+
+  /** Dim the stretch of route already behind a walker. `null` clears it,
+   * which a fresh route and the end of navigation both need: a grey stub
+   * left over from the last trip reads as a route you've half-finished. */
+  setWalkedProgress(at: { lat: number; lon: number } | null) {
+    const src = this.map.getSource("skyway-route-done") as maplibregl.GeoJSONSource;
+    if (!src) return;
+    if (!at || this.activeRouteCoords.length < 2) {
+      src.setData(lineFC([]));
+      return;
+    }
+    // A single point is a walker still standing at the origin — nothing
+    // walked yet, and lineFC would emit a degenerate one-vertex line.
+    const prefix = walkedPrefix(this.activeRouteCoords, at.lat, at.lon);
+    src.setData(lineFC(prefix.length > 1 ? prefix : []));
   }
 
   /** Where a fix should be *drawn* while navigating: on the route line if

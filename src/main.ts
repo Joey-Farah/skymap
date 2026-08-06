@@ -341,6 +341,7 @@ async function boot() {
     if (!activeRoute || mode !== "nav") return;
     applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
     view.setWalkerPosition([lon, lat]);
+    view.setWalkedProgress({ lat, lon });
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
   }
 
@@ -361,6 +362,7 @@ async function boot() {
       // null and MapLibre's own dot takes over, which is the honest answer
       // for someone who has actually walked off the route.
       view.setWalkerPosition(view.snapToActiveRoute(lat, lon));
+      view.setWalkedProgress({ lat, lon });
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(approach);
@@ -560,6 +562,7 @@ async function boot() {
       // long after tracking stopped — a confident lie, which is exactly
       // what the snap is supposed to prevent.
       view.setWalkerPosition(null);
+      view.setWalkedProgress(null); // same reason: nothing left to keep it honest
       forgetPosition();
       showToast("Location is off — allow access in your browser settings to route from where you stand.");
     } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
@@ -575,6 +578,7 @@ async function boot() {
       // Nothing will update the corrected dot once tracking is off, so it
       // has to go — see the error handler above.
       view.setWalkerPosition(null);
+      view.setWalkedProgress(null);
       forgetPosition();
     }
   });
