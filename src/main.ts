@@ -19,7 +19,7 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
-import { ARRIVAL_LINGER_MS, canDismissArrival, hasArrived, settleRemaining } from "./nav-progress.ts";
+import { ARRIVAL_LINGER_MS, canDismissArrival, hasArrived, settleRemaining, shouldRotate } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -265,6 +265,7 @@ async function boot() {
     manualPositionUntil = 0;
     settledRemaining = null; // a new trip starts with nothing to hold against
     walkedHighWater = null;
+    furthestStep = 0;
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
   }
@@ -387,6 +388,13 @@ async function boot() {
   let manualPositionUntil = 0;
   /** Smoothed metres-to-go for the trip in progress; null between trips. */
   let settledRemaining: number | null = null;
+  /** Furthest step this trip has reached. routeStepIndex is a nearest-
+   * centroid scan with no memory, so a fix drifting onto a parallel skyway
+   * a block away can jump it several buildings and back again. That used
+   * to move one highlight border; now it also drives which rows render as
+   * already-walked, so an unfiltered index makes the whole list flicker.
+   * Held forward for the same reason walkedHighWater is. */
+  let furthestStep = 0;
   /** Closest to the destination this trip has ever got. The dimmed line is
    * drawn from this rather than from the live figure: skyways run parallel
    * a block apart, so a drifting fix can project onto a neighbouring leg
@@ -398,7 +406,8 @@ async function boot() {
   function onRouteTap(lat: number, lon: number) {
     // A navigation-mode concern: previews are for reading, not walking.
     if (!activeRoute || mode !== "nav") return;
-    applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
+    furthestStep = Math.max(furthestStep, routeStepIndex(activeRoute, lat, lon));
+    applyNavProgress(furthestStep, { lat, lon });
     view.setWalkerPosition([lon, lat]);
     view.setWalkedProgress(walkedHighWater);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
@@ -415,7 +424,8 @@ async function boot() {
     currentApproach = approach;
     nearBuilding = approach && approach.straightMeters <= 60 ? approach.building : null;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
-      applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
+      furthestStep = Math.max(furthestStep, routeStepIndex(activeRoute, lat, lon));
+      applyNavProgress(furthestStep, { lat, lon });
       // Real GPS is back in control — but drawn on the skyway rather than
       // wherever the fix landed. Past the snap threshold this goes back to
       // null and MapLibre's own dot takes over, which is the honest answer
@@ -512,6 +522,10 @@ async function boot() {
   // tap 3 turns tracking off. Panning drops heading mode. Pure transitions
   // live in locate-mode.ts; this wires them onto MapLibre's control.
   let orientationHandler: ((e: Event) => void) | null = null;
+  /** Last bearing actually pushed to the camera, and when — the compass is
+   * rate-limited against these so it stops cancelling recentre animations. */
+  let lastBearing: number | null = null;
+  let lastBearingAt: number | null = null;
 
   async function enableCompass(): Promise<boolean> {
     const DOE = (window as unknown as { DeviceOrientationEvent?: { requestPermission?: () => Promise<string> } })
@@ -527,9 +541,18 @@ async function boot() {
     }
     orientationHandler = (e: Event) => {
       const heading = headingFromOrientation(e as unknown as { webkitCompassHeading?: number; alpha?: number | null });
+      if (heading === null) return;
+      // Every setBearing cancels whatever camera animation is running, and
+      // the geolocate control recentres by animating — so an unfiltered
+      // compass leaves the map rotating but never following. See
+      // shouldRotate.
+      const now = Date.now();
+      if (!shouldRotate(lastBearing, heading, lastBearingAt, now)) return;
+      lastBearing = heading;
+      lastBearingAt = now;
       // geolocateSource marks the rotation as ours: without it the locate
       // control reads the camera move as a user pan and drops its lock.
-      if (heading !== null) view.map.setBearing(heading, { geolocateSource: true });
+      view.map.setBearing(heading, { geolocateSource: true });
     };
     window.addEventListener("deviceorientationabsolute", orientationHandler);
     window.addEventListener("deviceorientation", orientationHandler);
@@ -542,6 +565,10 @@ async function boot() {
       window.removeEventListener("deviceorientation", orientationHandler);
       orientationHandler = null;
     }
+    // Re-entering heading mode must apply its first reading immediately
+    // rather than measure it against a bearing from the last time.
+    lastBearing = null;
+    lastBearingAt = null;
     if (resetBearing) view.map.easeTo({ bearing: 0 }, { geolocateSource: true });
   }
 
@@ -604,7 +631,7 @@ async function boot() {
       // and a denied compass demotes the cycle to plain on/off. locateMode
       // then resolves through the control's end/focus events.
       if (locateMode === "lock" && (compassUnavailable || watchState() !== "ACTIVE_LOCK")) return;
-      const tr = locateTransition(locateMode, "tap");
+      const tr = locateTransition(locateMode, "tap", { navigating: mode === "nav" });
       if (tr.intercept) e.stopPropagation();
       void applyLocate(tr);
     },

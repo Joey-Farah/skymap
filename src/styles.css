@@ -829,12 +829,26 @@ a:focus-visible {
   box-shadow: 0 0 0 4px rgba(34, 88, 230, 0.2);
 }
 
-/* Buildings already behind you, dimmed rather than removed — the list is
+/* Buildings already behind you, muted rather than removed — the list is
    still the whole route, and the same "what's spent vs what's left" the
-   dimmed route line draws on the map. Kept above the WCAG floor for body
-   text: this is de-emphasis, not disabling. */
-.steps li.done {
-  opacity: 0.55;
+   dimmed route line draws on the map.
+
+   Muted by colour, not opacity. opacity composites the whole subtree, so
+   it dimmed the already-quiet --ink-600 sub-labels a second time: 0.55
+   measured 3.71:1 on a building name and 2.36:1 on an 11.5px cue in light
+   mode, under the 4.5:1 AA floor and under even the 3:1 non-text floor.
+   Setting colour touches only the text that should recede, and --ink-600
+   is a token that already carries its own contrast guarantee. */
+.steps li.done,
+.steps li.done .lm-cue,
+.steps li.done .via {
+  color: var(--ink-600);
+}
+
+/* The route-progress dot keeps its own muting — it's decoration, so the
+   text floor doesn't apply, and it should read as clearly spent. */
+.steps li.done::before {
+  opacity: 0.5;
 }
 
 .route-summary {

@@ -87,6 +87,41 @@ export function settleRemaining(settled: number | null, raw: number): number {
  * A single-step route is a destination you are already standing in, which
  * the app answers before navigation starts; it never becomes an arrival.
  */
+/** Smallest turn worth spending a camera frame on. Below this is sensor
+ * noise from a hand that isn't moving. */
+const ROTATE_DEGREES = 3;
+/** Floor between rotations. deviceorientation fires ~60Hz on iOS; this
+ * puts a ceiling of ~8 rotations a second, which still reads as smooth
+ * while leaving whole frames for a recentre animation to finish in. */
+const ROTATE_INTERVAL_MS = 120;
+
+/**
+ * Whether a compass reading is worth turning the map for.
+ *
+ * MapLibre's setBearing routes through jumpTo, which calls stop() and
+ * cancels any camera animation in flight — including the geolocate
+ * control's own animated recentre. Feeding it every deviceorientation
+ * event aborts each recentre a frame or two after it begins, so the map
+ * rotates with you and quietly stops following you: exactly backwards for
+ * a control that exists to keep you oriented while you walk.
+ *
+ * Rate-limiting and ignoring sub-degree noise leaves most frames free for
+ * the recentre to complete. Walking a corridor holds a near-constant
+ * heading, so in the common case this rotates almost never.
+ */
+export function shouldRotate(
+  lastBearing: number | null,
+  next: number,
+  lastAtMs: number | null,
+  nowMs: number,
+): boolean {
+  if (lastBearing === null || lastAtMs === null) return true;
+  if (nowMs - lastAtMs < ROTATE_INTERVAL_MS) return false;
+  // Shortest way round the circle: 359 -> 1 is a 2 degree turn, not 358.
+  const delta = Math.abs(((next - lastBearing + 540) % 360) - 180);
+  return delta >= ROTATE_DEGREES;
+}
+
 /**
  * Which row of the step list to mark, given where the walker is.
  *
@@ -103,6 +138,17 @@ export function highlightedStep(stepIndex: number, stepCount: number): number {
   return Math.min(stepIndex + 1, stepCount - 1);
 }
 
+/**
+ * Whether a trip is over: there is no further building to head into.
+ *
+ * Shared with the sheet so the banner and the auto-dismiss timer agree by
+ * construction. The alternative — the timer matching on the words "You've
+ * arrived" — makes a copy edit silently stop navigation from ever ending
+ * itself.
+ *
+ * A single-step route is a destination you are already standing in, which
+ * the app answers before navigation starts; it never becomes an arrival.
+ */
 export function hasArrived(stepIndex: number, stepCount: number): boolean {
   if (stepCount < 2) return false;
   return stepIndex >= stepCount - 1;
