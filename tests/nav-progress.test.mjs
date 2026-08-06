@@ -1,7 +1,30 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DETOUR_METERS, canDismissArrival, hasArrived, highlightedStep, settleArrival, settleRemaining } from "../src/nav-progress.ts";
+import { DETOUR_METERS, canDismissArrival, hasArrived, highlightedStep, settleArrival, settleRemaining, shouldRotate } from "../src/nav-progress.ts";
+
+test("the compass only turns the map when it's worth cancelling an animation", () => {
+  // MapLibre's setBearing routes through jumpTo, which calls stop() and
+  // kills any camera animation in flight — including the geolocate
+  // control's animated recentre. deviceorientation fires ~60Hz on iOS
+  // against a GPS fix every few seconds, so an unfiltered compass aborts
+  // every recentre a frame or two after it starts: the map rotates with
+  // you but stops following you, and you walk off the edge of it.
+  assert.equal(shouldRotate(null, 90, null, 1000), true, "first reading always applies");
+
+  // Sensor noise while holding still must not spend a frame.
+  assert.equal(shouldRotate(90, 90.7, 1000, 2000), false, "sub-degree jitter ignored");
+
+  // A real turn does, once enough time has passed.
+  assert.equal(shouldRotate(90, 140, 1000, 2000), true, "a genuine turn rotates");
+
+  // ...but not faster than the rate limit, however fast the sensor fires.
+  assert.equal(shouldRotate(90, 140, 1000, 1020), false, "rate-limited between frames");
+
+  // The wrap at north is a small turn, not a 350-degree one.
+  assert.equal(shouldRotate(359, 1, 1000, 2000), false, "2 degrees across north is still 2 degrees");
+  assert.equal(shouldRotate(350, 30, 1000, 2000), true, "40 degrees across north is a real turn");
+});
 
 test("the highlighted step is the one the banner is naming", () => {
   // On the recorded walk the banner read "Head into Forum" while the list

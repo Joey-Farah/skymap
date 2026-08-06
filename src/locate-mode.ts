@@ -20,7 +20,16 @@ export interface LocateTransition {
   resetBearing: boolean;
 }
 
-export function locateTransition(mode: LocateMode, event: LocateEvent): LocateTransition {
+export interface LocateContext {
+  /** True while a trip is under way. Shortens the tap cycle — see below. */
+  navigating?: boolean;
+}
+
+export function locateTransition(
+  mode: LocateMode,
+  event: LocateEvent,
+  ctx: LocateContext = {},
+): LocateTransition {
   const t = (mode: LocateMode, intercept = false, heading = false, resetBearing = false) => ({
     mode,
     intercept,
@@ -30,7 +39,19 @@ export function locateTransition(mode: LocateMode, event: LocateEvent): LocateTr
   switch (event) {
     case "tap":
       if (mode === "lock") return t("heading", true, true);
-      if (mode === "heading") return t("off", false, false, true);
+      if (mode === "heading") {
+        // Mid-trip the cycle is lock <-> heading, never off. The control is
+        // on screen during navigation so the map can be turned heading-up
+        // in a corridor, which also puts "tracking off" one tap from the
+        // thing people will actually tap. Turning tracking off mid-trip
+        // stops every position callback: the banner goes on naming a
+        // building, the arrival clock freezes, the walker and the walked
+        // line disappear, and nothing says the trip stopped being live.
+        // Ending a trip is what End is for. Intercepted, so MapLibre's own
+        // handler doesn't stop tracking underneath us.
+        if (ctx.navigating) return t("lock", true, false, true);
+        return t("off", false, false, true);
+      }
       return t("lock"); // off or background: let MapLibre start/re-center
     case "focus":
       return t("lock", false, mode === "heading", false);
