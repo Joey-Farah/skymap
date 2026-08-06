@@ -218,10 +218,14 @@ export function landmarkNear<T extends { name: string; buildingId: string; group
   pois: T[],
   buildingId: string,
 ): T | null {
+  // Hotels count. A named hotel is one of the best things to be told to
+  // walk past, and they were already being used as cues by accident while
+  // misfiled as landmarks — splitting them out silently cost four
+  // buildings their only cue, parking ramps among them, which is exactly
+  // where "past the Hilton Garden Inn" earns its place.
+  const CUE_GROUPS = new Set<PoiGroup>(["food", "coffee", "landmark", "hotel"]);
   const candidates = pois
-    .filter(
-      (p) => p.buildingId === buildingId && (p.group === "food" || p.group === "coffee" || p.group === "landmark"),
-    )
+    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group))
     .sort((a, b) => a.name.localeCompare(b.name));
   return candidates[0] ?? null;
 }

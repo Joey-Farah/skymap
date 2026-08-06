@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { dedupePois, groupFor, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
+import { dedupePois, groupFor, landmarkNear, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
 
 test("a hotel is a hotel however it got into the dataset", () => {
   // Off-network landmark buildings are emitted with kind "landmark", and
@@ -19,6 +19,21 @@ test("a landmark building stays a landmark", () => {
   assert.equal(groupFor("landmark", "venue"), "landmark");
   assert.equal(groupFor("landmark", "government"), "landmark");
   assert.equal(groupFor("landmark", "artwork"), "landmark");
+});
+
+test("a hotel is a usable wayfinding cue", () => {
+  // Splitting hotels out of the landmark group silently cost four
+  // buildings their only "past X" cue — parking ramps among them, which is
+  // exactly where a named hotel earns its place.
+  const pois = [
+    { name: "Hilton Garden Inn", buildingId: "ramp", group: "hotel" },
+    { name: "Zebra Lounge", buildingId: "ramp", group: "food" },
+  ];
+  assert.equal(landmarkNear(pois, "ramp").name, "Hilton Garden Inn", "alphabetical, and hotels count");
+  assert.equal(landmarkNear([pois[0]], "ramp").name, "Hilton Garden Inn", "a hotel alone is still a cue");
+
+  // Things you can't see from a corridor are still not cues.
+  assert.equal(landmarkNear([{ name: "Lift", buildingId: "ramp", group: "elevator" }], "ramp"), null);
 });
 
 test("wayfinding and food classification is unchanged", () => {

@@ -77,16 +77,6 @@ export function settleRemaining(settled: number | null, raw: number): number {
   return raw - settled > DETOUR_METERS ? raw : settled;
 }
 
-/**
- * Whether a trip is over: there is no further building to head into.
- *
- * Shared so the banner and the auto-dismiss timer agree by construction.
- * The alternative — the timer matching on the words "You've arrived" —
- * makes a copy edit silently stop navigation from ever ending itself.
- *
- * A single-step route is a destination you are already standing in, which
- * the app answers before navigation starts; it never becomes an arrival.
- */
 /** Smallest turn worth spending a camera frame on. Below this is sensor
  * noise from a hand that isn't moving. */
 const ROTATE_DEGREES = 3;

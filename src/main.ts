@@ -406,7 +406,12 @@ async function boot() {
   function onRouteTap(lat: number, lon: number) {
     // A navigation-mode concern: previews are for reading, not walking.
     if (!activeRoute || mode !== "nav") return;
-    furthestStep = Math.max(furthestStep, routeStepIndex(activeRoute, lat, lon));
+    // Set outright rather than held forward: a tap is someone telling the
+    // app where they are, not another noisy sample. Clamping it removed
+    // the only way to correct a trip that GPS drift had already pushed too
+    // far ahead — the dot would move and the step list, walked line and
+    // remaining distance would stay wrong for the rest of the walk.
+    furthestStep = routeStepIndex(activeRoute, lat, lon);
     applyNavProgress(furthestStep, { lat, lon });
     view.setWalkerPosition([lon, lat]);
     view.setWalkedProgress(walkedHighWater);

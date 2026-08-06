@@ -119,12 +119,19 @@ real hardware must be verified *before* submitting — the withdraw path
 (`PATCH /v1/reviewSubmissions/{id}` `{canceled: true}`) only exists until
 review completes.
 
-## 1.3 — prepared, holding for a device walk
+## 1.3 — submitting without a device walk (Joey's call, 2026-08-06)
 
 `MARKETING_VERSION` is 1.3. Screenshots recaptured against the six-chip row.
-Do NOT submit until the TestFlight build has been walked: 1.2 shipped with a
-compass change that was never run on hardware, and this release is the first
-chance to confirm it.
+
+The 1.2 lesson said verify on hardware before submitting. Joey weighed that
+against the new review speed and chose to ship: at roughly an hour a cycle,
+a forward fix is faster than waiting for a walk. Worth being precise about
+the fallback, because it is not what it sounds like — **the App Store has no
+rollback.** You cannot revert to a previous build; removing a version from
+sale pulls the app entirely. What actually exists is a fast *forward* fix:
+submit a new version containing the old behaviour. At current review speed
+that is about an hour, which is why the trade is reasonable — but it is a
+new release, not an undo.
 
 ## What's New — 1.1
 
