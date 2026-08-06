@@ -1,6 +1,34 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { dedupePois, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
+import { dedupePois, groupFor, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
+
+test("a hotel is a hotel however it got into the dataset", () => {
+  // Off-network landmark buildings are emitted with kind "landmark", and
+  // that path used to hardcode group "landmark" rather than asking here.
+  // 13 of downtown's hotels ended up filed under Landmarks that way —
+  // more than were in Hotels — so the Hotels filter was mostly empty and
+  // the Lofton, the Hewing and the Chambers were unfindable by it.
+  assert.equal(groupFor("landmark", "hotel"), "hotel");
+  assert.equal(groupFor("tourism", "hotel"), "hotel");
+  assert.equal(groupFor("landmark", "hostel"), "hotel");
+});
+
+test("a landmark building stays a landmark", () => {
+  // The same path carries genuine landmarks, which must survive the fix
+  // above — groupFor knows nothing about these categories on its own.
+  assert.equal(groupFor("landmark", "venue"), "landmark");
+  assert.equal(groupFor("landmark", "government"), "landmark");
+  assert.equal(groupFor("landmark", "artwork"), "landmark");
+});
+
+test("wayfinding and food classification is unchanged", () => {
+  assert.equal(groupFor("amenity", "elevator"), "elevator");
+  assert.equal(groupFor("amenity", "toilets"), "restroom");
+  assert.equal(groupFor("transit", "bus_stop"), "transit");
+  assert.equal(groupFor("amenity", "cafe"), "coffee");
+  assert.equal(groupFor("amenity", "restaurant"), "food");
+  assert.equal(groupFor("shop", "jewelry"), "other");
+});
 
 test("ordinary http and https links pass through unchanged", () => {
   assert.equal(safeWebsiteUrl("https://example.com/menu"), "https://example.com/menu");

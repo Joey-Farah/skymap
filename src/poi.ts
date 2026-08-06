@@ -35,6 +35,14 @@ export function groupFor(kind: string, category: string): PoiGroup {
   if (category === "toilets") return "restroom";
   if (kind === "transit" || TRANSIT.test(category)) return "transit";
   if (LODGING.test(category)) return "hotel";
+  // Off-network landmark buildings arrive with kind "landmark" and a
+  // building category ("venue", "government") that none of the rules below
+  // recognise. The pipeline used to paper over that by hardcoding the
+  // group at the call site, which also swallowed every hotel it passed —
+  // 13 of downtown's hotels were filed under Landmarks, more than were in
+  // Hotels. Answering it here instead keeps one classifier, and keeps it
+  // *after* LODGING so lodging still wins.
+  if (kind === "landmark") return "landmark";
   if (kind === "historic" || LANDMARK_PLACE.test(category)) return "landmark";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
   if (COFFEE.test(category)) return "coffee";
