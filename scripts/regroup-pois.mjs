@@ -36,7 +36,10 @@ if (moves.size === 0) {
 }
 
 if (write) {
-  writeFileSync(FILE, JSON.stringify(data) + "\n");
+  // Same indentation fetch-osm.mjs writes with. Minifying instead collapsed
+  // the dataset to a single 38,000-line-shorter line, which is functionally
+  // identical and makes every future data diff unreadable.
+  writeFileSync(FILE, JSON.stringify(data, null, 1) + "\n");
   console.log(`\nwrote ${FILE}`);
 } else {
   console.log("\n(dry run — pass --write to apply)");
