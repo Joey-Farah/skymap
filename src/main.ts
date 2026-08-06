@@ -19,6 +19,7 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
+import { settleRemaining } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -256,12 +257,17 @@ async function boot() {
     if (!activeRoute) return;
     setMode("nav");
     manualPositionUntil = 0;
+    settledRemaining = null; // a new trip starts with nothing to hold against
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
   }
 
   function applyNavProgress(stepIndex: number, at?: { lat: number; lon: number }) {
-    const remaining = at ? view.remainingMeters(at.lat, at.lon) : null;
+    const raw = at ? view.remainingMeters(at.lat, at.lon) : null;
+    // Held to non-increasing across the trip, so indoor GPS drift can't walk
+    // the arrival time backwards — see nav-progress.ts.
+    if (raw != null) settledRemaining = settleRemaining(settledRemaining, raw);
+    const remaining = raw == null ? null : settledRemaining;
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;
@@ -335,6 +341,8 @@ async function boot() {
   // all; automatic updates resume on their own once the window passes.
   const MANUAL_POSITION_GRACE_MS = 45_000;
   let manualPositionUntil = 0;
+  /** Smoothed metres-to-go for the trip in progress; null between trips. */
+  let settledRemaining: number | null = null;
 
   function onRouteTap(lat: number, lon: number) {
     // A navigation-mode concern: previews are for reading, not walking.
