@@ -829,6 +829,14 @@ a:focus-visible {
   box-shadow: 0 0 0 4px rgba(34, 88, 230, 0.2);
 }
 
+/* Buildings already behind you, dimmed rather than removed — the list is
+   still the whole route, and the same "what's spent vs what's left" the
+   dimmed route line draws on the map. Kept above the WCAG floor for body
+   text: this is de-emphasis, not disabling. */
+.steps li.done {
+  opacity: 0.55;
+}
+
 .route-summary {
   display: flex;
   gap: 16px;
@@ -1457,9 +1465,17 @@ a:focus-visible {
 }
 
 /* Mode-scoped chrome: the locate button gets out of the way while
-   searching (keyboard) and navigating (banner + bar own the screen). */
-#app.mode-search .maplibregl-ctrl-bottom-right,
-#app.mode-nav .maplibregl-ctrl-bottom-right {
+   searching, where the keyboard owns the screen and there is no map
+   interaction to return to.
+
+   It deliberately STAYS during navigation. Hiding it there cost the one
+   control that matters most mid-route: the second tap of its cycle turns
+   the map heading-up (see locate-mode.ts), which is how you answer "which
+   way do I turn" while standing in a corridor. Walking the real route on
+   1.1 with a north-up map and no way to rotate it is what surfaced this.
+   The control already rides --sheet-clearance, so it sits clear of the
+   nav bar without extra positioning. */
+#app.mode-search .maplibregl-ctrl-bottom-right {
   display: none;
 }
 

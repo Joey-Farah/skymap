@@ -87,6 +87,22 @@ export function settleRemaining(settled: number | null, raw: number): number {
  * A single-step route is a destination you are already standing in, which
  * the app answers before navigation starts; it never becomes an arrival.
  */
+/**
+ * Which row of the step list to mark, given where the walker is.
+ *
+ * The banner instructs toward the *next* building while the step index
+ * tracks the *current* one, so highlighting the current row put "Head into
+ * Forum" above a list pointing at Deluxe Plaza — two correct statements
+ * that read as a bug side by side. The list follows the banner instead.
+ *
+ * Clamped at the end: once there is no next building the destination stays
+ * marked, rather than the highlight running off the list at arrival.
+ */
+export function highlightedStep(stepIndex: number, stepCount: number): number {
+  if (stepCount < 2) return 0;
+  return Math.min(stepIndex + 1, stepCount - 1);
+}
+
 export function hasArrived(stepIndex: number, stepCount: number): boolean {
   if (stepCount < 2) return false;
   return stepIndex >= stepCount - 1;

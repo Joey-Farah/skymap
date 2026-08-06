@@ -1,6 +1,6 @@
 import type { Building, DayHours, Poi, RouteResult } from "./types.ts";
 import { reportIssueUrl } from "./share.ts";
-import { hasArrived, settleArrival } from "./nav-progress.ts";
+import { hasArrived, highlightedStep, settleArrival } from "./nav-progress.ts";
 import {
   CATEGORY_LABELS,
   GROUP_COLORS,
@@ -930,8 +930,13 @@ export class Sheet {
   ): { title: string; sub: HTMLElement | null } | null {
     if (!this.activeRoute || this.mode !== "nav") return null;
     const route = this.activeRoute;
+    // "current" marks the building the banner is naming, not the one being
+    // left — see highlightedStep. "done" dims what's already behind you, the
+    // same story the dimmed route line tells on the map.
+    const marked = highlightedStep(stepIndex, route.steps.length);
     this.navStepsListEl?.querySelectorAll("li").forEach((li, i) => {
-      li.classList.toggle("current", i === stepIndex);
+      li.classList.toggle("current", i === marked);
+      li.classList.toggle("done", i < marked);
     });
     let remainingMeters: number;
     if (liveRemainingMeters != null) {
