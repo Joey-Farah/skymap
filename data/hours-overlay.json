@@ -424,6 +424,13 @@
       "source": "https://www.meltingpot.com/minneapolis-mn/",
       "checkedOn": "2026-08-07",
       "note": "Published at 824 Marquette Ave; our POI sits at 44.97463,-93.27266, which is that block. Happy-hour windows sit inside these hours, not alongside them."
+    },
+    "poi-5955577511": {
+      "name": "Los Ocampo Express",
+      "openingHours": "Mo-Fr 11:00-14:30",
+      "source": "https://www.losocampoexpress.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Own site, 40 S Seventh St Ste 203 — matches City Center. Aggregator summaries claimed 9am-3pm; the restaurant's own page says 11am-2:30pm, so the first-party figure is the one recorded."
     }
   },
   "skipped": {
@@ -587,6 +594,12 @@
       "name": "Caribou Coffee (Target Plaza)",
       "reason": "Caribou publishes only two downtown Minneapolis stores — 509 Washington Ave S and 200 S 6th St. Neither is Target Plaza at 1000 Nicollet Mall, so this branch is unlisted and may have closed.",
       "source": "https://locations.cariboucoffee.com/us/mn/minneapolis",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12164509015": {
+      "name": "Ono Hawaiian Plates",
+      "reason": "Site renders an unconfigured hours EDITOR ('Update Hours / Opening Time / Closing Time' per day) rather than published hours — the template was never filled in.",
+      "source": "https://www.onohawaiianplates.com/",
       "checkedOn": "2026-08-07"
     }
   }

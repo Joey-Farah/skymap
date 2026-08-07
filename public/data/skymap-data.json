@@ -23699,7 +23699,10 @@
    "group": "food",
    "lat": 44.977676,
    "lon": -93.272785,
-   "buildingId": "city-center-27346720"
+   "buildingId": "city-center-27346720",
+   "openingHours": "Mo-Fr 11:00-14:30",
+   "hoursSource": "https://www.losocampoexpress.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5955577512",

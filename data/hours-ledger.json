@@ -219,7 +219,8 @@
    "name": "Los Ocampo Express",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955577512": {
    "kind": "poi",
@@ -270,7 +271,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -407,7 +408,8 @@
    "name": "Ono Hawaiian Plates",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12164522191": {
    "kind": "poi",
@@ -783,7 +785,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {
