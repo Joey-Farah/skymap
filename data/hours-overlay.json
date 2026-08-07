@@ -739,6 +739,20 @@
    "source": "https://soundwovengoods.com/",
    "checkedOn": "2026-08-07",
    "note": "Closed Monday, open Sunday — the inverse of an office schedule. Address 430 N 1st Ave Suite 130 matched on a unique business name; Nominatim only resolved the street centroid (63 m) rather than the house number, so the match rests on name plus stated address rather than a precise pin."
+  },
+  "poi-12754418502": {
+   "name": "North Loop Wine & Spirits",
+   "openingHours": "Mo-Sa 09:00-22:00; Su 11:00-18:00",
+   "source": "https://northloopwine.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Address 218 Washington Ave N geocodes to this POI exactly (0 m). Their Friday tasting (4-8pm) is an event inside these hours, not a separate window."
+  },
+  "poi-13965983641": {
+   "name": "CityScape Dental",
+   "openingHours": "Mo-Th 08:00-16:30",
+   "source": "https://www.cityscapedentalarts.com/contact/",
+   "checkedOn": "2026-08-07",
+   "note": "Their page states these as the complete set — 'We are open to serve you ... during the following hours: Monday - Thursday' — so Friday through Sunday are closed rather than merely unlisted. Address 300 S. Second Street Suite 3 geocodes to this POI exactly (0 m)."
   }
  },
  "skipped": {
@@ -1682,6 +1696,12 @@
    "name": "Bradley Douglas Salon Spa",
    "reason": "BLOCKED, not empty: bradleydouglas.com returns a Cloudflare security interstitial ('Sorry, you have been blocked') to both a plain fetch and a real browser. Nothing about the site's contents is known, so this is a blocked outcome rather than a finding that it publishes no hours.",
    "source": "https://bradleydouglas.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12810525201": {
+   "name": "James & Mary Laurie Booksellers",
+   "reason": "LOCATION MISMATCH, not missing hours. The shop publishes a clear week (noon-6 Mon-Sat, Sunday noon-3, plus by appointment) at 933 Marquette Ave — but that address geocodes 1,116 m from this POI, which reverse-geocodes to 250 3rd Avenue North in the North Loop. One of the two is out of date and it is not resolvable from here, so the hours are not attached to a pin that is probably in the wrong place. Worth re-checking the POI's coordinates separately. Note also that the search summary claimed '11:00 am to 6:00 pm, Closed Sunday' — the shop's own page says noon, and says it opens on Sunday.",
+   "source": "https://www.lauriebooks.com/about.php",
    "checkedOn": "2026-08-07"
   }
  }

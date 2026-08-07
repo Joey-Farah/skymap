@@ -23482,7 +23482,10 @@
    "lat": 44.981073,
    "lon": -93.262866,
    "buildingId": "rivergate-apartments-81049129",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Mo-Th 08:00-16:30",
+   "hoursSource": "https://www.cityscapedentalarts.com/contact/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13965983648",
@@ -24435,7 +24438,10 @@
    "lat": 44.984353,
    "lon": -93.271885,
    "buildingId": "deja-vu-89080678",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Mo-Sa 09:00-22:00; Su 11:00-18:00",
+   "hoursSource": "https://northloopwine.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12754418701",

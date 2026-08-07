@@ -974,7 +974,8 @@
    "name": "CityScape Dental",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13965983651": {
    "kind": "poi",
@@ -1245,7 +1246,8 @@
    "name": "North Loop Wine & Spirits",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754418701": {
    "kind": "poi",
@@ -1300,7 +1302,8 @@
    "name": "James & Mary Laurie Booksellers",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862806762": {
    "kind": "poi",
