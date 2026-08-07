@@ -655,6 +655,18 @@
       "reason": "Reported permanently closed as of mid-2026, and the address associated with it (901 Hennepin, Le Meridien Chambers) is not our LaSalle Plaza host. Likely a stale POI rather than a missing-hours one — worth checking whether it should be in the dataset at all. No first-party source found to confirm either way, so no hours recorded.",
       "source": "(searched, no official site; closure reported by listings)",
       "checkedOn": "2026-08-07"
+    },
+    "poi-2093784239": {
+      "name": "Normandy Kitchen",
+      "reason": "Publishes meal-period hours with a midday gap, not opening hours: Mon-Fri breakfast 7:30-10:30 then dinner 3:30-21:30 with nothing between; Sat/Sun breakfast 8:00-14:00 and lunch 11:00-15:00 overlapping, and Sunday dinner unlisted. Two ranges in one day is exactly what src/opening-hours.ts cannot express, and recording only one half would hide the other.",
+      "source": "https://www.bestwesternnormandy.com/location/normandy-kitchen/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12753315925": {
+      "name": "Wave Sushi",
+      "reason": "Its Square ordering site returns no readable content to a fetch — an ordering flow rather than a page with hours. Not a claim that none are published; nothing was reachable to read.",
+      "source": "https://wavesushi.square.site/",
+      "checkedOn": "2026-08-07"
     }
   }
 }

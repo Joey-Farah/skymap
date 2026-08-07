@@ -78,7 +78,8 @@
    "name": "Normandy Kitchen",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2093790846": {
    "kind": "poi",
@@ -274,7 +275,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -542,7 +543,8 @@
    "name": "Wave Sushi",
    "group": "food",
    "website": "https://wavesushi.square.site/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754418101": {
    "kind": "poi",
@@ -793,7 +795,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {
