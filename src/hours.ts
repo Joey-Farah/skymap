@@ -1,6 +1,25 @@
 import type { Building, DayHours, RouteResult } from "./types.ts";
 
+/**
+ * Whether a building is open, when that is something we actually know.
+ *
+ * `hours: null` means nobody publishes them — a different thing from a
+ * building that is closed, and the distinction has teeth here because the
+ * router filters on this. Every unverified building used to inherit the
+ * city ordinance (Mo-Fr 06:30-22:00, Sa 09:30-20:00, Su 12:00-18:00), and
+ * the City's own 2025 committee record says most skyway buildings do not
+ * keep it — "most skyway connected buildings are open Monday through
+ * Friday until 6:00 p.m. and are closed on weekends". So the default was
+ * routing people through towers that had been locked for four hours.
+ *
+ * Replacing one guess with a stricter guess would have been the same
+ * mistake pointed the other way, and would refuse paths that are genuinely
+ * open. Unknown therefore asserts nothing: it does not claim the building
+ * is open, it declines to claim it is shut, and the route stands or falls
+ * on what is actually known about it.
+ */
 export function isOpenAt(building: Building, when: Date): boolean {
+  if (building.hours === null) return true;
   const day = when.getDay();
   const minutes = when.getHours() * 60 + when.getMinutes();
   const h: DayHours = building.hours[day];
@@ -9,6 +28,7 @@ export function isOpenAt(building: Building, when: Date): boolean {
 
 /** True when a building is open right now but closes within `thresholdMin`. */
 export function isClosingSoon(building: Building, when: Date, thresholdMin = 20): boolean {
+  if (building.hours === null) return false; // nothing known to be ending
   const day = when.getDay();
   const minutes = when.getHours() * 60 + when.getMinutes();
   const h = building.hours[day];
@@ -136,6 +156,7 @@ export function closingSoonWarnings(
   const warnings: ClosureWarning[] = [];
   for (const step of route.steps) {
     const arrival = new Date(when.getTime() + step.arrivalMinutes * 60_000);
+    if (step.building.hours === null) continue; // no published hours to close
     const h = step.building.hours[arrival.getDay()];
     if (!h) continue;
     const arrivalMin = arrival.getHours() * 60 + arrival.getMinutes();
@@ -213,7 +234,11 @@ export function skywayAccessLabel(hours: DayHours[] | undefined, when: Date): st
   return null;
 }
 
-/** Human description of the building's status at `when`, e.g. "Open until 10pm". */
-export function statusAt(building: Building, when: Date): { open: boolean; label: string } {
+/** Human description of the building's status at `when`, e.g. "Open until
+ * 10pm" — or null when nobody publishes hours for it, so the caller omits
+ * the badge rather than picking between "Open" and "Closed" on no
+ * evidence. */
+export function statusAt(building: Building, when: Date): { open: boolean; label: string } | null {
+  if (building.hours === null) return null;
   return statusFromHours(building.hours, when);
 }

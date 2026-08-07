@@ -484,37 +484,8 @@
      44.97682
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "marquette-parking-ramp-27346594",
@@ -894,37 +865,8 @@
      44.977698
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "city-center-27346720",
@@ -1116,37 +1058,8 @@
      44.978133
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/33%20South%20Sixth%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -1351,37 +1264,8 @@
      44.974527
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "hcmc-purple-parking-ramp-27346755",
@@ -1424,37 +1308,8 @@
      44.973274
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "hennepin-county-government-center-27518018",
@@ -2519,37 +2374,8 @@
      44.983641
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
@@ -3175,37 +3001,8 @@
      44.968754
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "st-anthony-main-39707475",
@@ -3296,37 +3093,8 @@
      44.984458
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "stadium-parking-ramp-40774167",
@@ -3494,37 +3262,8 @@
      44.97722
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "mcknight-building-41763761",
@@ -3774,37 +3513,8 @@
      44.976263
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Orpheum%20Theatre%20night.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 4.0",
@@ -4560,37 +4270,8 @@
      44.972596
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Orchestra%20Hall%20Exterior.jpg?width=640",
     "attribution": "Beast 0110 · CC BY-SA 3.0",
@@ -4706,37 +4387,8 @@
      44.973375
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "sora-apartments-44164775",
@@ -5128,37 +4780,8 @@
      44.975443
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "united-states-courthouse-and-federal-building-44684856",
@@ -5468,37 +5091,8 @@
      44.986232
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "330-south-second-45452108",
@@ -5610,37 +5204,8 @@
      44.979281
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "grain-exchange-main-building-45452111",
@@ -5675,37 +5240,8 @@
      44.977255
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "government-center-garage-45452112",
@@ -5873,37 +5409,8 @@
      44.973646
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "opus-hall-45452121",
@@ -5958,37 +5465,8 @@
      44.974755
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "international-market-square-45498285",
@@ -6155,37 +5633,8 @@
      44.979763
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Northwestern%20Knitting%20Company%20Factory.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 3.0",
@@ -6724,37 +6173,8 @@
      44.986276
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "lee-lofts-45758932",
@@ -6785,37 +6205,8 @@
      44.983159
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "radisson-red-minneapolis-downtown-60613336",
@@ -6866,37 +6257,8 @@
      44.976975
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "canadian-pacific-plaza-62005000",
@@ -7057,37 +6419,8 @@
      44.979033
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "emery-autograph-collection-62006964",
@@ -7421,37 +6754,8 @@
      44.971829
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Westminster-Minneapolis-20070101.jpg?width=640",
     "attribution": "Justin from Minneapolis, MN · CC BY-SA 2.0",
@@ -7503,37 +6807,8 @@
      44.986134
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "nicollet-island-inn-80313504",
@@ -7600,37 +6875,8 @@
      44.986001
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "macphail-center-for-music-81049070",
@@ -7729,37 +6975,8 @@
      44.979482
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/MacPhail-20071218.jpg?width=640",
     "attribution": "Susanlesch · CC BY 2.0",
@@ -7827,37 +7044,8 @@
      44.979462
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "depot-office-center-81049079",
@@ -7928,37 +7116,8 @@
      44.978797
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "gateway-municipal-garage-81049104",
@@ -8118,37 +7277,8 @@
      44.981596
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "technical-building-89061902",
@@ -8227,37 +7357,8 @@
      44.973104
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "helland-center-89061924",
@@ -8372,37 +7473,8 @@
      44.972086
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "kopp-hall-89061932",
@@ -8469,37 +7541,8 @@
      44.972714
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "textile-building-89080618",
@@ -8530,37 +7573,8 @@
      44.981563
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "deja-vu-89080678",
@@ -8599,37 +7613,8 @@
      44.984749
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "archdale-apartments-92810569",
@@ -8676,37 +7661,8 @@
      44.967042
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "historic-wesley-center-92810581",
@@ -8737,37 +7693,8 @@
      44.969424
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Wesley%20Methodist%20Episcopal%20Church%20N.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 4.0",
@@ -8895,37 +7822,8 @@
      44.97334
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "medical-arts-building-92905817",
@@ -9083,37 +7981,8 @@
      44.98435
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "terrence-murphy-hall-93481572",
@@ -9184,37 +8053,8 @@
      44.97459
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "the-andrus-99714289",
@@ -9257,37 +8097,8 @@
      44.978795
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "50-south-sixth-99714290",
@@ -9503,37 +8314,8 @@
      44.977691
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "centerpoint-energy-101142637",
@@ -9616,37 +8398,8 @@
      44.976667
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "hirshfields-design-resource-showroom-101142650",
@@ -9693,37 +8446,8 @@
      44.978864
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "washburn-lofts-101549023",
@@ -9754,37 +8478,8 @@
      44.978867
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "juvenile-justice-center-101549026",
@@ -9831,37 +8526,8 @@
      44.974266
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "glendale-111367341",
@@ -9892,37 +8558,8 @@
      44.966195
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "capella-tower-115559604",
@@ -10173,37 +8810,8 @@
      44.985794
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "miller-hall-122795138",
@@ -10294,37 +8902,8 @@
      44.968954
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "parking-lot-e-122795248",
@@ -10355,37 +8934,8 @@
      44.968411
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "aster-house-125437510",
@@ -10420,37 +8970,8 @@
      44.986418
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "riverplace-125437526",
@@ -10561,37 +9082,8 @@
      44.986541
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "us-bank-plaza-126015100",
@@ -10890,37 +9382,8 @@
      44.977923
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "hennepin-county-public-safety-center-126015106",
@@ -11150,37 +9613,8 @@
      44.97427
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "minneapolis-public-service-center-126116946",
@@ -11496,37 +9930,8 @@
      44.975822
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "701-building-126116979",
@@ -11868,37 +10273,8 @@
      44.978445
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Guthrie%20Theater-night-2007-03-12.jpg?width=640",
     "attribution": "Steve Lyon · CC BY-SA 2.0",
@@ -11954,37 +10330,8 @@
      44.971471
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "purple-building-143058257",
@@ -12099,37 +10446,8 @@
      44.972491
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "red-building-143058259",
@@ -12264,37 +10582,8 @@
      44.972491
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "gaviidae-common-156909893",
@@ -12690,37 +10979,8 @@
      44.974582
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Minneapolis%20Club.jpg?width=640",
     "attribution": "Gobonobo · CC BY-SA 3.0",
@@ -12836,37 +11096,8 @@
      44.974849
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "groove-lofts-156909964",
@@ -13250,37 +11481,8 @@
      44.978385
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "metro-apartments-156912887",
@@ -13363,37 +11565,8 @@
      44.975153
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "six-quebec-156912888",
@@ -13725,37 +11898,8 @@
      44.978484
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/1891%20Farmers%20and%20Mechanics%20Savings%20Bank.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 3.0",
@@ -13799,37 +11943,8 @@
      44.981091
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "mill-city-museum-157035918",
@@ -13973,37 +12088,8 @@
      44.97869
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "dock-street-apartments-198929965",
@@ -14094,37 +12180,8 @@
      44.985178
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "hampton-inn-suites-minneapolis-downtown-198988798",
@@ -14300,37 +12357,8 @@
      44.971477
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "jobbers-warehouse-supply-inc-240869855",
@@ -14393,37 +12421,8 @@
      44.981323
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "schulze-hall-266689885",
@@ -14518,37 +12517,8 @@
      44.97451
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "hyatt-centric-downtown-minneapolis-354742163",
@@ -14599,37 +12569,8 @@
      44.975936
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "rsm-plaza-357019983",
@@ -14877,37 +12818,8 @@
      44.970862
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "wells-fargo-550-407613510",
@@ -14974,37 +12886,8 @@
      44.977426
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "wells-fargo-600-407613511",
@@ -15067,37 +12950,8 @@
      44.976798
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "ambulatory-outpatient-specialty-center-411211095",
@@ -15208,37 +13062,8 @@
      44.971632
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "edition-apartments-510-413691176",
@@ -15277,37 +13102,8 @@
      44.97711
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "marquette-place-451283544",
@@ -15378,37 +13174,8 @@
      44.970115
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "the-churchill-460860491",
@@ -15529,37 +13296,8 @@
      44.978589
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "tritech-office-center-461219677",
@@ -15703,37 +13441,8 @@
      44.973959
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "lakewood-publications-building-461224214",
@@ -15776,37 +13485,8 @@
      44.975638
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "us-bancorp-center-461224219",
@@ -15965,37 +13645,8 @@
      44.976073
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "lasalle-plaza-461227727",
@@ -16150,37 +13801,8 @@
      44.976123
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction.",
+   "hours": null,
+   "hoursNote": "No published hours found.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/LaSalle%20Plaza%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
@@ -16347,37 +13969,8 @@
      44.980237
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "loring-parking-ramp-612097599",
@@ -16564,37 +14157,8 @@
      44.970158
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "t3-723284484",
@@ -16641,37 +14205,8 @@
      44.984472
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "rbc-gateway-733105254",
@@ -17047,37 +14582,8 @@
      44.978933
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "xcel-energy-827452013",
@@ -17306,37 +14812,8 @@
      44.986088
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "moment-apartments-1222145087",
@@ -17395,37 +14872,8 @@
      44.973904
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "4th-park-1223123289",
@@ -17472,37 +14920,8 @@
      44.975492
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "graze-food-hall-by-travail-1223123290",
@@ -17646,37 +15065,8 @@
      44.983006
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "north-loop-green-commercial-1281801622",
@@ -17747,37 +15137,8 @@
      44.982723
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "murrays-1334632160",
@@ -17812,37 +15173,8 @@
      44.978423
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "ids-center-1385236413",
@@ -18297,37 +15629,8 @@
      44.976752
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "shelby-commons-1388384208",
@@ -18390,37 +15693,8 @@
      44.979536
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "the-royal-sonesta-minneapolis-downtown-1393159125",
@@ -18598,37 +15872,8 @@
      44.970926
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "stone-arch-lofts-1394864167",
@@ -18707,37 +15952,8 @@
      44.979435
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "the-crossings-1411646515",
@@ -18968,37 +16184,8 @@
      44.977707
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "the-newell-1530645870",
@@ -19033,37 +16220,8 @@
      44.985783
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     390,
-     1320
-    ],
-    [
-     570,
-     1200
-    ]
-   ],
-   "hoursNote": "Default skyway hours — unverified, from OSM extraction."
+   "hours": null,
+   "hoursNote": "No published hours found."
   },
   {
    "id": "7th-street-ramp-a-r2100894",

@@ -549,7 +549,16 @@ test("live dataset is internally consistent", () => {
     assert.notEqual(e.from, e.to, "self-loop edge");
   }
   for (const b of live.buildings) {
-    assert.equal(b.hours.length, 7, `${b.id} must have 7 days of hours`);
+    // null is the encoding for "nobody publishes these", which is a
+    // legitimate state and distinct from a week of closed days. Anything
+    // that is not null still owes a full week.
+    if (b.hours !== null) {
+      assert.equal(b.hours.length, 7, `${b.id} must have 7 days of hours, or null when unknown`);
+    }
+    assert.ok(
+      b.hoursNote && typeof b.hoursNote === "string",
+      `${b.id} must say where its hours came from, or that none were found`,
+    );
     if (b.image) {
       assert.ok(b.image.url && b.image.attribution && b.image.sourceUrl, `${b.id} has an incomplete image record`);
       assert.match(b.image.attribution, /·/, `${b.id} image is missing a license in its attribution`);

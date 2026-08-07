@@ -1,6 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { closingSoonWarnings, skywayAccessLabel, statusFromHours, weeklyHoursRows } from "../src/hours.ts";
+import {
+  closingSoonWarnings,
+  isClosingSoon,
+  isOpenAt,
+  skywayAccessLabel,
+  statusAt,
+  statusFromHours,
+  weeklyHoursRows,
+} from "../src/hours.ts";
 
 // Monday 1pm. Building open 6am-8pm every day.
 const openDaily = Array(7).fill([360, 1200]);
@@ -104,4 +112,31 @@ test("a real late close still warns", () => {
     new Date(2026, 7, 6, 21, 40));
   assert.equal(w.length, 1);
   assert.match(w[0].label, /closes at 10pm/);
+});
+
+// --- unknown hours -------------------------------------------------------
+// A building whose hours nobody publishes is a different thing from a
+// building that is closed, and the difference matters to the router: one
+// is a fact, the other is an absence. Encoding the absence as `null` in
+// place of the week lets both the map and the sheet say "we don't know"
+// instead of inventing a closing time.
+
+test("a building with unknown hours does not get filtered out of routes", () => {
+  // The alternative is the ordinance default this replaces, which claimed
+  // every unverified building was open until 10pm — and routed people
+  // through towers the City itself says lock at 6.
+  const unknown = { hours: null };
+  assert.equal(isOpenAt(unknown, monday1pm), true);
+  assert.equal(isOpenAt(unknown, new Date(2026, 6, 27, 3, 0)), true);
+});
+
+test("unknown hours are never 'closing soon'", () => {
+  // Nothing is known to be ending, so there is nothing to warn about.
+  assert.equal(isClosingSoon({ hours: null }, monday1pm), false);
+});
+
+test("unknown hours produce no status badge at all", () => {
+  // Not "Closed", not "Open" — the card simply says nothing about it,
+  // which is the whole point of keeping unknown distinct from closed.
+  assert.equal(statusAt({ hours: null }, monday1pm), null);
 });

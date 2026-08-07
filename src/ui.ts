@@ -590,7 +590,9 @@ export class Sheet {
     const address = b.address === "Minneapolis" ? "" : b.address;
     const metaText = [kind, address].filter(Boolean).join(" · ");
     const meta = el("div", metaText, "meta");
-    const badge = el("span", status.label, `badge ${status.open ? "open" : "closed"}`);
+    // No badge when nobody publishes hours — an "Open"/"Closed" pill is a
+    // claim, and this is the one case where the app has nothing to claim.
+    const badge = status ? el("span", status.label, `badge ${status.open ? "open" : "closed"}`) : null;
 
     // Peek = name, status, and the Directions pill (with the walk time on
     // it when known) — Apple's card peek. Everything else under drag-up.
@@ -602,13 +604,12 @@ export class Sheet {
 
     const more = document.createElement("div");
     more.className = "sheet-collapsible";
-    const hours = hoursTable(b.hours, when);
-    // Real per-building hours come from OSM tags when present; the generic
-    // schedule is a guess, and guesses should say so rather than pass as fact.
-    if (b.hoursNote.startsWith("Default")) {
-      hours.append(el("span", " (typical, unverified)", "hours-unverified"));
-    }
-    more.append(hours);
+    // No published hours means no hours row. This used to render the city
+    // ordinance with a "(typical, unverified)" caveat beside it, but a
+    // labelled guess is still a guess on screen — and the City's own record
+    // says most skyway buildings don't keep the ordinance anyway. Showing
+    // nothing lets the reader go and look, which is the honest outcome.
+    if (b.hours !== null) more.append(hoursTable(b.hours, when));
     if (b.image) more.append(this.landmarkPhoto(b.image));
 
     // `nearby` places are attached to this building but aren't in it, so
@@ -652,8 +653,8 @@ export class Sheet {
       }
       more.append(list);
     }
-    more.append(this.reportLink({ name: b.name, id: b.id }, formatWeeklyHours(b.hours)));
-    this.content.append(h2, meta, badge, actionsRow, more);
+    more.append(this.reportLink({ name: b.name, id: b.id }, b.hours ? formatWeeklyHours(b.hours) : undefined));
+    this.content.append(...[h2, meta, badge, actionsRow, more].filter((n) => n !== null));
     this.show("card", false);
   }
 
@@ -767,7 +768,7 @@ export class Sheet {
     // as the business's own open/closed state.
     const access = el("div", undefined, "poi-access");
     if (walk) access.append(accessLine("From you", `${walk.minutes} min walk · ${formatDistance(walk.meters)}`));
-    const skyway = host ? skywayAccessLabel(host.hours, when) : null;
+    const skyway = host ? skywayAccessLabel(host.hours ?? undefined, when) : null;
     if (skyway) access.append(accessLine("Skyway", skyway));
     if (access.childElementCount) this.content.append(access);
 
@@ -1024,7 +1025,9 @@ function humanCategory(cat: string): string {
 }
 
 function isOpenLabelOk(b: Building, when: Date): boolean {
-  return statusAt(b, when).open;
+  // Unknown hours are not evidence that a building is shut, so it keeps
+  // its normal treatment rather than being dimmed as closed.
+  return statusAt(b, when)?.open ?? true;
 }
 
 function formatDistance(meters: number): string {

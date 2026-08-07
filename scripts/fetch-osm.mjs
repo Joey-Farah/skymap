@@ -111,15 +111,22 @@ const MAX_NEARBY_POI_METERS = 120;
 // Real same-name branches downtown are never nearer than ~180 m.
 const DUPLICATE_POI_METERS = 25;
 
-const DEFAULT_HOURS = [
-  [720, 1080],
-  [390, 1320],
-  [390, 1320],
-  [390, 1320],
-  [390, 1320],
-  [390, 1320],
-  [570, 1200],
-];
+// There is deliberately no default here.
+//
+// This used to hold city ordinance Article XV verbatim (Mo-Fr 06:30-22:00,
+// Sa 09:30-20:00, Su 12:00-18:00) for every building OSM had no hours for.
+// The ordinance is what the law requires, not what the buildings do: the
+// City's own June 2025 committee record (RCA-2025-00678) states that
+// "most skyway connected buildings are open Monday through Friday until
+// 6:00 p.m. and are closed on weekends", and that people "regularly
+// encounter access issues ... during times of day when they should be
+// open". Since router.ts filters on these hours, the default was planning
+// evening and weekend routes through towers that had been locked for
+// hours.
+//
+// A stricter default would be the same mistake aimed the other way. So an
+// unverified building now carries hours: null, which isOpenAt reads as
+// "no claim" rather than as a schedule.
 
 async function fetchOverpass() {
   let lastErr;
@@ -449,7 +456,7 @@ async function main(osm) {
         ? [skywayHours, "Skyway-specific hours from OSM."]
         : generalHours
           ? [generalHours, "Building hours from OSM (not skyway-specific)."]
-          : [DEFAULT_HOURS, "Default skyway hours — unverified, from OSM extraction."];
+          : [null, "No published hours found."];
       return {
         id,
         name: w.tags.name,

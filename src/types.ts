@@ -18,8 +18,11 @@ export interface Building {
   lon: number;
   /** Closed polygon ring, [lon, lat] pairs. */
   footprint: [number, number][];
-  /** Sunday-first weekly hours. */
-  hours: DayHours[];
+  /** Sunday-first weekly hours, or null when nobody publishes them.
+   *
+   * null is not "closed all week" — it is the absence of a claim. See
+   * isOpenAt in hours.ts for why the two must stay distinguishable. */
+  hours: DayHours[] | null;
   hoursNote: string;
   /** Landmark photo from Wikimedia Commons, via the building's OSM wikidata tag. */
   image?: { url: string; attribution: string; sourceUrl: string };
