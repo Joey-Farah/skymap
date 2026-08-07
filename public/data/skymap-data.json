@@ -22969,7 +22969,10 @@
    "lat": 44.978661,
    "lon": -93.276495,
    "buildingId": "target-center-23125943",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Su-Th 16:00-24:00; Fr-Sa 16:00-26:00",
+   "hoursSource": "https://odonovans.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-571451391",

@@ -56,7 +56,8 @@
    "name": "O'Donovan's",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-661686890": {
    "kind": "poi",
@@ -711,7 +712,8 @@
    "name": "Jalapeño Mexican Grill",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12980602290": {
    "kind": "poi",
@@ -999,7 +1001,8 @@
    "name": "Good To Go Mediterranean",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14022958827": {
    "kind": "poi",

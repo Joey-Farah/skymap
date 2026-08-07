@@ -550,6 +550,13 @@
    "source": "https://www.instagram.com/nurhousecafe/",
    "checkedOn": "2026-08-07",
    "note": "No website; the operator publishes address and hours in their own Instagram bio. The bio address (515 South 4th St) geocodes to this POI's exact coordinates."
+  },
+  "poi-553119984": {
+   "name": "O’Donovan’s",
+   "openingHours": "Su-Th 16:00-24:00; Fr-Sa 16:00-26:00",
+   "source": "https://odonovans.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Full week read off the pub's own site (© O'Donovan's Irish Pub LLC) behind its See-hours expander; address 700 N 1st Ave geocodes 30 m from this POI, inside the same corner. Their Instagram adds that they also open 2h before and after Target Center and First Ave events — an extension on top of this baseline, not a replacement, so the baseline is what is recorded. Fr-Sa 2am written as 26:00, the OSM idiom src/opening-hours.ts accepts."
   }
  },
  "skipped": {
@@ -905,6 +912,18 @@
    "name": "The Cabana Club",
    "reason": "Location confirmed — the site's address (201 SE Main St) geocodes to this POI's exact coordinates. But the page and its own footer disagree about Wednesday: the primary listing says Mon-Fri 11am-10pm, the footer says Wed opens at 10am with the weekend. Six days agree, Wednesday does not, and the site itself says hours are subject to change. Not resolved by picking one.",
    "source": "http://cabanaclubmpls.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12971797978": {
+   "name": "Jalapeño Mexican Grill",
+   "reason": "Location confirmed (site address 330 2nd Avenue S geocodes to this POI's exact coordinates) and the site does render a schedule once its Cloudflare challenge clears — but the schedule is the online-ordering window, not opening hours: Monday-Friday 4:00AM-11:59PM plus 12:01AM-3:59AM, which is 24 hours a day, and Saturday/Sunday Closed. A skyway lunch counter is not open around the clock. Recording it would claim open at 5am.",
+   "source": "https://jalapenomn.com/menu/jalapeno-mexican-grill-330-2nd-avenue-s",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14022958823": {
+   "name": "Good To Go Mediterranean",
+   "reason": "No first-party site under this name. The operator (Hemisphere Restaurant Partners) publishes sites for its other brands but none for this counter; search returns only skyway dining round-ups.",
+   "source": "(searched; none found)",
    "checkedOn": "2026-08-07"
   }
  }
