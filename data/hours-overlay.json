@@ -368,6 +368,20 @@
       "openingHours": "Mo-Sa 11:00-19:00; Su 12:00-18:00",
       "source": "https://bonobos.com/locations/s/north-loop-minneapolis",
       "checkedOn": "2026-08-07"
+    },
+    "poi-12753315917": {
+      "name": "The Burger Place",
+      "openingHours": "Mo-Fr 07:00-14:00",
+      "source": "https://www.theburgerplace.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Sat and Sun published as Closed. Breakfast/lunch service windows are within these hours, not separate opening times."
+    },
+    "poi-13451748978": {
+      "name": "Sota (601 S Marquette)",
+      "openingHours": "Mo-Th 11:00-16:00; Fr 11:00-14:00",
+      "source": "https://sotashopmn.com/hours-%26-location",
+      "checkedOn": "2026-08-07",
+      "note": "The downtown shop specifically — the page also lists Maple Grove, Edina and St Louis Park with different hours. Sunday published closed; Saturday not stated for this location, so left unset."
     }
   },
   "skipped": {
@@ -501,6 +515,12 @@
       "name": "HiFi Sound",
       "reason": "Published showroom hours belong to 825 Glenwood Ave, not the skyway location our POI sits in.",
       "source": "https://www.hifisound.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13265552505": {
+      "name": "The Salad Bar",
+      "reason": "Site shows only a live 'Open today 10:30 am - 02:00 pm' status; no weekly schedule anywhere on it.",
+      "source": "https://saladbarmn.com/",
       "checkedOn": "2026-08-07"
     }
   }

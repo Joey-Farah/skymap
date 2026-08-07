@@ -24713,7 +24713,10 @@
    "lon": -93.267511,
    "buildingId": "us-bank-plaza-126015100",
    "level": "1",
-   "website": "https://www.theburgerplace.com/"
+   "website": "https://www.theburgerplace.com/",
+   "openingHours": "Mo-Fr 07:00-14:00",
+   "hoursSource": "https://www.theburgerplace.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12753315921",
@@ -25779,7 +25782,10 @@
    "buildingId": "six-quebec-156912888",
    "level": "1",
    "website": "https://sotashopmn.com/",
-   "logo": "sotashopmn-com"
+   "logo": "sotashopmn-com",
+   "openingHours": "Mo-Th 11:00-16:00; Fr 11:00-14:00",
+   "hoursSource": "https://sotashopmn.com/hours-%26-location",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13451748985",
