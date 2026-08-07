@@ -2048,6 +2048,24 @@
    "reason": "States it outright in its own footer: 'Hours: By appointment only'. An event venue booked for weddings and corporate events, with no walk-in window — the clearest possible version of this refusal, in the operator's own words. Search reports Mon-Fri 9-4 from Eventective, which the venue itself contradicts.",
    "source": "https://glasshousemn.com/",
    "checkedOn": "2026-08-07"
+  },
+  "poi-3403172118": {
+   "name": "Rick's Cabaret Minneapolis",
+   "reason": "Their site is promotional and publishes no opening hours. It does give a happy hour (Monday-Friday 11am until 8pm) and a shift-change special (Sunday-Thursday 6pm-9pm), from which an opening time could be inferred — deliberately not done, since a promotion window is not a published open window and the closing time appears nowhere. Search also places the club at 300 South 3rd Street, which does not match this POI's recorded address, so the identity would need checking before anything was recorded anyway.",
+   "source": "https://www.ricksminneapolis.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12754394002": {
+   "name": "Orangetheory Fitness (North Loop)",
+   "reason": "The studio page renders fully with its address (411 N Washington Ave Suite 250) but no hours — Orangetheory publishes class times through a booking system rather than studio opening hours, the same shape as The Grind. The Mon-Thu 5:30am-8pm figures search offers come from Yelp and Wellhub.",
+   "source": "https://www.orangetheory.com/en-us/locations/minneapolis-minnesota-0277",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13410756376": {
+   "name": "Feature Cut Barber",
+   "reason": "No first-party site. Search returns only aggregator profiles (BestProsInTown, Yahoo Local, BBB, barbershops.net) which give an address of 800 S Marquette Ave #105 but no source we can use. Two neighbouring skyway barbers do have their own sites, so this is a genuine absence rather than a search failure.",
+   "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
   }
  },
  "conflicts": {

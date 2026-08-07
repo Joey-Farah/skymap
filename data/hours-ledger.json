@@ -156,7 +156,8 @@
    "name": "Rick's Cabaret Minneapolis",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-3524709447": {
    "kind": "poi",
@@ -1478,7 +1479,8 @@
    "name": "Feature Cut Barber",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756378": {
    "kind": "poi",
@@ -1585,7 +1587,8 @@
    "name": "Orangetheory Fitness",
    "group": "other",
    "website": "https://www.orangetheory.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13713067339": {
    "kind": "poi",
