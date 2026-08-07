@@ -122,10 +122,38 @@ review completes.
 ## 1.4 — prepared, NOT submitted (2026-08-07)
 
 `MARKETING_VERSION` is 1.4. Eight user-visible bugs fixed, found by two
-fresh-context sweeps. Build goes to TestFlight; **Joey submits it himself**
-after walking it. 1.3 was still WAITING_FOR_REVIEW ~15 hours after
-submission, so 1.2's one-hour approval was not the new normal — there is
-time to test before sending this one.
+fresh-context sweeps, plus the hours work: 372 places researched, 113
+recorded from operators' own sources, and the fabricated ordinance default
+deleted. Build goes to TestFlight; **Joey submits it himself** after
+walking it. 1.3 was still WAITING_FOR_REVIEW ~15 hours after submission,
+so 1.2's one-hour approval was not the new normal — there is time to test
+before sending this one.
+
+**The build to test is 45** (commit 4ab17b2). Build 44 is the same release
+minus the not-an-access-claim retraction; ignore it.
+
+The App Store Connect side cannot be prepared yet. Apple rejects creating
+1.4 while 1.3 is IN_REVIEW:
+
+```
+409 ENTITY_ERROR.RELATIONSHIP.INVALID
+"You cannot create a new version of the App in the current state."
+```
+
+So it lives in `prepare-1.4.sh`, which refuses to run until 1.3 reaches
+READY_FOR_SALE and then creates the version, sets the what's-new text from
+`release-notes/1.4.txt`, and attaches build 45. It stops before submitting.
+
+**Builds do not reach the TestFlight group on their own.** Both 44 and 45
+had to be added explicitly:
+
+```
+POST /v1/betaGroups/1c4607e4-7ed4-46eb-98d2-dbb602b51bf1/relationships/builds
+{"data": [{"type": "builds", "id": "<build uuid>"}]}
+```
+
+Earlier builds all being in the group looked like automatic distribution;
+it isn't, and 44 sat VALID-but-undelivered until it was pushed manually.
 
 ## 1.3 — submitted without a device walk (Joey's call, 2026-08-06)
 
@@ -168,15 +196,17 @@ you actually want to know.
 ## What's New — 1.4
 
 ```
-Better routes, and a lot of small things that were quietly wrong.
+Hours you can trust — and honesty about the ones we don't have.
 
+• Opening hours for 113 more restaurants, shops and services, every one of them read off the operator's own website, menu or door — never a directory listing.
+• Buildings no longer borrow the city's generic skyway schedule. Most downtown buildings don't actually keep those hours, and showing them meant some buildings looked open four hours longer than they are, and open on weekends they're shut. Where nobody publishes hours, the app now says nothing at all instead of guessing.
+• Directions no longer avoid a building because of hours that were never about walking through it — a museum's ticket times and a food hall's kitchen hours don't decide whether the skyway is open.
 • Routes are smarter about the walk inside each building, not just the bridges between them — most trips are now shorter, and the longest are several minutes shorter.
 • Places with accents or apostrophes in their names — Pizza Lucé, Fogo de Chão, Jalapeño Mexican Grill, Tom's Watch Bar — can now be found by typing them however you like.
 • Somewhere open around the clock now says "Open 24 hours" instead of claiming it closes at midnight.
 • The Government Plaza and Warehouse District light-rail stations are searchable.
 • "You've arrived" no longer appears while you're still walking.
 • Starting a second trip now routes from where you actually are, instead of where your last trip began.
-• Opening hours for more restaurants, shops and services, and fewer places whose hours were dropped over a stray space.
 ```
 
 ## What's New — 1.3

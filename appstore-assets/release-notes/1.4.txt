@@ -1,0 +1,11 @@
+Hours you can trust — and honesty about the ones we don't have.
+
+• Opening hours for 113 more restaurants, shops and services, every one of them read off the operator's own website, menu or door — never a directory listing.
+• Buildings no longer borrow the city's generic skyway schedule. Most downtown buildings don't actually keep those hours, and showing them meant some buildings looked open four hours longer than they are, and open on weekends they're shut. Where nobody publishes hours, the app now says nothing at all instead of guessing.
+• Directions no longer avoid a building because of hours that were never about walking through it — a museum's ticket times and a food hall's kitchen hours don't decide whether the skyway is open.
+• Routes are smarter about the walk inside each building, not just the bridges between them — most trips are now shorter, and the longest are several minutes shorter.
+• Places with accents or apostrophes in their names — Pizza Lucé, Fogo de Chão, Jalapeño Mexican Grill, Tom's Watch Bar — can now be found by typing them however you like.
+• Somewhere open around the clock now says "Open 24 hours" instead of claiming it closes at midnight.
+• The Government Plaza and Warehouse District light-rail stations are searchable.
+• "You've arrived" no longer appears while you're still walking.
+• Starting a second trip now routes from where you actually are, instead of where your last trip began.
