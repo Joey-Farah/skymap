@@ -466,6 +466,13 @@
       "source": "https://crispandgreen.com/locations/",
       "checkedOn": "2026-08-07",
       "note": "428 North Washington Ave — matches our POI at 44.98615,-93.27438 inside the Free Spirit Building. Only North Loop store the chain lists."
+    },
+    "poi-5955577512": {
+      "name": "Leeann Chin (City Center)",
+      "openingHours": "Mo-Fr 11:00-16:00",
+      "source": "https://www.leeannchin.com/restaurant/city-centerdowntown-minneapolis-mn/40-south-7th-street",
+      "checkedOn": "2026-08-07",
+      "note": "40 South 7th Street — exactly our City Center host. Sat/Sun published as Closed. The chain's /locations index carries no hours; the per-restaurant page does."
     }
   },
   "skipped": {

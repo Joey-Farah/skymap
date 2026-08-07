@@ -23714,7 +23714,10 @@
    "lon": -93.272891,
    "buildingId": "city-center-27346720",
    "website": "http://leeannchin.com/",
-   "logo": "leeannchin-com"
+   "logo": "leeannchin-com",
+   "openingHours": "Mo-Fr 11:00-16:00",
+   "hoursSource": "https://www.leeannchin.com/restaurant/city-centerdowntown-minneapolis-mn/40-south-7th-street",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5955582348",
