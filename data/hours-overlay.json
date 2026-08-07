@@ -557,6 +557,27 @@
    "source": "https://odonovans.com/",
    "checkedOn": "2026-08-07",
    "note": "Full week read off the pub's own site (© O'Donovan's Irish Pub LLC) behind its See-hours expander; address 700 N 1st Ave geocodes 30 m from this POI, inside the same corner. Their Instagram adds that they also open 2h before and after Target Center and First Ave events — an extension on top of this baseline, not a replacement, so the baseline is what is recorded. Fr-Sa 2am written as 26:00, the OSM idiom src/opening-hours.ts accepts."
+  },
+  "poi-5620131612": {
+   "name": "Starbucks (Moment)",
+   "openingHours": "Mo-Fr 06:00-19:00; Sa-Su 06:30-19:00",
+   "source": "https://www.starbucks.com/store-locator",
+   "checkedOn": "2026-08-07",
+   "note": "Full week from Starbucks own locations API (apiproxy/v1/locations), which returns a per-day schedule the rendered locator hides behind a single today line. Matched on coordinates: this POI is 39 m from the Moment Minneapolis Downtown store at 520 S 7th St, and the next nearest Starbucks is 611 m away."
+  },
+  "poi-12333223454": {
+   "name": "Starbucks (Riverfront)",
+   "openingHours": "Mo-Fr 06:00-19:00; Sa-Su 06:30-19:00",
+   "source": "https://www.starbucks.com/store-locator",
+   "checkedOn": "2026-08-07",
+   "note": "Same API. Matched at 8 m to the East End Minneapolis store, 713 South Washington Avenue; next nearest is 666 m."
+  },
+  "poi-12164570021": {
+   "name": "Treats",
+   "openingHours": "Mo-Fr 08:00-22:00; Sa-Su 09:00-22:00",
+   "source": "https://www.treatsmn.com/s/store-locator",
+   "checkedOn": "2026-08-07",
+   "note": "Their store locator shows only a live Open-until line until the store card is clicked, which reveals the week. North Loop store, 314 N 2nd St — OSM independently places a Treats at this POI exact coordinates on the same block."
   }
  },
  "skipped": {
@@ -924,6 +945,12 @@
    "name": "Good To Go Mediterranean",
    "reason": "No first-party site under this name. The operator (Hemisphere Restaurant Partners) publishes sites for its other brands but none for this counter; search returns only skyway dining round-ups.",
    "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5955612516": {
+   "name": "Starbucks (33 South Sixth)",
+   "reason": "Store 11987, which our data links to, does not appear anywhere in the 50 nearest stores Starbucks own API returns for this address — the chain no longer lists a store at 33 S 6th St / City Center. The nearest it does list is the Westin at 88 S 6th St, 179 m away in a different building, and its hours were not borrowed.",
+   "source": "https://www.starbucks.com/store-locator",
    "checkedOn": "2026-08-07"
   }
  }

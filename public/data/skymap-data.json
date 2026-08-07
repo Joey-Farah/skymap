@@ -23616,7 +23616,10 @@
    "lon": -93.264582,
    "buildingId": "moment-apartments-1222145087",
    "website": "https://www.starbucks.com/",
-   "logo": "starbucks-com"
+   "logo": "starbucks-com",
+   "openingHours": "Mo-Fr 06:00-19:00; Sa-Su 06:30-19:00",
+   "hoursSource": "https://www.starbucks.com/store-locator",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5646466920",
@@ -24484,7 +24487,10 @@
    "lon": -93.271505,
    "buildingId": "intersect-apartments-1216920711",
    "website": "https://www.treatsmn.com/s/order?location=11eed04927db097c941e3cecef6dbac6#most-popular",
-   "logo": "treatsmn-com"
+   "logo": "treatsmn-com",
+   "openingHours": "Mo-Fr 08:00-22:00; Sa-Su 09:00-22:00",
+   "hoursSource": "https://www.treatsmn.com/s/store-locator",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12189417012",
@@ -24590,7 +24596,10 @@
    "buildingId": "riverfront-municipal-parking-ramp-99717608",
    "nearby": true,
    "website": "https://www.starbucks.com/",
-   "logo": "starbucks-com"
+   "logo": "starbucks-com",
+   "openingHours": "Mo-Fr 06:00-19:00; Sa-Su 06:30-19:00",
+   "hoursSource": "https://www.starbucks.com/store-locator",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12335262724",

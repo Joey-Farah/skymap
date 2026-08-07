@@ -213,7 +213,8 @@
    "name": "Starbucks",
    "group": "coffee",
    "website": "https://www.starbucks.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955554286": {
    "kind": "poi",
@@ -260,7 +261,8 @@
    "name": "Starbucks",
    "group": "coffee",
    "website": "https://www.starbucks.com/store-locator/store/11987/33-s-6th-st-city-center-sk-40-s-7th-st-208-minneapolis-mn-554023601-us",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6178628386": {
    "kind": "poi",
@@ -456,7 +458,8 @@
    "name": "Treats",
    "group": "food",
    "website": "https://www.treatsmn.com/s/order?location=11eed04927db097c941e3cecef6dbac6#most-popular",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12333223450": {
    "kind": "poi",
@@ -470,7 +473,8 @@
    "name": "Starbucks",
    "group": "coffee",
    "website": "https://www.starbucks.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12335262724": {
    "kind": "poi",
