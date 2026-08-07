@@ -290,7 +290,8 @@
    "name": "Sal's on Fifth",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6780251057": {
    "kind": "poi",
