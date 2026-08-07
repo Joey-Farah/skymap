@@ -5,35 +5,40 @@
    "name": "Hall C",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-367067934": {
    "kind": "poi",
    "name": "Hall B",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-367067936": {
    "kind": "poi",
    "name": "Hall A",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-367067940": {
    "kind": "poi",
    "name": "Hall E",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-367067941": {
    "kind": "poi",
    "name": "Hall D",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-506466720": {
    "kind": "poi",
@@ -182,7 +187,8 @@
    "name": "Hennepin County Jail",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5355792479": {
    "kind": "poi",
@@ -689,7 +695,8 @@
    "name": "Sheraton Minneapolis Downtown Convention Center",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12911650736": {
    "kind": "poi",
@@ -704,7 +711,8 @@
    "name": "Wellstone International High School",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12919741649": {
    "kind": "poi",
@@ -2147,7 +2155,8 @@
    "category": "hotel",
    "address": "30 South 7th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "33-south-sixth-27346721": {
    "kind": "building",
@@ -2319,7 +2328,8 @@
    "category": "hotel",
    "address": "609 South 3rd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "cortland-mill-district-62006959": {
    "kind": "building",
@@ -2353,7 +2363,8 @@
    "category": "hotel",
    "address": "95 Merriam Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "macphail-center-for-music-81049070": {
    "kind": "building",
@@ -2743,7 +2754,8 @@
    "category": "hotel",
    "address": "615 2nd Avenue South",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "110-grant-apartments-resident-parking-358537233": {
    "kind": "building",
@@ -2950,7 +2962,8 @@
    "category": "hotel",
    "address": "1313 Nicollet Mall",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "stone-arch-lofts-1394864167": {
    "kind": "building",

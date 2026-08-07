@@ -1848,6 +1848,84 @@
    "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
    "source": "(structural; sample rendered)",
    "checkedOn": "2026-08-07"
+  },
+  "minneapolis-marriott-city-center-27346715": {
+   "name": "Minneapolis Marriott City Center",
+   "reason": "A hotel, taking the same structural answer as the 22 hotel POIs: hotels publish check-in and check-out times, which say when a room becomes yours, not when the building can be walked into. Eight hotel sites were individually fetched during that pass — six returned 403/429 bot protection and the one that loaded was a global corporate site — and this entry shares that reasoning rather than having been fetched again. Per Joey: omit, and let the reader assume.",
+   "source": "(structural; see the hotel POI pass)",
+   "checkedOn": "2026-08-07"
+  },
+  "radisson-red-minneapolis-downtown-60613336": {
+   "name": "Radisson RED Minneapolis Downtown",
+   "reason": "A hotel, taking the same structural answer as the 22 hotel POIs: hotels publish check-in and check-out times, which say when a room becomes yours, not when the building can be walked into. Eight hotel sites were individually fetched during that pass — six returned 403/429 bot protection and the one that loaded was a global corporate site — and this entry shares that reasoning rather than having been fetched again. Per Joey: omit, and let the reader assume.",
+   "source": "(structural; see the hotel POI pass)",
+   "checkedOn": "2026-08-07"
+  },
+  "nicollet-island-inn-80313504": {
+   "name": "Nicollet Island Inn",
+   "reason": "A hotel, taking the same structural answer as the 22 hotel POIs: hotels publish check-in and check-out times, which say when a room becomes yours, not when the building can be walked into. Eight hotel sites were individually fetched during that pass — six returned 403/429 bot protection and the one that loaded was a global corporate site — and this entry shares that reasoning rather than having been fetched again. Per Joey: omit, and let the reader assume.",
+   "source": "(structural; see the hotel POI pass)",
+   "checkedOn": "2026-08-07"
+  },
+  "hyatt-centric-downtown-minneapolis-354742163": {
+   "name": "Hyatt Centric Downtown Minneapolis",
+   "reason": "A hotel, taking the same structural answer as the 22 hotel POIs: hotels publish check-in and check-out times, which say when a room becomes yours, not when the building can be walked into. Eight hotel sites were individually fetched during that pass — six returned 403/429 bot protection and the one that loaded was a global corporate site — and this entry shares that reasoning rather than having been fetched again. Per Joey: omit, and let the reader assume.",
+   "source": "(structural; see the hotel POI pass)",
+   "checkedOn": "2026-08-07"
+  },
+  "sheraton-minneapolis-downtown-convention-center-1394814185": {
+   "name": "Sheraton Minneapolis Downtown Convention Center",
+   "reason": "A hotel, taking the same structural answer as the 22 hotel POIs: hotels publish check-in and check-out times, which say when a room becomes yours, not when the building can be walked into. Eight hotel sites were individually fetched during that pass — six returned 403/429 bot protection and the one that loaded was a global corporate site — and this entry shares that reasoning rather than having been fetched again. Per Joey: omit, and let the reader assume.",
+   "source": "(structural; see the hotel POI pass)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12911210803": {
+   "name": "Sheraton Minneapolis Downtown Convention Center",
+   "reason": "A hotel, taking the same structural answer as the 22 hotel POIs: hotels publish check-in and check-out times, which say when a room becomes yours, not when the building can be walked into. Eight hotel sites were individually fetched during that pass — six returned 403/429 bot protection and the one that loaded was a global corporate site — and this entry shares that reasoning rather than having been fetched again. Per Joey: omit, and let the reader assume.",
+   "source": "(structural; see the hotel POI pass)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-367067936": {
+   "name": "Hall A",
+   "reason": "A hall inside the Minneapolis Convention Center. Halls open for whatever event is booked in them rather than on a weekly schedule, so there is no recurring window to record — the same event-driven answer as Orchestra Hall and the Orpheum.",
+   "source": "(structural; convention centre hall)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-367067934": {
+   "name": "Hall B",
+   "reason": "A hall inside the Minneapolis Convention Center. Halls open for whatever event is booked in them rather than on a weekly schedule, so there is no recurring window to record — the same event-driven answer as Orchestra Hall and the Orpheum.",
+   "source": "(structural; convention centre hall)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-367067933": {
+   "name": "Hall C",
+   "reason": "A hall inside the Minneapolis Convention Center. Halls open for whatever event is booked in them rather than on a weekly schedule, so there is no recurring window to record — the same event-driven answer as Orchestra Hall and the Orpheum.",
+   "source": "(structural; convention centre hall)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-367067941": {
+   "name": "Hall D",
+   "reason": "A hall inside the Minneapolis Convention Center. Halls open for whatever event is booked in them rather than on a weekly schedule, so there is no recurring window to record — the same event-driven answer as Orchestra Hall and the Orpheum.",
+   "source": "(structural; convention centre hall)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-367067940": {
+   "name": "Hall E",
+   "reason": "A hall inside the Minneapolis Convention Center. Halls open for whatever event is booked in them rather than on a weekly schedule, so there is no recurring window to record — the same event-driven answer as Orchestra Hall and the Orpheum.",
+   "source": "(structural; convention centre hall)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-4564574481": {
+   "name": "Hennepin County Jail",
+   "reason": "A custodial facility. It has visiting hours rather than opening hours, and it is not a place a skyway walker routes to as a destination — there is no public walk-in window to record.",
+   "source": "(structural)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12914862886": {
+   "name": "Wellstone International High School",
+   "reason": "A public high school. Schools publish term calendars and bell schedules, not building opening hours, and access is controlled during the day — nothing here maps onto a walk-in window.",
+   "source": "(structural)",
+   "checkedOn": "2026-08-07"
   }
  }
 }
