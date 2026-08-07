@@ -641,6 +641,20 @@
    "source": "https://tools.usps.com/locations/details/1506955",
    "checkedOn": "2026-08-07",
    "note": "USPS renders the week only after the page's JavaScript runs — a plain fetch returns 'Service hours may vary' and nothing else. Closed Saturday and Sunday, which the page states rather than omits. Address 811 LaSalle Ave Ste 100 geocodes 25 m from this POI."
+  },
+  "guthrie-theater-129937715": {
+   "name": "Guthrie Theater",
+   "openingHours": "Tu-Fr 13:00-20:00; Sa-Su 10:00-20:00",
+   "source": "https://www.guthrietheater.org/visit/opening-times/",
+   "checkedOn": "2026-08-07",
+   "note": "Published under the heading 'Building Hours' — not box office or store hours, which the same page says differ. Closed Monday, which it states outright. Address 818 South 2nd Street matches ours. Their caveat: matinee days open at 10 a.m. and days with no evening performance close at 5 p.m., so this is the standard frame rather than a guarantee. Reachable only via a 'See daily hours' link behind a cookie wall; the page 403s to a plain fetch."
+  },
+  "poi-12754418802": {
+   "name": "Stilo Cuts (North Loop)",
+   "openingHours": "Mo-Th 09:00-20:00; Fr-Sa 08:00-20:00; Su 10:00-18:00",
+   "source": "https://www.stilocuts.com/copy-of-lake-elmo-2",
+   "checkedOn": "2026-08-07",
+   "note": "Seven Stilo locations share a template; the North Loop page is reachable only at the URL slug 'copy-of-lake-elmo-2', and the obvious /north-loop path 404s. Address 224 N Washington Ave Suite 130A geocodes 9 m from this POI. The page adds that after-hours services cost $15+ more, which implies later availability by arrangement — not recorded, since it is not a published open window."
   }
  },
  "skipped": {
@@ -1272,6 +1286,24 @@
    "name": "The Gardner School",
    "reason": "A private preschool. Its Minneapolis page renders fully (17,901 chars) with tuition, curriculum and enquiry forms but no opening hours — enrolment is by appointment rather than walk-in.",
    "source": "https://www.thegardnerschool.com/schools/minneapolis/",
+   "checkedOn": "2026-08-07"
+  },
+  "orchestra-hall-43607930": {
+   "name": "Orchestra Hall",
+   "reason": "The Minnesota Orchestra's own contact page gives no regular public building hours: the in-person box office is 'Open 90 minutes prior to concert start time for ticketed performances', and both the Stage Door and the administrative office are 'Public access by appointment only'. Access is entirely event-driven. Worth noting the search summary confidently reported a lobby box office open Mon-Fri 10am-2pm — the first-party page says no such thing.",
+   "source": "https://www.minnesotaorchestra.org/contact-us",
+   "checkedOn": "2026-08-07"
+  },
+  "westminster-presbyterian-63821145": {
+   "name": "Westminster Presbyterian",
+   "reason": "Publishes service times (Sunday 10:30am Memorial Day through Labor Day, Wednesday Bluegrass Evening Prayer 5:45pm for a fixed date range) but no building or office hours. A service time is when something happens inside, not when the doors are open, and the summer schedule is seasonal besides.",
+   "source": "https://www.westminstermpls.org/contact/",
+   "checkedOn": "2026-08-07"
+  },
+  "orpheum-theatre-41763764": {
+   "name": "Orpheum Theatre",
+   "reason": "Hennepin Arts owns the Orpheum but publishes no hours for it: its venues page is prose about the theatre district, and both the per-venue and box-office URLs return 404. A road-house theatre is open for ticketed events only in any case.",
+   "source": "https://hennepinarts.org/plan-your-visit/venues",
    "checkedOn": "2026-08-07"
   }
  }

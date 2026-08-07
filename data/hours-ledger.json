@@ -1250,7 +1250,8 @@
    "name": "Stilo Cuts",
    "group": "other",
    "website": "https://stilocuts.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754419001": {
    "kind": "poi",
@@ -2172,7 +2173,8 @@
    "category": "office",
    "address": "910 Hennepin Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "orchestra-hall-43607930": {
    "kind": "building",
@@ -2180,7 +2182,8 @@
    "category": "office",
    "address": "1111 Nicollet Mall",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "centre-village-44164774": {
    "kind": "building",
@@ -2284,7 +2287,8 @@
    "category": "venue",
    "address": "1200 Marquette Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "free-spirit-building-78061942": {
    "kind": "building",
@@ -2542,7 +2546,8 @@
    "category": "office",
    "address": "818 South 2nd Street",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "orange-building-143056848": {
    "kind": "building",

@@ -10273,13 +10273,41 @@
      44.978445
     ]
    ],
-   "hours": null,
-   "hoursNote": "No published hours found.",
+   "hours": [
+    [
+     600,
+     1200
+    ],
+    null,
+    [
+     780,
+     1200
+    ],
+    [
+     780,
+     1200
+    ],
+    [
+     780,
+     1200
+    ],
+    [
+     780,
+     1200
+    ],
+    [
+     600,
+     1200
+    ]
+   ],
+   "hoursNote": "Curated from the operator's own published hours.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Guthrie%20Theater-night-2007-03-12.jpg?width=640",
     "attribution": "Steve Lyon · CC BY-SA 2.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Guthrie%20Theater-night-2007-03-12.jpg"
-   }
+   },
+   "hoursSource": "https://www.guthrietheater.org/visit/opening-times/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "orange-building-143056848",
@@ -24370,7 +24398,10 @@
    "lon": -93.272049,
    "buildingId": "deja-vu-89080678",
    "nearby": true,
-   "website": "https://stilocuts.com/"
+   "website": "https://stilocuts.com/",
+   "openingHours": "Mo-Th 09:00-20:00; Fr-Sa 08:00-20:00; Su 10:00-18:00",
+   "hoursSource": "https://www.stilocuts.com/copy-of-lake-elmo-2",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12754418901",
