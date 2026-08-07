@@ -99,6 +99,113 @@
       "source": "https://www.parlaymn.com/",
       "checkedOn": "2026-08-06",
       "note": "Tu/We published as 00:00-00:00 (closed)."
+    },
+    "poi-9509044247": {
+      "name": "Stringline Pictures",
+      "openingHours": "Mo-Fr 09:00-17:00",
+      "source": "https://stringlinepictures.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-10925436338": {
+      "name": "New Horizon Academy",
+      "openingHours": "Mo-Fr 06:00-18:00",
+      "source": "https://newhorizonacademy.net/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12754418101": {
+      "name": "Loop Dental",
+      "openingHours": "Mo-Th 07:30-16:30; Fr 07:30-12:00",
+      "source": "https://www.loopdentalmn.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12862838544": {
+      "name": "Kadai Indian Kitchen",
+      "openingHours": "Tu 11:00-20:30; We-Sa 11:00-21:00; Su 11:00-20:30",
+      "source": "https://www.kadaimsp.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Monday absent from the published schedule, i.e. closed."
+    },
+    "poi-12911650736": {
+      "name": "Millers Landing Senior Living",
+      "openingHours": "Mo-Fr 08:00-16:30",
+      "source": "https://www.millerslandingseniorliving.com",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 'by appointment only' — omitted rather than rendered as open."
+    },
+    "poi-13030049626": {
+      "name": "Wings Financial Credit Union",
+      "openingHours": "Mo-Fr 08:30-16:30",
+      "source": "https://www.wingscu.com/locations/minneapolis-rand-tower",
+      "checkedOn": "2026-08-06",
+      "note": "Published as '08: 30: 00-16: 30: 00'; normalised."
+    },
+    "poi-13410756392": {
+      "name": "Ginelli's Pizza",
+      "openingHours": "Mo-Fr 07:45-15:00",
+      "source": "https://ginellispizza.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-9128515926": {
+      "name": "PURIS",
+      "openingHours": "Mo-Fr 08:00-17:00",
+      "source": "https://www.puris.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-11298730912": {
+      "name": "Warby Parker",
+      "openingHours": "Mo-Fr 11:00-19:00; Sa 10:00-19:00; Su 12:00-18:00",
+      "source": "https://stores.warbyparker.com/mn/minneapolis/113-n.-washington-ave.",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-11328332528": {
+      "name": "Wildflower",
+      "openingHours": "Mo-Su 09:00-17:00",
+      "source": "https://wildflower.cc",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12862806767": {
+      "name": "Silber Fine Jewlery",
+      "openingHours": "Tu 10:00-15:00; We 11:00-15:00; Th-Fr 10:00-15:00",
+      "source": "https://silber.diamonds/",
+      "checkedOn": "2026-08-06",
+      "note": "Mo/Sa/Su published as empty, i.e. closed."
+    },
+    "poi-13823736881": {
+      "name": "Face Foundrie",
+      "openingHours": "Mo-Th 09:00-20:00; Fr-Sa 08:00-20:00; Su 08:00-18:00",
+      "source": "https://facefoundrie.com/location/minneapolis-north-loop/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-7294501323": {
+      "name": "Escape The Room",
+      "openingHours": "Mo-Su 11:30-21:30",
+      "source": "https://escapetheroom.com/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-14010993858": {
+      "name": "Goldenberg Lauricella",
+      "openingHours": "Mo-Fr 08:00-17:00",
+      "source": "https://www.goldenberglaw.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-14022958821": {
+      "name": "Workbox",
+      "openingHours": "Mo-Fr 09:00-17:00",
+      "source": "https://www.workboxcompany.com/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13030049621": {
+      "name": "Take Care Chiropractic & Wellness",
+      "openingHours": "Mo-We 07:30-15:00; Th 07:30-14:00; Fr 09:30-14:00",
+      "source": "https://www.takecarechiropractic.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Published without colons (0730-1500); normalised."
+    },
+    "poi-13639106473": {
+      "name": "Reviving Roots Therapy & Wellness",
+      "openingHours": "Mo-Fr 12:00-18:00; Sa 10:00-13:00",
+      "source": "https://reviving-roots.com/",
+      "checkedOn": "2026-08-06"
     }
   },
   "skipped": {
@@ -124,6 +231,30 @@
       "name": "Jimmy John's (Nicollet)",
       "reason": "Same ambiguity as above.",
       "source": "https://locations.jimmyjohns.com/mn/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-7838159628": {
+      "name": "Breakfast Bar",
+      "reason": "Split lunch and evening service (Fr-Su 09:00-16:00 plus Tu-Th 19:00-23:00 and Fr/Sa 21:00-01:00). src/opening-hours.ts can't express two ranges in one day, and recording only one half would hide the other.",
+      "source": "https://www.breakfastbarofmn.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13451748992": {
+      "name": "Kinderberry Hill",
+      "reason": "Publishes '7:00am - 6:00pm' with no days at all. Likely weekdays for a childcare centre, but that's an assumption, not the page.",
+      "source": "https://www.kinderberryhill.com/schools/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12754419101": {
+      "name": "Grace Loves Lace",
+      "reason": "Nine different schedules in the page's JSON-LD — it lists every showroom worldwide with no way to tell which is Minneapolis.",
+      "source": "https://graceloveslace.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-14011118284": {
+      "name": "Kemmitt, Sanford & Kramer",
+      "reason": "schema.org says Mo-Su 00:00-23:59, i.e. open 24/7. That's a boilerplate default, not a law firm's real hours.",
+      "source": "https://ksk.law/",
       "checkedOn": "2026-08-06"
     }
   }

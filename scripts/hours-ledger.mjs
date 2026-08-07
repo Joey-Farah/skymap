@@ -91,6 +91,26 @@ if (cmd === "status") {
   console.log(`overlay entries: ${Object.keys(overlay.hours).length} applied, ${Object.keys(overlay.skipped).length} skipped`);
 }
 
+if (cmd === "set") {
+  // hours-ledger.mjs set <id> <status> [note]
+  const [, , , id, status, ...rest] = process.argv;
+  const allowed = ["pending", "done", "none", "ambiguous", "blocked"];
+  if (!allowed.includes(status)) {
+    console.error(`status must be one of ${allowed.join(", ")}`);
+    process.exit(2);
+  }
+  const ledger = load();
+  if (!ledger.items[id]) {
+    console.error(`no ledger item ${id}`);
+    process.exit(2);
+  }
+  ledger.items[id].status = status;
+  if (rest.length) ledger.items[id].note = rest.join(" ");
+  ledger.items[id].checkedOn = new Date().toISOString().slice(0, 10);
+  save(ledger);
+  console.log(`${id} -> ${status}`);
+}
+
 if (cmd === "next") {
   const n = Number(process.argv[3] ?? 10);
   const ledger = load();

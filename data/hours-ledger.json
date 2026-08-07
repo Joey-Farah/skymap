@@ -110,7 +110,8 @@
    "name": "The Brother's Deli",
    "group": "food",
    "website": "https://www.thebrothersdeli.com/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-2527309568": {
    "kind": "poi",
@@ -159,7 +160,8 @@
    "name": "Monello",
    "group": "food",
    "website": "https://www.monellompls.com/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-4564574481": {
    "kind": "poi",
@@ -257,7 +259,8 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
    "kind": "poi",
@@ -292,7 +295,8 @@
    "name": "Breakfast Bar",
    "group": "food",
    "website": "https://www.breakfastbarofmn.com/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-9394789068": {
    "kind": "poi",
@@ -306,7 +310,8 @@
    "name": "Stringline Pictures",
    "group": "other",
    "website": "https://stringlinepictures.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-10270382209": {
    "kind": "poi",
@@ -320,7 +325,8 @@
    "name": "New Horizon Academy",
    "group": "other",
    "website": "https://newhorizonacademy.net/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11014986808": {
    "kind": "poi",
@@ -509,7 +515,8 @@
    "name": "Loop Dental",
    "group": "other",
    "website": "https://www.loopdentalmn.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12768849145": {
    "kind": "poi",
@@ -551,7 +558,8 @@
    "name": "Kadai Indian Kitchen",
    "group": "food",
    "website": "https://www.kadaimsp.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862838547": {
    "kind": "poi",
@@ -621,7 +629,8 @@
    "name": "Millers Landing Senior Living",
    "group": "other",
    "website": "https://www.millerslandingseniorliving.com",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12914862886": {
    "kind": "poi",
@@ -663,7 +672,8 @@
    "name": "Wings Financial Credit Union",
    "group": "other",
    "website": "https://www.wingscu.com/locations/minneapolis-rand-tower",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13030049627": {
    "kind": "poi",
@@ -740,7 +750,8 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {
    "kind": "poi",
@@ -754,7 +765,8 @@
    "name": "Ginelli's Pizza",
    "group": "food",
    "website": "https://ginellispizza.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748944": {
    "kind": "poi",
@@ -838,7 +850,8 @@
    "name": "Kinderberry Hill",
    "group": "other",
    "website": "https://www.kinderberryhill.com/schools/minneapolis/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-13628473443": {
    "kind": "poi",
@@ -1006,7 +1019,8 @@
    "name": "PURIS",
    "group": "other",
    "website": "https://www.puris.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-9128515927": {
    "kind": "poi",
@@ -1048,14 +1062,16 @@
    "name": "Warby Parker",
    "group": "other",
    "website": "https://stores.warbyparker.com/mn/minneapolis/113-n.-washington-ave.",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11328332528": {
    "kind": "poi",
    "name": "Wildflower",
    "group": "other",
    "website": "https://wildflower.cc",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11328332529": {
    "kind": "poi",
@@ -1139,7 +1155,8 @@
    "name": "Grace Loves Lace",
    "group": "other",
    "website": "https://graceloveslace.com/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-12768888509": {
    "kind": "poi",
@@ -1181,7 +1198,8 @@
    "name": "Silber Fine Jewlery",
    "group": "other",
    "website": "https://silber.diamonds/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862838542": {
    "kind": "poi",
@@ -1349,7 +1367,8 @@
    "name": "Face Foundrie",
    "group": "other",
    "website": "https://facefoundrie.com/location/minneapolis-north-loop/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13961359856": {
    "kind": "poi",
@@ -1398,7 +1417,8 @@
    "name": "Escape The Room",
    "group": "other",
    "website": "https://escapetheroom.com/minneapolis/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754394002": {
    "kind": "poi",
@@ -1741,21 +1761,24 @@
    "name": "Goldenberg Lauricella",
    "group": "other",
    "website": "https://www.goldenberglaw.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-14011118284": {
    "kind": "poi",
    "name": "Kemmitt, Sanford & Kramer",
    "group": "other",
    "website": "https://ksk.law/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-14022958821": {
    "kind": "poi",
    "name": "Workbox",
    "group": "other",
    "website": "https://www.workboxcompany.com/minneapolis/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-14054455054": {
    "kind": "poi",
@@ -1783,7 +1806,8 @@
    "name": "Take Care Chiropractic & Wellness",
    "group": "other",
    "website": "https://www.takecarechiropractic.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748983": {
    "kind": "poi",
@@ -1797,7 +1821,8 @@
    "name": "Reviving Roots Therapy & Wellness",
    "group": "other",
    "website": "https://reviving-roots.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-14022958833": {
    "kind": "poi",
@@ -1940,7 +1965,9 @@
    "category": "office",
    "address": "33 South 6th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "note": "Own tenant portal (33southsixthcitycenter.com) publishes no skyway or building access hours.",
+   "checkedOn": "2026-08-07"
   },
   "thrivent-corporate-center-27346744": {
    "kind": "building",
