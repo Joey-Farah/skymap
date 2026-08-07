@@ -100,3 +100,38 @@ Not 100%. A real share of these businesses do not publish hours anywhere.
 The realistic ceiling is roughly 80-85% for food and coffee, lower for shops
 and services. The deliverable is an accurate dataset plus a written record
 of what genuinely isn't available — not a percentage made to look good.
+
+## Phase 2 — buildings, hotels, and retail (from 2026-08-07)
+
+Scope: 98 buildings on the ordinance default, 22 hotels, 111 retail and
+service POIs.
+
+The buildings are not merely missing hours — they are carrying an
+*assumed* schedule that the router acts on. `DEFAULT_HOURS` in
+scripts/fetch-osm.mjs is Article XV of the city ordinance verbatim
+(Mo-Fr 06:30-22:00, Sa 09:30-20:00, Su 12:00-18:00), and the City's own
+June 2025 committee record (RCA-2025-00678) states that most skyway
+buildings do not keep it:
+
+  "According to Meet Minneapolis, our local tourism bureau, most skyway
+  connected buildings are open Monday through Friday until 6:00 p.m. and
+  are closed on weekends, however Article XV of our code of ordinances
+  clearly states that ... skyways shall remain open to the public Monday
+  through Friday, from 6:30 a.m. to 10:00 p.m. ... Despite this
+  requirement, Downtown residents, workers, and visitors regularly
+  encounter access issues and inconsistencies across the system during
+  times of day when they should be open."
+
+So the default is over-optimistic by about four hours on weekdays and by
+two entire days. router.ts filters on it, which means evening and weekend
+routes are planned through buildings the City says are locked.
+
+Joey's ruling, when asked what the fallback should become: none. "If we
+can't find hours for something after doing all our due diligence to
+search on google, look at websites, social media, etc, then we shouldn't
+provide a guess." A different default is still a guess. Unknown is to be
+represented as unknown — omitted in the UI, and not turned into a closing
+time the router can act on.
+
+Hotels follow the same rule: research each, record only what is
+published, and omit the rest rather than asserting 24/7.
