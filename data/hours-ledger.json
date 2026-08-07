@@ -2192,7 +2192,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "clark-danielson-college-life-center-39239951": {
    "kind": "building",
@@ -2244,7 +2245,8 @@
    "category": "office",
    "address": "433 South 7th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "target-plaza-iii-44684855": {
    "kind": "building",
@@ -2285,7 +2287,8 @@
    "category": "office",
    "address": "1000 Nicollet Mall",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "opus-hall-45452121": {
    "kind": "building",
@@ -2873,7 +2876,8 @@
    "category": "office",
    "address": "323 Washington Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "4marq-apartments-827449975": {
    "kind": "building",

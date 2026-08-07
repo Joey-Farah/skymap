@@ -1926,6 +1926,30 @@
    "reason": "A public high school. Schools publish term calendars and bell schedules, not building opening hours, and access is controlled during the day — nothing here maps onto a walk-in window.",
    "source": "(structural)",
    "checkedOn": "2026-08-07"
+  },
+  "t3-723284484": {
+   "name": "T3",
+   "reason": "t3northloop.com renders as a leasing site — amenities, neighbourhood, availabilities, contact — with no building hours. (t3minneapolis.com, tried on an earlier pass, timed out; this is the live one.)",
+   "source": "https://www.t3northloop.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "centre-village-44164774": {
+   "name": "Centre Village",
+   "reason": "centrevillage.com is listed for sale on HugeDomains — the page is a purchase flow with refund terms and escrow options, not a building site. Another parked domain, alongside idscenter.com, cowboyjacks.com and 4marq.com.",
+   "source": "https://www.hugedomains.com/domain_profile.cfm?d=centrevillage.com",
+   "checkedOn": "2026-08-07"
+  },
+  "ford-center-29060527": {
+   "name": "Ford Center",
+   "reason": "fordcentermpls.com renders 91 characters: 'Website Expired. This account has expired. If you are the site owner, click below to login.' The building's site lapsed rather than being taken down, so there is nothing published to read.",
+   "source": "https://www.fordcentermpls.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "target-plaza-45452119": {
+   "name": "Target Plaza",
+   "reason": "The only first-party presence is Target's corporate site — investor relations, press, careers — which says nothing about its Minneapolis headquarters building. A corporate campus does not publish public entry hours.",
+   "source": "https://corporate.target.com/",
+   "checkedOn": "2026-08-07"
   }
  }
 }
