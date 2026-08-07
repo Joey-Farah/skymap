@@ -22992,7 +22992,10 @@
    "lat": 44.977922,
    "lon": -93.259661,
    "buildingId": "depot-office-center-81049079",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Mo-Su 11:00-21:00",
+   "hoursSource": "https://sawatdee.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-1077152385",
@@ -24672,7 +24675,10 @@
    "group": "food",
    "lat": 44.974627,
    "lon": -93.272658,
-   "buildingId": "metro-apartments-156912887"
+   "buildingId": "metro-apartments-156912887",
+   "openingHours": "Mo-Th 16:00-21:00; Fr-Sa 11:30-22:00; Su 11:30-21:00",
+   "hoursSource": "https://www.meltingpot.com/minneapolis-mn/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12726468697",

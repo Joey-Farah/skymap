@@ -410,6 +410,20 @@
       "source": "https://www.sweetgreen.com/locations/north-loop/",
       "checkedOn": "2026-08-07",
       "note": "Published at 212 N 3rd Ave while our host building is 316 N 2nd St, which looked like a mismatch until the POI's own placement settled it: it is flagged nearby and sits 76m from the host centroid, in North Loop, and Sweetgreen lists exactly one North Loop store."
+    },
+    "poi-661686890": {
+      "name": "Sawatdee",
+      "openingHours": "Mo-Su 11:00-21:00",
+      "source": "https://sawatdee.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Site groups its Minneapolis, St Paul and Maple Grove branches at 'Daily: 11am - 9pm' and lists Bloomington separately with different hours. Ours is the Minneapolis one."
+    },
+    "poi-12645553576": {
+      "name": "Melting Pot",
+      "openingHours": "Mo-Th 16:00-21:00; Fr-Sa 11:30-22:00; Su 11:30-21:00",
+      "source": "https://www.meltingpot.com/minneapolis-mn/",
+      "checkedOn": "2026-08-07",
+      "note": "Published at 824 Marquette Ave; our POI sits at 44.97463,-93.27266, which is that block. Happy-hour windows sit inside these hours, not alongside them."
     }
   },
   "skipped": {

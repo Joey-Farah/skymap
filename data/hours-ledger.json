@@ -63,7 +63,8 @@
    "name": "Sawatdee",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-1077152385": {
    "kind": "poi",
@@ -485,7 +486,8 @@
    "name": "Melting Pot",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12726468697": {
    "kind": "poi",
