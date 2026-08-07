@@ -401,7 +401,8 @@
    "name": "Dario",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12164509015": {
    "kind": "poi",

@@ -24400,7 +24400,10 @@
    "group": "food",
    "lat": 44.984039,
    "lon": -93.274504,
-   "buildingId": "t3-723284484"
+   "buildingId": "t3-723284484",
+   "openingHours": "Su-Th 16:30-21:00; Fr-Sa 16:30-22:00",
+   "hoursSource": "https://www.dariorestaurant.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12164509015",
