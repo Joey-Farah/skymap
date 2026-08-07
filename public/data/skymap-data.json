@@ -24671,7 +24671,10 @@
    "group": "food",
    "lat": 44.9829,
    "lon": -93.276129,
-   "buildingId": "north-loop-green-commercial-1281801622"
+   "buildingId": "north-loop-green-commercial-1281801622",
+   "openingHours": "Mo-Fr 07:00-14:00; Sa-Su 07:00-15:00",
+   "hoursSource": "https://www.hopebreakfast.com/minneapolis",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12645553576",

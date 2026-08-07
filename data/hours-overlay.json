@@ -438,6 +438,13 @@
       "source": "https://saltandflourkitchen.com/",
       "checkedOn": "2026-08-07",
       "note": "350 North 5th Street, exactly our host building. The page renders hour values in one column and day names in another; read semantically rather than paired by position. Mon and Tue published as Closed."
+    },
+    "poi-12634128534": {
+      "name": "Hope Breakfast Bar",
+      "openingHours": "Mo-Fr 07:00-14:00; Sa-Su 07:00-15:00",
+      "source": "https://www.hopebreakfast.com/minneapolis",
+      "checkedOn": "2026-08-07",
+      "note": "North Loop Green, 350 North 5th Street — our host building. Search summaries claimed '7 days a week, 8am-3pm'; the restaurant's own page says 7AM and a 2PM weekday close. First-party wins again."
     }
   },
   "skipped": {
