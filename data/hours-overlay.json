@@ -382,6 +382,20 @@
       "source": "https://sotashopmn.com/hours-%26-location",
       "checkedOn": "2026-08-07",
       "note": "The downtown shop specifically — the page also lists Maple Grove, Edina and St Louis Park with different hours. Sunday published closed; Saturday not stated for this location, so left unset."
+    },
+    "poi-12753315921": {
+      "name": "Green + The Grain (US Bank Plaza)",
+      "openingHours": "Mo-Fr 10:00-14:00",
+      "source": "https://www.greenandthegrain.com/locations",
+      "checkedOn": "2026-08-07",
+      "note": "Matched by address: the page lists 'US Bank Plaza, 200 South 6th Street, Skyway Level', which is this POI's host building."
+    },
+    "poi-13265552508": {
+      "name": "Green + The Grain (LaSalle Plaza)",
+      "openingHours": "Mo-Th 10:00-14:00",
+      "source": "https://www.greenandthegrain.com/locations",
+      "checkedOn": "2026-08-07",
+      "note": "Page lists LaSalle Plaza as Mon-Thu, a day shorter than the other branches — matched by host building, not assumed from a sibling."
     }
   },
   "skipped": {
@@ -533,6 +547,12 @@
       "name": "O'Donovan's",
       "reason": "odonovansirishpub.com is an Irish pub in Boeblingen, GERMANY (Breite Gasse 5, 71032). Our O'Donovan's is in Target Center, 600 1st Ave N. Recording those hours would have put a German pub's schedule on a Minneapolis card. Needs the correct site.",
       "source": "https://www.odonovansirishpub.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12786616349": {
+      "name": "Green + The Grain (705 Building)",
+      "reason": "The chain publishes four Minneapolis locations — LaSalle Plaza, Baker Center, US Bank Plaza and Forum 900. None is the 705 Building, so this POI's branch isn't listed and may have closed.",
+      "source": "https://www.greenandthegrain.com/locations",
       "checkedOn": "2026-08-07"
     }
   }

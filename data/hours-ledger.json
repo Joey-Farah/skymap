@@ -520,7 +520,8 @@
    "name": "Green + The Grain",
    "group": "food",
    "website": "https://www.greenandthegrain.com/locations",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12753315925": {
    "kind": "poi",
@@ -550,7 +551,8 @@
    "name": "Green + The Grain",
    "group": "food",
    "website": "https://www.greenandthegrain.com/locations",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12825025521": {
    "kind": "poi",
@@ -747,7 +749,8 @@
    "name": "Green + The Grain",
    "group": "food",
    "website": "https://www.greenandthegrain.com/locations",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552509": {
    "kind": "poi",
