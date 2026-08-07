@@ -73,6 +73,27 @@ not resolved), `blocked` (can't identify or reach the source).
 **Kill it at the end of the run and re-verify with `pgrep -lx caffeinate`** —
 a stray one ran all night once before.
 
+## Second objective, added mid-run
+
+Joey: "do another sweep of any really bad bugs like this in the app and
+resolve them over night… I expect to see a report and a prepare next
+release (don't submit it yet of course)."
+
+"Like this" means the shape of the hours gap: something plainly wrong that
+a user hits in normal use, which nobody caught because nothing failed
+loudly. Not style, not hypotheticals — things that mislead or strand
+someone. The three found today all had that shape: an arrival clock that
+oscillated on every walk, a locate button that killed navigation on the
+second tap, 16 hotels vanishing from the cards of the buildings they're in.
+
+Deliverables by morning:
+
+1. Hours ledger as far as it gets, every outcome recorded.
+2. Bug sweep findings, each verified before being called a bug.
+3. Release 1.4 **prepared and NOT submitted** — version bumped, notes
+   written, screenshots recaptured if the UI changed, build made and put
+   on TestFlight so Joey can walk it. Submission is his call in the morning.
+
 ## Expected honest outcome
 
 Not 100%. A real share of these businesses do not publish hours anywhere.
