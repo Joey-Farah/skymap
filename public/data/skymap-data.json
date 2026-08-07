@@ -23044,7 +23044,10 @@
    "buildingId": "811-lasalle-357279465",
    "level": "0",
    "website": "https://tools.usps.com/locations/details/1506955",
-   "logo": "tools-usps-com"
+   "logo": "tools-usps-com",
+   "openingHours": "Mo-Fr 07:30-17:00",
+   "hoursSource": "https://tools.usps.com/locations/details/1506955",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13451748963",
@@ -24153,7 +24156,10 @@
    "lon": -93.271953,
    "buildingId": "lee-lofts-45758932",
    "nearby": true,
-   "website": "https://shoprequisite.com"
+   "website": "https://shoprequisite.com",
+   "openingHours": "Mo-Sa 11:00-18:00; Su 11:00-16:00",
+   "hoursSource": "https://shoprequisite.com/pages/contact#location",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-11298730912",
@@ -24198,7 +24204,10 @@
    "buildingId": "intersect-apartments-1216920711",
    "nearby": true,
    "website": "https://parcboutique.com/",
-   "logo": "parcboutique-com"
+   "logo": "parcboutique-com",
+   "openingHours": "Mo-Fr 11:00-18:00; Sa 11:00-17:00; Su 12:00-16:00",
+   "hoursSource": "https://parcboutique.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-11328332530",
@@ -24485,7 +24494,10 @@
    "buildingId": "six-quebec-156912888",
    "level": "1",
    "website": "https://gittelsonjewelers.com/",
-   "logo": "gittelsonjewelers-com"
+   "logo": "gittelsonjewelers-com",
+   "openingHours": "Tu-Th 09:00-14:00",
+   "hoursSource": "https://gittelsonjewelers.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12862838553",

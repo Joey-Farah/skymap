@@ -613,6 +613,34 @@
    "source": "https://hennepinhealthcare.org/locations/hcmc/",
    "checkedOn": "2026-08-07",
    "note": "These are the published hours of the Purple 2 entrance from the HCMC parking ramp — the public way in. The first-level entrance is restricted to Purple Building clinic patients, so it is not the public access window and was not used. Address 716 South 7th Street matches ours."
+  },
+  "poi-12862838542": {
+   "name": "Gittelson Jewelers",
+   "openingHours": "Tu-Th 09:00-14:00",
+   "source": "https://gittelsonjewelers.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Site reads 'Tues - Thurs 9AM - 2PM, Friday - Mon by appointment only'. Only the walk-in window is recorded: an appointment-only day is not a day you can arrive at, and encoding it as open would send someone to a locked door. Address 601 Marquette Avenue geocodes 9-29 m from this POI."
+  },
+  "poi-11328332529": {
+   "name": "PARC",
+   "openingHours": "Mo-Fr 11:00-18:00; Sa 11:00-17:00; Su 12:00-16:00",
+   "source": "https://parcboutique.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Address 212 North 2nd Street #102 geocodes to this POI exactly (0 m; OSM independently names a PARC there). Their page warns holiday and winter hours vary, so this is the standard week."
+  },
+  "poi-11248558004": {
+   "name": "Requisite",
+   "openingHours": "Mo-Sa 11:00-18:00; Su 11:00-16:00",
+   "source": "https://shoprequisite.com/pages/contact#location",
+   "checkedOn": "2026-08-07",
+   "note": "Hours live on a contact page reachable only through a fragment link; the /pages/location-hours URL the nav implies is a 404. Address 211 N Washington Ave geocodes to this POI exactly (0 m)."
+  },
+  "poi-13451748961": {
+   "name": "USPS Loop Post Office",
+   "openingHours": "Mo-Fr 07:30-17:00",
+   "source": "https://tools.usps.com/locations/details/1506955",
+   "checkedOn": "2026-08-07",
+   "note": "USPS renders the week only after the page's JavaScript runs — a plain fetch returns 'Service hours may vary' and nothing else. Closed Saturday and Sunday, which the page states rather than omits. Address 811 LaSalle Ave Ste 100 geocodes 25 m from this POI."
   }
  },
  "skipped": {
@@ -1214,6 +1242,36 @@
    "name": "Saint Olaf Catholic Church",
    "reason": "Links a current building-hours schedule from its home page, but the target is a 1.4MB scanned sign PDF with no text layer — the file contains only compressed image streams, so there is nothing machine-readable to quote and nothing legible to transcribe.",
    "source": "https://www.saintolaf.org/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13030049624": {
+   "name": "Madison & Co. Salons",
+   "reason": "The site publishes a clear week (Mon-Fri 9AM-6PM, Sat 9AM-2PM, Sun closed) but gives its location only as 'Downtown Minneapolis - General Mills - Salon 222' — no street address, and its contacts page returns 403. Our POI sits in Canadian Pacific Plaza, whose own site names Canadian Pacific Railway as the major tenant, not General Mills. Cannot confirm these are the same salon, and a wrong match here would be invisible.",
+   "source": "https://www.madisonandcompany.org/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5955586677": {
+   "name": "Insomnia Cookies",
+   "reason": "The /store/hennepin URL renders as the generic bakery-finder shell (address entry, rewards promo) with no store record and no hours — the store page appears to no longer exist under that slug.",
+   "source": "https://insomniacookies.com/store/hennepin",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13713067339": {
+   "name": "The Grind North Loop",
+   "reason": "A fitness studio that publishes a class schedule and a booking app rather than opening hours — the rendered site has no hours for the studio itself, only class times behind a login.",
+   "source": "https://www.thegrindmpls.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13410756369": {
+   "name": "Lovely's Sewing & Arts Collective",
+   "reason": "Rendered site (5,472 chars) describes programmes, goals and curriculum alignment but publishes no opening hours and no visiting times.",
+   "source": "https://www.lovelyssewing.org/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13451748991": {
+   "name": "The Gardner School",
+   "reason": "A private preschool. Its Minneapolis page renders fully (17,901 chars) with tuition, curriculum and enquiry forms but no opening hours — enrolment is by appointment rather than walk-in.",
+   "source": "https://www.thegardnerschool.com/schools/minneapolis/",
    "checkedOn": "2026-08-07"
   }
  }

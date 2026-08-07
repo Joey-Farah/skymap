@@ -885,7 +885,8 @@
    "name": "USPS",
    "group": "other",
    "website": "https://tools.usps.com/locations/details/1506955",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748963": {
    "kind": "poi",
@@ -932,7 +933,8 @@
    "name": "Gartner School",
    "group": "other",
    "website": "https://www.thegardnerschool.com/schools/minneapolis/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748992": {
    "kind": "poi",
@@ -1090,7 +1092,8 @@
    "name": "Insomnia Cookies",
    "group": "other",
    "website": "https://insomniacookies.com/store/hennepin",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6780251058": {
    "kind": "poi",
@@ -1158,7 +1161,8 @@
    "name": "Requisite",
    "group": "other",
    "website": "https://shoprequisite.com",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11298730912": {
    "kind": "poi",
@@ -1181,7 +1185,8 @@
    "name": "PARC",
    "group": "other",
    "website": "https://parcboutique.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11328332530": {
    "kind": "poi",
@@ -1312,7 +1317,8 @@
    "name": "Gittelson Jewlers",
    "group": "other",
    "website": "https://gittelsonjewelers.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862838553": {
    "kind": "poi",
@@ -1356,7 +1362,8 @@
    "name": "Madison & Co. Salons",
    "group": "other",
    "website": "https://www.madisonandcompany.org/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-13168732018": {
    "kind": "poi",
@@ -1424,7 +1431,8 @@
    "name": "Lovely's Sewing & Arts Collective",
    "group": "other",
    "website": "https://www.lovelyssewing.org/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756372": {
    "kind": "poi",
@@ -1548,7 +1556,8 @@
    "name": "The Grind North Loop",
    "group": "other",
    "website": "https://www.thegrindmpls.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2093790844": {
    "kind": "poi",
