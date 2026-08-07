@@ -673,6 +673,24 @@
       "reason": "Own site publishes a single '11:00 AM-4:00 AM' with no day breakdown; aggregators claim Sunday opens at 3pm and weekend closing differs. Recording a blanket Mo-Su 11:00 would assert a Sunday opening the site never states and a listing disputes.",
       "source": "https://www.salsonfifthmenu.com/",
       "checkedOn": "2026-08-07"
+    },
+    "poi-5355792484": {
+      "name": "Starbucks (IDS Center)",
+      "reason": "Starbucks' locator renders only after accepting cookies and granting geolocation, and then shows a LIVE status for today ('Open 5:00 AM-5:30 PM') rather than a weekly schedule. Recording one day's hours as the week would be wrong. The store IS confirmed present and correctly placed — the locator lists it at the matching address. Address match: 80 S 8th St — listed as 'IDS Center - Skyway level'",
+      "source": "https://www.starbucks.com/store-locator/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13451748963": {
+      "name": "Starbucks (The Westin)",
+      "reason": "Starbucks' locator renders only after accepting cookies and granting geolocation, and then shows a LIVE status for today ('Open 5:00 AM-5:30 PM') rather than a weekly schedule. Recording one day's hours as the week would be wrong. The store IS confirmed present and correctly placed — the locator lists it at the matching address. Address match: 88 S 6th St — listed as 'Westin Minneapolis - Skyway Le'",
+      "source": "https://www.starbucks.com/store-locator/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-5955586644": {
+      "name": "Starbucks (Target Plaza III)",
+      "reason": "Starbucks' locator renders only after accepting cookies and granting geolocation, and then shows a LIVE status for today ('Open 5:00 AM-5:30 PM') rather than a weekly schedule. Recording one day's hours as the week would be wrong. The store IS confirmed present and correctly placed — the locator lists it at the matching address. Address match: 900 Nicollet Mall — listed as 'Target Minneapolis 1375'",
+      "source": "https://www.starbucks.com/store-locator/",
+      "checkedOn": "2026-08-07"
     }
   }
 }

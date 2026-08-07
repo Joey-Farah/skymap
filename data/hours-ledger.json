@@ -193,7 +193,8 @@
    "name": "Starbucks",
    "group": "coffee",
    "website": "https://www.starbucks.com/store-locator/store/11666/ids-center-skyway-level-80-south-8th-street-minneapolis-mn-554022100-us",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5355792485": {
    "kind": "poi",
@@ -245,7 +246,8 @@
    "name": "Starbucks",
    "group": "coffee",
    "website": "https://www.starbucks.com/store-locator/store/12449/target-minneapolis-1375-900-nicollet-mall-minneapolis-mn-554032530-us",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955612516": {
    "kind": "poi",
@@ -856,7 +858,8 @@
    "name": "Starbucks",
    "group": "coffee",
    "website": "https://www.starbucks.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748969": {
    "kind": "poi",
