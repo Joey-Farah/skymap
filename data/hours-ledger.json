@@ -1801,7 +1801,8 @@
    "name": "Lola Red",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12513647698": {
    "kind": "poi",
@@ -2038,7 +2039,8 @@
    "name": "Chiroway",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862806761": {
    "kind": "poi",
@@ -2053,14 +2055,16 @@
    "name": "Skyway Shoe Repair",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451758102": {
    "kind": "poi",
    "name": "Napoleon's Shoe Shine",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-lofton-hotel-27346710": {
    "kind": "poi",

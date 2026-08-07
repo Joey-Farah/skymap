@@ -2186,6 +2186,30 @@
    "reason": "A roofing contractor. Its site (5,036 chars) gives a phone number and the address 212 3rd Ave N Ste 105C but publishes no hours — contractors quote by call and visit rather than opening a shopfront.",
    "source": "https://www.minneapolisroofingexperts.com/",
    "checkedOn": "2026-08-07"
+  },
+  "poi-14022958833": {
+   "name": "ChiroWay",
+   "reason": "ChiroWay does run a first-party page for this exact clinic (chiroway.com/chiropractor-near-me/minneapolis-skyway-chiropractic-care/) and it renders 18,543 characters — but the text contains no weekday-plus-time pattern and no hours heading at all; it is reviews, service description and booking. Doubly unrecordable: the figures aggregators carry are 7:00-10:00am AND 11:00am-2:00pm Monday to Thursday, two ranges a day, which this parser cannot hold even from a good source.",
+   "source": "https://chiroway.com/chiropractor-near-me/minneapolis-skyway-chiropractic-care/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11927201463": {
+   "name": "Lola Red",
+   "reason": "A public relations agency, not a shop — lolaredpr.com describes an agency serving health, fashion and food clients from Minneapolis and Denver. Its site also fails to load with ERR_CERT_DATE_INVALID (an expired certificate), so the page could not be read; but an agency office has no walk-in window to publish regardless.",
+   "source": "https://lolaredpr.com/about-us/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13451758102": {
+   "name": "Napoleon's Shoe Shine",
+   "reason": "A shoe-shine stand on the skyway level at 88 S 6th St with no site of its own. Search returns only Yelp, which reports Mon-Fri 10am-3pm — an aggregator, and the sole source. A one-man stand of this kind is exactly the case where an aggregator figure is both the only thing available and the least reliable.",
+   "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13410756368": {
+   "name": "Skyway Shoe Repair",
+   "reason": "Skyway Shoe Repair & Dye Service at 801 Nicollet Mall has no first-party site. Yelp reports Tuesday-Thursday 9am-3pm and closed the other four days, which would be an unusual enough pattern to want confirming from the shop — and there is nothing to confirm it against.",
+   "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
   }
  },
  "conflicts": {
