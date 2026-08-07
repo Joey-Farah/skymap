@@ -1722,6 +1722,132 @@
    "reason": "The only surviving first-party presence is a CaterTrax online-ordering portal with no hours. Aggregators report a split breakfast (6:45-9:30) and lunch (11:00-2:00) service, which this parser could not hold even from a good source, and Yelp marks the venue closed — so its status is unclear on top of everything else.",
    "source": "https://elevatefoodhall.catertrax.com/",
    "checkedOn": "2026-08-07"
+  },
+  "rock-island-lofts-45758926": {
+   "name": "Rock Island Lofts",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "cortland-mill-district-62006959": {
+   "name": "Cortland Mill District",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "metropolitan-lofts-81049075": {
+   "name": "Metropolitan Lofts",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "rivergate-apartments-81049129": {
+   "name": "Rivergate Apartments",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "archdale-apartments-92810569": {
+   "name": "Archdale Apartments",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "riverfront-municipal-parking-ramp-99717608": {
+   "name": "Riverfront Municipal Parking Ramp",
+   "reason": "A parking ramp. mplsparking.com — the operator for the municipal ramps — lists its facilities with clearance heights and vehicle-entry streets but no hours. It does publish 'Business Hours: 8:00 am to 4:30 pm', but that is its business office at 33 North 9th Street, not the ramps themselves, and was deliberately not borrowed. Resident-only ramps are private in any case.",
+   "source": "https://www.mplsparking.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "glendale-111367341": {
+   "name": "Glendale",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "parking-lot-e-122795248": {
+   "name": "Parking Lot E",
+   "reason": "A parking ramp. mplsparking.com — the operator for the municipal ramps — lists its facilities with clearance heights and vehicle-entry streets but no hours. It does publish 'Business Hours: 8:00 am to 4:30 pm', but that is its business office at 33 North 9th Street, not the ramps themselves, and was deliberately not borrowed. Resident-only ramps are private in any case.",
+   "source": "https://www.mplsparking.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "metro-apartments-156912887": {
+   "name": "Metro Apartments",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "humboldt-annex-157035925": {
+   "name": "Humboldt Annex",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "elevate-apartments-220494794": {
+   "name": "Elevate Apartments",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "110-grant-apartments-resident-parking-358537233": {
+   "name": "110 Grant Apartments Resident Parking",
+   "reason": "A parking ramp. mplsparking.com — the operator for the municipal ramps — lists its facilities with clearance heights and vehicle-entry streets but no hours. It does publish 'Business Hours: 8:00 am to 4:30 pm', but that is its business office at 33 North 9th Street, not the ramps themselves, and was deliberately not borrowed. Resident-only ramps are private in any case.",
+   "source": "https://www.mplsparking.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "edition-apartments-510-413691176": {
+   "name": "Edition Apartments 510",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "essex-building-461224211": {
+   "name": "Essex Building",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "loring-parking-ramp-612097599": {
+   "name": "Loring Parking Ramp",
+   "reason": "A parking ramp. mplsparking.com — the operator for the municipal ramps — lists its facilities with clearance heights and vehicle-entry streets but no hours. It does publish 'Business Hours: 8:00 am to 4:30 pm', but that is its business office at 33 North 9th Street, not the ramps themselves, and was deliberately not borrowed. Resident-only ramps are private in any case.",
+   "source": "https://www.mplsparking.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "4marq-apartments-827449975": {
+   "name": "4Marq Apartments",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "intersect-apartments-1216920711": {
+   "name": "Intersect Apartments",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "moment-apartments-1222145087": {
+   "name": "Moment Apartments",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "4th-park-1223123289": {
+   "name": "4th & Park",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "shelby-commons-1388384208": {
+   "name": "Shelby Commons",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
+  },
+  "stone-arch-lofts-1394864167": {
+   "name": "Stone Arch Lofts",
+   "reason": "A private apartment building. Access is by resident key rather than a published window, so there are no public opening hours to record — the same structural answer as hotels, not a gap in research. Four of this group were individually rendered to confirm the pattern: 4marq.com is now a GoDaddy Auctions listing, rockislandlofts.com is leasing marketing with no hours, elevateapartmentsmn.com does not resolve, and mplsparking.com carries no ramp hours. The rest share the reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; sample rendered)",
+   "checkedOn": "2026-08-07"
   }
  }
 }

@@ -2302,7 +2302,8 @@
    "category": "residential",
    "address": "111 4th Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "lee-lofts-45758932": {
    "kind": "building",
@@ -2326,7 +2327,8 @@
    "category": "residential",
    "address": "313 Washington Ave S",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "westminster-presbyterian-63821145": {
    "kind": "building",
@@ -2368,7 +2370,8 @@
    "category": "residential",
    "address": "545 South 2nd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "depot-office-center-81049079": {
    "kind": "building",
@@ -2385,7 +2388,8 @@
    "category": "residential",
    "address": "115 2nd avenue s",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "technical-building-89061902": {
    "kind": "building",
@@ -2437,7 +2441,8 @@
    "category": "residential",
    "address": "1600 1st Avenue South",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "historic-wesley-center-92810581": {
    "kind": "building",
@@ -2487,7 +2492,8 @@
    "category": "parking",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "centerpoint-energy-101142637": {
    "kind": "building",
@@ -2529,7 +2535,8 @@
    "category": "residential",
    "address": "1700 Stevens Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "steelman-exchange-119539527": {
    "kind": "building",
@@ -2554,7 +2561,8 @@
    "category": "parking",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "aster-house-125437510": {
    "kind": "building",
@@ -2666,7 +2674,8 @@
    "category": "residential",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "farmers-and-mechanics-savings-bank-157025240": {
    "kind": "building",
@@ -2691,7 +2700,8 @@
    "category": "residential",
    "address": "750 South 2nd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "dock-street-apartments-198929965": {
    "kind": "building",
@@ -2707,7 +2717,8 @@
    "category": "residential",
    "address": "1117 Marquette Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "jobbers-warehouse-supply-inc-240869855": {
    "kind": "building",
@@ -2740,7 +2751,8 @@
    "category": "parking",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "wells-fargo-550-407613510": {
    "kind": "building",
@@ -2773,7 +2785,8 @@
    "category": "residential",
    "address": "510 4th St S",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "marquette-place-451283544": {
    "kind": "building",
@@ -2797,7 +2810,8 @@
    "category": "residential",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "lakewood-publications-building-461224214": {
    "kind": "building",
@@ -2838,7 +2852,8 @@
    "category": "parking",
    "address": "1300 Nicollet Mall",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "t3-723284484": {
    "kind": "building",
@@ -2854,7 +2869,8 @@
    "category": "residential",
    "address": "400 Marquette Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "intersect-apartments-1216920711": {
    "kind": "building",
@@ -2862,7 +2878,8 @@
    "category": "residential",
    "address": "316 North 2nd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "moment-apartments-1222145087": {
    "kind": "building",
@@ -2870,7 +2887,8 @@
    "category": "residential",
    "address": "650 Portland Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "4th-park-1223123289": {
    "kind": "building",
@@ -2878,7 +2896,8 @@
    "category": "residential",
    "address": "700 4th St S",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "north-loop-green-360-1281792415": {
    "kind": "building",
@@ -2922,7 +2941,8 @@
    "category": "residential",
    "address": "188 Glenwood Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "sheraton-minneapolis-downtown-convention-center-1394814185": {
    "kind": "building",
@@ -2938,7 +2958,8 @@
    "category": "residential",
    "address": "600 South 2nd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "chestnut-pumphouse-1488042853": {
    "kind": "building",
