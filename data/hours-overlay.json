@@ -343,6 +343,31 @@
       "source": "https://www.farmerskitchenandbar.com/",
       "checkedOn": "2026-08-07",
       "note": "Monday and Tuesday published as Closed."
+    },
+    "poi-14022958827": {
+      "name": "Two Mixed Up",
+      "openingHours": "Mo-Th 11:00-21:00; Fr-Sa 11:00-22:00; Su 11:00-21:00",
+      "source": "https://www.twomixedup.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-6780251058": {
+      "name": "Kickernick Gallery",
+      "openingHours": "Tu-Sa 10:00-17:00",
+      "source": "https://www.kickernickgallery.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-5955577504": {
+      "name": "Emerald City Day Spa",
+      "openingHours": "Tu-Sa 09:30-18:30",
+      "source": "https://www.emeraldcitydayspa.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Monday published as 'By Appointment Only' — not an opening time, so omitted."
+    },
+    "poi-11248558001": {
+      "name": "Bonobos",
+      "openingHours": "Mo-Sa 11:00-19:00; Su 12:00-18:00",
+      "source": "https://bonobos.com/locations/s/north-loop-minneapolis",
+      "checkedOn": "2026-08-07"
     }
   },
   "skipped": {
@@ -434,6 +459,48 @@
       "name": "The UPS Store",
       "reason": "OSM points at the chain homepage, which only says 'hours of operation may vary by location'. No store-specific page reached.",
       "source": "https://www.theupsstore.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-5355792479": {
+      "name": "Huntington Bank",
+      "reason": "Page's only 'hours' are 28,500 volunteer hours in a community report; no branch hours on the chain homepage.",
+      "source": "https://www.huntington.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-11664061541": {
+      "name": "Stadium View",
+      "reason": "School page gives '8:30 a.m. - 3:05 p.m.' with no days stated.",
+      "source": "https://stadiumview.mpschools.org/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12726468697": {
+      "name": "Mad Chicken",
+      "reason": "Site lists Milwaukee and Pittsburgh locations; no Minneapolis hours reached.",
+      "source": "https://www.madchicken.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13265533199": {
+      "name": "Ococo",
+      "reason": "'within 24 hours' is a catering reply time, not opening hours.",
+      "source": "https://www.ococo.co/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13451748957": {
+      "name": "Salad Slayer",
+      "reason": "FAQ asks 'What are your business hours?' and the site never answers it.",
+      "source": "https://www.saladslayer.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13451748969": {
+      "name": "Bridgewater Bank",
+      "reason": "Only an after-hours phone number; branch hours not on the site.",
+      "source": "https://bridgewaterbankmn.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-9128515925": {
+      "name": "HiFi Sound",
+      "reason": "Published showroom hours belong to 825 Glenwood Ave, not the skyway location our POI sits in.",
+      "source": "https://www.hifisound.com/",
       "checkedOn": "2026-08-07"
     }
   }

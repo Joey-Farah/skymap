@@ -40,7 +40,7 @@
    "name": "7th Street Entry",
    "group": "food",
    "website": "https://first-avenue.com/venue/7th-st-entry/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-550953417": {
@@ -84,7 +84,7 @@
    "name": "Ruth's Chris Steak House",
    "group": "food",
    "website": "http://www.ruthschris.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-2093861357": {
@@ -99,7 +99,7 @@
    "name": "The Capital Grille",
    "group": "food",
    "website": "https://www.thecapitalgrille.com",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-2387569338": {
@@ -122,7 +122,7 @@
    "name": "Slam Academy",
    "group": "other",
    "website": "https://slamacademy.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-2719874232": {
@@ -158,7 +158,7 @@
    "name": "Stadium Bar and Grill",
    "group": "food",
    "website": "https://www.stadiumbarmn.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-4087475806": {
@@ -166,7 +166,7 @@
    "name": "Monello",
    "group": "food",
    "website": "https://www.monellompls.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-4564574481": {
@@ -181,7 +181,8 @@
    "name": "Huntington Bank",
    "group": "other",
    "website": "http://www.huntington.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5355792484": {
    "kind": "poi",
@@ -230,7 +231,7 @@
    "name": "The UPS Store",
    "group": "other",
    "website": "https://www.theupsstore.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-5955586644": {
@@ -267,7 +268,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -304,7 +305,7 @@
    "name": "Breakfast Bar",
    "group": "food",
    "website": "https://www.breakfastbarofmn.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-9394789068": {
@@ -312,7 +313,7 @@
    "name": "Wellstone International High School",
    "group": "other",
    "website": "https://wellstone.mpschools.org/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-9509044247": {
@@ -389,7 +390,8 @@
    "name": "Stadium View",
    "group": "other",
    "website": "https://stadiumview.mpschools.org/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12164498040": {
    "kind": "poi",
@@ -488,7 +490,8 @@
    "name": "Mad Chicken",
    "group": "food",
    "website": "https://madchickenusa.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12726468698": {
    "kind": "poi",
@@ -720,7 +723,8 @@
    "name": "Ococo",
    "group": "food",
    "website": "https://ococofoods.square.site/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552502": {
    "kind": "poi",
@@ -770,7 +774,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {
@@ -815,7 +819,8 @@
    "name": "Salad Slayer",
    "group": "food",
    "website": "https://saladslayerskyway.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748961": {
    "kind": "poi",
@@ -836,7 +841,8 @@
    "name": "Bridgewater Bank",
    "group": "other",
    "website": "https://bridgewaterbankmn.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748978": {
    "kind": "poi",
@@ -873,7 +879,7 @@
    "name": "Kinderberry Hill",
    "group": "other",
    "website": "https://www.kinderberryhill.com/schools/minneapolis/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13628473443": {
@@ -944,7 +950,8 @@
    "name": "Two Mixed Up",
    "group": "food",
    "website": "https://twomixedup.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-14022958831": {
    "kind": "poi",
@@ -1000,7 +1007,8 @@
    "name": "Emerald City Day Spa",
    "group": "other",
    "website": "https://emeraldcitydayspa.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955577506": {
    "kind": "poi",
@@ -1021,7 +1029,8 @@
    "name": "Kickernick Gallery",
    "group": "other",
    "website": "https://www.kickernickgallery.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-6780251059": {
    "kind": "poi",
@@ -1035,7 +1044,8 @@
    "name": "HiFi Sound",
    "group": "other",
    "website": "https://hifi-sound.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-9128515926": {
    "kind": "poi",
@@ -1071,7 +1081,8 @@
    "name": "Bonobos",
    "group": "other",
    "website": "https://bonobos.com/locations/s/north-loop-minneapolis",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11248558004": {
    "kind": "poi",
@@ -1178,7 +1189,7 @@
    "name": "Grace Loves Lace",
    "group": "other",
    "website": "https://graceloveslace.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-12768888509": {
@@ -1299,7 +1310,7 @@
    "name": "Moss Optical",
    "group": "other",
    "website": "https://www.mossoptical.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13265552504": {
@@ -1794,7 +1805,7 @@
    "name": "Kemmitt, Sanford & Kramer",
    "group": "other",
    "website": "https://ksk.law/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-14022958821": {

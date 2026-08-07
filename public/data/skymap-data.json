@@ -26330,7 +26330,10 @@
    "buildingId": "deluxe-plaza-1462073358",
    "level": "1",
    "website": "https://twomixedup.com/",
-   "logo": "twomixedup-com"
+   "logo": "twomixedup-com",
+   "openingHours": "Mo-Th 11:00-21:00; Fr-Sa 11:00-22:00; Su 11:00-21:00",
+   "hoursSource": "https://www.twomixedup.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-14022958830",
@@ -26646,7 +26649,10 @@
    "buildingId": "gaviidae-common-156909893",
    "level": "1",
    "website": "https://emeraldcitydayspa.com/",
-   "logo": "emeraldcitydayspa-com"
+   "logo": "emeraldcitydayspa-com",
+   "openingHours": "Tu-Sa 09:30-18:30",
+   "hoursSource": "https://www.emeraldcitydayspa.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5955577506",
@@ -26695,7 +26701,10 @@
    "buildingId": "5th-street-ramp-b-30062750",
    "nearby": true,
    "website": "https://www.kickernickgallery.com/",
-   "logo": "kickernickgallery-com"
+   "logo": "kickernickgallery-com",
+   "openingHours": "Tu-Sa 10:00-17:00",
+   "hoursSource": "https://www.kickernickgallery.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-6780251059",
@@ -26813,7 +26822,10 @@
    "buildingId": "lee-lofts-45758932",
    "nearby": true,
    "website": "https://bonobos.com/locations/s/north-loop-minneapolis",
-   "logo": "bonobos-com"
+   "logo": "bonobos-com",
+   "openingHours": "Mo-Sa 11:00-19:00; Su 12:00-18:00",
+   "hoursSource": "https://bonobos.com/locations/s/north-loop-minneapolis",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-11248558004",
