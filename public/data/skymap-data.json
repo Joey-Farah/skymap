@@ -5633,13 +5633,38 @@
      44.979763
     ]
    ],
-   "hours": null,
-   "hoursNote": "No published hours found.",
+   "hours": [
+    null,
+    [
+     510,
+     1020
+    ],
+    [
+     510,
+     1020
+    ],
+    [
+     510,
+     1020
+    ],
+    [
+     510,
+     1020
+    ],
+    [
+     510,
+     1020
+    ],
+    null
+   ],
+   "hoursNote": "Curated from the operator's own published hours.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Northwestern%20Knitting%20Company%20Factory.jpg?width=640",
     "attribution": "McGhiever · CC BY-SA 3.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Northwestern%20Knitting%20Company%20Factory.jpg"
-   }
+   },
+   "hoursSource": "https://imsdesigncenter.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "marquette-plaza-45500036",

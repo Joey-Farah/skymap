@@ -2157,7 +2157,8 @@
    "category": "retailHub",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "millwright-building-40933926": {
    "kind": "building",
@@ -2247,7 +2248,8 @@
    "category": "office",
    "address": "275 Market Street",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "rock-island-lofts-45758926": {
    "kind": "building",
@@ -2582,7 +2584,8 @@
    "category": "office",
    "address": "729 2nd Avenue South",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "minneapolis-club-parking-ramp-156909960": {
    "kind": "building",
@@ -2590,7 +2593,8 @@
    "category": "parking",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "old-republic-title-building-156912886": {
    "kind": "building",
@@ -2622,7 +2626,8 @@
    "category": "office",
    "address": "126 North 5th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "humboldt-annex-157035925": {
    "kind": "building",
@@ -2839,7 +2844,8 @@
    "category": "office",
    "address": "26 South 6th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "ids-center-1385236413": {
    "kind": "building",

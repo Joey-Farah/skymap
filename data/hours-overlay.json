@@ -655,6 +655,13 @@
    "source": "https://www.stilocuts.com/copy-of-lake-elmo-2",
    "checkedOn": "2026-08-07",
    "note": "Seven Stilo locations share a template; the North Loop page is reachable only at the URL slug 'copy-of-lake-elmo-2', and the obvious /north-loop path 404s. Address 224 N Washington Ave Suite 130A geocodes 9 m from this POI. The page adds that after-hours services cost $15+ more, which implies later availability by arrangement — not recorded, since it is not a published open window."
+  },
+  "international-market-square-45498285": {
+   "name": "International Market Square",
+   "openingHours": "Mo-Fr 08:30-17:00",
+   "source": "https://imsdesigncenter.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Printed in their footer as 'IMS Building Hours: Weekdays 8:30 a.m. - 5:00 p.m.' — an actual building-hours statement, not a tenant's. Address 275 Market Street matches ours. Closed at weekends, which the weekdays-only phrasing states. Note this is four and a half hours shorter on weekdays than the ordinance default it replaces, and two whole days different."
   }
  },
  "skipped": {
@@ -1304,6 +1311,36 @@
    "name": "Orpheum Theatre",
    "reason": "Hennepin Arts owns the Orpheum but publishes no hours for it: its venues page is prose about the theatre district, and both the per-venue and box-office URLs return 404. A road-house theatre is open for ticketed events only in any case.",
    "source": "https://hennepinarts.org/plan-your-visit/venues",
+   "checkedOn": "2026-08-07"
+  },
+  "murrays-1334632160": {
+   "name": "Murray's",
+   "reason": "Publishes lunch Tuesday-Thursday 11:00am-1:30pm AND dinner Monday-Thursday 5:00pm-9:00pm, Friday-Saturday 5:00pm-10:00pm, Sunday 4:00pm-8:30pm — two ranges a day, which this parser holds one of. Recording dinner alone would claim they are shut at Tuesday lunch when they are serving. Their lunch schedule is seasonal on top of that (Friday lunch closed Memorial Day to Labor Day), and the bar closes at 'close'.",
+   "source": "https://murraysrestaurant.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "cowboy-jacks-157031168": {
+   "name": "Cowboy Jack's",
+   "reason": "cowboyjacks.com is no longer the restaurant's site — it now serves a domain-brokerage page offering the name for sale, with transfer instructions and no business content at all. No first-party source survives at this address.",
+   "source": "https://cowboyjacks.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "minneapolis-club-156909955": {
+   "name": "Minneapolis Club",
+   "reason": "A private members' club. Its site covers membership, dining, athletics and private events behind a login and publishes no public opening hours — there is no walk-in window to record, which is itself the accurate answer for a building the public cannot enter.",
+   "source": "https://www.mplsclub.org/",
+   "checkedOn": "2026-08-07"
+  },
+  "minneapolis-club-parking-ramp-156909960": {
+   "name": "Minneapolis Club Parking Ramp",
+   "reason": "No website of its own, and the club's site mentions parking only as a membership benefit without hours. Attached to a private club, so likely not publicly accessible in any case.",
+   "source": "https://www.mplsclub.org/",
+   "checkedOn": "2026-08-07"
+  },
+  "st-anthony-main-39707475": {
+   "name": "St. Anthony Main",
+   "reason": "stanthonymain.com does not resolve (DNS failure on both apex and www). No surviving first-party site for the centre as a whole; its individual tenants have their own sites but those are not this building.",
+   "source": "(dead domain)",
    "checkedOn": "2026-08-07"
   }
  }
