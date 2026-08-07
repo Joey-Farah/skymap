@@ -1981,5 +1981,14 @@
    "resolution": "NOT changed. apply-hours-overlay.mjs treats OSM as authoritative by design — the reasoning being that OSM is maintained by people who can see the door — and overriding it silently for one building would undo that policy without a decision. Raised for Joey instead. If the landlord should win over OSM where both exist, that is a rule change worth making deliberately and applying everywhere.",
    "checkedOn": "2026-08-07"
   }
+ },
+ "barredSources": {
+  "urban-works-skyway-operations-summary": {
+   "what": "A building-by-building 'Skyway Operations Summary' listing skyway access hours for most downtown buildings, hosted as a PDF at mplsdowntown.com/wp-content/uploads/2021/09/Skyway-Operations-Summary-ver_2021-09-09_MDC.pdf",
+   "whyBarred": "Its own footer reads 'COMPILED BY URBAN WORKS, INC. (c) 2021 Urban Works, Inc.' Urban Works operates skywayaccess.com, whose terms forbid 'Unauthorized reproduction, publication, distribution, or exhibition of any information or materials supplied by our Services' and accessing them 'through any means other than through the interface which is provided by Urban Works'. Being re-hosted by the Downtown Council does not change who compiled it or who holds the copyright — taking it from there is the same breach through a different door.",
+   "alsoStale": "Dated Thursday, September 9, 2021, and self-reported by buildings, so even if licensed it would predate the post-pandemic changes the City's 2025 committee record describes. Its entry for 100 Washington Square (open daily) already disagrees with that building's current landlord handbook (closed weekends).",
+   "action": "Not used. Downloaded copies and extracted text were deleted. If Joey wants this data, the route is to license it from Urban Works or ask the Downtown Council for permission — it would close most of the remaining building gap in one step, so it may well be worth asking.",
+   "checkedOn": "2026-08-07"
+  }
  }
 }
