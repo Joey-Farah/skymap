@@ -760,6 +760,13 @@
    "source": "https://www.thestatementboutique.com/thestore",
    "checkedOn": "2026-08-07",
    "note": "Address 212 3rd Ave N Suite 105 geocodes to this POI exactly (0 m). Closes at 6:30 rather than a round hour, which is the kind of detail only the operator's own page carries."
+  },
+  "111-washington-square-537857247": {
+   "name": "111 Washington Square",
+   "openingHours": "Mo-Fr 06:00-18:00",
+   "source": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
+   "checkedOn": "2026-08-07",
+   "note": "From Shorenstein's own tenant handbook for the Washington Square campus, under the heading 'Building Hours': 6:00 a.m. - 6:00 p.m. M-F, Closed Sat & Sun, with an access card required from 6pm to 6am and all weekend. 111 Washington Square is part of that campus (added in the 1980s alongside 100), so this is its landlord publishing its own building's hours rather than a neighbour's borrowed. Note how exactly it matches what the City says actually happens — 6pm weekdays, shut at weekends — against an ordinance claiming 10pm and open Saturdays and Sundays."
   }
  },
  "skipped": {
@@ -1949,6 +1956,18 @@
    "name": "Target Plaza",
    "reason": "The only first-party presence is Target's corporate site — investor relations, press, careers — which says nothing about its Minneapolis headquarters building. A corporate campus does not publish public entry hours.",
    "source": "https://corporate.target.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "the-andrus-99714289": {
+   "name": "The Andrus",
+   "reason": "theandrusminneapolis.com is a leasing site for 140,000 sq ft of office and retail space — about, neighbourhood, contact — and publishes no building hours on either its home or contact page.",
+   "source": "https://theandrusminneapolis.com/contact/",
+   "checkedOn": "2026-08-07"
+  },
+  "steelman-exchange-119539527": {
+   "name": "Steelman Exchange",
+   "reason": "steelmanexchange.com renders 84 characters: 'We're under construction. Please check back for an update soon.' A placeholder rather than a dead domain, so worth retrying on a later pass.",
+   "source": "https://steelmanexchange.com/",
    "checkedOn": "2026-08-07"
   }
  }

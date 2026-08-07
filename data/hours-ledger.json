@@ -2498,7 +2498,8 @@
    "category": "office",
    "address": "520 Nicollet Mall",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "riverfront-municipal-parking-ramp-99717608": {
    "kind": "building",
@@ -2558,7 +2559,8 @@
    "category": "office",
    "address": "241 5th Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "miller-hall-122795138": {
    "kind": "building",
@@ -2859,7 +2861,8 @@
    "category": "office",
    "address": "111 Washington Avenue South",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "loring-parking-ramp-612097599": {
    "kind": "building",

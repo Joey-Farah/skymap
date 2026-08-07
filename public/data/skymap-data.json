@@ -14109,8 +14109,33 @@
      44.980237
     ]
    ],
-   "hours": null,
-   "hoursNote": "No published hours found."
+   "hours": [
+    null,
+    [
+     360,
+     1080
+    ],
+    [
+     360,
+     1080
+    ],
+    [
+     360,
+     1080
+    ],
+    [
+     360,
+     1080
+    ],
+    [
+     360,
+     1080
+    ],
+    null
+   ],
+   "hoursNote": "Curated from the operator's own published hours.",
+   "hoursSource": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "loring-parking-ramp-612097599",
