@@ -774,6 +774,13 @@
    "source": "https://mncourts.gov/find-courts/hennepin/hennepin-juvenile-court/contact-us",
    "checkedOn": "2026-08-07",
    "note": "Minnesota Judicial Branch, first-party, lists the Juvenile Justice Center at 590 Park Avenue Rm #100 with 'Hours: 8:00 a.m. - 4:30 p.m. Monday - Friday, Closed holidays'. The building is the court, so the court's public hours are when it can be entered. Address geocodes 61 m from this building's centroid, which is within a courthouse footprint. Deliberately NOT used: the separate Juvenile Detention Center at 510 Park Ave publishes visiting hours (alternating by surname, evenings and weekends) — a different building and not opening hours in any case."
+  },
+  "poi-13965983654": {
+   "name": "In-Dispensary",
+   "openingHours": "Mo-We 10:00-18:00; Th-Fr 10:00-22:00; Sa 11:00-19:00",
+   "source": "https://in-dispensary.com/contact/",
+   "checkedOn": "2026-08-07",
+   "note": "Published under 'Standard Hours of Operation' on their own contact page, closed Sunday. Address 250 Second Ave South #245A geocodes to this POI exactly (0 m) — it is on the second floor of Commerce at the Crossing, inside the skyway. They also list dated holiday and event overrides (New Year's Day 11-5, a 4/20 sale 10-10, and others) which are explicitly stated to override the standard week; those are single dates rather than a recurring schedule and were not recorded."
   }
  },
  "skipped": {
@@ -2209,6 +2216,42 @@
    "name": "Skyway Shoe Repair",
    "reason": "Skyway Shoe Repair & Dye Service at 801 Nicollet Mall has no first-party site. Yelp reports Tuesday-Thursday 9am-3pm and closed the other four days, which would be an unusual enough pattern to want confirming from the shop — and there is nothing to confirm it against.",
    "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11328332532": {
+   "name": "Core Lifestyle Center",
+   "reason": "The business has been renamed: corelifestylemn.com now redirects to withnchiropractic.com, which says 'Formerly Core Lifestyle Clinic - North Loop'. The new site is a booking flow ('Book now') with no opening hours — chiropractic by appointment. Worth noting our POI still carries the old name.",
+   "source": "https://withnchiropractic.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-1077152564": {
+   "name": "Segway Tours",
+   "reason": "Human on a Stick runs guided tours, not a shop: public tours operate only 'every day from March 1st to September 30th' and otherwise by private booking. Seasonal on top of tour-based, so there is no weekly window this parser could hold even if one were published.",
+   "source": "https://tcsegway.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13629208522": {
+   "name": "Shinebox",
+   "reason": "A creative agency's studio and event space at 401 N 1st Ave — polished concrete, a 14-foot LED screen, booked for shoots and events. No first-party site with hours, and no walk-in window by its nature.",
+   "source": "https://www.doorsopenminneapolis.org/venues-2026/shinebox",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13410756383": {
+   "name": "Meye Salon",
+   "reason": "Meye Salon & Spa at 811 LaSalle Ave Ste 212 has no first-party site. Search returns only Yelp, Nextdoor and unilocal, none of which even agrees on hours — Yelp's listing shows none at all.",
+   "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13410756378": {
+   "name": "Sew What!",
+   "reason": "No first-party site, and search surfaces a Sew What in St Paul rather than this skyway counter. Cannot confirm the two are the same business, so nothing could have been recorded against this POI even if the St Paul shop published hours.",
+   "source": "(searched; identity unresolved)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14039713704": {
+   "name": "Sidewalk Gallery",
+   "reason": "No first-party site and no usable listing under this name in downtown Minneapolis — search returns nothing that can be matched to this POI at all.",
+   "source": "(searched; none found)",
    "checkedOn": "2026-08-07"
   }
  },

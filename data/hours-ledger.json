@@ -1487,14 +1487,16 @@
    "name": "Sew What!",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756383": {
    "kind": "poi",
    "name": "Meye Salon",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13627698551": {
    "kind": "poi",
@@ -1549,7 +1551,8 @@
    "name": "In-Dispensary",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13993589136": {
    "kind": "poi",
@@ -1572,7 +1575,8 @@
    "name": "Sidewalk Gallery",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-7294501323": {
    "kind": "poi",
@@ -1675,7 +1679,8 @@
    "name": "Segway Tours",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-1077152731": {
    "kind": "poi",
@@ -1881,7 +1886,8 @@
    "name": "Shinebox",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13713067309": {
    "kind": "poi",
@@ -2000,7 +2006,8 @@
    "name": "Core Lifestyle Center",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754418801": {
    "kind": "poi",

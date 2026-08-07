@@ -25094,7 +25094,10 @@
    "lat": 44.980203,
    "lon": -93.266176,
    "buildingId": "the-crossings-1411646515",
-   "level": "1"
+   "level": "1",
+   "openingHours": "Mo-We 10:00-18:00; Th-Fr 10:00-22:00; Sa 11:00-19:00",
+   "hoursSource": "https://in-dispensary.com/contact/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13969475873",
