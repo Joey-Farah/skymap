@@ -295,6 +295,20 @@
       "source": "https://bell.bank/Locations/Twin-Cities-Area/Minneapolis-City-Center",
       "checkedOn": "2026-08-07",
       "note": "Lobby hours; Saturdays published as Closed."
+    },
+    "poi-12768849145": {
+      "name": "Subway (701 4th Ave S)",
+      "openingHours": "Mo-Fr 09:00-16:00",
+      "source": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
+      "checkedOn": "2026-08-07",
+      "note": "Page paints only a live status; the full week is in the Yext hours block in the markup. Sa/Su published isClosed."
+    },
+    "poi-13451748985": {
+      "name": "Subway (555 Nicollet Mall)",
+      "openingHours": "Mo 08:00-17:00; Tu-Th 07:00-17:00; Fr 07:00-15:00",
+      "source": "https://restaurants.subway.com/united-states/mn/minneapolis/555-nicollet-mall",
+      "checkedOn": "2026-08-07",
+      "note": "Same Yext block. Sa/Su published isClosed."
     }
   },
   "skipped": {
@@ -378,7 +392,7 @@
     },
     "poi-2387563249": {
       "name": "The Capital Grille",
-      "reason": "Own site renders a day-picker that exposes only one day at a time; aggregators have hours but aren't first-party.",
+      "reason": "The URL in our data serves the Atlanta - Buckhead Village store, not Minneapolis, so the day-picker hours read off it were the wrong restaurant. Needs the correct Minneapolis location URL.",
       "source": "https://www.thecapitalgrille.com/locations/mn/minneapolis/minneapolis/8016",
       "checkedOn": "2026-08-07"
     },
@@ -392,12 +406,6 @@
       "name": "The UPS Store",
       "reason": "OSM points at the chain homepage, which only says 'hours of operation may vary by location'. No store-specific page reached.",
       "source": "https://www.theupsstore.com/",
-      "checkedOn": "2026-08-07"
-    },
-    "poi-12768849145": {
-      "name": "Subway (701 4th Ave S)",
-      "reason": "Store page shows a live status ('Closed - Opens at 9:00 AM') rather than a weekly schedule; the week is behind an interaction the probe doesn't perform.",
-      "source": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
       "checkedOn": "2026-08-07"
     }
   }

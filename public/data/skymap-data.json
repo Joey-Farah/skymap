@@ -24820,7 +24820,10 @@
    "buildingId": "701-building-126116979",
    "level": "1",
    "website": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
-   "logo": "restaurants-subway-com"
+   "logo": "restaurants-subway-com",
+   "openingHours": "Mo-Fr 09:00-16:00",
+   "hoursSource": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12768849147",
@@ -25774,7 +25777,10 @@
    "buildingId": "60-south-sixth-156909966",
    "level": "1",
    "website": "https://restaurants.subway.com/united-states/mn/minneapolis/555-nicollet-mall",
-   "logo": "restaurants-subway-com"
+   "logo": "restaurants-subway-com",
+   "openingHours": "Mo 08:00-17:00; Tu-Th 07:00-17:00; Fr 07:00-15:00",
+   "hoursSource": "https://restaurants.subway.com/united-states/mn/minneapolis/555-nicollet-mall",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13451748986",

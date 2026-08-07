@@ -537,7 +537,7 @@
    "name": "Subway",
    "group": "food",
    "website": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
-   "status": "ambiguous",
+   "status": "done",
    "checkedOn": "2026-08-07"
   },
   "poi-12786616349": {
@@ -848,7 +848,8 @@
    "name": "Subway",
    "group": "food",
    "website": "https://restaurants.subway.com/united-states/mn/minneapolis/555-nicollet-mall",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748986": {
    "kind": "poi",
