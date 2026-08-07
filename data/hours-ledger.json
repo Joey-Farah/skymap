@@ -1864,7 +1864,8 @@
    "name": "Minneapolis Roofing Expert",
    "group": "other",
    "website": "https://www.minneapolisroofingexperts.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13628477786": {
    "kind": "poi",
@@ -1926,7 +1927,8 @@
    "name": "Provation",
    "group": "other",
    "website": "https://www.provationmedical.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13921306014": {
    "kind": "poi",
@@ -1949,7 +1951,8 @@
    "name": "Coco Coworking",
    "group": "other",
    "website": "https://workatcoco.com/downtown-minneapolis/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14003692664": {
    "kind": "poi",
@@ -2003,7 +2006,8 @@
    "name": "InVision Distinctive Eyewear",
    "group": "other",
    "website": "https://invision-optical.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13030049621": {
    "kind": "poi",
@@ -2018,7 +2022,8 @@
    "name": "Project Chair",
    "group": "other",
    "website": "https://www.projectwellness.com/bakercenter",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13639106473": {
    "kind": "poi",
@@ -2040,7 +2045,8 @@
    "name": "Fixology",
    "group": "other",
    "website": "https://fixologyrepair.com/minneapolis/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756368": {
    "kind": "poi",

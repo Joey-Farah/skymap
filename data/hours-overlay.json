@@ -2150,6 +2150,42 @@
    "reason": "A service counter inside the Target store on Nicollet Mall rather than a separate business. Target publishes store hours for the shop as a whole; a counter within it has no separate published window, and substituting the store's hours would be the adjacent-but-wrong move that HCMC Orange and the mplsparking office already illustrate.",
    "source": "(structural; counter inside a larger store)",
    "checkedOn": "2026-08-07"
+  },
+  "poi-12754418801": {
+   "name": "InVision Distinctive Eyewear",
+   "reason": "An optical boutique whose site leads with APPOINTMENTS and trunk-show invitations; the rendered page (5,751 chars) carries collections, the lab and a newsletter signup but no opening hours. Eyewear fitting runs by appointment, like the other clinics in this set.",
+   "source": "https://www.invision-optical.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12862806761": {
+   "name": "Fixology",
+   "reason": "Rendered and checked specifically: no weekday-plus-time pattern anywhere and no standalone 'hours' heading. The page gives the address (651 Nicollet Mall Ste 247) and a repair service list only. Worth noting the render helper's keyword scan matched the 'mon' inside 'common', so this needed a second look rather than the first pass's apparent hit.",
+   "source": "https://fixologyrepair.com/minneapolis/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14003692660": {
+   "name": "Coco Coworking",
+   "reason": "Membership coworking. Its page lists amenities exhaustively — meeting rooms, kitchen, bike storage, 24/7-style perks — and offers 'Book a Call or Tour', but never states when the space is open, because access is by membership. Same shape as Industrious.",
+   "source": "https://workatcoco.com/downtown-minneapolis/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13451748983": {
+   "name": "Project Chair",
+   "reason": "States the answer outright: 'When: Daily Hours and Therapists Based on Online Demand'. A pop-up massage service in Baker Center whose presence varies with bookings — there is no recurring weekly window, by the operator's own description.",
+   "source": "https://www.projectwellness.com/bakercenter",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13715425020": {
+   "name": "Provation",
+   "reason": "A clinical-software company. Rendered site (7,884 chars) is products, resources and 'Schedule a Demo' — a workplace tenant with no public counter and no opening hours.",
+   "source": "https://www.provationmedical.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13448274439": {
+   "name": "Minneapolis Roofing Expert",
+   "reason": "A roofing contractor. Its site (5,036 chars) gives a phone number and the address 212 3rd Ave N Ste 105C but publishes no hours — contractors quote by call and visit rather than opening a shopfront.",
+   "source": "https://www.minneapolisroofingexperts.com/",
+   "checkedOn": "2026-08-07"
   }
  },
  "conflicts": {
