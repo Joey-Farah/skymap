@@ -19,7 +19,14 @@ import { getSavedRamp, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
-import { ARRIVAL_LINGER_MS, canDismissArrival, hasArrived, settleRemaining, shouldRotate } from "./nav-progress.ts";
+import {
+  ARRIVAL_LINGER_MS,
+  canDismissArrival,
+  hasArrived,
+  settleRemaining,
+  shouldRotate,
+  stepIndexFromProgress,
+} from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -140,7 +147,18 @@ async function boot() {
     setMode("idle");
     // Back to a blank slate, not the last thing that was searched for —
     // matches the map itself resetting to no pin, no route.
+    //
+    // From and To go too. Leaving From set meant the *next* trip silently
+    // started from the last one's origin: walk Target Center -> IDS, end,
+    // walk on to Wells Fargo, pick a new destination, and the card offered
+    // "Directions · 8 min" from your real position while the preview drew
+    // an 18-minute route from Target Center — labelled "Current Location ·
+    // Target Center", a building you left twenty minutes ago. The stale
+    // value also blocked the branch below that fills From in from the live
+    // fix, because it only fires when From is empty.
     comboSearch.clear();
+    comboFrom.clear();
+    comboTo.clear();
     history.replaceState(null, "", location.pathname);
   }
 
@@ -265,12 +283,11 @@ async function boot() {
     manualPositionUntil = 0;
     settledRemaining = null; // a new trip starts with nothing to hold against
     walkedHighWater = null;
-    furthestStep = 0;
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
   }
 
-  function applyNavProgress(stepIndex: number, at?: { lat: number; lon: number }) {
+  function applyNavProgress(fallbackStep: number, at?: { lat: number; lon: number }) {
     const raw = at ? view.remainingMeters(at.lat, at.lon) : null;
     // Held to non-increasing across the trip, so indoor GPS drift can't walk
     // the arrival time backwards — see nav-progress.ts.
@@ -279,6 +296,13 @@ async function boot() {
       walkedHighWater = walkedHighWater == null ? settledRemaining : Math.min(walkedHighWater, settledRemaining);
     }
     const remaining = raw == null ? null : settledRemaining;
+    // Which building you're in comes from progress along the route, not from
+    // whichever centroid is nearest — see stepIndexFromProgress. The caller's
+    // index is only a fallback for before there's any fix to measure with.
+    const stepIndex =
+      activeRoute && remaining != null
+        ? stepIndexFromProgress(activeRoute, activeRoute.totalMeters, remaining)
+        : fallbackStep;
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;
@@ -388,13 +412,6 @@ async function boot() {
   let manualPositionUntil = 0;
   /** Smoothed metres-to-go for the trip in progress; null between trips. */
   let settledRemaining: number | null = null;
-  /** Furthest step this trip has reached. routeStepIndex is a nearest-
-   * centroid scan with no memory, so a fix drifting onto a parallel skyway
-   * a block away can jump it several buildings and back again. That used
-   * to move one highlight border; now it also drives which rows render as
-   * already-walked, so an unfiltered index makes the whole list flicker.
-   * Held forward for the same reason walkedHighWater is. */
-  let furthestStep = 0;
   /** Closest to the destination this trip has ever got. The dimmed line is
    * drawn from this rather than from the live figure: skyways run parallel
    * a block apart, so a drifting fix can project onto a neighbouring leg
@@ -411,8 +428,7 @@ async function boot() {
     // the only way to correct a trip that GPS drift had already pushed too
     // far ahead — the dot would move and the step list, walked line and
     // remaining distance would stay wrong for the rest of the walk.
-    furthestStep = routeStepIndex(activeRoute, lat, lon);
-    applyNavProgress(furthestStep, { lat, lon });
+    applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
     view.setWalkerPosition([lon, lat]);
     view.setWalkedProgress(walkedHighWater);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
@@ -429,8 +445,7 @@ async function boot() {
     currentApproach = approach;
     nearBuilding = approach && approach.straightMeters <= 60 ? approach.building : null;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
-      furthestStep = Math.max(furthestStep, routeStepIndex(activeRoute, lat, lon));
-      applyNavProgress(furthestStep, { lat, lon });
+      applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
       // Real GPS is back in control — but drawn on the skyway rather than
       // wherever the fix landed. Past the snap threshold this goes back to
       // null and MapLibre's own dot takes over, which is the honest answer

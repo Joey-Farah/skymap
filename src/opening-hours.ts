@@ -42,7 +42,11 @@ function expandDayToken(token: string): string[] {
 }
 
 const DAY_LIST = "(?:Mo|Tu|We|Th|Fr|Sa|Su|PH)(?:-(?:Mo|Tu|We|Th|Fr|Sa|Su))?";
-const LEADING_DAY_SPEC = new RegExp(`^${DAY_LIST}(?:,${DAY_LIST})*`);
+// Whitespace after the comma is common in the wild and means nothing:
+// two Naf Naf branches differ only by one space ("Sa,Su off" vs
+// "Sa, Su off"), and the spaced one had its whole tag discarded, so its
+// card read "Hours unknown" for hours that are perfectly well known.
+const LEADING_DAY_SPEC = new RegExp(`^${DAY_LIST}(?:\\s*,\\s*${DAY_LIST})*`);
 
 /** Splits a leading day-spec ("Mo-Fr", "Mo,We,Fr", "PH") off a clause. */
 function parseDaySpec(clause: string): { days: string[]; rest: string } {
@@ -93,7 +97,9 @@ export function parseOpeningHours(value: string | undefined | null): DayHours[] 
     const { days, rest } = parseDaySpec(clause);
     const dayIndices = days.filter((d) => d !== "PH").map((d) => DAY_INDEX[d]);
     if (!dayIndices.length) continue; // PH-only clause: not modeled
-    if (/^off$/i.test(rest)) {
+    // "closed" is an accepted synonym for "off" in opening_hours. Not
+    // recognising it discarded the entire tag, not just the clause.
+    if (/^(off|closed)$/i.test(rest)) {
       // Later rule wins, exactly as it does for a time span below. Guarding
       // this on "untouched so far" made `off` the one clause type that
       // couldn't override an earlier rule, so the common "open all week

@@ -1,7 +1,37 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DETOUR_METERS, canDismissArrival, hasArrived, highlightedStep, settleArrival, settleRemaining, shouldRotate } from "../src/nav-progress.ts";
+import { DETOUR_METERS, canDismissArrival, hasArrived, highlightedStep, settleArrival, settleRemaining, shouldRotate, stepIndexFromProgress } from "../src/nav-progress.ts";
+
+test("which building you're heading into follows progress, not the nearest centroid", () => {
+  // routeStepIndex picks the nearest building centroid. Downtown blocks are
+  // big and centroids sit close together: walking 33 South Sixth -> Marriott
+  // City Center, the Marriott's centroid is nearer than City Center's from
+  // 60m into a 239m walk, so the banner flipped to "You've arrived" with two
+  // thirds of the trip left — and a forward-only clamp then latched it there
+  // for good. Progress along the route has no such artifact.
+  const route = {
+    totalMinutes: 12,
+    steps: [
+      { arrivalMinutes: 0 },
+      { arrivalMinutes: 4 },
+      { arrivalMinutes: 8 },
+      { arrivalMinutes: 12 },
+    ],
+  };
+  const total = 600;
+  assert.equal(stepIndexFromProgress(route, total, 600), 0, "at the start");
+  assert.equal(stepIndexFromProgress(route, total, 400), 1, "a third walked");
+  assert.equal(stepIndexFromProgress(route, total, 200), 2, "two thirds walked");
+  assert.equal(stepIndexFromProgress(route, total, 0), 3, "arrived");
+
+  // Never claims arrival early: the last step needs the walk actually done.
+  assert.ok(stepIndexFromProgress(route, total, 60) < 3, "60m still to walk is not arrival");
+
+  // Degenerate inputs must not throw or point past the end.
+  assert.equal(stepIndexFromProgress(route, 0, 0), 3, "zero-length route is arrived");
+  assert.equal(stepIndexFromProgress({ totalMinutes: 0, steps: [{ arrivalMinutes: 0 }] }, 100, 50), 0);
+});
 
 test("the compass only turns the map when it's worth cancelling an animation", () => {
   // MapLibre's setBearing routes through jumpTo, which calls stop() and

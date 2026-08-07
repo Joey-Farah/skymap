@@ -53,6 +53,32 @@ function atWordBoundary(text: string, index: number): boolean {
   return index === 0 || !/\w/.test(text[index - 1]);
 }
 
+/**
+ * Normalises text for matching: case, accents, and the several characters
+ * that all mean "apostrophe".
+ *
+ * Without it, twelve real downtown places were unreachable by typing their
+ * names the way anyone would — Pizza Lucé, Fogo de Chão, Jalapeño Mexican
+ * Grill — and the dropdown simply stayed empty, indistinguishable from the
+ * place not existing. The apostrophe half cuts both ways: two names are
+* stored with a curly U+2019 and thirty-six with a straight quote, and iOS
+ * smart punctuation rewrites whichever one you type, so the direction that
+ * breaks depends on the keyboard rather than the data. Dropping the
+ * character entirely rather than normalising it also catches the person who
+ * simply doesn't type one: "Toms Watch Bar".
+ *
+ * NFD splits an accented letter into letter + combining mark; stripping the
+ * marks leaves the plain letter, so "Lucé" and "Luce" compare equal while
+ * either spelling still matches itself.
+ */
+export function foldForSearch(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['\u2018\u2019\u02bc\u02bb`\u00b4]/g, "")
+    .toLowerCase();
+}
+
 /** Higher is more relevant; null means the entry doesn't match at all. Every
  * query word has to appear somewhere in the label or sublabel (so "central
  * library" finds "Minneapolis Central Library" regardless of word order),
@@ -60,8 +86,8 @@ function atWordBoundary(text: string, index: number): boolean {
  * starts with the query beats one that merely contains it, word-boundary
  * matches beat mid-word substrings. */
 function score(entry: ComboEntry, words: string[]): number | null {
-  const label = entry.label.toLowerCase();
-  const sublabel = entry.sublabel.toLowerCase();
+  const label = foldForSearch(entry.label);
+  const sublabel = foldForSearch(entry.sublabel);
   const full = words.join(" ");
   let total = 0;
 
@@ -104,7 +130,7 @@ export function searchEntries(
   query: string,
   near?: { lat: number; lon: number } | null,
 ): ComboEntry[] {
-  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const words = foldForSearch(query.trim()).split(/\s+/).filter(Boolean);
   if (words.length === 0) return entries;
   return entries
     .map((e) => ({ e, s: score(e, words), d: near ? roughDistance(e, near) : 0 }))

@@ -105,3 +105,24 @@ test("a day-scoped 24/7 clause is recognized like the bare whole-value form", ()
 test("all-off week returns null rather than an all-closed array", () => {
   assert.equal(parseOpeningHours("Mo off; Tu off; We off; Th off; Fr off; Sa off; Su off"), null);
 });
+
+test("a space after the comma doesn't discard the whole tag", () => {
+  // Two Naf Naf Grill branches differ by exactly one space. The spaced one
+  // had its entire value thrown away, so its card read "Hours unknown"
+  // while its twin showed a full Mon-Fri table.
+  const spaced = parseOpeningHours("Mo-Fr 10:00-19:00; Sa, Su off");
+  const tight = parseOpeningHours("Mo-Fr 08:00-16:00; Sa,Su off");
+  assert.ok(spaced, "spaced day list must parse");
+  assert.deepEqual(spaced[1], [600, 1140], "Monday open");
+  assert.equal(spaced[6], null, "Saturday closed");
+  assert.equal(spaced[0], null, "Sunday closed");
+  assert.ok(tight, "unspaced still parses");
+});
+
+test("'closed' is accepted as a synonym for 'off'", () => {
+  const r = parseOpeningHours("Mo-Fr 08:30-17:00; Sa-Su closed");
+  assert.ok(r, "closed keyword must not discard the tag");
+  assert.deepEqual(r[1], [510, 1020]);
+  assert.equal(r[6], null);
+  assert.equal(r[0], null);
+});
