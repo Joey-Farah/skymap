@@ -527,7 +527,8 @@
    "name": "Demi",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12753315917": {
    "kind": "poi",
@@ -621,7 +622,8 @@
    "name": "EggFlip",
    "group": "food",
    "website": "https://www.eggflipmn.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862838549": {
    "kind": "poi",
@@ -998,7 +1000,8 @@
    "name": "Sorrento Cucina",
    "group": "food",
    "website": "https://sorrentocucina.wordpress.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14064521583": {
    "kind": "poi",

@@ -801,6 +801,24 @@
       "reason": "City Center publishes mall-wide hours (M-F 10-7, Sat 10-6, Sun select stores 12-5) but no per-tenant directory. Mall hours are not this shop's hours — skyway-level food counters routinely open earlier and close before the retail floor.",
       "source": "(searched; no official per-tenant directory found)",
       "checkedOn": "2026-08-07"
+    },
+    "poi-14022958831": {
+      "name": "Sorrento Cucina",
+      "reason": "Own site (a WordPress blog) carries menus and no hours, including behind its contact link, rendered.",
+      "source": "https://sorrentocucina.wordpress.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12862838548": {
+      "name": "EggFlip",
+      "reason": "Own site publishes no hours on the homepage or its contact link, rendered.",
+      "source": "https://www.eggflipmn.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12726468699": {
+      "name": "Demi",
+      "reason": "Own site publishes no hours on the homepage or its contact link, rendered.",
+      "source": "https://www.demimpls.com/",
+      "checkedOn": "2026-08-07"
     }
   }
 }
