@@ -1,0 +1,2706 @@
+{
+ "items": {
+  "poi-367067933": {
+   "kind": "poi",
+   "name": "Hall C",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-367067934": {
+   "kind": "poi",
+   "name": "Hall B",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-367067936": {
+   "kind": "poi",
+   "name": "Hall A",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-367067940": {
+   "kind": "poi",
+   "name": "Hall E",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-367067941": {
+   "kind": "poi",
+   "name": "Hall D",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-506466720": {
+   "kind": "poi",
+   "name": "7th Street Entry",
+   "group": "food",
+   "website": "https://first-avenue.com/venue/7th-st-entry/",
+   "status": "pending"
+  },
+  "poi-550953417": {
+   "kind": "poi",
+   "name": "The Oceanaire Seafood Room",
+   "group": "food",
+   "website": "https://www.theoceanaire.com/",
+   "status": "pending"
+  },
+  "poi-553119984": {
+   "kind": "poi",
+   "name": "O'Donovan's",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-661686890": {
+   "kind": "poi",
+   "name": "Sawatdee",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-1077152385": {
+   "kind": "poi",
+   "name": "The Cabana Club",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-2093784239": {
+   "kind": "poi",
+   "name": "Normandy Kitchen",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-2093790846": {
+   "kind": "poi",
+   "name": "Ruth's Chris Steak House",
+   "group": "food",
+   "website": "http://www.ruthschris.com/",
+   "status": "pending"
+  },
+  "poi-2093861357": {
+   "kind": "poi",
+   "name": "Kindee Thai",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-2387563249": {
+   "kind": "poi",
+   "name": "The Capital Grille",
+   "group": "food",
+   "website": "https://www.thecapitalgrille.com",
+   "status": "pending"
+  },
+  "poi-2387569338": {
+   "kind": "poi",
+   "name": "The Seville",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-2427534130": {
+   "kind": "poi",
+   "name": "The Brother's Deli",
+   "group": "food",
+   "website": "https://www.thebrothersdeli.com/",
+   "status": "pending"
+  },
+  "poi-2527309568": {
+   "kind": "poi",
+   "name": "Slam Academy",
+   "group": "other",
+   "website": "https://slamacademy.com/",
+   "status": "pending"
+  },
+  "poi-2719874232": {
+   "kind": "poi",
+   "name": "Marin",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-3235588408": {
+   "kind": "poi",
+   "name": "Caribou Coffee",
+   "group": "coffee",
+   "website": "https://www.cariboucoffee.com/",
+   "status": "pending"
+  },
+  "poi-3403172118": {
+   "kind": "poi",
+   "name": "Rick's Cabaret Minneapolis",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-3524709447": {
+   "kind": "poi",
+   "name": "Workshop at Union",
+   "group": "food",
+   "website": "http://workshopatunion.com",
+   "status": "pending"
+  },
+  "poi-3699941024": {
+   "kind": "poi",
+   "name": "Stadium Bar and Grill",
+   "group": "food",
+   "website": "https://www.stadiumbarmn.com/",
+   "status": "pending"
+  },
+  "poi-4087475806": {
+   "kind": "poi",
+   "name": "Monello",
+   "group": "food",
+   "website": "https://www.monellompls.com/",
+   "status": "pending"
+  },
+  "poi-4564574481": {
+   "kind": "poi",
+   "name": "Hennepin County Jail",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-5355792479": {
+   "kind": "poi",
+   "name": "Huntington Bank",
+   "group": "other",
+   "website": "http://www.huntington.com/",
+   "status": "pending"
+  },
+  "poi-5355792484": {
+   "kind": "poi",
+   "name": "Starbucks",
+   "group": "coffee",
+   "website": "https://www.starbucks.com/store-locator/store/11666/ids-center-skyway-level-80-south-8th-street-minneapolis-mn-554022100-us",
+   "status": "pending"
+  },
+  "poi-5355792485": {
+   "kind": "poi",
+   "name": "One Two Three Sushi",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-5620131612": {
+   "kind": "poi",
+   "name": "Starbucks",
+   "group": "coffee",
+   "website": "https://www.starbucks.com/",
+   "status": "pending"
+  },
+  "poi-5955554286": {
+   "kind": "poi",
+   "name": "Potbelly",
+   "group": "food",
+   "website": "https://potbelly.com/",
+   "status": "pending"
+  },
+  "poi-5955577511": {
+   "kind": "poi",
+   "name": "Los Ocampo Express",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-5955577512": {
+   "kind": "poi",
+   "name": "Leeann Chin",
+   "group": "food",
+   "website": "http://leeannchin.com/",
+   "status": "pending"
+  },
+  "poi-5955582351": {
+   "kind": "poi",
+   "name": "The UPS Store",
+   "group": "other",
+   "website": "https://www.theupsstore.com/",
+   "status": "pending"
+  },
+  "poi-5955586644": {
+   "kind": "poi",
+   "name": "Starbucks",
+   "group": "coffee",
+   "website": "https://www.starbucks.com/store-locator/store/12449/target-minneapolis-1375-900-nicollet-mall-minneapolis-mn-554032530-us",
+   "status": "pending"
+  },
+  "poi-5955612516": {
+   "kind": "poi",
+   "name": "Starbucks",
+   "group": "coffee",
+   "website": "https://www.starbucks.com/store-locator/store/11987/33-s-6th-st-city-center-sk-40-s-7th-st-208-minneapolis-mn-554023601-us",
+   "status": "pending"
+  },
+  "poi-6178628386": {
+   "kind": "poi",
+   "name": "Manny's Steakhouse",
+   "group": "food",
+   "website": "https://mannyssteakhouse.com/",
+   "status": "pending"
+  },
+  "poi-6560546755": {
+   "kind": "poi",
+   "name": "Off The Rails Public House",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-6560546760": {
+   "kind": "poi",
+   "name": "Jimmy John's",
+   "group": "food",
+   "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
+   "status": "pending"
+  },
+  "poi-6780251055": {
+   "kind": "poi",
+   "name": "Last Call",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-6780251056": {
+   "kind": "poi",
+   "name": "Sal's on Fifth",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-6780251057": {
+   "kind": "poi",
+   "name": "Dreamgirls",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-7838159627": {
+   "kind": "poi",
+   "name": "Gold Room",
+   "group": "food",
+   "website": "https://goldroommn.com/",
+   "status": "pending"
+  },
+  "poi-7838159628": {
+   "kind": "poi",
+   "name": "Breakfast Bar",
+   "group": "food",
+   "website": "https://www.breakfastbarofmn.com/",
+   "status": "pending"
+  },
+  "poi-9394789068": {
+   "kind": "poi",
+   "name": "Wellstone International High School",
+   "group": "other",
+   "website": "https://wellstone.mpschools.org/",
+   "status": "pending"
+  },
+  "poi-9509044247": {
+   "kind": "poi",
+   "name": "Stringline Pictures",
+   "group": "other",
+   "website": "https://stringlinepictures.com/",
+   "status": "pending"
+  },
+  "poi-10270382209": {
+   "kind": "poi",
+   "name": "Wood + Paddle Eatery",
+   "group": "food",
+   "website": "https://woodandpaddlemn.com/",
+   "status": "pending"
+  },
+  "poi-10925436338": {
+   "kind": "poi",
+   "name": "New Horizon Academy",
+   "group": "other",
+   "website": "https://newhorizonacademy.net/",
+   "status": "pending"
+  },
+  "poi-11014986808": {
+   "kind": "poi",
+   "name": "Passport Health Minneapolis Travel Clinic",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-11072221405": {
+   "kind": "poi",
+   "name": "Tom’s Watch Bar",
+   "group": "food",
+   "website": "https://tomswatchbar.com/location/minneapolis/",
+   "status": "pending"
+  },
+  "poi-11248558000": {
+   "kind": "poi",
+   "name": "Capsule",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-11248558002": {
+   "kind": "poi",
+   "name": "Upstairs Circus",
+   "group": "food",
+   "website": "https://upstairscircus.com/mpls/",
+   "status": "pending"
+  },
+  "poi-11248558005": {
+   "kind": "poi",
+   "name": "Red Rabbit",
+   "group": "food",
+   "website": "https://redrabbitmn.com/north-loop/",
+   "status": "pending"
+  },
+  "poi-11328332531": {
+   "kind": "poi",
+   "name": "Fairgrounds Craft Coffee and Tea",
+   "group": "coffee",
+   "website": "https://www.fairgrounds.cafe/cafe-minneapolis-north-loop/",
+   "status": "pending"
+  },
+  "poi-11664061541": {
+   "kind": "poi",
+   "name": "Stadium View",
+   "group": "other",
+   "website": "https://stadiumview.mpschools.org/",
+   "status": "pending"
+  },
+  "poi-12164498040": {
+   "kind": "poi",
+   "name": "Dario",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12164509015": {
+   "kind": "poi",
+   "name": "Ono Hawaiian Plates",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12164522191": {
+   "kind": "poi",
+   "name": "Bassett Hound",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12164555712": {
+   "kind": "poi",
+   "name": "Crisp & Green",
+   "group": "food",
+   "website": "https://crispandgreen.com/",
+   "status": "pending"
+  },
+  "poi-12164557870": {
+   "kind": "poi",
+   "name": "Sweetgreen",
+   "group": "food",
+   "website": "http://sweetgreen.com/",
+   "status": "pending"
+  },
+  "poi-12164570021": {
+   "kind": "poi",
+   "name": "Treats",
+   "group": "food",
+   "website": "https://www.treatsmn.com/s/order?location=11eed04927db097c941e3cecef6dbac6#most-popular",
+   "status": "pending"
+  },
+  "poi-12333223450": {
+   "kind": "poi",
+   "name": "The Bazemnt Lounge",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12333223454": {
+   "kind": "poi",
+   "name": "Starbucks",
+   "group": "coffee",
+   "website": "https://www.starbucks.com/",
+   "status": "pending"
+  },
+  "poi-12335262724": {
+   "kind": "poi",
+   "name": "The Hennepin",
+   "group": "other",
+   "website": "https://thehennepin.org/",
+   "status": "pending"
+  },
+  "poi-12335262725": {
+   "kind": "poi",
+   "name": "The Saloon",
+   "group": "food",
+   "website": "https://www.saloonmn.com/",
+   "status": "pending"
+  },
+  "poi-12634128533": {
+   "kind": "poi",
+   "name": "Salt & Flour Kitchen",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12634128534": {
+   "kind": "poi",
+   "name": "Hope Breakfast Bar",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12645553576": {
+   "kind": "poi",
+   "name": "Melting Pot",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12726468697": {
+   "kind": "poi",
+   "name": "Mad Chicken",
+   "group": "food",
+   "website": "https://madchickenusa.com/",
+   "status": "pending"
+  },
+  "poi-12726468698": {
+   "kind": "poi",
+   "name": "Maison Margaux",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12726468699": {
+   "kind": "poi",
+   "name": "Demi",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12753315917": {
+   "kind": "poi",
+   "name": "The Burger Place",
+   "group": "food",
+   "website": "https://www.theburgerplace.com/",
+   "status": "pending"
+  },
+  "poi-12753315921": {
+   "kind": "poi",
+   "name": "Green + The Grain",
+   "group": "food",
+   "website": "https://www.greenandthegrain.com/locations",
+   "status": "pending"
+  },
+  "poi-12753315925": {
+   "kind": "poi",
+   "name": "Wave Sushi",
+   "group": "food",
+   "website": "https://wavesushi.square.site/",
+   "status": "pending"
+  },
+  "poi-12754418101": {
+   "kind": "poi",
+   "name": "Loop Dental",
+   "group": "other",
+   "website": "https://www.loopdentalmn.com/",
+   "status": "pending"
+  },
+  "poi-12768849145": {
+   "kind": "poi",
+   "name": "Subway",
+   "group": "food",
+   "website": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
+   "status": "pending"
+  },
+  "poi-12786616349": {
+   "kind": "poi",
+   "name": "Green + The Grain",
+   "group": "food",
+   "website": "https://www.greenandthegrain.com/locations",
+   "status": "pending"
+  },
+  "poi-12825025521": {
+   "kind": "poi",
+   "name": "People's Organic",
+   "group": "food",
+   "website": "https://www.peoplesorganic.com/ids-center-minneapolis",
+   "status": "pending"
+  },
+  "poi-12825025522": {
+   "kind": "poi",
+   "name": "Roti",
+   "group": "food",
+   "website": "https://www.roti.com/",
+   "status": "pending"
+  },
+  "poi-12862806760": {
+   "kind": "poi",
+   "name": "Planet Smoothie",
+   "group": "food",
+   "website": "https://www.planetsmoothie.com/stores/minneapolis/19239",
+   "status": "pending"
+  },
+  "poi-12862838544": {
+   "kind": "poi",
+   "name": "Kadai Indian Kitchen",
+   "group": "food",
+   "website": "https://www.kadaimsp.com/",
+   "status": "pending"
+  },
+  "poi-12862838547": {
+   "kind": "poi",
+   "name": "MyBurger",
+   "group": "food",
+   "website": "https://www.myburgerusa.com/location/skyway/",
+   "status": "pending"
+  },
+  "poi-12862838548": {
+   "kind": "poi",
+   "name": "EggFlip",
+   "group": "food",
+   "website": "https://www.eggflipmn.com/",
+   "status": "pending"
+  },
+  "poi-12862838549": {
+   "kind": "poi",
+   "name": "Krona Cafe",
+   "group": "coffee",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12862838551": {
+   "kind": "poi",
+   "name": "Walkin Dog",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12862838552": {
+   "kind": "poi",
+   "name": "Northstar Cafeteria",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12870055619": {
+   "kind": "poi",
+   "name": "Tropico",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12896972567": {
+   "kind": "poi",
+   "name": "Buca di Beppo",
+   "group": "food",
+   "website": "https://www.bucadibeppo.com/",
+   "status": "pending"
+  },
+  "poi-12902687650": {
+   "kind": "poi",
+   "name": "Choice",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12911210803": {
+   "kind": "poi",
+   "name": "Sheraton Minneapolis Downtown Convention Center",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12911650736": {
+   "kind": "poi",
+   "name": "Millers Landing Senior Living",
+   "group": "other",
+   "website": "https://www.millerslandingseniorliving.com",
+   "status": "pending"
+  },
+  "poi-12914862886": {
+   "kind": "poi",
+   "name": "Wellstone International High School",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12919741649": {
+   "kind": "poi",
+   "name": "Currie Food Hall",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12971797978": {
+   "kind": "poi",
+   "name": "Jalapeño Mexican Grill",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12980602290": {
+   "kind": "poi",
+   "name": "Farmers Kitchen & Bar",
+   "group": "food",
+   "website": "https://farmerskitchenandbar.com/",
+   "status": "pending"
+  },
+  "poi-12980659200": {
+   "kind": "poi",
+   "name": "Mother Dough",
+   "group": "food",
+   "website": "https://motherdoughbakery.com/",
+   "status": "pending"
+  },
+  "poi-13030049626": {
+   "kind": "poi",
+   "name": "Wings Financial Credit Union",
+   "group": "other",
+   "website": "https://www.wingscu.com/locations/minneapolis-rand-tower",
+   "status": "pending"
+  },
+  "poi-13030049627": {
+   "kind": "poi",
+   "name": "Potbelly",
+   "group": "food",
+   "website": "https://www.potbelly.com/locations/minnesota/rand-tower",
+   "status": "pending"
+  },
+  "poi-13189788423": {
+   "kind": "poi",
+   "name": "Spicy Feta",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13255099525": {
+   "kind": "poi",
+   "name": "Hyderabad Indian Grill",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13265533199": {
+   "kind": "poi",
+   "name": "Ococo",
+   "group": "food",
+   "website": "https://ococofoods.square.site/",
+   "status": "pending"
+  },
+  "poi-13265552502": {
+   "kind": "poi",
+   "name": "Grayfox",
+   "group": "coffee",
+   "website": "https://www.grayfoxcoffee.com/",
+   "status": "pending"
+  },
+  "poi-13265552505": {
+   "kind": "poi",
+   "name": "The Salad Bar",
+   "group": "food",
+   "website": "https://saladbarmn.com/",
+   "status": "pending"
+  },
+  "poi-13265552508": {
+   "kind": "poi",
+   "name": "Green + The Grain",
+   "group": "food",
+   "website": "https://www.greenandthegrain.com/locations",
+   "status": "pending"
+  },
+  "poi-13265552509": {
+   "kind": "poi",
+   "name": "Grayfox",
+   "group": "coffee",
+   "website": "https://www.grayfoxcoffee.com/",
+   "status": "pending"
+  },
+  "poi-13265552513": {
+   "kind": "poi",
+   "name": "Park Dental",
+   "group": "other",
+   "website": "https://www.parkdental.com/location/park-dental-lasalle-plaza/",
+   "status": "pending"
+  },
+  "poi-13410756366": {
+   "kind": "poi",
+   "name": "Paper Boy",
+   "group": "food",
+   "website": "https://www.paperboydeli.com/",
+   "status": "pending"
+  },
+  "poi-13410756379": {
+   "kind": "poi",
+   "name": "Jimmy John's",
+   "group": "food",
+   "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
+   "status": "pending"
+  },
+  "poi-13410756385": {
+   "kind": "poi",
+   "name": "Grayfox",
+   "group": "coffee",
+   "website": "https://www.grayfoxcoffee.com/",
+   "status": "pending"
+  },
+  "poi-13410756392": {
+   "kind": "poi",
+   "name": "Ginelli's Pizza",
+   "group": "food",
+   "website": "https://ginellispizza.com/",
+   "status": "pending"
+  },
+  "poi-13451748944": {
+   "kind": "poi",
+   "name": "Sushi Mi",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13451748950": {
+   "kind": "poi",
+   "name": "Triesta Cafe",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13451748953": {
+   "kind": "poi",
+   "name": "Bell Bank",
+   "group": "other",
+   "website": "https://bell.bank/Locations/Twin-Cities-Area/Minneapolis-City-Center",
+   "status": "pending"
+  },
+  "poi-13451748957": {
+   "kind": "poi",
+   "name": "Salad Slayer",
+   "group": "food",
+   "website": "https://saladslayerskyway.com/",
+   "status": "pending"
+  },
+  "poi-13451748961": {
+   "kind": "poi",
+   "name": "USPS",
+   "group": "other",
+   "website": "https://tools.usps.com/locations/details/1506955",
+   "status": "pending"
+  },
+  "poi-13451748963": {
+   "kind": "poi",
+   "name": "Starbucks",
+   "group": "coffee",
+   "website": "https://www.starbucks.com/",
+   "status": "pending"
+  },
+  "poi-13451748969": {
+   "kind": "poi",
+   "name": "Bridgewater Bank",
+   "group": "other",
+   "website": "https://bridgewaterbankmn.com/",
+   "status": "pending"
+  },
+  "poi-13451748978": {
+   "kind": "poi",
+   "name": "Sota",
+   "group": "coffee",
+   "website": "https://sotashopmn.com/",
+   "status": "pending"
+  },
+  "poi-13451748985": {
+   "kind": "poi",
+   "name": "Subway",
+   "group": "food",
+   "website": "https://restaurants.subway.com/united-states/mn/minneapolis/555-nicollet-mall",
+   "status": "pending"
+  },
+  "poi-13451748986": {
+   "kind": "poi",
+   "name": "Lyon's Pub",
+   "group": "food",
+   "website": "https://lyonspub.com/",
+   "status": "pending"
+  },
+  "poi-13451748991": {
+   "kind": "poi",
+   "name": "Gartner School",
+   "group": "other",
+   "website": "https://www.thegardnerschool.com/schools/minneapolis/",
+   "status": "pending"
+  },
+  "poi-13451748992": {
+   "kind": "poi",
+   "name": "Kinderberry Hill",
+   "group": "other",
+   "website": "https://www.kinderberryhill.com/schools/minneapolis/",
+   "status": "pending"
+  },
+  "poi-13628473443": {
+   "kind": "poi",
+   "name": "Bellecour",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13812237869": {
+   "kind": "poi",
+   "name": "Trax",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13823736884": {
+   "kind": "poi",
+   "name": "Nolo's Kitchen & Bar",
+   "group": "food",
+   "website": "https://noloskitchen.com/",
+   "status": "pending"
+  },
+  "poi-13965983641": {
+   "kind": "poi",
+   "name": "CityScape Dental",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13965983651": {
+   "kind": "poi",
+   "name": "Skyway Pho",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13991578596": {
+   "kind": "poi",
+   "name": "Nur House Cafe",
+   "group": "coffee",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14003692666": {
+   "kind": "poi",
+   "name": "Elevate Food Hall",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14022958820": {
+   "kind": "poi",
+   "name": "Classic Cookie Co.",
+   "group": "coffee",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14022958823": {
+   "kind": "poi",
+   "name": "Good To Go Mediterranean",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14022958827": {
+   "kind": "poi",
+   "name": "Two Mixed Up",
+   "group": "food",
+   "website": "https://twomixedup.com/",
+   "status": "pending"
+  },
+  "poi-14022958831": {
+   "kind": "poi",
+   "name": "Sorrento Cucina",
+   "group": "food",
+   "website": "https://sorrentocucina.wordpress.com/",
+   "status": "pending"
+  },
+  "poi-14064521583": {
+   "kind": "poi",
+   "name": "Glass House",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-1352105236": {
+   "kind": "poi",
+   "name": "Flutter Bridal Co.",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-2090002163": {
+   "kind": "poi",
+   "name": "Kai Salon",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-4679771192": {
+   "kind": "poi",
+   "name": "Sew Biz Tailoring",
+   "group": "other",
+   "website": "http://sewbiztailoring.com",
+   "status": "pending"
+  },
+  "poi-5355792471": {
+   "kind": "poi",
+   "name": "T-Mobile",
+   "group": "other",
+   "website": "https://www.t-mobile.com/",
+   "status": "pending"
+  },
+  "poi-5955554287": {
+   "kind": "poi",
+   "name": "NY Jewelry",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-5955577504": {
+   "kind": "poi",
+   "name": "Emerald City Day Spa",
+   "group": "other",
+   "website": "https://emeraldcitydayspa.com/",
+   "status": "pending"
+  },
+  "poi-5955577506": {
+   "kind": "poi",
+   "name": "H.W. Boutique",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-5955586677": {
+   "kind": "poi",
+   "name": "Insomnia Cookies",
+   "group": "other",
+   "website": "https://insomniacookies.com/store/hennepin",
+   "status": "pending"
+  },
+  "poi-6780251058": {
+   "kind": "poi",
+   "name": "Kickernick Gallery",
+   "group": "other",
+   "website": "https://www.kickernickgallery.com/",
+   "status": "pending"
+  },
+  "poi-6780251059": {
+   "kind": "poi",
+   "name": "Buzz Mart",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-9128515925": {
+   "kind": "poi",
+   "name": "HiFi Sound",
+   "group": "other",
+   "website": "https://hifi-sound.com/",
+   "status": "pending"
+  },
+  "poi-9128515926": {
+   "kind": "poi",
+   "name": "PURIS",
+   "group": "other",
+   "website": "https://www.puris.com/",
+   "status": "pending"
+  },
+  "poi-9128515927": {
+   "kind": "poi",
+   "name": "MSpace",
+   "group": "other",
+   "website": "http://www.ispaceenvironments.com/",
+   "status": "pending"
+  },
+  "poi-9219442092": {
+   "kind": "poi",
+   "name": "FedEx Office",
+   "group": "other",
+   "website": "https://office.fedex.com/",
+   "status": "pending"
+  },
+  "poi-11248557998": {
+   "kind": "poi",
+   "name": "Midwest Motorcycle",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-11248558001": {
+   "kind": "poi",
+   "name": "Bonobos",
+   "group": "other",
+   "website": "https://bonobos.com/locations/s/north-loop-minneapolis",
+   "status": "pending"
+  },
+  "poi-11248558004": {
+   "kind": "poi",
+   "name": "Requisite",
+   "group": "other",
+   "website": "https://shoprequisite.com",
+   "status": "pending"
+  },
+  "poi-11298730912": {
+   "kind": "poi",
+   "name": "Warby Parker",
+   "group": "other",
+   "website": "https://stores.warbyparker.com/mn/minneapolis/113-n.-washington-ave.",
+   "status": "pending"
+  },
+  "poi-11328332528": {
+   "kind": "poi",
+   "name": "Wildflower",
+   "group": "other",
+   "website": "https://wildflower.cc",
+   "status": "pending"
+  },
+  "poi-11328332529": {
+   "kind": "poi",
+   "name": "PARC",
+   "group": "other",
+   "website": "https://parcboutique.com/",
+   "status": "pending"
+  },
+  "poi-11328332530": {
+   "kind": "poi",
+   "name": "Vow'd",
+   "group": "other",
+   "website": "https://vowdweddings.com/store?name=Minneapolis",
+   "status": "pending"
+  },
+  "poi-12002109881": {
+   "kind": "poi",
+   "name": "Infinity Smokes",
+   "group": "other",
+   "website": "https://www.infinitysmokes.com",
+   "status": "pending"
+  },
+  "poi-12571886640": {
+   "kind": "poi",
+   "name": "Smoke Shop",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12753315916": {
+   "kind": "poi",
+   "name": "Bill & Marty's Convenience Store",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12754418102": {
+   "kind": "poi",
+   "name": "Public Storage",
+   "group": "other",
+   "website": "https://publicstorage.com/",
+   "status": "pending"
+  },
+  "poi-12754418501": {
+   "kind": "poi",
+   "name": "Augsburg Fortress Publishers",
+   "group": "other",
+   "website": "http://www.augsburgfortresspublishers.org",
+   "status": "pending"
+  },
+  "poi-12754418502": {
+   "kind": "poi",
+   "name": "North Loop Wine & Spirits",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12754418701": {
+   "kind": "poi",
+   "name": "Public Storage",
+   "group": "other",
+   "website": "https://publicstorage.com/",
+   "status": "pending"
+  },
+  "poi-12754418802": {
+   "kind": "poi",
+   "name": "Stilo Cuts",
+   "group": "other",
+   "website": "https://stilocuts.com/",
+   "status": "pending"
+  },
+  "poi-12754419001": {
+   "kind": "poi",
+   "name": "Jaxen Grey",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12754419101": {
+   "kind": "poi",
+   "name": "Grace Loves Lace",
+   "group": "other",
+   "website": "https://graceloveslace.com/",
+   "status": "pending"
+  },
+  "poi-12768888509": {
+   "kind": "poi",
+   "name": "Thomas Joseph & Sons",
+   "group": "other",
+   "website": "https://thomasjosephandsons.com/",
+   "status": "pending"
+  },
+  "poi-12768888511": {
+   "kind": "poi",
+   "name": "Barkalows Too",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12810525201": {
+   "kind": "poi",
+   "name": "James & Mary Laurie Booksellers",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12862806762": {
+   "kind": "poi",
+   "name": "City Market",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12862806766": {
+   "kind": "poi",
+   "name": "Uniquely Global",
+   "group": "other",
+   "website": "https://www.chameleonconsortium.com/retailers/uniquely-global/",
+   "status": "pending"
+  },
+  "poi-12862806767": {
+   "kind": "poi",
+   "name": "Silber Fine Jewlery",
+   "group": "other",
+   "website": "https://silber.diamonds/",
+   "status": "pending"
+  },
+  "poi-12862838542": {
+   "kind": "poi",
+   "name": "Gittelson Jewlers",
+   "group": "other",
+   "website": "https://gittelsonjewelers.com/",
+   "status": "pending"
+  },
+  "poi-12862838553": {
+   "kind": "poi",
+   "name": "General Store",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12921848396": {
+   "kind": "poi",
+   "name": "Downtown Tobacco & Vape",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12921906730": {
+   "kind": "poi",
+   "name": "Centre Village Tobacco Store",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12921906762": {
+   "kind": "poi",
+   "name": "High 5 Tobacco",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12971774441": {
+   "kind": "poi",
+   "name": "KDIX",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13030049624": {
+   "kind": "poi",
+   "name": "Madison & Co. Salons",
+   "group": "other",
+   "website": "https://www.madisonandcompany.org/",
+   "status": "pending"
+  },
+  "poi-13168732018": {
+   "kind": "poi",
+   "name": "Solomon Optical",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13189788424": {
+   "kind": "poi",
+   "name": "Cravings",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13255110114": {
+   "kind": "poi",
+   "name": "Soundwoven Goods",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13265552503": {
+   "kind": "poi",
+   "name": "Moss Optical",
+   "group": "other",
+   "website": "https://www.mossoptical.com/",
+   "status": "pending"
+  },
+  "poi-13265552504": {
+   "kind": "poi",
+   "name": "The City Market",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13265552506": {
+   "kind": "poi",
+   "name": "Fresh Mart",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13265552510": {
+   "kind": "poi",
+   "name": "Team Store",
+   "group": "other",
+   "website": "https://www.targetcenter.com/arena-info/team-store",
+   "status": "pending"
+  },
+  "poi-13378495986": {
+   "kind": "poi",
+   "name": "Strive Bookstore",
+   "group": "other",
+   "website": "https://strivepubandco.com/",
+   "status": "pending"
+  },
+  "poi-13410756369": {
+   "kind": "poi",
+   "name": "Lovely's Sewing & Arts Collective",
+   "group": "other",
+   "website": "https://www.lovelyssewing.org/",
+   "status": "pending"
+  },
+  "poi-13410756372": {
+   "kind": "poi",
+   "name": "By The Way Convenience Store",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13410756376": {
+   "kind": "poi",
+   "name": "Feature Cut Barber",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13410756378": {
+   "kind": "poi",
+   "name": "Sew What!",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13410756383": {
+   "kind": "poi",
+   "name": "Meye Salon",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13627698551": {
+   "kind": "poi",
+   "name": "Statement Boutique",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13628469113": {
+   "kind": "poi",
+   "name": "Hjem Aesthetics",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13823736879": {
+   "kind": "poi",
+   "name": "Floyd's 99 Barbershop",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13823736881": {
+   "kind": "poi",
+   "name": "Face Foundrie",
+   "group": "other",
+   "website": "https://facefoundrie.com/location/minneapolis-north-loop/",
+   "status": "pending"
+  },
+  "poi-13961359856": {
+   "kind": "poi",
+   "name": "Bradley Douglas Salon Spa",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13965983645": {
+   "kind": "poi",
+   "name": "Massage Envy",
+   "group": "other",
+   "website": "https://www.massageenvy.com/",
+   "status": "pending"
+  },
+  "poi-13965983654": {
+   "kind": "poi",
+   "name": "In-Dispensary",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13993589136": {
+   "kind": "poi",
+   "name": "Quick Eats Grille",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14022958817": {
+   "kind": "poi",
+   "name": "Bill & Marty's Convenience Store",
+   "group": "food",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14039713704": {
+   "kind": "poi",
+   "name": "Sidewalk Gallery",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-7294501323": {
+   "kind": "poi",
+   "name": "Escape The Room",
+   "group": "other",
+   "website": "https://escapetheroom.com/minneapolis/",
+   "status": "pending"
+  },
+  "poi-12754394002": {
+   "kind": "poi",
+   "name": "Orangetheory Fitness",
+   "group": "other",
+   "website": "https://www.orangetheory.com/",
+   "status": "pending"
+  },
+  "poi-13713067339": {
+   "kind": "poi",
+   "name": "The Grind North Loop",
+   "group": "other",
+   "website": "https://www.thegrindmpls.com/",
+   "status": "pending"
+  },
+  "poi-2093790844": {
+   "kind": "poi",
+   "name": "W Minneapolis - The Foshay",
+   "group": "hotel",
+   "website": "http://www.wminneapolishotel.com",
+   "status": "pending"
+  },
+  "poi-2093832071": {
+   "kind": "poi",
+   "name": "Hyatt Place Minneapolis/Downtown",
+   "group": "hotel",
+   "website": "http://hyattplaceminneapolisdowntown.com",
+   "status": "pending"
+  },
+  "poi-3624150279": {
+   "kind": "poi",
+   "name": "Residence Inn Minneapolis Downtown/City Center",
+   "group": "hotel",
+   "website": "https://www.marriott.com/hotels/travel/mspri-residence-inn-minneapolis-downtown-city-center",
+   "status": "pending"
+  },
+  "poi-5794676451": {
+   "kind": "poi",
+   "name": "Hyatt Regency Minneapolis",
+   "group": "hotel",
+   "website": "https://www.hyatt.com/en-US/hotel/minnesota/hyatt-regency-minneapolis/msprm",
+   "status": "pending"
+  },
+  "poi-10938393782": {
+   "kind": "poi",
+   "name": "Four Seasons Hotel",
+   "group": "hotel",
+   "website": "https://www.fourseasons.com",
+   "status": "pending"
+  },
+  "poi-12919709245": {
+   "kind": "poi",
+   "name": "Cambria Hotel Minneapolis Downtown",
+   "group": "hotel",
+   "website": "https://www.choicehotels.com/minnesota/minneapolis/cambria-hotels/mn206",
+   "status": "pending"
+  },
+  "poi-12919709246": {
+   "kind": "poi",
+   "name": "Fairfield Inn & Suites Minneapolis Downtown",
+   "group": "hotel",
+   "website": "https://www.marriott.com/en-us/hotels/mspfd-fairfield-inn-and-suites-minneapolis-downtown/overview/",
+   "status": "pending"
+  },
+  "poi-12998345224": {
+   "kind": "poi",
+   "name": "Oaklands on Ninth",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13976329959": {
+   "kind": "poi",
+   "name": "Canopy by Hilton Minneapolis Mill District",
+   "group": "hotel",
+   "website": "https://canopy3.hilton.com",
+   "status": "pending"
+  },
+  "poi-1077152564": {
+   "kind": "poi",
+   "name": "Segway Tours",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-1077152731": {
+   "kind": "poi",
+   "name": "Michael Sharp Realty",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-2071078928": {
+   "kind": "poi",
+   "name": "Exosite",
+   "group": "other",
+   "website": "https://exosite.com/",
+   "status": "pending"
+  },
+  "poi-2817096689": {
+   "kind": "poi",
+   "name": "Xcel Energy",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-3067586077": {
+   "kind": "poi",
+   "name": "BBDO Minneapolis",
+   "group": "other",
+   "website": "https://bbdompls.com/",
+   "status": "pending"
+  },
+  "poi-3435820921": {
+   "kind": "poi",
+   "name": "Star Tribune",
+   "group": "other",
+   "website": "https://www.startribune.com/",
+   "status": "pending"
+  },
+  "poi-4620068026": {
+   "kind": "poi",
+   "name": "Goal Pyramid",
+   "group": "other",
+   "website": "https://goalpyramid.com/",
+   "status": "pending"
+  },
+  "poi-5955586665": {
+   "kind": "poi",
+   "name": "Target Hi-Tech Service",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-5955586679": {
+   "kind": "poi",
+   "name": "Jack Links",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-5955586681": {
+   "kind": "poi",
+   "name": "Timberwolves And Lynx",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-6057647459": {
+   "kind": "poi",
+   "name": "Paul Baertschi Attorney",
+   "group": "other",
+   "website": "http://www.tallenandbaertschi.com",
+   "status": "pending"
+  },
+  "poi-6177009255": {
+   "kind": "poi",
+   "name": "Boston Consulting Group",
+   "group": "other",
+   "website": "https://www.bcg.com/offices/minneapolis/default.aspx",
+   "status": "pending"
+  },
+  "poi-6661087680": {
+   "kind": "poi",
+   "name": "McKinsey & Company",
+   "group": "other",
+   "website": "https://www.mckinsey.com/midwest/minneapolis",
+   "status": "pending"
+  },
+  "poi-11292231484": {
+   "kind": "poi",
+   "name": "270 Hennepin Leasing Office",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-11328332533": {
+   "kind": "poi",
+   "name": "Digineer",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-11328332534": {
+   "kind": "poi",
+   "name": "Prestige",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-11927201463": {
+   "kind": "poi",
+   "name": "Lola Red",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12513647698": {
+   "kind": "poi",
+   "name": "Engel & Völkers",
+   "group": "other",
+   "website": "https://www.engelvoelkers.com",
+   "status": "pending"
+  },
+  "poi-12870055617": {
+   "kind": "poi",
+   "name": "Legal Aid",
+   "group": "other",
+   "website": "https://www.centralmnlegal.org/contact/minneapolis/",
+   "status": "pending"
+  },
+  "poi-12870055620": {
+   "kind": "poi",
+   "name": "Clientek",
+   "group": "other",
+   "website": "https://www.clientek.com/",
+   "status": "pending"
+  },
+  "poi-12872001189": {
+   "kind": "poi",
+   "name": "Dorsey & Whitney LLP",
+   "group": "other",
+   "website": "https://www.dorsey.com",
+   "status": "pending"
+  },
+  "poi-12896972584": {
+   "kind": "poi",
+   "name": "Minnesota Orchestral Association",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12903102563": {
+   "kind": "poi",
+   "name": "Target Corporation",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13134637745": {
+   "kind": "poi",
+   "name": "Alta Planning + Design",
+   "group": "other",
+   "website": "https://altago.com/",
+   "status": "pending"
+  },
+  "poi-13448274439": {
+   "kind": "poi",
+   "name": "Minneapolis Roofing Expert",
+   "group": "other",
+   "website": "https://www.minneapolisroofingexperts.com/",
+   "status": "pending"
+  },
+  "poi-13628477786": {
+   "kind": "poi",
+   "name": "Owámniyomni Okhódayapi",
+   "group": "other",
+   "website": "https://owamniyomni.org/about/#the-project",
+   "status": "pending"
+  },
+  "poi-13629208522": {
+   "kind": "poi",
+   "name": "Shinebox",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13713067309": {
+   "kind": "poi",
+   "name": "Ascent Solutions",
+   "group": "other",
+   "website": "https://www.meetascent.com/",
+   "status": "pending"
+  },
+  "poi-13713067310": {
+   "kind": "poi",
+   "name": "Amazon",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13713067311": {
+   "kind": "poi",
+   "name": "Industrious",
+   "group": "other",
+   "website": "https://www.industriousoffice.com/locations/323-washington-ave-n-suite-200",
+   "status": "pending"
+  },
+  "poi-13713067312": {
+   "kind": "poi",
+   "name": "US Solar",
+   "group": "other",
+   "website": "https://www.us-solar.com/",
+   "status": "pending"
+  },
+  "poi-13715425019": {
+   "kind": "poi",
+   "name": "Rally",
+   "group": "other",
+   "website": "https://www.rallyhealth.com/",
+   "status": "pending"
+  },
+  "poi-13715425020": {
+   "kind": "poi",
+   "name": "Provation",
+   "group": "other",
+   "website": "https://www.provationmedical.com/",
+   "status": "pending"
+  },
+  "poi-13921306014": {
+   "kind": "poi",
+   "name": "Jack Link's",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13965983655": {
+   "kind": "poi",
+   "name": "Social Security Administration Disability Hearings",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14003692660": {
+   "kind": "poi",
+   "name": "Coco Coworking",
+   "group": "other",
+   "website": "https://workatcoco.com/downtown-minneapolis/",
+   "status": "pending"
+  },
+  "poi-14003692664": {
+   "kind": "poi",
+   "name": "Microsoft",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-14010993858": {
+   "kind": "poi",
+   "name": "Goldenberg Lauricella",
+   "group": "other",
+   "website": "https://www.goldenberglaw.com/",
+   "status": "pending"
+  },
+  "poi-14011118284": {
+   "kind": "poi",
+   "name": "Kemmitt, Sanford & Kramer",
+   "group": "other",
+   "website": "https://ksk.law/",
+   "status": "pending"
+  },
+  "poi-14022958821": {
+   "kind": "poi",
+   "name": "Workbox",
+   "group": "other",
+   "website": "https://www.workboxcompany.com/minneapolis/",
+   "status": "pending"
+  },
+  "poi-14054455054": {
+   "kind": "poi",
+   "name": "Piper Sandler Headquarters",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-11328332532": {
+   "kind": "poi",
+   "name": "Core Lifestyle Center",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12754418801": {
+   "kind": "poi",
+   "name": "InVision Distinctive Eyewear",
+   "group": "other",
+   "website": "https://invision-optical.com/",
+   "status": "pending"
+  },
+  "poi-13030049621": {
+   "kind": "poi",
+   "name": "Take Care Chiropractic & Wellness",
+   "group": "other",
+   "website": "https://www.takecarechiropractic.com/",
+   "status": "pending"
+  },
+  "poi-13451748983": {
+   "kind": "poi",
+   "name": "Project Chair",
+   "group": "other",
+   "website": "https://www.projectwellness.com/bakercenter",
+   "status": "pending"
+  },
+  "poi-13639106473": {
+   "kind": "poi",
+   "name": "Reviving Roots Therapy & Wellness",
+   "group": "other",
+   "website": "https://reviving-roots.com/",
+   "status": "pending"
+  },
+  "poi-14022958833": {
+   "kind": "poi",
+   "name": "Chiroway",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-12862806761": {
+   "kind": "poi",
+   "name": "Fixology",
+   "group": "other",
+   "website": "https://fixologyrepair.com/minneapolis/",
+   "status": "pending"
+  },
+  "poi-13410756368": {
+   "kind": "poi",
+   "name": "Skyway Shoe Repair",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "poi-13451758102": {
+   "kind": "poi",
+   "name": "Napoleon's Shoe Shine",
+   "group": "other",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-lofton-hotel-27346710": {
+   "kind": "poi",
+   "name": "Lofton Hotel",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-holiday-inn-express-minneapolis-downtown-convention-center-28490028": {
+   "kind": "poi",
+   "name": "Holiday Inn Express Minneapolis Downtown Convention Center",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-doubletree-suites-by-hilton-hotel-minneapolis-45066437": {
+   "kind": "poi",
+   "name": "DoubleTree Suites by Hilton Hotel Minneapolis",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-hewing-hotel-45758924": {
+   "kind": "poi",
+   "name": "Hewing Hotel",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-residence-inn-at-the-depot-48816164": {
+   "kind": "poi",
+   "name": "Residence Inn at the Depot",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-normandy-inn-suites-63619638": {
+   "kind": "poi",
+   "name": "Normandy Inn & Suites",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-hilton-garden-inn-minneapolis-downtown-63619639": {
+   "kind": "poi",
+   "name": "Hilton Garden Inn Minneapolis Downtown",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-aloft-minneapolis-81049120": {
+   "kind": "poi",
+   "name": "Aloft Minneapolis",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-hotel-indigo-minneapolis-downtown-156909962": {
+   "kind": "poi",
+   "name": "Hotel Indigo Minneapolis Downtown",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-the-chambers-hotel-156974227": {
+   "kind": "poi",
+   "name": "The Chambers Hotel",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-elliot-park-hotel-613598897": {
+   "kind": "poi",
+   "name": "Elliot Park Hotel",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-element-minneapolis-downtown-900175940": {
+   "kind": "poi",
+   "name": "Element Minneapolis Downtown",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "landmark-ac-hotel-by-marriott-minneapolis-downtown-941828949": {
+   "kind": "poi",
+   "name": "AC Hotel by Marriott Minneapolis Downtown",
+   "group": "hotel",
+   "website": null,
+   "status": "pending"
+  },
+  "park-and-shop-ramp-27346580": {
+   "kind": "building",
+   "name": "Park and Shop Ramp",
+   "category": "parking",
+   "address": "24 South 8th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "minneapolis-marriott-city-center-27346715": {
+   "kind": "building",
+   "name": "Minneapolis Marriott City Center",
+   "category": "hotel",
+   "address": "30 South 7th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "33-south-sixth-27346721": {
+   "kind": "building",
+   "name": "33 South Sixth",
+   "category": "office",
+   "address": "33 South 6th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "thrivent-corporate-center-27346744": {
+   "kind": "building",
+   "name": "Thrivent Corporate Center",
+   "category": "office",
+   "address": "600 Portland Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "hcmc-purple-parking-ramp-27346755": {
+   "kind": "building",
+   "name": "HCMC Purple Parking Ramp",
+   "category": "parking",
+   "address": "South 6th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "ford-center-29060527": {
+   "kind": "building",
+   "name": "Ford Center",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "clark-danielson-college-life-center-39239951": {
+   "kind": "building",
+   "name": "Clark Danielson College Life Center",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "st-anthony-main-39707475": {
+   "kind": "building",
+   "name": "St. Anthony Main",
+   "category": "retailHub",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "millwright-building-40933926": {
+   "kind": "building",
+   "name": "Millwright Building",
+   "category": "office",
+   "address": "533 South 3rd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "orpheum-theatre-41763764": {
+   "kind": "building",
+   "name": "Orpheum Theatre",
+   "category": "office",
+   "address": "910 Hennepin Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "orchestra-hall-43607930": {
+   "kind": "building",
+   "name": "Orchestra Hall",
+   "category": "office",
+   "address": "1111 Nicollet Mall",
+   "website": null,
+   "status": "pending"
+  },
+  "centre-village-44164774": {
+   "kind": "building",
+   "name": "Centre Village",
+   "category": "office",
+   "address": "433 South 7th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "target-plaza-iii-44684855": {
+   "kind": "building",
+   "name": "Target Plaza III",
+   "category": "retailHub",
+   "address": "900 Nicollet Mall",
+   "website": null,
+   "status": "pending"
+  },
+  "the-falk-45449596": {
+   "kind": "building",
+   "name": "The Falk",
+   "category": "office",
+   "address": "608 North 3rd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "city-of-lakes-building-45452110": {
+   "kind": "building",
+   "name": "City of Lakes Building",
+   "category": "office",
+   "address": "309 2nd Avenue South",
+   "website": null,
+   "status": "pending"
+  },
+  "grain-exchange-main-building-45452111": {
+   "kind": "building",
+   "name": "Grain Exchange Main Building",
+   "category": "office",
+   "address": "400 South 4th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "target-plaza-45452119": {
+   "kind": "building",
+   "name": "Target Plaza",
+   "category": "office",
+   "address": "1000 Nicollet Mall",
+   "website": null,
+   "status": "pending"
+  },
+  "opus-hall-45452121": {
+   "kind": "building",
+   "name": "Opus Hall",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "international-market-square-45498285": {
+   "kind": "building",
+   "name": "International Market Square",
+   "category": "office",
+   "address": "275 Market Street",
+   "website": null,
+   "status": "pending"
+  },
+  "rock-island-lofts-45758926": {
+   "kind": "building",
+   "name": "Rock Island Lofts",
+   "category": "residential",
+   "address": "111 4th Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "lee-lofts-45758932": {
+   "kind": "building",
+   "name": "Lee Lofts",
+   "category": "office",
+   "address": "280 2nd Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "radisson-red-minneapolis-downtown-60613336": {
+   "kind": "building",
+   "name": "Radisson RED Minneapolis Downtown",
+   "category": "hotel",
+   "address": "609 South 3rd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "cortland-mill-district-62006959": {
+   "kind": "building",
+   "name": "Cortland Mill District",
+   "category": "residential",
+   "address": "313 Washington Ave S",
+   "website": null,
+   "status": "pending"
+  },
+  "westminster-presbyterian-63821145": {
+   "kind": "building",
+   "name": "Westminster Presbyterian",
+   "category": "venue",
+   "address": "1200 Marquette Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "free-spirit-building-78061942": {
+   "kind": "building",
+   "name": "Free Spirit Building",
+   "category": "retailHub",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "nicollet-island-inn-80313504": {
+   "kind": "building",
+   "name": "Nicollet Island Inn",
+   "category": "hotel",
+   "address": "95 Merriam Street",
+   "website": null,
+   "status": "pending"
+  },
+  "macphail-center-for-music-81049070": {
+   "kind": "building",
+   "name": "MacPhail Center for Music",
+   "category": "office",
+   "address": "501 South 2nd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "metropolitan-lofts-81049075": {
+   "kind": "building",
+   "name": "Metropolitan Lofts",
+   "category": "residential",
+   "address": "545 South 2nd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "depot-office-center-81049079": {
+   "kind": "building",
+   "name": "Depot Office Center",
+   "category": "office",
+   "address": "500 Washington Avenue South",
+   "website": null,
+   "status": "pending"
+  },
+  "rivergate-apartments-81049129": {
+   "kind": "building",
+   "name": "Rivergate Apartments",
+   "category": "residential",
+   "address": "115 2nd avenue s",
+   "website": null,
+   "status": "pending"
+  },
+  "technical-building-89061902": {
+   "kind": "building",
+   "name": "Technical Building",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "helland-center-89061924": {
+   "kind": "building",
+   "name": "Helland Center",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "kopp-hall-89061932": {
+   "kind": "building",
+   "name": "Kopp Hall",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "textile-building-89080618": {
+   "kind": "building",
+   "name": "Textile Building",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "deja-vu-89080678": {
+   "kind": "building",
+   "name": "Deja Vu",
+   "category": "office",
+   "address": "315 Washington Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "archdale-apartments-92810569": {
+   "kind": "building",
+   "name": "Archdale Apartments",
+   "category": "residential",
+   "address": "1600 1st Avenue South",
+   "website": null,
+   "status": "pending"
+  },
+  "historic-wesley-center-92810581": {
+   "kind": "building",
+   "name": "Historic Wesley Center",
+   "category": "office",
+   "address": "101 East Grant Street",
+   "website": null,
+   "status": "pending"
+  },
+  "school-of-law-92810608": {
+   "kind": "building",
+   "name": "School of Law",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "minneapolis-event-centers-92905847": {
+   "kind": "building",
+   "name": "Minneapolis Event Centers",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "terrence-murphy-hall-93481572": {
+   "kind": "building",
+   "name": "Terrence Murphy Hall",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "the-andrus-99714289": {
+   "kind": "building",
+   "name": "The Andrus",
+   "category": "office",
+   "address": "520 Nicollet Mall",
+   "website": null,
+   "status": "pending"
+  },
+  "riverfront-municipal-parking-ramp-99717608": {
+   "kind": "building",
+   "name": "Riverfront Municipal Parking Ramp",
+   "category": "parking",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "centerpoint-energy-101142637": {
+   "kind": "building",
+   "name": "CenterPoint Energy",
+   "category": "office",
+   "address": "700 Linden Avenue West",
+   "website": null,
+   "status": "pending"
+  },
+  "hirshfields-design-resource-showroom-101142650": {
+   "kind": "building",
+   "name": "Hirshfield's Design Resource Showroom",
+   "category": "office",
+   "address": "721 2nd Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "washburn-lofts-101549023": {
+   "kind": "building",
+   "name": "Washburn Lofts",
+   "category": "office",
+   "address": "700 South 2nd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "juvenile-justice-center-101549026": {
+   "kind": "building",
+   "name": "Juvenile Justice Center",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "glendale-111367341": {
+   "kind": "building",
+   "name": "Glendale",
+   "category": "residential",
+   "address": "1700 Stevens Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "steelman-exchange-119539527": {
+   "kind": "building",
+   "name": "Steelman Exchange",
+   "category": "office",
+   "address": "241 5th Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "miller-hall-122795138": {
+   "kind": "building",
+   "name": "Miller Hall",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "parking-lot-e-122795248": {
+   "kind": "building",
+   "name": "Parking Lot E",
+   "category": "parking",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "aster-house-125437510": {
+   "kind": "building",
+   "name": "Aster House",
+   "category": "office",
+   "address": "25 Main Street Southeast",
+   "website": null,
+   "status": "pending"
+  },
+  "riverplace-125437526": {
+   "kind": "building",
+   "name": "Riverplace",
+   "category": "office",
+   "address": "1 Main Street Southeast",
+   "website": null,
+   "status": "pending"
+  },
+  "grain-exchange-annex-126015103": {
+   "kind": "building",
+   "name": "Grain Exchange Annex",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "saint-olaf-catholic-church-126015108": {
+   "kind": "building",
+   "name": "Saint Olaf Catholic Church",
+   "category": "venue",
+   "address": "215 South 8th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "706-building-126116977": {
+   "kind": "building",
+   "name": "706 Building",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "guthrie-theater-129937715": {
+   "kind": "building",
+   "name": "Guthrie Theater",
+   "category": "office",
+   "address": "818 South 2nd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "orange-building-143056848": {
+   "kind": "building",
+   "name": "Orange Building",
+   "category": "hospital",
+   "address": "900 South 8th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "purple-building-143058257": {
+   "kind": "building",
+   "name": "Purple Building",
+   "category": "hospital",
+   "address": "716 South 7th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "red-building-143058259": {
+   "kind": "building",
+   "name": "Red Building",
+   "category": "hospital",
+   "address": "730 South 8th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "minneapolis-club-156909955": {
+   "kind": "building",
+   "name": "Minneapolis Club",
+   "category": "office",
+   "address": "729 2nd Avenue South",
+   "website": null,
+   "status": "pending"
+  },
+  "minneapolis-club-parking-ramp-156909960": {
+   "kind": "building",
+   "name": "Minneapolis Club Parking Ramp",
+   "category": "parking",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "old-republic-title-building-156912886": {
+   "kind": "building",
+   "name": "Old Republic Title Building",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "metro-apartments-156912887": {
+   "kind": "building",
+   "name": "Metro Apartments",
+   "category": "residential",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "farmers-and-mechanics-savings-bank-157025240": {
+   "kind": "building",
+   "name": "Farmers and Mechanics Savings Bank",
+   "category": "office",
+   "address": "115 South 4th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "cowboy-jacks-157031168": {
+   "kind": "building",
+   "name": "Cowboy Jack's",
+   "category": "office",
+   "address": "126 North 5th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "humboldt-annex-157035925": {
+   "kind": "building",
+   "name": "Humboldt Annex",
+   "category": "residential",
+   "address": "750 South 2nd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "dock-street-apartments-198929965": {
+   "kind": "building",
+   "name": "Dock Street Apartments",
+   "category": "office",
+   "address": "337 Washington Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "elevate-apartments-220494794": {
+   "kind": "building",
+   "name": "Elevate Apartments",
+   "category": "residential",
+   "address": "1117 Marquette Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "jobbers-warehouse-supply-inc-240869855": {
+   "kind": "building",
+   "name": "Jobbers Warehouse Supply Inc",
+   "category": "office",
+   "address": "800 3rd Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "schulze-hall-266689885": {
+   "kind": "building",
+   "name": "Schulze Hall",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "hyatt-centric-downtown-minneapolis-354742163": {
+   "kind": "building",
+   "name": "Hyatt Centric Downtown Minneapolis",
+   "category": "hotel",
+   "address": "615 2nd Avenue South",
+   "website": null,
+   "status": "pending"
+  },
+  "110-grant-apartments-resident-parking-358537233": {
+   "kind": "building",
+   "name": "110 Grant Apartments Resident Parking",
+   "category": "parking",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "wells-fargo-550-407613510": {
+   "kind": "building",
+   "name": "Wells Fargo 550",
+   "category": "office",
+   "address": "550 South 4th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "wells-fargo-600-407613511": {
+   "kind": "building",
+   "name": "Wells Fargo 600",
+   "category": "office",
+   "address": "600 South 4th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "ambulatory-outpatient-specialty-center-411211095": {
+   "kind": "building",
+   "name": "Ambulatory Outpatient Specialty Center",
+   "category": "hospital",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "edition-apartments-510-413691176": {
+   "kind": "building",
+   "name": "Edition Apartments 510",
+   "category": "residential",
+   "address": "510 4th St S",
+   "website": null,
+   "status": "pending"
+  },
+  "marquette-place-451283544": {
+   "kind": "building",
+   "name": "Marquette Place",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "milliam-e-mcgee-building-461219669": {
+   "kind": "building",
+   "name": "Milliam E. McGee Building",
+   "category": "office",
+   "address": "317 2nd Avenue South",
+   "website": null,
+   "status": "pending"
+  },
+  "essex-building-461224211": {
+   "kind": "building",
+   "name": "Essex Building",
+   "category": "residential",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "lakewood-publications-building-461224214": {
+   "kind": "building",
+   "name": "Lakewood Publications Building",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "lasalle-apartments-461227722": {
+   "kind": "building",
+   "name": "LaSalle Apartments",
+   "category": "office",
+   "address": "36 South 9th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "lasalle-plaza-461227727": {
+   "kind": "building",
+   "name": "LaSalle Plaza",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "111-washington-square-537857247": {
+   "kind": "building",
+   "name": "111 Washington Square",
+   "category": "office",
+   "address": "111 Washington Avenue South",
+   "website": null,
+   "status": "pending"
+  },
+  "loring-parking-ramp-612097599": {
+   "kind": "building",
+   "name": "Loring Parking Ramp",
+   "category": "parking",
+   "address": "1300 Nicollet Mall",
+   "website": null,
+   "status": "pending"
+  },
+  "t3-723284484": {
+   "kind": "building",
+   "name": "T3",
+   "category": "office",
+   "address": "323 Washington Avenue North",
+   "website": null,
+   "status": "pending"
+  },
+  "4marq-apartments-827449975": {
+   "kind": "building",
+   "name": "4Marq Apartments",
+   "category": "residential",
+   "address": "400 Marquette Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "intersect-apartments-1216920711": {
+   "kind": "building",
+   "name": "Intersect Apartments",
+   "category": "residential",
+   "address": "316 North 2nd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "moment-apartments-1222145087": {
+   "kind": "building",
+   "name": "Moment Apartments",
+   "category": "residential",
+   "address": "650 Portland Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "4th-park-1223123289": {
+   "kind": "building",
+   "name": "4th & Park",
+   "category": "residential",
+   "address": "700 4th St S",
+   "website": null,
+   "status": "pending"
+  },
+  "north-loop-green-360-1281792415": {
+   "kind": "building",
+   "name": "North Loop Green 360",
+   "category": "residential",
+   "address": "360 North 5th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "north-loop-green-commercial-1281801622": {
+   "kind": "building",
+   "name": "North Loop Green Commercial",
+   "category": "office",
+   "address": "350 North 5th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "murrays-1334632160": {
+   "kind": "building",
+   "name": "Murray's",
+   "category": "office",
+   "address": "26 South 6th Street",
+   "website": null,
+   "status": "pending"
+  },
+  "ids-center-1385236413": {
+   "kind": "building",
+   "name": "IDS Center",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "shelby-commons-1388384208": {
+   "kind": "building",
+   "name": "Shelby Commons",
+   "category": "residential",
+   "address": "188 Glenwood Avenue",
+   "website": null,
+   "status": "pending"
+  },
+  "sheraton-minneapolis-downtown-convention-center-1394814185": {
+   "kind": "building",
+   "name": "Sheraton Minneapolis Downtown Convention Center",
+   "category": "hotel",
+   "address": "1313 Nicollet Mall",
+   "website": null,
+   "status": "pending"
+  },
+  "stone-arch-lofts-1394864167": {
+   "kind": "building",
+   "name": "Stone Arch Lofts",
+   "category": "residential",
+   "address": "600 South 2nd Street",
+   "website": null,
+   "status": "pending"
+  },
+  "chestnut-pumphouse-1488042853": {
+   "kind": "building",
+   "name": "Chestnut Pumphouse",
+   "category": "office",
+   "address": "Minneapolis",
+   "website": null,
+   "status": "pending"
+  },
+  "the-newell-1530645870": {
+   "kind": "building",
+   "name": "The Newell",
+   "category": "office",
+   "address": "300 6th Avenue North",
+   "website": null,
+   "status": "pending"
+  }
+ }
+}
