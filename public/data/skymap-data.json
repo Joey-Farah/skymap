@@ -8576,8 +8576,33 @@
      44.974266
     ]
    ],
-   "hours": null,
-   "hoursNote": "No published hours found."
+   "hours": [
+    null,
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    null
+   ],
+   "hoursNote": "Curated from the operator's own published hours.",
+   "hoursSource": "https://mncourts.gov/find-courts/hennepin/hennepin-juvenile-court/contact-us",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "glendale-111367341",

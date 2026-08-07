@@ -767,6 +767,13 @@
    "source": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
    "checkedOn": "2026-08-07",
    "note": "From Shorenstein's own tenant handbook for the Washington Square campus, under the heading 'Building Hours': 6:00 a.m. - 6:00 p.m. M-F, Closed Sat & Sun, with an access card required from 6pm to 6am and all weekend. 111 Washington Square is part of that campus (added in the 1980s alongside 100), so this is its landlord publishing its own building's hours rather than a neighbour's borrowed. Note how exactly it matches what the City says actually happens — 6pm weekdays, shut at weekends — against an ordinance claiming 10pm and open Saturdays and Sundays."
+  },
+  "juvenile-justice-center-101549026": {
+   "name": "Juvenile Justice Center",
+   "openingHours": "Mo-Fr 08:00-16:30",
+   "source": "https://mncourts.gov/find-courts/hennepin/hennepin-juvenile-court/contact-us",
+   "checkedOn": "2026-08-07",
+   "note": "Minnesota Judicial Branch, first-party, lists the Juvenile Justice Center at 590 Park Avenue Rm #100 with 'Hours: 8:00 a.m. - 4:30 p.m. Monday - Friday, Closed holidays'. The building is the court, so the court's public hours are when it can be entered. Address geocodes 61 m from this building's centroid, which is within a courthouse footprint. Deliberately NOT used: the separate Juvenile Detention Center at 510 Park Ave publishes visiting hours (alternating by surname, evenings and weekends) — a different building and not opening hours in any case."
   }
  },
  "skipped": {
@@ -2016,6 +2023,12 @@
    "name": "The Newell",
    "reason": "Residential despite OSM filing it under category 'office' — the name gives it away, and the category mismatch is worth noting separately. An apartment or loft building is entered with a resident key rather than during a published window, so there are no public opening hours to record. Same structural answer as the seventeen buildings OSM does label residential; sampled and confirmed on that pass (4marq.com now a GoDaddy auction, rockislandlofts.com leasing marketing only).",
    "source": "(structural; category mismatch noted)",
+   "checkedOn": "2026-08-07"
+  },
+  "minneapolis-event-centers-92905847": {
+   "name": "Minneapolis Event Centers",
+   "reason": "A private event venue run by Entourage Events Group. entourageeventsgroup.com redirects to eventsbyentourage.com, which markets corporate and wedding venues and catering with no opening hours — access is by booking, like the Convention Center halls and the Hennepin theatres. The 9am-5pm figure search offers comes from Cvent and Eventective, not the operator.",
+   "source": "https://eventsbyentourage.com/",
    "checkedOn": "2026-08-07"
   }
  },

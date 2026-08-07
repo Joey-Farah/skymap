@@ -2483,7 +2483,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "terrence-murphy-hall-93481572": {
    "kind": "building",
@@ -2545,7 +2546,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "glendale-111367341": {
    "kind": "building",
