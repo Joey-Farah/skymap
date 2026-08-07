@@ -1142,7 +1142,8 @@
    "name": "FedEx Office",
    "group": "other",
    "website": "https://office.fedex.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11248557998": {
    "kind": "poi",
@@ -1514,7 +1515,8 @@
    "name": "Massage Envy",
    "group": "other",
    "website": "https://www.massageenvy.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13965983654": {
    "kind": "poi",

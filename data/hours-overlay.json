@@ -690,6 +690,13 @@
    "source": "https://vowdweddings.com/store?name=Minneapolis",
    "checkedOn": "2026-08-07",
    "note": "Closed Tuesday, which their table states outright rather than omitting — the sort of single-day hole a weekday-uniform guess erases. Address 222 N 2nd St geocodes to this POI exactly (0 m). Appointments are offered but the shop also invites walk-ins, so these are genuine opening hours."
+  },
+  "poi-13965983645": {
+   "name": "Massage Envy (Minneapolis Downtown)",
+   "openingHours": "Mo 10:00-19:00; Tu-Th 10:00-20:00; Fr 10:00-17:00; Sa-Su 10:00-18:00",
+   "source": "https://locations.massageenvy.com/minnesota/minneapolis/321-s-washington-ave-.html",
+   "checkedOn": "2026-08-07",
+   "note": "The page shows only 'Open today 10:00 AM - 5:00 PM' until that line is clicked, which reveals the week — five different closing times across seven days, none of which a live-status line would have told you. Address 321 S. Washington Ave geocodes 19 m from this POI, and it is the chain's only Minneapolis location."
   }
  },
  "skipped": {
@@ -1405,6 +1412,12 @@
    "name": "Sew Biz Tailoring",
    "reason": "sewbiztailoring.com does not resolve — DNS failure, confirmed on a second attempt after an earlier render errored. No surviving first-party site and no social presence under this name.",
    "source": "(dead domain)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-9219442092": {
+   "name": "FedEx Office",
+   "reason": "FedEx's own locator lists three Print & Ship Centers in Minneapolis — 1001 Marquette Ave (Hilton), 1300 Nicollet Mall (Hyatt Regency) and 1430 W Lake St — and none is at this POI. The nearest, 1001 Marquette, geocodes 306-369 m away and 1300 Nicollet Mall 772 m away. The skyway store appears to have closed; its hours were not borrowed from a neighbour.",
+   "source": "https://local.fedex.com/en-us/mn/minneapolis",
    "checkedOn": "2026-08-07"
   }
  }
