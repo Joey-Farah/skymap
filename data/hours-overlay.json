@@ -246,6 +246,27 @@
       "source": "https://upstairscircus.com/mpls/",
       "checkedOn": "2026-08-07",
       "note": "Monday absent from the published list, i.e. closed."
+    },
+    "poi-6178628386": {
+      "name": "Manny's Steakhouse",
+      "openingHours": "Su-Th 07:00-21:00; Fr-Sa 07:00-22:00",
+      "source": "https://mannyssteakhouse.com/contact",
+      "checkedOn": "2026-08-07",
+      "note": "On the Contact page, not the homepage. Previously recorded as having no published hours — that was wrong; the homepage was the only page checked."
+    },
+    "poi-10270382209": {
+      "name": "Wood + Paddle Eatery",
+      "openingHours": "Mo-Su 06:30-22:00",
+      "source": "https://woodandpaddlemn.com/",
+      "checkedOn": "2026-08-07",
+      "note": "'Daily: 6:30 AM - 10:00 PM'. The bar runs to 23:00 Fri-Sat; the eatery's own hours are recorded. Previously and wrongly recorded as none — it is on the homepage, below the fold."
+    },
+    "poi-7838159627": {
+      "name": "Gold Room",
+      "openingHours": "Th-Sa 22:00-26:00",
+      "source": "https://goldroommn.com/contact/",
+      "checkedOn": "2026-08-07",
+      "note": "Tue/Wed published as Closed; Monday not listed; Sunday brunch is monthly, so left out rather than shown as weekly. Closes 2am, written as 26:00."
     }
   },
   "skipped": {
@@ -319,24 +340,6 @@
       "name": "Slam Academy",
       "reason": "Class schedules only, no opening hours.",
       "source": "https://slamacademy.com/",
-      "checkedOn": "2026-08-07"
-    },
-    "poi-6178628386": {
-      "name": "Manny's Steakhouse",
-      "reason": "No hours anywhere on the rendered site.",
-      "source": "https://mannyssteakhouse.com/",
-      "checkedOn": "2026-08-07"
-    },
-    "poi-10270382209": {
-      "name": "Wood + Paddle Eatery",
-      "reason": "No hours anywhere on the rendered site.",
-      "source": "https://woodandpaddlemn.com/",
-      "checkedOn": "2026-08-07"
-    },
-    "poi-7838159627": {
-      "name": "Gold Room",
-      "reason": "Only a recurring social-hour event (Fridays 6-11pm), not opening hours.",
-      "source": "https://goldroommn.com/",
       "checkedOn": "2026-08-07"
     },
     "poi-2093790846": {

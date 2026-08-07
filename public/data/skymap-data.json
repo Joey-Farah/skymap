@@ -23804,7 +23804,10 @@
    "buildingId": "metro-apartments-156912887",
    "nearby": true,
    "website": "https://mannyssteakhouse.com/",
-   "logo": "mannyssteakhouse-com"
+   "logo": "mannyssteakhouse-com",
+   "openingHours": "Su-Th 07:00-21:00; Fr-Sa 07:00-22:00",
+   "hoursSource": "https://mannyssteakhouse.com/contact",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-6423586980",
@@ -23963,7 +23966,10 @@
    "lon": -93.273768,
    "buildingId": "mayo-clinic-square-27346712",
    "nearby": true,
-   "website": "https://goldroommn.com/"
+   "website": "https://goldroommn.com/",
+   "openingHours": "Th-Sa 22:00-26:00",
+   "hoursSource": "https://goldroommn.com/contact/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-7838159628",
@@ -24054,7 +24060,10 @@
    "lon": -93.273457,
    "buildingId": "the-royal-sonesta-minneapolis-downtown-1393159125",
    "website": "https://woodandpaddlemn.com/",
-   "logo": "woodandpaddlemn-com"
+   "logo": "woodandpaddlemn-com",
+   "openingHours": "Mo-Su 06:30-22:00",
+   "hoursSource": "https://woodandpaddlemn.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-10804548953",
