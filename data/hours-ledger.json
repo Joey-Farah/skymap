@@ -664,7 +664,8 @@
    "name": "Tropico",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12896972567": {
    "kind": "poi",
@@ -1104,7 +1105,8 @@
    "name": "Buzz Mart",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-9128515925": {
    "kind": "poi",
@@ -1207,7 +1209,8 @@
    "name": "Bill & Marty's Convenience Store",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754418102": {
    "kind": "poi",
@@ -1286,7 +1289,8 @@
    "name": "City Market",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862806766": {
    "kind": "poi",
@@ -1344,7 +1348,8 @@
    "name": "KDIX",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13030049624": {
    "kind": "poi",
@@ -1365,7 +1370,8 @@
    "name": "Cravings",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13255110114": {
    "kind": "poi",
@@ -1425,7 +1431,8 @@
    "name": "By The Way Convenience Store",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756376": {
    "kind": "poi",
@@ -1503,14 +1510,16 @@
    "name": "Quick Eats Grille",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14022958817": {
    "kind": "poi",
    "name": "Bill & Marty's Convenience Store",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14039713704": {
    "kind": "poi",

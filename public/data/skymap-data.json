@@ -27076,7 +27076,10 @@
    "lat": 44.976806,
    "lon": -93.267865,
    "buildingId": "us-bank-plaza-126015100",
-   "level": "0"
+   "level": "0",
+   "openingHours": "Mo-Fr 06:00-19:00",
+   "hoursSource": "https://www.usbankplazampls.com/main.cfm?sid=amenities&pid=rservices",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12754418102",

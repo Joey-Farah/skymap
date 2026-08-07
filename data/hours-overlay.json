@@ -592,6 +592,13 @@
    "source": "https://info.traxburgersandbar.com/",
    "checkedOn": "2026-08-07",
    "note": "Closed Sunday through Wednesday, which their own hours table states explicitly rather than omitting. Our data files this POI under Ford Center, but it geocodes 37 m from the published address (525 N 5th St) and 136 m from Ford Center (420 N 5th St) — the building assignment is a nearest-centroid artifact, the POI itself is this restaurant. The site adds that they also open for all Fillmore Minneapolis shows; that is an extension on top of the table, not a replacement."
+  },
+  "poi-12753315916": {
+   "name": "Billy & Marty's (U.S. Bank Plaza)",
+   "openingHours": "Mo-Fr 06:00-19:00",
+   "source": "https://www.usbankplazampls.com/main.cfm?sid=amenities&pid=rservices",
+   "checkedOn": "2026-08-07",
+   "note": "U.S. Bank Plaza publishes its own tenant retail page and prints this shop's hours on it — the landlord for this specific store, the same kind of source as the IDS Crystal Court directory. Deliberately not extended to the other stores of the same brand; see the skipped entries."
   }
  },
  "skipped": {
@@ -977,6 +984,54 @@
    "name": "Sushi Mi",
    "reason": "No first-party site. Canadian Pacific Plaza publishes an amenities page but no tenant directory and no mention of this counter. Search returns two differently-named sushi bars at the same 120 S 6th St address, one of them marked closed, so even the identity is unresolved — not just the hours.",
    "source": "https://www.canadianpacificplaza.com/details/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14022958817": {
+   "name": "Bill & Marty's (Forum)",
+   "reason": "Billy & Marty's operates several downtown stores and their hours differ store by store: U.S. Bank Plaza is published as 6:00am-7:00pm while the Marquette and 2nd Avenue shops are listed an hour shorter. Only the U.S. Bank Plaza store has a landlord-published figure, so the brand's hours were not carried across. The Forum publishes no tenant directory and this store has no first-party page of its own.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12862806762": {
+   "name": "City Market",
+   "reason": "Gaviidae Common's own site has a tenants section but it renders no tenant list, and City Market is named nowhere on it. Note U.S. Bank Plaza calls its Billy & Marty's store \"The City Market\" — same operator, different building, and its 6:00am-7:00pm was not borrowed for this one.",
+   "source": "https://gaviidae-common.b12sites.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13189788424": {
+   "name": "Cravings",
+   "reason": "Capella Tower's own site does not resolve, and no first-party page exists for this counter.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-6780251059": {
+   "name": "Buzz Mart",
+   "reason": "No first-party site; lumberexchangebuilding.com does not resolve, so the Lumber Exchange publishes no tenant directory to check.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12971774441": {
+   "name": "KDIX",
+   "reason": "No first-party site and no Instagram at the obvious handles; thecrossingsmpls.com does not resolve. Search returns only condo listings for The Crossings.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13410756372": {
+   "name": "By The Way Convenience Store",
+   "reason": "No first-party site. Deluxe Plaza is marketed through a Transwestern leasing page that describes fast-casual dining in general terms and names no tenants.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13993589136": {
+   "name": "Quick Eats Grille",
+   "reason": "No first-party site. Wells Fargo Center's own experience page lists banking, dry cleaning and car care as its retail, and names no food counter matching this one.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12870055619": {
+   "name": "Tropico",
+   "reason": "No first-party site and no Instagram at the obvious handles. A parking-ramp counter with no web presence of any kind.",
+   "source": "(searched; none found)",
    "checkedOn": "2026-08-07"
   }
  }
