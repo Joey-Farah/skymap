@@ -135,3 +135,52 @@ time the router can act on.
 
 Hotels follow the same rule: research each, record only what is
 published, and omit the rest rather than asserting 24/7.
+
+
+## Outcome (2026-08-07) and what is left
+
+All 372 ledger items read. 113 recorded, 276 refusals each naming which kind
+of nothing it was. Food + coffee 171/227 (75%). Buildings 88/179 with real
+hours, 91 honestly unknown.
+
+Refusal reasons: 111 site exists but publishes no hours · 46 no walk-in
+window by nature · 30 domain parked, lapsed or down · 24 no first-party
+source · 23 blocked or unreadable · 19 wrong entity or location mismatch ·
+17 business has closed · 6 a shape the parser cannot hold.
+
+### Follow-ups this pass surfaced but did not fix
+
+These are dataset problems, not hours problems, and each was found by
+geocoding an address against a POI's coordinates during research.
+
+1. **Three POIs appear to be closed businesses** and probably want removing:
+   - *The Seville* (poi-2387569338) — its own site still loads and still has
+     a CLUB HOURS table in which all seven days now read "closed".
+   - *Midwest Motorcycle* (poi-11248557998) — marked closed on every listing.
+   - *Dreamgirls* (poi-6780251057) — not findable under that name at all.
+   Two chain POIs are also closures rather than gaps: the FedEx Office and
+   T-Mobile skyway stores are absent from their own chains' locators.
+
+2. **Two POIs sit far from their published address:**
+   - *James & Mary Laurie Booksellers* (poi-12810525201) — publishes 933
+     Marquette Ave, which geocodes **1,116 m** from the POI; the POI itself
+     reverse-geocodes to 250 3rd Ave N. Its hours are recorded as ambiguous
+     rather than applied, because attaching a real week to a pin a kilometre
+     away would look right and send people to the wrong block.
+   - *Trax* (poi-13812237869) — filed under Ford Center but 37 m from its own
+     address at 525 N 5th St and 136 m from Ford Center. Hours were recorded
+     (they are the restaurant's own) but the building assignment is wrong.
+
+3. **A duplicate:** Jack Link's has two POI ids (poi-5955586679,
+   poi-13921306014) for one Target Center concession stand.
+
+4. **A rename:** Core Lifestyle Center (poi-11328332532) is now Withn
+   Chiropractic — corelifestylemn.com redirects to withnchiropractic.com.
+
+5. **One building is blocked rather than empty:** 33 South Sixth
+   (33-south-sixth-27346721) has a real tenant handbook with building-access
+   and after-hours-access pages, behind an ETS login. Its hours very likely
+   exist and are simply unreachable.
+
+6. **Upstream contribution** remains undone: pushing these findings to OSM
+   would let `npm run data:osm` pick them up and shrink the overlay over time.
