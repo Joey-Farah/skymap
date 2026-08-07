@@ -24735,7 +24735,10 @@
    "lat": 44.980743,
    "lon": -93.27356,
    "buildingId": "textile-building-89080618",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Tu-Fr 11:00-18:00; Sa 11:00-17:00; Su 11:00-16:00",
+   "hoursSource": "https://soundwovengoods.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13265533200",
@@ -24956,7 +24959,10 @@
    "lat": 44.985787,
    "lon": -93.270355,
    "buildingId": "intersect-apartments-1216920711",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Mo 09:00-17:00; Tu 10:00-18:00; We-Fr 09:00-17:00",
+   "hoursSource": "https://www.hjemaesthetics.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13823736879",

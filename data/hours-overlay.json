@@ -725,6 +725,20 @@
    "source": "https://www.flutterbridalco.com/",
    "checkedOn": "2026-08-07",
    "note": "Closed Tuesday AND Wednesday, which their table states outright. They also run a Dallas store with a different week on the same page, so the Minneapolis column was taken specifically. Address 43 SE Main St Suite 141 geocodes 41-51 m from this POI — the building holds several suites and the pin lands on neighbouring tenants."
+  },
+  "poi-13628469113": {
+   "name": "Hjem Aesthetics",
+   "openingHours": "Mo 09:00-17:00; Tu 10:00-18:00; We-Fr 09:00-17:00",
+   "source": "https://www.hjemaesthetics.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Address 107 N 3rd Ave Suite 300 geocodes to this POI exactly (0 m). Their Saturday line reads 'Every other Saturday 9-2 by appointment' — deliberately excluded on both counts: alternating weeks cannot be expressed here, and an appointment-only slot is not a walk-in window (the Gittelson rule). Tuesday alone opens an hour later and closes an hour later."
+  },
+  "poi-13255110114": {
+   "name": "Soundwoven Goods",
+   "openingHours": "Tu-Fr 11:00-18:00; Sa 11:00-17:00; Su 11:00-16:00",
+   "source": "https://soundwovengoods.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Closed Monday, open Sunday — the inverse of an office schedule. Address 430 N 1st Ave Suite 130 matched on a unique business name; Nominatim only resolved the street centroid (63 m) rather than the house number, so the match rests on name plus stated address rather than a precise pin."
   }
  },
  "skipped": {
@@ -1656,6 +1670,18 @@
    "name": "Grain Exchange Main Building",
    "reason": "grainexchangebuilding.com is a building in the Exchange District of WINNIPEG, MANITOBA — same name, different country. Its pages carry no hours either, but the point is that it is not this building and nothing on it could have been used. Minneapolis Grain Exchange at 400 South 4th Street has no first-party site at the obvious domain.",
    "source": "https://grainexchangebuilding.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12754419001": {
+   "name": "Jaxen Grey",
+   "reason": "Renders as an e-commerce storefront (3,295 chars) — shipping thresholds, product categories, gift cards — with no address and no store hours. Sells online rather than publishing a shopfront schedule.",
+   "source": "https://jaxengrey.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13961359856": {
+   "name": "Bradley Douglas Salon Spa",
+   "reason": "BLOCKED, not empty: bradleydouglas.com returns a Cloudflare security interstitial ('Sorry, you have been blocked') to both a plain fetch and a real browser. Nothing about the site's contents is known, so this is a blocked outcome rather than a finding that it publishes no hours.",
+   "source": "https://bradleydouglas.com/",
    "checkedOn": "2026-08-07"
   }
  }

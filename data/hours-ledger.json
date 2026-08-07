@@ -1268,7 +1268,8 @@
    "name": "Jaxen Grey",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754419101": {
    "kind": "poi",
@@ -1398,7 +1399,8 @@
    "name": "Soundwoven Goods",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552503": {
    "kind": "poi",
@@ -1489,7 +1491,8 @@
    "name": "Hjem Aesthetics",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13823736879": {
    "kind": "poi",
@@ -1511,7 +1514,8 @@
    "name": "Bradley Douglas Salon Spa",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "blocked",
+   "checkedOn": "2026-08-07"
   },
   "poi-13965983645": {
    "kind": "poi",
