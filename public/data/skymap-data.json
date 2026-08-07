@@ -23556,7 +23556,10 @@
    "buildingId": "ids-center-1385236413",
    "level": "1",
    "website": "https://www.starbucks.com/store-locator/store/11666/ids-center-skyway-level-80-south-8th-street-minneapolis-mn-554022100-us",
-   "logo": "starbucks-com"
+   "logo": "starbucks-com",
+   "openingHours": "Mo-Fr 06:00-17:30; Sa 07:00-16:00",
+   "hoursSource": "https://ids-center.com/business/starbucks/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5355792485",
@@ -23567,7 +23570,10 @@
    "lat": 44.976285,
    "lon": -93.271614,
    "buildingId": "ids-center-1385236413",
-   "level": "1"
+   "level": "1",
+   "openingHours": "Mo-Fr 10:00-18:00",
+   "hoursSource": "https://ids-center.com/business/onetwothree-sushi/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5355792486",
@@ -23632,7 +23638,10 @@
    "lon": -93.272266,
    "buildingId": "ids-center-1385236413",
    "website": "https://potbelly.com/",
-   "logo": "potbelly-com"
+   "logo": "potbelly-com",
+   "openingHours": "Mo-Fr 06:30-19:00; Sa 10:00-17:00",
+   "hoursSource": "https://ids-center.com/business/potbelly/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5955554288",
@@ -24954,7 +24963,10 @@
    "lon": -93.271641,
    "buildingId": "ids-center-1385236413",
    "level": "0",
-   "website": "https://www.peoplesorganic.com/ids-center-minneapolis"
+   "website": "https://www.peoplesorganic.com/ids-center-minneapolis",
+   "openingHours": "Mo-Fr 08:00-14:00",
+   "hoursSource": "https://ids-center.com/business/peoples-organic/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12825025522",
@@ -25357,7 +25369,10 @@
    "buildingId": "mill-city-museum-157035918",
    "nearby": true,
    "website": "https://motherdoughbakery.com/",
-   "logo": "motherdoughbakery-com"
+   "logo": "motherdoughbakery-com",
+   "openingHours": "Mo-Fr 07:00-15:00; Sa-Su 08:00-16:00",
+   "hoursSource": "https://motherdoughbakery.com/locations",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13030049620",

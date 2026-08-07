@@ -193,7 +193,7 @@
    "name": "Starbucks",
    "group": "coffee",
    "website": "https://www.starbucks.com/store-locator/store/11666/ids-center-skyway-level-80-south-8th-street-minneapolis-mn-554022100-us",
-   "status": "none",
+   "status": "done",
    "checkedOn": "2026-08-07"
   },
   "poi-5355792485": {
@@ -201,7 +201,8 @@
    "name": "One Two Three Sushi",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-5620131612": {
    "kind": "poi",
@@ -215,7 +216,8 @@
    "name": "Potbelly",
    "group": "food",
    "website": "https://potbelly.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955577511": {
    "kind": "poi",
@@ -516,7 +518,8 @@
    "name": "Maison Margaux",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12726468699": {
    "kind": "poi",
@@ -578,7 +581,8 @@
    "name": "People's Organic",
    "group": "food",
    "website": "https://www.peoplesorganic.com/ids-center-minneapolis",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12825025522": {
    "kind": "poi",
@@ -709,7 +713,8 @@
    "name": "Mother Dough",
    "group": "food",
    "website": "https://motherdoughbakery.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13030049626": {
    "kind": "poi",
