@@ -24285,7 +24285,10 @@
    "lon": -93.276599,
    "buildingId": "pence-building-156912891",
    "nearby": true,
-   "website": "https://www.infinitysmokes.com"
+   "website": "https://www.infinitysmokes.com",
+   "openingHours": "Mo-Th 09:00-22:00; Fr 09:00-24:00; Sa 10:00-24:00; Su 10:00-19:00",
+   "hoursSource": "https://www.infinitysmokes.com",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12237975438",
@@ -24476,7 +24479,10 @@
    "lon": -93.267366,
    "buildingId": "sps-tower-45447294",
    "level": "1",
-   "website": "https://thomasjosephandsons.com/"
+   "website": "https://thomasjosephandsons.com/",
+   "openingHours": "Mo-Fr 10:00-17:00; Sa 10:00-14:30",
+   "hoursSource": "https://thomasjosephandsons.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12768888511",
@@ -25889,7 +25895,10 @@
    "buildingId": "5th-street-ramp-b-30062750",
    "nearby": true,
    "website": "https://www.centralmnlegal.org/contact/minneapolis/",
-   "logo": "centralmnlegal-org"
+   "logo": "centralmnlegal-org",
+   "openingHours": "Mo-Th 08:30-16:30; Fr 08:30-12:00",
+   "hoursSource": "https://www.centralmnlegal.org/contact/minneapolis/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12870055620",

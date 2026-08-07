@@ -662,6 +662,27 @@
    "source": "https://imsdesigncenter.com/",
    "checkedOn": "2026-08-07",
    "note": "Printed in their footer as 'IMS Building Hours: Weekdays 8:30 a.m. - 5:00 p.m.' — an actual building-hours statement, not a tenant's. Address 275 Market Street matches ours. Closed at weekends, which the weekdays-only phrasing states. Note this is four and a half hours shorter on weekdays than the ordinance default it replaces, and two whole days different."
+  },
+  "poi-12002109881": {
+   "name": "Infinity Smokes",
+   "openingHours": "Mo-Th 09:00-22:00; Fr 09:00-24:00; Sa 10:00-24:00; Su 10:00-19:00",
+   "source": "https://www.infinitysmokes.com",
+   "checkedOn": "2026-08-07",
+   "note": "Address 814 Hennepin Avenue geocodes to this POI exactly (0 m). Friday and Saturday 'Midnight' written as 24:00, the form src/opening-hours.ts accepts."
+  },
+  "poi-12768888509": {
+   "name": "Thomas Joseph & Sons",
+   "openingHours": "Mo-Fr 10:00-17:00; Sa 10:00-14:30",
+   "source": "https://thomasjosephandsons.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Published as 'Store Hours'. Address 333 South Seventh Street Suite 220 geocodes to this POI exactly (0 m), inside SPS Tower — the same building whose landlord page names Barkalows Too without any hours. A tenant publishing its own is worth more than a directory that does not."
+  },
+  "poi-12870055617": {
+   "name": "Legal Aid",
+   "openingHours": "Mo-Th 08:30-16:30; Fr 08:30-12:00",
+   "source": "https://www.centralmnlegal.org/contact/minneapolis/",
+   "checkedOn": "2026-08-07",
+   "note": "Published as 'Office Hours', with Friday closing at noon rather than matching the rest of the week. Address 111 N 5th Street Suite 402 geocodes to this POI exactly (0 m)."
   }
  },
  "skipped": {
@@ -1341,6 +1362,30 @@
    "name": "St. Anthony Main",
    "reason": "stanthonymain.com does not resolve (DNS failure on both apex and www). No surviving first-party site for the centre as a whole; its individual tenants have their own sites but those are not this building.",
    "source": "(dead domain)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12335262724": {
+   "name": "The Hennepin",
+   "reason": "Hennepin Arts markets this as a rentable nonprofit event centre. The rendered page covers event spaces and rental enquiries and publishes no opening hours — access is by booking, not walk-in.",
+   "source": "https://thehennepin.org/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-9128515927": {
+   "name": "MSpace",
+   "reason": "ispaceenvironments.com renders (4,273 chars) as a consent notice and corporate content for an office-interiors firm, with no opening hours and no showroom visiting times.",
+   "source": "http://www.ispaceenvironments.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13265552510": {
+   "name": "Target Center Team Store",
+   "reason": "The team-store URL in our data returns Target Center's 404 page. The arena publishes event schedules rather than retail hours, and an arena team store typically opens only for events.",
+   "source": "https://www.targetcenter.com/arena-info/team-store",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12754418501": {
+   "name": "Augsburg Fortress Publishers",
+   "reason": "Rendered site (3,004 chars) is a publisher's corporate and catalogue site — mission, imprints, careers — with no opening hours and no public counter.",
+   "source": "http://www.augsburgfortresspublishers.org",
    "checkedOn": "2026-08-07"
   }
  }

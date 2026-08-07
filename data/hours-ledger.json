@@ -481,7 +481,8 @@
    "name": "The Hennepin",
    "group": "other",
    "website": "https://thehennepin.org/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12335262725": {
    "kind": "poi",
@@ -1132,7 +1133,8 @@
    "name": "MSpace",
    "group": "other",
    "website": "http://www.ispaceenvironments.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-9219442092": {
    "kind": "poi",
@@ -1200,7 +1202,8 @@
    "name": "Infinity Smokes",
    "group": "other",
    "website": "https://www.infinitysmokes.com",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12571886640": {
    "kind": "poi",
@@ -1229,7 +1232,8 @@
    "name": "Augsburg Fortress Publishers",
    "group": "other",
    "website": "http://www.augsburgfortresspublishers.org",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12754418502": {
    "kind": "poi",
@@ -1273,7 +1277,8 @@
    "name": "Thomas Joseph & Sons",
    "group": "other",
    "website": "https://thomasjosephandsons.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12768888511": {
    "kind": "poi",
@@ -1417,7 +1422,8 @@
    "name": "Team Store",
    "group": "other",
    "website": "https://www.targetcenter.com/arena-info/team-store",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13378495986": {
    "kind": "poi",
@@ -1763,7 +1769,8 @@
    "name": "Legal Aid",
    "group": "other",
    "website": "https://www.centralmnlegal.org/contact/minneapolis/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12870055620": {
    "kind": "poi",
