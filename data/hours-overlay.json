@@ -629,6 +629,18 @@
       "reason": "Site renders an unconfigured hours EDITOR ('Update Hours / Opening Time / Closing Time' per day) rather than published hours — the template was never filled in.",
       "source": "https://www.onohawaiianplates.com/",
       "checkedOn": "2026-08-07"
+    },
+    "poi-6560546755": {
+      "name": "Off The Rails Public House",
+      "reason": "No official website found after searching; its only web presence appears to be social media. Nothing first-party to read hours from.",
+      "source": "(searched, no official site)",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-2719874232": {
+      "name": "Marin",
+      "reason": "Reported permanently closed as of mid-2026, and the address associated with it (901 Hennepin, Le Meridien Chambers) is not our LaSalle Plaza host. Likely a stale POI rather than a missing-hours one — worth checking whether it should be in the dataset at all. No first-party source found to confirm either way, so no hours recorded.",
+      "source": "(searched, no official site; closure reported by listings)",
+      "checkedOn": "2026-08-07"
     }
   }
 }

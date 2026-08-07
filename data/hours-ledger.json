@@ -131,7 +131,8 @@
    "name": "Marin",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-3235588408": {
    "kind": "poi",
@@ -264,14 +265,15 @@
    "name": "Off The Rails Public House",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6560546760": {
    "kind": "poi",
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -789,7 +791,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "done",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {
