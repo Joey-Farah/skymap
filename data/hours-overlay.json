@@ -522,6 +522,18 @@
       "reason": "Site shows only a live 'Open today 10:30 am - 02:00 pm' status; no weekly schedule anywhere on it.",
       "source": "https://saladbarmn.com/",
       "checkedOn": "2026-08-07"
+    },
+    "poi-cabana-club": {
+      "name": "The Cabana Club",
+      "reason": "Two schedules on the same page. The 'Hours of Operation' block says 'Open Daily: 11 AM - 9 PM'; the footer says 'Mon, Tue, Thu, Fri: 11am-10pm | Wed, Sat, Sun: 10am-10pm'. They disagree on both opening and closing, and nothing marks one as current.",
+      "source": "https://cabanaclubmpls.com/hours-location/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-odonovans": {
+      "name": "O'Donovan's",
+      "reason": "odonovansirishpub.com is an Irish pub in Boeblingen, GERMANY (Breite Gasse 5, 71032). Our O'Donovan's is in Target Center, 600 1st Ave N. Recording those hours would have put a German pub's schedule on a Minneapolis card. Needs the correct site.",
+      "source": "https://www.odonovansirishpub.com/",
+      "checkedOn": "2026-08-07"
     }
   }
 }
