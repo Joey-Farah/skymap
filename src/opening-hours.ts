@@ -48,14 +48,30 @@ const DAY_LIST = "(?:Mo|Tu|We|Th|Fr|Sa|Su|PH)(?:-(?:Mo|Tu|We|Th|Fr|Sa|Su))?";
 // card read "Hours unknown" for hours that are perfectly well known.
 const LEADING_DAY_SPEC = new RegExp(`^${DAY_LIST}(?:\\s*,\\s*${DAY_LIST})*`);
 
-/** Splits a leading day-spec ("Mo-Fr", "Mo,We,Fr", "PH") off a clause. */
-function parseDaySpec(clause: string): { days: string[]; rest: string } {
+/** Splits a leading day-spec ("Mo-Fr", "Mo,We,Fr", "PH") off a clause.
+ *
+ * Returns null when the clause opens with something that is neither a
+ * day-spec nor the time itself — a month scope, most usefully. OSM writes
+ * seasonal hours as "Sep-May Mo-Fr 09:00-21:00", and treating a missing
+ * day-spec as "every day" swallowed both the months and the Mo-Fr,
+ * yielding a confident all-week schedule from a rule that applied to five
+ * days of the year's back half. MacPhail publishes exactly this shape, so
+ * it is not hypothetical. A null here taints the whole value, which is the
+ * honest outcome: this parser holds one week, and a seasonal schedule is
+ * not one week.
+ */
+function parseDaySpec(clause: string): { days: string[]; rest: string } | null {
   const match = LEADING_DAY_SPEC.exec(clause);
-  if (!match) return { days: [...CHRONO], rest: clause.trim() };
-  return {
-    days: match[0].split(",").flatMap(expandDayToken),
-    rest: clause.slice(match[0].length).trim(),
-  };
+  if (match) {
+    return {
+      days: match[0].split(",").flatMap(expandDayToken),
+      rest: clause.slice(match[0].length).trim(),
+    };
+  }
+  // No day-spec is legitimate only when the clause is the schedule itself.
+  const rest = clause.trim();
+  if (/^(?:\d{1,2}:\d{2}|24\/7|off|closed)/i.test(rest)) return { days: [...CHRONO], rest };
+  return null;
 }
 
 const TIME_RANGE = /(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})/g;
@@ -94,7 +110,12 @@ export function parseOpeningHours(value: string | undefined | null): DayHours[] 
   for (const rule of rules) {
     const clause = rule.trim();
     if (!clause) continue;
-    const { days, rest } = parseDaySpec(clause);
+    const spec = parseDaySpec(clause);
+    if (!spec) {
+      unresolved = true; // month scope or other syntax this parser cannot hold
+      continue;
+    }
+    const { days, rest } = spec;
     const dayIndices = days.filter((d) => d !== "PH").map((d) => DAY_INDEX[d]);
     if (!dayIndices.length) continue; // PH-only clause: not modeled
     // "closed" is an accepted synonym for "off" in opening_hours. Not

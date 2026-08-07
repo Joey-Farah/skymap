@@ -126,3 +126,20 @@ test("'closed' is accepted as a synonym for 'off'", () => {
   assert.equal(r[6], null);
   assert.equal(r[0], null);
 });
+
+test("a month-scoped rule is rejected rather than silently applied to every day", () => {
+  // "Sep-May Mo-Fr 09:00-21:00" used to come back as all seven days open
+  // 9am-9pm: the month range matched no day-spec, so the clause fell
+  // through to "applies to every day", and Mo-Fr was discarded with it.
+  // Seasonal hours are real (MacPhail publishes an academic-year and a
+  // summer schedule), so this has to fail loudly rather than invent a
+  // Sunday. Returning null makes the whole value unusable, which is what
+  // the applier already refuses to ship.
+  assert.equal(parseOpeningHours("Sep-May Mo-Fr 09:00-21:00"), null);
+  assert.equal(parseOpeningHours("Jun-Aug Mo-Th 09:00-21:00"), null);
+});
+
+test("a leading day-spec is still optional for a plain daily range", () => {
+  // The fix must not break the ordinary "same every day" form.
+  assert.deepEqual(parseOpeningHours("09:00-21:00"), Array(7).fill([540, 1260]));
+});
