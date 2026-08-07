@@ -2153,7 +2153,8 @@
    "category": "office",
    "address": "600 Portland Avenue",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "hcmc-purple-parking-ramp-27346755": {
    "kind": "building",
@@ -2362,7 +2363,8 @@
    "category": "office",
    "address": "500 Washington Avenue South",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "rivergate-apartments-81049129": {
    "kind": "building",
@@ -2479,7 +2481,8 @@
    "category": "office",
    "address": "700 Linden Avenue West",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "hirshfields-design-resource-showroom-101142650": {
    "kind": "building",
@@ -2802,7 +2805,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "111-washington-square-537857247": {
    "kind": "building",

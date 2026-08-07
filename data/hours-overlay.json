@@ -1577,6 +1577,30 @@
    "reason": "Renders fully (26,582 chars) but the site is about a site restoration currently under construction — it publishes project updates and history, not visiting hours, because the place is not yet open to visit.",
    "source": "https://owamniyomni.org/about/",
    "checkedOn": "2026-08-07"
+  },
+  "lasalle-plaza-461227727": {
+   "name": "LaSalle Plaza",
+   "reason": "A leasing site. Renders 2,537 characters of available-space marketing and amenity copy — it even talks about tenants coming and going 'after hours' — but never states when the building itself is open.",
+   "source": "https://lasalleplaza.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "depot-office-center-81049079": {
+   "name": "Depot Office Center",
+   "reason": "The Depot's site covers the weddings/events venue, restaurants, parking and hotels on the site, with no hours for the office component this POI represents. The venue's own access is by booking rather than a published window.",
+   "source": "https://thedepotminneapolis.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "thrivent-corporate-center-27346744": {
+   "name": "Thrivent Corporate Center",
+   "reason": "Thrivent publishes a corporate financial-services site with advisor-matching, and nothing about its Minneapolis headquarters building — no lobby or visitor hours anywhere on it.",
+   "source": "https://www.thrivent.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "centerpoint-energy-101142637": {
+   "name": "CenterPoint Energy",
+   "reason": "Utility corporate site: billing, outages, service. No hours published for the Minneapolis office building this POI represents.",
+   "source": "https://www.centerpointenergy.com/en-us/",
+   "checkedOn": "2026-08-07"
   }
  }
 }
