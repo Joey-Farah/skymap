@@ -24420,7 +24420,10 @@
    "group": "food",
    "lat": 44.983388,
    "lon": -93.276004,
-   "buildingId": "north-loop-green-commercial-1281801622"
+   "buildingId": "north-loop-green-commercial-1281801622",
+   "openingHours": "We-Fr 15:00-22:00; Sa 11:00-22:00; Su 11:00-18:00",
+   "hoursSource": "https://www.bassetthoundnlg.com/visit",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12164555712",

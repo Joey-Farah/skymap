@@ -416,7 +416,8 @@
    "name": "Bassett Hound",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12164555712": {
    "kind": "poi",

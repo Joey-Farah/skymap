@@ -445,6 +445,13 @@
       "source": "https://www.hopebreakfast.com/minneapolis",
       "checkedOn": "2026-08-07",
       "note": "North Loop Green, 350 North 5th Street — our host building. Search summaries claimed '7 days a week, 8am-3pm'; the restaurant's own page says 7AM and a 2PM weekday close. First-party wins again."
+    },
+    "poi-12164522191": {
+      "name": "Bassett Hound",
+      "openingHours": "We-Fr 15:00-22:00; Sa 11:00-22:00; Su 11:00-18:00",
+      "source": "https://www.bassetthoundnlg.com/visit",
+      "checkedOn": "2026-08-07",
+      "note": "350 North 5th Street Suite P300 — our host building. Mon/Tue published as Closed. Search summaries said Saturday opens 10am; its own page says 11am — the third first-party disagreement in three iterations."
     }
   },
   "skipped": {
