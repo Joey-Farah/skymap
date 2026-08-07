@@ -24439,7 +24439,10 @@
    "buildingId": "intersect-apartments-1216920711",
    "nearby": true,
    "website": "http://sweetgreen.com/",
-   "logo": "sweetgreen-com"
+   "logo": "sweetgreen-com",
+   "openingHours": "Mo-Su 10:30-22:00",
+   "hoursSource": "https://www.sweetgreen.com/locations/north-loop/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12164570021",

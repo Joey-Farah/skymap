@@ -403,6 +403,13 @@
       "source": "https://locations.cariboucoffee.com/us/mn/minneapolis/509-washington-avenue-s",
       "checkedOn": "2026-08-07",
       "note": "Caribou lists exactly two downtown stores: 509 Washington Ave S and 200 S 6th St. This POI sits at 44.97849,-93.26100 and is flagged nearby (attached to the Depot Office Center, not inside it), which fits the 509 Washington storefront. The other downtown store is already recorded against the US Bank Plaza POI."
+    },
+    "poi-12164557870": {
+      "name": "Sweetgreen (North Loop)",
+      "openingHours": "Mo-Su 10:30-22:00",
+      "source": "https://www.sweetgreen.com/locations/north-loop/",
+      "checkedOn": "2026-08-07",
+      "note": "Published at 212 N 3rd Ave while our host building is 316 N 2nd St, which looked like a mismatch until the POI's own placement settled it: it is flagged nearby and sits 76m from the host centroid, in North Loop, and Sweetgreen lists exactly one North Loop store."
     }
   },
   "skipped": {
