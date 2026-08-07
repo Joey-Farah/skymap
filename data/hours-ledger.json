@@ -370,7 +370,8 @@
    "name": "Passport Health Minneapolis Travel Clinic",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11072221405": {
    "kind": "poi",
@@ -1047,7 +1048,8 @@
    "name": "Glass House",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-1352105236": {
    "kind": "poi",
@@ -1513,7 +1515,8 @@
    "name": "Floyd's 99 Barbershop",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13823736881": {
    "kind": "poi",

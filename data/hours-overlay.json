@@ -2030,6 +2030,24 @@
    "reason": "A private event venue run by Entourage Events Group. entourageeventsgroup.com redirects to eventsbyentourage.com, which markets corporate and wedding venues and catering with no opening hours — access is by booking, like the Convention Center halls and the Hennepin theatres. The 9am-5pm figure search offers comes from Cvent and Eventective, not the operator.",
    "source": "https://eventsbyentourage.com/",
    "checkedOn": "2026-08-07"
+  },
+  "poi-13823736879": {
+   "name": "Floyd's 99 Barbershop (North Loop)",
+   "reason": "Their own shop page gives the address (424 N. Washington Ave #109) and a live-status line reading 'Hours: Open until 8 pm', but no weekly schedule and no expander behind it — clicking the line and the Hours label both do nothing. This is the live-status-only case that Treats, Spicy Feta and Massage Envy all turned out to have a hidden week behind; here there genuinely is not one. The Mon-Fri 9-8 / Sat 9-6 / Sun 9-5 figures search returns come from Yelp and Fresha.",
+   "source": "https://www.floydsbarbershop.com/locations/minnesota/minneapolis/north-loop",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11014986808": {
+   "name": "Passport Health Minneapolis Travel Clinic",
+   "reason": "The clinic's own page carries its address (400 South 4th Street Ste 510M) and a 'Schedule Now' booking flow but publishes no hours — travel clinics run by appointment. The Mon-Fri 7am-9pm figure search reports comes from Yelp and is implausible for a vaccination clinic besides.",
+   "source": "https://www.passporthealthusa.com/locations/mn/minneapolis/1340/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14064521583": {
+   "name": "Glass House",
+   "reason": "States it outright in its own footer: 'Hours: By appointment only'. An event venue booked for weddings and corporate events, with no walk-in window — the clearest possible version of this refusal, in the operator's own words. Search reports Mon-Fri 9-4 from Eventective, which the venue itself contradicts.",
+   "source": "https://glasshousemn.com/",
+   "checkedOn": "2026-08-07"
   }
  },
  "conflicts": {
