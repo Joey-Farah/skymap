@@ -753,6 +753,13 @@
    "source": "https://www.cityscapedentalarts.com/contact/",
    "checkedOn": "2026-08-07",
    "note": "Their page states these as the complete set — 'We are open to serve you ... during the following hours: Monday - Thursday' — so Friday through Sunday are closed rather than merely unlisted. Address 300 S. Second Street Suite 3 geocodes to this POI exactly (0 m)."
+  },
+  "poi-13627698551": {
+   "name": "Statement Boutique",
+   "openingHours": "Mo-Sa 10:00-18:30; Su 11:00-16:00",
+   "source": "https://www.thestatementboutique.com/thestore",
+   "checkedOn": "2026-08-07",
+   "note": "Address 212 3rd Ave N Suite 105 geocodes to this POI exactly (0 m). Closes at 6:30 rather than a round hour, which is the kind of detail only the operator's own page carries."
   }
  },
  "skipped": {
@@ -1702,6 +1709,18 @@
    "name": "James & Mary Laurie Booksellers",
    "reason": "LOCATION MISMATCH, not missing hours. The shop publishes a clear week (noon-6 Mon-Sat, Sunday noon-3, plus by appointment) at 933 Marquette Ave — but that address geocodes 1,116 m from this POI, which reverse-geocodes to 250 3rd Avenue North in the North Loop. One of the two is out of date and it is not resolvable from here, so the hours are not attached to a pin that is probably in the wrong place. Worth re-checking the POI's coordinates separately. Note also that the search summary claimed '11:00 am to 6:00 pm, Closed Sunday' — the shop's own page says noon, and says it opens on Sunday.",
    "source": "https://www.lauriebooks.com/about.php",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11248558000": {
+   "name": "Capsule",
+   "reason": "Capsule is a delivery-only pharmacy — its site is entirely about ordering prescriptions to your door and checking delivery coverage, with no counter hours. Search also places it at 117 Washington Ave N, and its whole model is that you do not visit.",
+   "source": "https://www.capsule.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14003692666": {
+   "name": "Elevate Food Hall",
+   "reason": "The only surviving first-party presence is a CaterTrax online-ordering portal with no hours. Aggregators report a split breakfast (6:45-9:30) and lunch (11:00-2:00) service, which this parser could not hold even from a good source, and Yelp marks the venue closed — so its status is unclear on top of everything else.",
+   "source": "https://elevatefoodhall.catertrax.com/",
    "checkedOn": "2026-08-07"
   }
  }

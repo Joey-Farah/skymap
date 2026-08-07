@@ -379,7 +379,8 @@
    "name": "Capsule",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11248558002": {
    "kind": "poi",
@@ -998,7 +999,8 @@
    "name": "Elevate Food Hall",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14022958820": {
    "kind": "poi",
@@ -1487,7 +1489,8 @@
    "name": "Statement Boutique",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13628469113": {
    "kind": "poi",
