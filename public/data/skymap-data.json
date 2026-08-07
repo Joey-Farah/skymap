@@ -24438,7 +24438,10 @@
    "lon": -93.274379,
    "buildingId": "free-spirit-building-78061942",
    "website": "https://crispandgreen.com/",
-   "logo": "crispandgreen-com"
+   "logo": "crispandgreen-com",
+   "openingHours": "Mo-Su 08:00-21:00",
+   "hoursSource": "https://crispandgreen.com/locations/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12164557870",

@@ -273,7 +273,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "none",
+   "status": "done",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -427,7 +427,8 @@
    "name": "Crisp & Green",
    "group": "food",
    "website": "https://crispandgreen.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12164557870": {
    "kind": "poi",
@@ -791,7 +792,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "none",
+   "status": "done",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {

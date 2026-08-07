@@ -459,6 +459,13 @@
       "source": "https://www.dariorestaurant.com/",
       "checkedOn": "2026-08-07",
       "note": "323 N Washington Ave Suite 100, the T3 building — our host. Search summaries said 5-10pm / 5-11pm; its own site says 4:30pm-9pm / 4:30pm-10pm. Fourth first-party disagreement in four iterations."
+    },
+    "poi-12164555712": {
+      "name": "Crisp & Green (North Loop)",
+      "openingHours": "Mo-Su 08:00-21:00",
+      "source": "https://crispandgreen.com/locations/",
+      "checkedOn": "2026-08-07",
+      "note": "428 North Washington Ave — matches our POI at 44.98615,-93.27438 inside the Free Spirit Building. Only North Loop store the chain lists."
     }
   },
   "skipped": {
