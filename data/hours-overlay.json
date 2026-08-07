@@ -309,15 +309,43 @@
       "source": "https://restaurants.subway.com/united-states/mn/minneapolis/555-nicollet-mall",
       "checkedOn": "2026-08-07",
       "note": "Same Yext block. Sa/Su published isClosed."
+    },
+    "poi-2427534130": {
+      "name": "The Brother's Deli",
+      "openingHours": "Mo-Th 07:30-13:30; Fr 10:30-13:00",
+      "source": "https://www.thebrothersdeli.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Earlier refused as contradictory. The LOCATION & HOURS block states it plainly: Mo-Th 7:30-1:30, Fri 10:30-1:00, Sat and Sun Closed. The conflicting figures were a stale footer."
+    },
+    "poi-6560546760": {
+      "name": "Jimmy John's (Marquette)",
+      "openingHours": "Mo-Su 10:30-21:00",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13410756379": {
+      "name": "Jimmy John's (Nicollet)",
+      "openingHours": "Mo-Sa 10:30-19:00; Su 10:30-18:00",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/",
+      "checkedOn": "2026-08-07",
+      "note": "Earlier refused as indistinguishable from the other branch; the two publish different hours, which is what tells them apart."
+    },
+    "poi-12335262725": {
+      "name": "The Saloon",
+      "openingHours": "Mo-Th 12:00-26:00; Fr-Sa 12:00-27:00; Su 12:00-26:00",
+      "source": "https://www.saloonmn.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Closes 2am, 3am Fri/Sat — written as 26:00/27:00, the form the parser accepts."
+    },
+    "poi-12980602290": {
+      "name": "Farmers Kitchen & Bar",
+      "openingHours": "We-Sa 08:00-20:00; Su 08:00-19:00",
+      "source": "https://www.farmerskitchenandbar.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Monday and Tuesday published as Closed."
     }
   },
   "skipped": {
-    "poi-2427534130": {
-      "name": "The Brother's Deli",
-      "reason": "Three different schedules on one site: JSON-LD says Tu-Fr 07:30-13:30, the main section Mo-Th 07:30-13:30, the footer Mo-Fr 10:30-13:30. No way to tell which is current.",
-      "source": "https://www.thebrothersdeli.com/",
-      "checkedOn": "2026-08-06"
-    },
     "poi-4087475806": {
       "name": "Monello",
       "reason": "schema.org openingHours present but every value is an empty string; no hours in the visible page either.",

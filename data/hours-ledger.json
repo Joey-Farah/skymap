@@ -114,7 +114,7 @@
    "name": "The Brother's Deli",
    "group": "food",
    "website": "https://www.thebrothersdeli.com/",
-   "status": "ambiguous",
+   "status": "done",
    "checkedOn": "2026-08-07"
   },
   "poi-2527309568": {
@@ -267,7 +267,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "ambiguous",
+   "status": "done",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -459,7 +459,8 @@
    "name": "The Saloon",
    "group": "food",
    "website": "https://www.saloonmn.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12634128533": {
    "kind": "poi",
@@ -674,7 +675,8 @@
    "name": "Farmers Kitchen & Bar",
    "group": "food",
    "website": "https://farmerskitchenandbar.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12980659200": {
    "kind": "poi",
@@ -768,7 +770,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "ambiguous",
+   "status": "done",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {

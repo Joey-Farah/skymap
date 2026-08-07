@@ -23147,7 +23147,10 @@
    "buildingId": "50-south-sixth-99714290",
    "level": "1",
    "website": "https://www.thebrothersdeli.com/",
-   "logo": "thebrothersdeli-com"
+   "logo": "thebrothersdeli-com",
+   "openingHours": "Mo-Th 07:30-13:30; Fr 10:30-13:00",
+   "hoursSource": "https://www.thebrothersdeli.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-2527309568",
@@ -23857,7 +23860,10 @@
    "buildingId": "stadium-parking-ramp-40774167",
    "nearby": true,
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "logo": "locations-jimmyjohns-com"
+   "logo": "locations-jimmyjohns-com",
+   "openingHours": "Mo-Su 10:30-21:00",
+   "hoursSource": "https://locations.jimmyjohns.com/mn/minneapolis/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-6780251055",
@@ -24574,7 +24580,10 @@
    "buildingId": "lasalle-plaza-461227727",
    "nearby": true,
    "website": "https://www.saloonmn.com/",
-   "logo": "saloonmn-com"
+   "logo": "saloonmn-com",
+   "openingHours": "Mo-Th 12:00-26:00; Fr-Sa 12:00-27:00; Su 12:00-26:00",
+   "hoursSource": "https://www.saloonmn.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12349859504",
@@ -25290,7 +25299,10 @@
    "lon": -93.256495,
    "buildingId": "humboldt-annex-157035925",
    "website": "https://farmerskitchenandbar.com/",
-   "logo": "farmerskitchenandbar-com"
+   "logo": "farmerskitchenandbar-com",
+   "openingHours": "We-Sa 08:00-20:00; Su 08:00-19:00",
+   "hoursSource": "https://www.farmerskitchenandbar.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12980659200",
@@ -25616,7 +25628,10 @@
    "buildingId": "metro-apartments-156912887",
    "level": "0",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "logo": "locations-jimmyjohns-com"
+   "logo": "locations-jimmyjohns-com",
+   "openingHours": "Mo-Sa 10:30-19:00; Su 10:30-18:00",
+   "hoursSource": "https://locations.jimmyjohns.com/mn/minneapolis/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13410756385",
