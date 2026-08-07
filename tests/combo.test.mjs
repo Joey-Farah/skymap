@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { searchEntries } from "../src/combo.ts";
+import { buildComboEntries, searchEntries } from "../src/combo.ts";
 
 test("accented names are found by typing them without accents", () => {
   // Twelve real downtown places were unreachable: Pizza Lucé, Fogo de Chão,
@@ -38,4 +38,20 @@ test("a name is found whether or not you type the apostrophe at all", () => {
   for (const q of ["Toms Watch Bar", "Tom's Watch Bar", "Tom’s Watch Bar"]) {
     assert.equal(searchEntries(entries, q)[0]?.id, "t", `query ${JSON.stringify(q)}`);
   }
+});
+
+test("named light-rail stations are searchable, ordinary bus stops are not", () => {
+  // Exterior POIs are excluded because a bus stop isn't a destination you
+  // route to. But Government Plaza and Warehouse District are major Metro
+  // stations with no other record carrying their name, so searching for
+  // them returned nothing at all. Target Field and US Bank Stadium only
+  // seemed fine because separate landmark POIs share those names.
+  const buildings = [{ id: "h", name: "Host", address: "1 St", lat: 44.97, lon: -93.27 }];
+  const pois = [
+    { id: "s", name: "Government Plaza", buildingId: "h", group: "transit", category: "station", exterior: true, lat: 44.97, lon: -93.27 },
+    { id: "b", name: "7th St & Nicollet", buildingId: "h", group: "transit", category: "bus_stop", exterior: true, lat: 44.97, lon: -93.27 },
+  ];
+  const entries = buildComboEntries(buildings, pois);
+  assert.equal(searchEntries(entries, "Government Plaza")[0]?.label, "Government Plaza");
+  assert.equal(searchEntries(entries, "7th St & Nicollet").length, 0, "bus stops stay out");
 });
