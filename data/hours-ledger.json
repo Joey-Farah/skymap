@@ -585,7 +585,8 @@
    "name": "Roti",
    "group": "food",
    "website": "https://www.roti.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862806760": {
    "kind": "poi",
@@ -753,7 +754,8 @@
    "name": "Grayfox",
    "group": "coffee",
    "website": "https://www.grayfoxcoffee.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552505": {
    "kind": "poi",
@@ -776,7 +778,8 @@
    "name": "Grayfox",
    "group": "coffee",
    "website": "https://www.grayfoxcoffee.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552513": {
    "kind": "poi",
@@ -791,7 +794,8 @@
    "name": "Paper Boy",
    "group": "food",
    "website": "https://www.paperboydeli.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756379": {
    "kind": "poi",
@@ -806,7 +810,8 @@
    "name": "Grayfox",
    "group": "coffee",
    "website": "https://www.grayfoxcoffee.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756392": {
    "kind": "poi",

@@ -24967,7 +24967,10 @@
    "buildingId": "ids-center-1385236413",
    "level": "0",
    "website": "https://www.roti.com/",
-   "logo": "roti-com"
+   "logo": "roti-com",
+   "openingHours": "Mo-Fr 10:00-15:30",
+   "hoursSource": "https://www.roti.com/locations/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12862806760",
@@ -25517,7 +25520,10 @@
    "buildingId": "lasalle-plaza-461227727",
    "level": "1",
    "website": "https://www.grayfoxcoffee.com/",
-   "logo": "grayfoxcoffee-com"
+   "logo": "grayfoxcoffee-com",
+   "openingHours": "Mo-Fr 07:30-14:00",
+   "hoursSource": "https://www.grayfoxcoffee.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13265552505",
@@ -25686,7 +25692,10 @@
    "buildingId": "deluxe-plaza-1462073358",
    "level": "0",
    "website": "https://www.grayfoxcoffee.com/",
-   "logo": "grayfoxcoffee-com"
+   "logo": "grayfoxcoffee-com",
+   "openingHours": "Mo 07:30-14:00; Tu-Th 07:30-18:00; Fr 07:30-14:00",
+   "hoursSource": "https://www.grayfoxcoffee.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13410756392",

@@ -473,6 +473,27 @@
       "source": "https://www.leeannchin.com/restaurant/city-centerdowntown-minneapolis-mn/40-south-7th-street",
       "checkedOn": "2026-08-07",
       "note": "40 South 7th Street — exactly our City Center host. Sat/Sun published as Closed. The chain's /locations index carries no hours; the per-restaurant page does."
+    },
+    "poi-13265552502": {
+      "name": "Grayfox (LaSalle Plaza)",
+      "openingHours": "Mo-Fr 07:30-14:00",
+      "source": "https://www.grayfoxcoffee.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Listed at 800 LaSalle Ave — our host building."
+    },
+    "poi-13410756385": {
+      "name": "Grayfox (Deluxe Plaza)",
+      "openingHours": "Mo 07:30-14:00; Tu-Th 07:30-18:00; Fr 07:30-14:00",
+      "source": "https://www.grayfoxcoffee.com/",
+      "checkedOn": "2026-08-07",
+      "note": "Listed at 801 Marquette Ave S — Deluxe Plaza. Note Mon and Fri close at 2pm while Tue-Thu run to 6pm; taking the chain's headline hours would have added four hours to two days."
+    },
+    "poi-12825025522": {
+      "name": "Roti (IDS Center)",
+      "openingHours": "Mo-Fr 10:00-15:30",
+      "source": "https://www.roti.com/locations/",
+      "checkedOn": "2026-08-07",
+      "note": "80 S 8th Street #150 — exactly our IDS Center host. Sat/Sun published as Closed."
     }
   },
   "skipped": {
@@ -690,6 +711,18 @@
       "name": "Starbucks (Target Plaza III)",
       "reason": "Starbucks' locator renders only after accepting cookies and granting geolocation, and then shows a LIVE status for today ('Open 5:00 AM-5:30 PM') rather than a weekly schedule. Recording one day's hours as the week would be wrong. The store IS confirmed present and correctly placed — the locator lists it at the matching address. Address match: 900 Nicollet Mall — listed as 'Target Minneapolis 1375'",
       "source": "https://www.starbucks.com/store-locator/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13265552509": {
+      "name": "Grayfox (IDS Center)",
+      "reason": "Grayfox lists LaSalle Plaza, Deluxe Plaza and 901 Marquette Ave S. Our POI sits at 44.97639,-93.27302 by the IDS Center, roughly 300m from 901 Marquette, so that is a different shop. No IDS location is published.",
+      "source": "https://www.grayfoxcoffee.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13410756366": {
+      "name": "Paper Boy",
+      "reason": "Own site gives the address (733 Marquette Ave Suite 223, our 733 Building host) but publishes no hours anywhere, including behind its contact link.",
+      "source": "https://www.paperboydeli.com/",
       "checkedOn": "2026-08-07"
     }
   }
