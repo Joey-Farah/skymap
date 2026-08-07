@@ -396,6 +396,13 @@
       "source": "https://www.greenandthegrain.com/locations",
       "checkedOn": "2026-08-07",
       "note": "Page lists LaSalle Plaza as Mon-Thu, a day shorter than the other branches — matched by host building, not assumed from a sibling."
+    },
+    "poi-3235588408": {
+      "name": "Caribou Coffee (5th & Washington)",
+      "openingHours": "Mo-Th 06:00-18:00; Fr 06:00-19:00; Sa 07:00-19:00; Su 07:00-18:00",
+      "source": "https://locations.cariboucoffee.com/us/mn/minneapolis/509-washington-avenue-s",
+      "checkedOn": "2026-08-07",
+      "note": "Caribou lists exactly two downtown stores: 509 Washington Ave S and 200 S 6th St. This POI sits at 44.97849,-93.26100 and is flagged nearby (attached to the Depot Office Center, not inside it), which fits the 509 Washington storefront. The other downtown store is already recorded against the US Bank Plaza POI."
     }
   },
   "skipped": {
@@ -553,6 +560,12 @@
       "name": "Green + The Grain (705 Building)",
       "reason": "The chain publishes four Minneapolis locations — LaSalle Plaza, Baker Center, US Bank Plaza and Forum 900. None is the 705 Building, so this POI's branch isn't listed and may have closed.",
       "source": "https://www.greenandthegrain.com/locations",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-2600380079": {
+      "name": "Caribou Coffee (Target Plaza)",
+      "reason": "Caribou publishes only two downtown Minneapolis stores — 509 Washington Ave S and 200 S 6th St. Neither is Target Plaza at 1000 Nicollet Mall, so this branch is unlisted and may have closed.",
+      "source": "https://locations.cariboucoffee.com/us/mn/minneapolis",
       "checkedOn": "2026-08-07"
     }
   }

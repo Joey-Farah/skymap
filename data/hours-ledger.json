@@ -137,7 +137,8 @@
    "name": "Caribou Coffee",
    "group": "coffee",
    "website": "https://www.cariboucoffee.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-3403172118": {
    "kind": "poi",
