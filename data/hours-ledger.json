@@ -477,7 +477,8 @@
    "name": "The Bazemnt Lounge",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12333223454": {
    "kind": "poi",
@@ -692,7 +693,8 @@
    "name": "Choice",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12911210803": {
    "kind": "poi",
@@ -1067,7 +1069,8 @@
    "name": "Kai Salon",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-4679771192": {
    "kind": "poi",
@@ -1082,7 +1085,8 @@
    "name": "T-Mobile",
    "group": "other",
    "website": "https://www.t-mobile.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955554287": {
    "kind": "poi",
@@ -1409,7 +1413,8 @@
    "name": "Solomon Optical",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13189788424": {
    "kind": "poi",
@@ -1808,7 +1813,8 @@
    "name": "Prestige",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11927201463": {
    "kind": "poi",
@@ -2265,7 +2271,8 @@
    "category": "office",
    "address": "533 South 3rd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "orpheum-theatre-41763764": {
    "kind": "building",
@@ -2300,7 +2307,8 @@
    "category": "retailHub",
    "address": "900 Nicollet Mall",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "the-falk-45449596": {
    "kind": "building",
@@ -2308,7 +2316,8 @@
    "category": "office",
    "address": "608 North 3rd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "city-of-lakes-building-45452110": {
    "kind": "building",
@@ -2406,7 +2415,8 @@
    "category": "retailHub",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "nicollet-island-inn-80313504": {
    "kind": "building",
@@ -2486,7 +2496,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "deja-vu-89080678": {
    "kind": "building",
@@ -2512,7 +2523,8 @@
    "category": "office",
    "address": "101 East Grant Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "school-of-law-92810608": {
    "kind": "building",
@@ -2655,7 +2667,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "saint-olaf-catholic-church-126015108": {
    "kind": "building",
@@ -2672,7 +2685,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "guthrie-theater-129937715": {
    "kind": "building",
@@ -2734,7 +2748,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "metro-apartments-156912887": {
    "kind": "building",
@@ -2751,7 +2766,8 @@
    "category": "office",
    "address": "115 South 4th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "cowboy-jacks-157031168": {
    "kind": "building",
@@ -2795,7 +2811,8 @@
    "category": "office",
    "address": "800 3rd Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "schulze-hall-266689885": {
    "kind": "building",
@@ -2830,7 +2847,8 @@
    "category": "office",
    "address": "550 South 4th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "wells-fargo-600-407613511": {
    "kind": "building",
@@ -2838,7 +2856,8 @@
    "category": "office",
    "address": "600 South 4th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "ambulatory-outpatient-specialty-center-411211095": {
    "kind": "building",
@@ -2864,7 +2883,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "milliam-e-mcgee-building-461219669": {
    "kind": "building",
@@ -2872,7 +2892,8 @@
    "category": "office",
    "address": "317 2nd Avenue South",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "essex-building-461224211": {
    "kind": "building",
@@ -2889,7 +2910,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "lasalle-apartments-461227722": {
    "kind": "building",
@@ -3041,7 +3063,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "the-newell-1530645870": {
    "kind": "building",

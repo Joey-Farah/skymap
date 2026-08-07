@@ -2308,6 +2308,144 @@
    "reason": "A skyway tobacco counter with no first-party website. Search returns only Yelp, Atly, Roadtrippers and puffingbird-style vape directories — aggregators, which have been wrong every time they could be checked in this pass. Nothing to verify against.",
    "source": "(searched; aggregators only)",
    "checkedOn": "2026-08-07"
+  },
+  "millwright-building-40933926": {
+   "name": "Millwright Building",
+   "reason": "Ryan Companies' own corporate building at 533 S 3rd St. Its presence online is a Ryan project page and LoopNet/Kenwood sublease listings — square footage, amenities, skyway access — with no building hours anywhere. millwrightbuilding.com and millwrightmpls.com both fail DNS across two attempts.",
+   "source": "https://www.ryancompanies.com/projects/millwright-building-downtown-east/",
+   "checkedOn": "2026-08-07"
+  },
+  "the-falk-45449596": {
+   "name": "The Falk",
+   "reason": "No first-party site and nothing under this name in search beyond the address itself. thefalkmpls.com fails DNS. A small North Loop office building with no web presence to publish hours on.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "marquette-place-451283544": {
+   "name": "Marquette Place",
+   "reason": "No first-party site. Search under this name returns 510 Marquette and 901 Marquette — different buildings — and nothing for Marquette Place itself. marquetteplacempls.com fails DNS.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "textile-building-89080618": {
+   "name": "Textile Building",
+   "reason": "119 N 4th St, marketed through JLL and listed on LoopNet and 42Floors with square footage and historic-district notes but no hours. Note the near-miss: search surfaces the Textile CENTER at 3000 University Ave SE, a different organisation in a different neighbourhood that does publish hours — those were not borrowed.",
+   "source": "https://www.loopnet.com/Listing/119-N-4th-St-N-Minneapolis-MN/27741762/",
+   "checkedOn": "2026-08-07"
+  },
+  "historic-wesley-center-92810581": {
+   "name": "Historic Wesley Center",
+   "reason": "NOT READ, and recorded as such: historicwesleycenter.com fails DNS on both apex and www across two separate attempts, so nothing is known about what it publishes. Search surfaces only a WordPress blog and a Methodist conference article about the building's sale to a nonprofit. Weaker evidence than a page that was read and found empty.",
+   "source": "(DNS failure on two attempts)",
+   "checkedOn": "2026-08-07"
+  },
+  "grain-exchange-annex-126015103": {
+   "name": "Grain Exchange Annex",
+   "reason": "grainexchangerealestate.com covers the Grain Exchange buildings and renders as a leasing site — history, leasing, amenities, contact — with no building hours. (Separately, grainexchangebuilding.com turned out to be a building in Winnipeg.)",
+   "source": "https://grainexchangerealestate.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "706-building-126116977": {
+   "name": "706 Building",
+   "reason": "No first-party site and nothing identifiable in search under this name in downtown Minneapolis.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "old-republic-title-building-156912886": {
+   "name": "Old Republic Title Building",
+   "reason": "400 2nd Ave S. Its only online presence is a Crexi for-sale listing and a Yelp page for the title insurer inside it. Old Republic's corporate site is about title insurance, not the building, and publishes no hours.",
+   "source": "https://www.crexi.com/properties/1956259/minnesota-old-republic-title-building",
+   "checkedOn": "2026-08-07"
+  },
+  "farmers-and-mechanics-savings-bank-157025240": {
+   "name": "Farmers and Mechanics Savings Bank",
+   "reason": "A historic landmark building; search returns Wikipedia articles on the 1891 and 1942 bank buildings and nothing operational. No first-party site, and the bank itself no longer exists under that name.",
+   "source": "(searched; historical references only)",
+   "checkedOn": "2026-08-07"
+  },
+  "jobbers-warehouse-supply-inc-240869855": {
+   "name": "Jobbers Warehouse Supply Inc",
+   "reason": "No first-party site and nothing in search under this name that can be matched to this building.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "wells-fargo-550-407613510": {
+   "name": "Wells Fargo 550",
+   "reason": "One of the two Downtown East towers. Coverage is Ryan Companies' project page, LoopNet and press about the development — square footage, LEED status, skyway connection — with no building hours. A single-tenant corporate campus does not publish public entry hours. NOT covered by wellsfargocenter.com, which is a different tower at 90 S 7th.",
+   "source": "https://www.ryancompanies.com/projects/wells-fargo-downtown-east-campus/",
+   "checkedOn": "2026-08-07"
+  },
+  "wells-fargo-600-407613511": {
+   "name": "Wells Fargo 600",
+   "reason": "The second Downtown East tower; same reasoning and same sources as Wells Fargo 550, and equally not covered by wellsfargocenter.com.",
+   "source": "https://www.ryancompanies.com/projects/wells-fargo-downtown-east-campus/",
+   "checkedOn": "2026-08-07"
+  },
+  "milliam-e-mcgee-building-461219669": {
+   "name": "Milliam E. McGee Building",
+   "reason": "Searched twice under both the full name and 'McGee Building' with the 317 2nd Avenue South address. Nothing matches — search returns the Metropolitan Building at 308 2nd Ave S and an unrelated Memphis architect. No first-party site, and the building's identity is barely documented.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "lakewood-publications-building-461224214": {
+   "name": "Lakewood Publications Building",
+   "reason": "No first-party site; the publisher the building is named for no longer operates. Nothing in search connects to a current occupant publishing hours.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "chestnut-pumphouse-1488042853": {
+   "name": "Chestnut Pumphouse",
+   "reason": "No first-party site and nothing identifiable in search. A former pumphouse structure rather than an occupied commercial building.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "target-plaza-iii-44684855": {
+   "name": "Target Plaza III",
+   "reason": "No first-party site. Search returns Target Plaza South and Target Plaza North but nothing for a Plaza III, and Target's corporate site says nothing about its Minneapolis buildings — the same answer already recorded for Target Plaza.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "free-spirit-building-78061942": {
+   "name": "Free Spirit Building",
+   "reason": "No first-party site under this name, and the earlier freespiritpublishing.com attempt was a wrong-entity guess — that is a children's book publisher, not this building. Nothing in search identifies a site for the building itself.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12333223450": {
+   "name": "The Bazemnt Lounge",
+   "reason": "An upscale events lounge at 501 Washington Ave S. Its own site (bazemnt.com) is tickets, table reservations, an upcoming-events list and a booking form — no opening hours. Aggregators report Mon-Fri 10am-6pm, which is an office line rather than a nightclub's hours and is implausible on its face.",
+   "source": "https://bazemnt.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-2090002163": {
+   "name": "Kai Salon",
+   "reason": "The North Loop salon at 333 Washington Ave N is listed as closed, and kaisalon.com — the operator's live site — covers only the Champlin location. Recording Champlin's hours for a shop 20 miles away in a different suburb would be the branch-substitution error this pass has refused throughout.",
+   "source": "https://kaisalon.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13168732018": {
+   "name": "Solomon Optical",
+   "reason": "A family-run skyway optical at 120 S 6th St Suite 217, in business over 60 years, whose domain solomonoptical.com no longer resolves. Every source carrying hours is an aggregator — findhealthclinics, loc8nearme, chamberofcommerce, Yelp — and its Facebook page is not publicly readable.",
+   "source": "(dead domain; aggregators only)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12902687650": {
+   "name": "Choice",
+   "reason": "No first-party site and nothing identifiable in search under this name at this location — too generic a name to match to a POI with any confidence.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11328332534": {
+   "name": "Prestige",
+   "reason": "No first-party site and nothing in search that can be matched to this POI. Like 'Choice', the name is too generic to identify without an address to search on.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5355792471": {
+   "name": "T-Mobile",
+   "reason": "T-Mobile's own store locator returns 47 Minneapolis-area locations and none is downtown — the nearest are Uptown Row at 1.8 mi and Quarry at 3.9 mi, in zips 55407, 55408 and 55413 rather than 55402. The skyway store appears to have closed, exactly as FedEx Office did, and no neighbouring branch's hours were borrowed.",
+   "source": "https://www.t-mobile.com/stores/mn/minneapolis",
+   "checkedOn": "2026-08-07"
   }
  },
  "conflicts": {
