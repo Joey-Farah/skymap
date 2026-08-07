@@ -2066,6 +2066,90 @@
    "reason": "No first-party site. Search returns only aggregator profiles (BestProsInTown, Yahoo Local, BBB, barbershops.net) which give an address of 800 S Marquette Ave #105 but no source we can use. Two neighbouring skyway barbers do have their own sites, so this is a genuine absence rather than a search failure.",
    "source": "(searched; aggregators only)",
    "checkedOn": "2026-08-07"
+  },
+  "poi-2817096689": {
+   "name": "Xcel Energy",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12903102563": {
+   "name": "Target Corporation",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14003692664": {
+   "name": "Microsoft",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13713067310": {
+   "name": "Amazon",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14054455054": {
+   "name": "Piper Sandler Headquarters",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11328332533": {
+   "name": "Digineer",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12896972584": {
+   "name": "Minnesota Orchestral Association",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11292231484": {
+   "name": "270 Hennepin Leasing Office",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-1077152731": {
+   "name": "Michael Sharp Realty",
+   "reason": "A corporate office or workplace tenant, not a shop. Offices of this kind are entered by employees and booked visitors rather than during a published window, so there are no opening hours to record — the same structural answer already applied to McKinsey, BCG, Dorsey & Whitney, Exosite, Clientek, Ascent, US Solar and Alta Planning, each of which was individually rendered and confirmed to publish none. These share that reasoning rather than each having been fetched, and this entry says so.",
+   "source": "(structural; corporate office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13965983655": {
+   "name": "Social Security Administration Disability Hearings",
+   "reason": "A federal hearings office. Attendance is by scheduled hearing rather than walk-in, and the SSA publishes hearing times per case rather than office opening hours. No public window to record.",
+   "source": "(structural; hearings by appointment)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5955586681": {
+   "name": "Timberwolves And Lynx",
+   "reason": "A team front office inside Target Center, not a public-facing shop. Ticket and merchandise sales happen on event days at the arena; the office itself publishes no opening hours. Same answer as the Target Center Team Store, whose page 404s.",
+   "source": "(structural; team front office)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5955586679": {
+   "name": "Jack Links",
+   "reason": "Appears twice in our data at Target Center. A concessions stand inside an arena, open for events rather than on a weekly schedule — the same event-driven answer as the Convention Center halls. Worth noting the duplicate: two POI ids for one stand.",
+   "source": "(structural; arena concession, duplicated POI)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13921306014": {
+   "name": "Jack Link's",
+   "reason": "Appears twice in our data at Target Center. A concessions stand inside an arena, open for events rather than on a weekly schedule — the same event-driven answer as the Convention Center halls. Worth noting the duplicate: two POI ids for one stand.",
+   "source": "(structural; arena concession, duplicated POI)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5955586665": {
+   "name": "Target Hi-Tech Service",
+   "reason": "A service counter inside the Target store on Nicollet Mall rather than a separate business. Target publishes store hours for the shop as a whole; a counter within it has no separate published window, and substituting the store's hours would be the adjacent-but-wrong move that HCMC Orange and the mplsparking office already illustrate.",
+   "source": "(structural; counter inside a larger store)",
+   "checkedOn": "2026-08-07"
   }
  },
  "conflicts": {

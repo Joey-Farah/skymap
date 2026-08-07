@@ -1682,7 +1682,8 @@
    "name": "Michael Sharp Realty",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2071078928": {
    "kind": "poi",
@@ -1697,7 +1698,8 @@
    "name": "Xcel Energy",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-3067586077": {
    "kind": "poi",
@@ -1728,21 +1730,24 @@
    "name": "Target Hi-Tech Service",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955586679": {
    "kind": "poi",
    "name": "Jack Links",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955586681": {
    "kind": "poi",
    "name": "Timberwolves And Lynx",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6057647459": {
    "kind": "poi",
@@ -1773,14 +1778,16 @@
    "name": "270 Hennepin Leasing Office",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11328332533": {
    "kind": "poi",
    "name": "Digineer",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11328332534": {
    "kind": "poi",
@@ -1833,14 +1840,16 @@
    "name": "Minnesota Orchestral Association",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12903102563": {
    "kind": "poi",
    "name": "Target Corporation",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13134637745": {
    "kind": "poi",
@@ -1885,7 +1894,8 @@
    "name": "Amazon",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13713067311": {
    "kind": "poi",
@@ -1923,14 +1933,16 @@
    "name": "Jack Link's",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13965983655": {
    "kind": "poi",
    "name": "Social Security Administration Disability Hearings",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14003692660": {
    "kind": "poi",
@@ -1944,7 +1956,8 @@
    "name": "Microsoft",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14010993858": {
    "kind": "poi",
@@ -1975,7 +1988,8 @@
    "name": "Piper Sandler Headquarters",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11328332532": {
    "kind": "poi",
