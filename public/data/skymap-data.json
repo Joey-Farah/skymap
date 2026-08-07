@@ -24023,7 +24023,10 @@
    "group": "other",
    "lat": 44.976394,
    "lon": -93.272115,
-   "buildingId": "ids-center-1385236413"
+   "buildingId": "ids-center-1385236413",
+   "openingHours": "Mo-Fr 10:00-18:00",
+   "hoursSource": "https://ids-center.com/business/ny-jewelry/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-5955554289",

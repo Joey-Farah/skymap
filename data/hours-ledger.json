@@ -117,7 +117,8 @@
    "name": "The Seville",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2427534130": {
    "kind": "poi",
@@ -316,7 +317,8 @@
    "name": "Dreamgirls",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-7838159627": {
    "kind": "poi",
@@ -1087,7 +1089,8 @@
    "name": "NY Jewelry",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955577504": {
    "kind": "poi",
@@ -1102,7 +1105,8 @@
    "name": "H.W. Boutique",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955586677": {
    "kind": "poi",
@@ -1165,7 +1169,8 @@
    "name": "Midwest Motorcycle",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11248558001": {
    "kind": "poi",
@@ -1228,7 +1233,8 @@
    "name": "Smoke Shop",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12753315916": {
    "kind": "poi",
@@ -1363,21 +1369,24 @@
    "name": "Downtown Tobacco & Vape",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12921906730": {
    "kind": "poi",
    "name": "Centre Village Tobacco Store",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12921906762": {
    "kind": "poi",
    "name": "High 5 Tobacco",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12971774441": {
    "kind": "poi",

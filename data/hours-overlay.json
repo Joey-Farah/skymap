@@ -781,6 +781,13 @@
    "source": "https://in-dispensary.com/contact/",
    "checkedOn": "2026-08-07",
    "note": "Published under 'Standard Hours of Operation' on their own contact page, closed Sunday. Address 250 Second Ave South #245A geocodes to this POI exactly (0 m) — it is on the second floor of Commerce at the Crossing, inside the skyway. They also list dated holiday and event overrides (New Year's Day 11-5, a 4/20 sale 10-10, and others) which are explicitly stated to override the standard week; those are single dates rather than a recurring schedule and were not recorded."
+  },
+  "poi-5955554287": {
+   "name": "NY Jewelry",
+   "openingHours": "Mo-Fr 10:00-18:00",
+   "source": "https://ids-center.com/business/ny-jewelry/",
+   "checkedOn": "2026-08-07",
+   "note": "From the IDS Center's own merchant directory, which prints HOURS per tenant — the same landlord source that unlocked four Crystal Court POIs earlier in this pass. Closed weekends, stated. Address 80 South Eighth Street Suite 212; the geocode lands 46-49 m away on the tower's other entries (a Starbucks and a bank at the same street number), which is what a large building looks like rather than a mismatch."
   }
  },
  "skipped": {
@@ -2252,6 +2259,54 @@
    "name": "Sidewalk Gallery",
    "reason": "No first-party site and no usable listing under this name in downtown Minneapolis — search returns nothing that can be matched to this POI at all.",
    "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-2387569338": {
+   "name": "The Seville",
+   "reason": "CLOSED — and confirmed first-party rather than inferred. Its own site still loads and still has a CLUB HOURS table, but every one of the seven days now reads 'closed'. Press coverage from April 2026 reports staff were told the club was shutting indefinitely. Worth flagging separately: this POI probably should not be in the dataset at all.",
+   "source": "https://www.thesevilleclub.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-11248557998": {
+   "name": "Midwest Motorcycle",
+   "reason": "Closed. Midwest Motorcycle Rental & Tours at 215 Washington Ave N is marked closed on every listing that carries it, and no first-party site survives. Another POI worth reviewing for removal rather than for hours.",
+   "source": "(searched; listings mark it closed)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5955577506": {
+   "name": "H.W. Boutique",
+   "reason": "No first-party website; the only presence is a Facebook page (facebook.com/hwstilettos), and Facebook pages have proved unreadable throughout this pass — the Triesta Cafe one returned 'This content isn't available right now'. No hours reachable.",
+   "source": "https://www.facebook.com/hwstilettos/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-6780251057": {
+   "name": "Dreamgirls",
+   "reason": "No first-party site and no listing that can be matched to this POI — search under this name in downtown Minneapolis returns nothing usable. Given The Seville and Midwest Motorcycle both turned out to be closed, this one is also worth checking for removal.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12921906762": {
+   "name": "High 5 Tobacco",
+   "reason": "A skyway tobacco counter with no first-party website. Search returns only Yelp, Atly, Roadtrippers and puffingbird-style vape directories — aggregators, which have been wrong every time they could be checked in this pass. Nothing to verify against.",
+   "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12921848396": {
+   "name": "Downtown Tobacco & Vape",
+   "reason": "A skyway tobacco counter with no first-party website. Search returns only Yelp, Atly, Roadtrippers and puffingbird-style vape directories — aggregators, which have been wrong every time they could be checked in this pass. Nothing to verify against.",
+   "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12921906730": {
+   "name": "Centre Village Tobacco Store",
+   "reason": "A skyway tobacco counter with no first-party website. Search returns only Yelp, Atly, Roadtrippers and puffingbird-style vape directories — aggregators, which have been wrong every time they could be checked in this pass. Nothing to verify against.",
+   "source": "(searched; aggregators only)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12571886640": {
+   "name": "Smoke Shop",
+   "reason": "A skyway tobacco counter with no first-party website. Search returns only Yelp, Atly, Roadtrippers and puffingbird-style vape directories — aggregators, which have been wrong every time they could be checked in this pass. Nothing to verify against.",
+   "source": "(searched; aggregators only)",
    "checkedOn": "2026-08-07"
   }
  },
