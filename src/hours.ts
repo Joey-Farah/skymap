@@ -13,7 +13,15 @@ export function isClosingSoon(building: Building, when: Date, thresholdMin = 20)
   const minutes = when.getHours() * 60 + when.getMinutes();
   const h = building.hours[day];
   if (!h || minutes < h[0] || minutes >= h[1]) return false;
+  if (isAllDay(h)) return false; // a place that never closes is never closing soon
   return h[1] - minutes <= thresholdMin;
+}
+
+/** A day encoded as open from midnight to midnight — this codebase's
+ * representation of "never closes". parseOpeningHours maps `24/7` to
+ * exactly [0, 1440] on every day. */
+export function isAllDay(h: DayHours): boolean {
+  return !!h && h[0] === 0 && h[1] >= 1440;
 }
 
 export function formatMinute(min: number): string {
@@ -89,7 +97,7 @@ export function weeklyHoursRows(hours: DayHours[], when: Date): WeeklyHoursRow[]
       // elsewhere: in a table each name sits on its own row with room to
       // spare, and "Wednesday" is read without the beat of expanding "Wed".
       day: DAY_NAMES_FULL[d],
-      value: h ? `${formatMinute(h[0])}–${formatMinute(h[1])}` : "Closed",
+      value: !h ? "Closed" : isAllDay(h) ? "Open 24 hours" : `${formatMinute(h[0])}–${formatMinute(h[1])}`,
       closed: !h,
       today: d === today,
     };
@@ -132,6 +140,7 @@ export function closingSoonWarnings(
     if (!h) continue;
     const arrivalMin = arrival.getHours() * 60 + arrival.getMinutes();
     if (arrivalMin < h[0] || arrivalMin >= h[1]) continue; // not open on arrival
+    if (isAllDay(h)) continue; // never closes, so never closes soon after you arrive
     const minutesLeft = h[1] - arrivalMin;
     if (minutesLeft <= thresholdMin) {
       warnings.push({
@@ -152,6 +161,10 @@ export function statusFromHours(hours: DayHours[], when: Date): { open: boolean;
   const minutes = when.getHours() * 60 + when.getMinutes();
   const today = hours[day];
   if (today && minutes >= today[0] && minutes < today[1]) {
+    // 1440 formats as "12am", which at 11:45pm reads as fifteen minutes'
+    // notice for somewhere that never shuts — five downtown garages and
+    // The Nicollet Diner among them.
+    if (isAllDay(today)) return { open: true, label: "Open 24 hours" };
     return { open: true, label: `Open until ${formatMinute(today[1])}` };
   }
   if (today && minutes < today[0]) {
@@ -185,7 +198,7 @@ export function skywayAccessLabel(hours: DayHours[] | undefined, when: Date): st
   const minutes = when.getHours() * 60 + when.getMinutes();
   const today = hours[day];
   if (today && minutes >= today[0] && minutes < today[1]) {
-    return `Access until ${formatMinute(today[1])}`;
+    return isAllDay(today) ? "Access 24 hours" : `Access until ${formatMinute(today[1])}`;
   }
   if (today && minutes < today[0]) {
     return `Access from ${formatMinute(today[0])}`;

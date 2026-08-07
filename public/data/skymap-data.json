@@ -23234,7 +23234,10 @@
    "buildingId": "gateway-municipal-garage-81049104",
    "nearby": true,
    "website": "https://www.crookedpint.com/minneapolis/",
-   "logo": "crookedpint-com"
+   "logo": "crookedpint-com",
+   "openingHours": "Mo-Fr 11:00-24:00; Sa-Su 10:00-24:00",
+   "hoursSource": "https://www.crookedpint.com/minneapolis/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-3235588407",
@@ -23671,7 +23674,10 @@
    "buildingId": "gaviidae-common-156909893",
    "level": "1",
    "website": "https://www.freshii.com/",
-   "logo": "freshii-com"
+   "logo": "freshii-com",
+   "openingHours": "Mo-Su 09:00-17:00",
+   "hoursSource": "https://www.freshii.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-5955577511",
@@ -24030,7 +24036,10 @@
    "lon": -93.277617,
    "buildingId": "the-newell-1530645870",
    "website": "https://stringlinepictures.com/",
-   "logo": "stringlinepictures-com"
+   "logo": "stringlinepictures-com",
+   "openingHours": "Mo-Fr 09:00-17:00",
+   "hoursSource": "https://stringlinepictures.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-10270382209",
@@ -24080,7 +24089,10 @@
    "buildingId": "technical-building-89061902",
    "nearby": true,
    "website": "https://newhorizonacademy.net/",
-   "logo": "newhorizonacademy-net"
+   "logo": "newhorizonacademy-net",
+   "openingHours": "Mo-Fr 06:00-18:00",
+   "hoursSource": "https://newhorizonacademy.net/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-10943230875",
@@ -24170,7 +24182,10 @@
    "buildingId": "sheraton-minneapolis-downtown-convention-center-1394814185",
    "nearby": true,
    "website": "https://mplsontherox.com/",
-   "logo": "mplsontherox-com"
+   "logo": "mplsontherox-com",
+   "openingHours": "Mo-Su 16:00-26:00",
+   "hoursSource": "https://mplsontherox.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-11232656337",
@@ -24323,7 +24338,10 @@
    "buildingId": "t3-723284484",
    "nearby": true,
    "website": "https://www.bricksworthbeer.co/north-loop-home",
-   "logo": "bricksworthbeer-co"
+   "logo": "bricksworthbeer-co",
+   "openingHours": "Su-Th 11:00-23:00; Fr-Sa 11:00-24:00",
+   "hoursSource": "https://www.bricksworthbeer.co/north-loop-home",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12154494729",
@@ -24691,7 +24709,10 @@
    "buildingId": "us-bank-plaza-126015100",
    "level": "1",
    "website": "https://locations.cariboucoffee.com/us/mn/minneapolis/200-south-6th-street",
-   "logo": "locations-cariboucoffee-com"
+   "logo": "locations-cariboucoffee-com",
+   "openingHours": "Mo-Fr 06:00-16:00",
+   "hoursSource": "https://locations.cariboucoffee.com/us/mn/minneapolis",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12753315923",
@@ -24704,7 +24725,10 @@
    "buildingId": "us-bank-plaza-126015100",
    "level": "1",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-192.html",
-   "logo": "locations-jimmyjohns-com"
+   "logo": "locations-jimmyjohns-com",
+   "openingHours": "Mo-Fr 10:30-18:00",
+   "hoursSource": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-1885.html",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12753315924",
@@ -24744,7 +24768,10 @@
    "buildingId": "us-bank-plaza-126015100",
    "level": "0",
    "website": "https://locations.chipotle.com/mn/minneapolis/200-s-sixth-st",
-   "logo": "locations-chipotle-com"
+   "logo": "locations-chipotle-com",
+   "openingHours": "Mo-Fr 10:30-18:00",
+   "hoursSource": "https://locations.chipotle.com/mn/minneapolis/200-s-6th-st",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12754418101",
@@ -24756,7 +24783,10 @@
    "lon": -93.273735,
    "buildingId": "steelman-exchange-119539527",
    "website": "https://www.loopdentalmn.com/",
-   "logo": "loopdentalmn-com"
+   "logo": "loopdentalmn-com",
+   "openingHours": "Mo-Th 07:30-16:30; Fr 07:30-12:00",
+   "hoursSource": "https://www.loopdentalmn.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12768849145",
@@ -24782,7 +24812,10 @@
    "buildingId": "wells-fargo-550-407613510",
    "level": "1",
    "website": "https://locations.einsteinbros.com/us/mn/minneapolis/550-s-4th-street",
-   "logo": "locations-einsteinbros-com"
+   "logo": "locations-einsteinbros-com",
+   "openingHours": "Mo-Fr 06:00-14:00",
+   "hoursSource": "https://locations.einsteinbros.com/us/mn/minneapolis",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12768888510",
@@ -24901,7 +24934,10 @@
    "buildingId": "six-quebec-156912888",
    "level": "1",
    "website": "https://www.kadaimsp.com/",
-   "logo": "kadaimsp-com"
+   "logo": "kadaimsp-com",
+   "openingHours": "Tu 11:00-20:30; We-Sa 11:00-21:00; Su 11:00-20:30",
+   "hoursSource": "https://www.kadaimsp.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12862838545",
@@ -24965,7 +25001,10 @@
    "nearby": true,
    "level": "0",
    "website": "https://starbarbistro.com/",
-   "logo": "starbarbistro-com"
+   "logo": "starbarbistro-com",
+   "openingHours": "Mo-Th 06:30-22:00; Fr-Sa 06:30-23:00; Su 08:00-22:00",
+   "hoursSource": "https://starbarbistro.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12862838551",
@@ -25134,7 +25173,10 @@
    "buildingId": "metropolitan-lofts-81049075",
    "nearby": true,
    "website": "https://www.millerslandingseniorliving.com",
-   "logo": "millerslandingseniorliving-com"
+   "logo": "millerslandingseniorliving-com",
+   "openingHours": "Mo-Fr 08:00-16:30",
+   "hoursSource": "https://www.millerslandingseniorliving.com",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12914862886",
@@ -25182,7 +25224,10 @@
    "buildingId": "the-crossings-1411646515",
    "level": "1",
    "website": "https://foodeist.com/place/skywaywok",
-   "logo": "foodeist-com"
+   "logo": "foodeist-com",
+   "openingHours": "Mo-Fr 06:30-14:30",
+   "hoursSource": "https://foodeist.com/place/skywaywok",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12971797978",
@@ -25272,7 +25317,10 @@
    "buildingId": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "level": "1",
    "website": "https://www.wingscu.com/locations/minneapolis-rand-tower",
-   "logo": "wingscu-com"
+   "logo": "wingscu-com",
+   "openingHours": "Mo-Fr 08:30-16:30",
+   "hoursSource": "https://www.wingscu.com/locations/minneapolis-rand-tower",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13030049627",
@@ -25561,7 +25609,10 @@
    "buildingId": "deluxe-plaza-1462073358",
    "level": "1",
    "website": "https://ginellispizza.com/",
-   "logo": "ginellispizza-com"
+   "logo": "ginellispizza-com",
+   "openingHours": "Mo-Fr 07:45-15:00",
+   "hoursSource": "https://ginellispizza.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13410756394",
@@ -25574,7 +25625,10 @@
    "buildingId": "metro-apartments-156912887",
    "level": "0",
    "website": "https://www.hibachidaruma.com/",
-   "logo": "hibachidaruma-com"
+   "logo": "hibachidaruma-com",
+   "openingHours": "Mo-Fr 11:00-18:30; Sa 11:30-18:30",
+   "hoursSource": "https://www.hibachidaruma.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13451748944",
@@ -25815,7 +25869,10 @@
    "buildingId": "state-theatre-156912879",
    "nearby": true,
    "website": "https://www.parlaymn.com/",
-   "logo": "parlaymn-com"
+   "logo": "parlaymn-com",
+   "openingHours": "Mo 16:00-21:00; Th-Fr 16:00-21:00; Sa-Su 10:00-21:00",
+   "hoursSource": "https://www.parlaymn.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13634346631",
@@ -26632,7 +26689,10 @@
    "buildingId": "international-market-square-45498285",
    "nearby": true,
    "website": "https://www.puris.com/",
-   "logo": "puris-com"
+   "logo": "puris-com",
+   "openingHours": "Mo-Fr 08:00-17:00",
+   "hoursSource": "https://www.puris.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-9128515927",
@@ -26721,7 +26781,10 @@
    "buildingId": "lee-lofts-45758932",
    "nearby": true,
    "website": "https://stores.warbyparker.com/mn/minneapolis/113-n.-washington-ave.",
-   "logo": "stores-warbyparker-com"
+   "logo": "stores-warbyparker-com",
+   "openingHours": "Mo-Fr 11:00-19:00; Sa 10:00-19:00; Su 12:00-18:00",
+   "hoursSource": "https://stores.warbyparker.com/mn/minneapolis/113-n.-washington-ave.",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-11328332528",
@@ -26734,7 +26797,10 @@
    "buildingId": "intersect-apartments-1216920711",
    "nearby": true,
    "website": "https://wildflower.cc",
-   "logo": "wildflower-cc"
+   "logo": "wildflower-cc",
+   "openingHours": "Mo-Su 09:00-17:00",
+   "hoursSource": "https://wildflower.cc",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-11328332529",
@@ -27015,7 +27081,10 @@
    "buildingId": "gaviidae-common-156909893",
    "level": "1",
    "website": "https://silber.diamonds/",
-   "logo": "silber-diamonds"
+   "logo": "silber-diamonds",
+   "openingHours": "Tu 10:00-15:00; We 11:00-15:00; Th-Fr 10:00-15:00",
+   "hoursSource": "https://silber.diamonds/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12862838542",
@@ -27407,7 +27476,10 @@
    "lon": -93.274236,
    "buildingId": "free-spirit-building-78061942",
    "website": "https://facefoundrie.com/location/minneapolis-north-loop/",
-   "logo": "facefoundrie-com"
+   "logo": "facefoundrie-com",
+   "openingHours": "Mo-Th 09:00-20:00; Fr-Sa 08:00-20:00; Su 08:00-18:00",
+   "hoursSource": "https://facefoundrie.com/location/minneapolis-north-loop/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13945489024",
@@ -27555,7 +27627,10 @@
    "nearby": true,
    "level": "3",
    "website": "https://escapetheroom.com/minneapolis/",
-   "logo": "escapetheroom-com"
+   "logo": "escapetheroom-com",
+   "openingHours": "Mo-Su 11:30-21:30",
+   "hoursSource": "https://escapetheroom.com/minneapolis/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12754394002",
@@ -28655,7 +28730,10 @@
    "lon": -93.275218,
    "buildingId": "lasalle-plaza-461227727",
    "website": "https://www.goldenberglaw.com/",
-   "logo": "goldenberglaw-com"
+   "logo": "goldenberglaw-com",
+   "openingHours": "Mo-Fr 08:00-17:00",
+   "hoursSource": "https://www.goldenberglaw.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-14011118284",
@@ -28680,7 +28758,10 @@
    "buildingId": "deluxe-plaza-1462073358",
    "level": "1",
    "website": "https://www.workboxcompany.com/minneapolis/",
-   "logo": "workboxcompany-com"
+   "logo": "workboxcompany-com",
+   "openingHours": "Mo-Fr 09:00-17:00",
+   "hoursSource": "https://www.workboxcompany.com/minneapolis/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-14054455054",
@@ -28728,7 +28809,10 @@
    "buildingId": "canadian-pacific-plaza-62005000",
    "level": "1",
    "website": "https://www.takecarechiropractic.com/",
-   "logo": "takecarechiropractic-com"
+   "logo": "takecarechiropractic-com",
+   "openingHours": "Mo-We 07:30-15:00; Th 07:30-14:00; Fr 09:30-14:00",
+   "hoursSource": "https://www.takecarechiropractic.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13451748983",
@@ -28754,7 +28838,10 @@
    "buildingId": "kopp-hall-89061932",
    "nearby": true,
    "website": "https://reviving-roots.com/",
-   "logo": "reviving-roots-com"
+   "logo": "reviving-roots-com",
+   "openingHours": "Mo-Fr 12:00-18:00; Sa 10:00-13:00",
+   "hoursSource": "https://reviving-roots.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-14022958833",

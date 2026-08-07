@@ -139,6 +139,12 @@ export function resolvePoiHost<T extends HostCandidate>(
  * mapper typed — two of these in a lobby are two real facilities. */
 const GENERICALLY_NAMED = new Set(["elevator", "toilets"]);
 
+/** How far apart two same-name records inside one building can sit and still
+ * be the same place. Wider than the cross-building rule because sharing a
+ * building is itself evidence, and still well short of the 182m separating
+ * the closest genuine same-name pair in the extraction. */
+const SAME_BUILDING_MAX_METERS = 60;
+
 /**
  * Collapse a place that OSM holds twice — a node and a way for one shop,
  * or two nodes nobody merged — while leaving chain branches alone.
@@ -153,7 +159,7 @@ const GENERICALLY_NAMED = new Set(["elevator", "toilets"]);
  * saw first — in practice the more complete one, since the richer OSM
  * object tends to be the one that also carries the tags we query on.
  */
-export function dedupePois<T extends { name: string; category: string; lat: number; lon: number }>(
+export function dedupePois<T extends { name: string; category: string; lat: number; lon: number; buildingId?: string }>(
   pois: T[],
   maxMeters: number,
 ): T[] {
@@ -165,6 +171,20 @@ export function dedupePois<T extends { name: string; category: string; lat: numb
       continue;
     }
     const seen = byName.get(p.name);
+    // Inside one building the same name is far likelier to be one place
+    // mapped twice than two branches, so the cut is wider there. Gold Metal
+    // Flour is two 'sign' records 27m apart in Humboldt Annex — past the
+    // 25m rule, so the map drew two pins for one sign. Still bounded: a
+    // genuine pair of same-name branches in one large complex stays apart.
+    if (
+      seen?.some(
+        (q) =>
+          p.buildingId !== undefined &&
+          q.buildingId === p.buildingId &&
+          haversineMeters(p.lat, p.lon, q.lat, q.lon) <= SAME_BUILDING_MAX_METERS,
+      )
+    )
+      continue;
     if (seen?.some((q) => haversineMeters(p.lat, p.lon, q.lat, q.lon) <= maxMeters)) continue;
     if (seen) seen.push(p);
     else byName.set(p.name, [p]);

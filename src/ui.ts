@@ -336,6 +336,10 @@ export class BuildingCombo {
   clear() {
     this.selectedId = null;
     this.selectedPoi = null;
+    // Without this the `approach` getter goes on reporting a live outdoor
+    // walk for a field that no longer has anything selected, so a cleared
+    // From could still charge the next trip someone else's approach.
+    this.pickedCurrentLocation = false;
     this.input.value = "";
     this.hide();
   }

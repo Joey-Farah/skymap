@@ -1,0 +1,261 @@
+{
+  "_readme": [
+    "Curated opening hours for POIs OpenStreetMap doesn't carry.",
+    "",
+    "Every entry records where the hours came from and when they were checked, so a",
+    "stale or wrong entry can be traced and re-verified rather than argued about.",
+    "Applied to public/data/skymap-data.json by scripts/apply-hours-overlay.mjs, and",
+    "kept separate from the extraction so `npm run data:osm` can't silently drop it.",
+    "",
+    "Rules for adding an entry:",
+    "  - First-party sources only: the business's own site, or its own listing on its",
+    "    chain's locator. Another company's curated hours database is theirs, not ours.",
+    "  - If a page states two schedules that disagree, do not pick one. Leave it out",
+    "    and note it in `skipped` below. A confidently wrong 'Open' is worse than a",
+    "    blank line: it sends someone to a locked door.",
+    "  - `00:00-00:00` in schema.org means CLOSED that day. Omit the day; never",
+    "    translate it as open all day.",
+    "  - Values are OSM opening_hours syntax, the same grammar src/opening-hours.ts",
+    "    already parses for OSM-sourced hours.",
+    "",
+    "Contribute these upstream to OSM too — then the extraction picks them up and",
+    "this file shrinks instead of growing."
+  ],
+  "hours": {
+    "poi-3233781288": {
+      "name": "Crooked Pint Ale House",
+      "openingHours": "Mo-Fr 11:00-24:00; Sa-Su 10:00-24:00",
+      "source": "https://www.crookedpint.com/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-11211330419": {
+      "name": "On The Rox",
+      "openingHours": "Mo-Su 16:00-26:00",
+      "source": "https://mplsontherox.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Published as 16:00-02:00. Written as 26:00 — the OSM idiom for closing after midnight, and the only over-midnight form src/opening-hours.ts accepts."
+    },
+    "poi-5955577503": {
+      "name": "Freshii",
+      "openingHours": "Mo-Su 09:00-17:00",
+      "source": "https://www.freshii.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12753315923": {
+      "name": "Jimmy John's (Sixth & Marquette)",
+      "openingHours": "Mo-Fr 10:30-18:00",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-1885.html",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 00:00-00:00, i.e. closed — omitted rather than rendered as all-day."
+    },
+    "poi-12753315922": {
+      "name": "Caribou Coffee",
+      "openingHours": "Mo-Fr 06:00-16:00",
+      "source": "https://locations.cariboucoffee.com/us/mn/minneapolis",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12753315926": {
+      "name": "Chipotle",
+      "openingHours": "Mo-Fr 10:30-18:00",
+      "source": "https://locations.chipotle.com/mn/minneapolis/200-s-6th-st",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 00:00-00:00 (closed)."
+    },
+    "poi-12768849147": {
+      "name": "Einstein Bros Bagels",
+      "openingHours": "Mo-Fr 06:00-14:00",
+      "source": "https://locations.einsteinbros.com/us/mn/minneapolis",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 00:00-00:00 (closed)."
+    },
+    "poi-12862838550": {
+      "name": "Star Bar & Bistro",
+      "openingHours": "Mo-Th 06:30-22:00; Fr-Sa 06:30-23:00; Su 08:00-22:00",
+      "source": "https://starbarbistro.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12971774443": {
+      "name": "Skyway Wok",
+      "openingHours": "Mo-Fr 06:30-14:30",
+      "source": "https://foodeist.com/place/skywaywok",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13410756394": {
+      "name": "Hibachi Daruma",
+      "openingHours": "Mo-Fr 11:00-18:30; Sa 11:30-18:30",
+      "source": "https://www.hibachidaruma.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12038736442": {
+      "name": "Bricksworth Beer Co. — North Loop",
+      "openingHours": "Su-Th 11:00-23:00; Fr-Sa 11:00-24:00",
+      "source": "https://www.bricksworthbeer.co/north-loop-home",
+      "checkedOn": "2026-08-06",
+      "note": "Fr/Sa published as 11:00-23:59; recorded as 24:00, the OSM idiom for close of day."
+    },
+    "poi-13630053263": {
+      "name": "Parlay",
+      "openingHours": "Mo 16:00-21:00; Th-Fr 16:00-21:00; Sa-Su 10:00-21:00",
+      "source": "https://www.parlaymn.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Tu/We published as 00:00-00:00 (closed)."
+    },
+    "poi-9509044247": {
+      "name": "Stringline Pictures",
+      "openingHours": "Mo-Fr 09:00-17:00",
+      "source": "https://stringlinepictures.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-10925436338": {
+      "name": "New Horizon Academy",
+      "openingHours": "Mo-Fr 06:00-18:00",
+      "source": "https://newhorizonacademy.net/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12754418101": {
+      "name": "Loop Dental",
+      "openingHours": "Mo-Th 07:30-16:30; Fr 07:30-12:00",
+      "source": "https://www.loopdentalmn.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12862838544": {
+      "name": "Kadai Indian Kitchen",
+      "openingHours": "Tu 11:00-20:30; We-Sa 11:00-21:00; Su 11:00-20:30",
+      "source": "https://www.kadaimsp.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Monday absent from the published schedule, i.e. closed."
+    },
+    "poi-12911650736": {
+      "name": "Millers Landing Senior Living",
+      "openingHours": "Mo-Fr 08:00-16:30",
+      "source": "https://www.millerslandingseniorliving.com",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 'by appointment only' — omitted rather than rendered as open."
+    },
+    "poi-13030049626": {
+      "name": "Wings Financial Credit Union",
+      "openingHours": "Mo-Fr 08:30-16:30",
+      "source": "https://www.wingscu.com/locations/minneapolis-rand-tower",
+      "checkedOn": "2026-08-06",
+      "note": "Published as '08: 30: 00-16: 30: 00'; normalised."
+    },
+    "poi-13410756392": {
+      "name": "Ginelli's Pizza",
+      "openingHours": "Mo-Fr 07:45-15:00",
+      "source": "https://ginellispizza.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-9128515926": {
+      "name": "PURIS",
+      "openingHours": "Mo-Fr 08:00-17:00",
+      "source": "https://www.puris.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-11298730912": {
+      "name": "Warby Parker",
+      "openingHours": "Mo-Fr 11:00-19:00; Sa 10:00-19:00; Su 12:00-18:00",
+      "source": "https://stores.warbyparker.com/mn/minneapolis/113-n.-washington-ave.",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-11328332528": {
+      "name": "Wildflower",
+      "openingHours": "Mo-Su 09:00-17:00",
+      "source": "https://wildflower.cc",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12862806767": {
+      "name": "Silber Fine Jewlery",
+      "openingHours": "Tu 10:00-15:00; We 11:00-15:00; Th-Fr 10:00-15:00",
+      "source": "https://silber.diamonds/",
+      "checkedOn": "2026-08-06",
+      "note": "Mo/Sa/Su published as empty, i.e. closed."
+    },
+    "poi-13823736881": {
+      "name": "Face Foundrie",
+      "openingHours": "Mo-Th 09:00-20:00; Fr-Sa 08:00-20:00; Su 08:00-18:00",
+      "source": "https://facefoundrie.com/location/minneapolis-north-loop/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-7294501323": {
+      "name": "Escape The Room",
+      "openingHours": "Mo-Su 11:30-21:30",
+      "source": "https://escapetheroom.com/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-14010993858": {
+      "name": "Goldenberg Lauricella",
+      "openingHours": "Mo-Fr 08:00-17:00",
+      "source": "https://www.goldenberglaw.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-14022958821": {
+      "name": "Workbox",
+      "openingHours": "Mo-Fr 09:00-17:00",
+      "source": "https://www.workboxcompany.com/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13030049621": {
+      "name": "Take Care Chiropractic & Wellness",
+      "openingHours": "Mo-We 07:30-15:00; Th 07:30-14:00; Fr 09:30-14:00",
+      "source": "https://www.takecarechiropractic.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Published without colons (0730-1500); normalised."
+    },
+    "poi-13639106473": {
+      "name": "Reviving Roots Therapy & Wellness",
+      "openingHours": "Mo-Fr 12:00-18:00; Sa 10:00-13:00",
+      "source": "https://reviving-roots.com/",
+      "checkedOn": "2026-08-06"
+    }
+  },
+  "skipped": {
+    "poi-2427534130": {
+      "name": "The Brother's Deli",
+      "reason": "Three different schedules on one site: JSON-LD says Tu-Fr 07:30-13:30, the main section Mo-Th 07:30-13:30, the footer Mo-Fr 10:30-13:30. No way to tell which is current.",
+      "source": "https://www.thebrothersdeli.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-4087475806": {
+      "name": "Monello",
+      "reason": "schema.org openingHours present but every value is an empty string; no hours in the visible page either.",
+      "source": "https://www.monellompls.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-6560546760": {
+      "name": "Jimmy John's (third downtown location)",
+      "reason": "Locator page returns the same store record for several of our POI ids; can't tell which physical shop this id is without disambiguating on address.",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13410756379": {
+      "name": "Jimmy John's (Nicollet)",
+      "reason": "Same ambiguity as above.",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-7838159628": {
+      "name": "Breakfast Bar",
+      "reason": "Split lunch and evening service (Fr-Su 09:00-16:00 plus Tu-Th 19:00-23:00 and Fr/Sa 21:00-01:00). src/opening-hours.ts can't express two ranges in one day, and recording only one half would hide the other.",
+      "source": "https://www.breakfastbarofmn.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13451748992": {
+      "name": "Kinderberry Hill",
+      "reason": "Publishes '7:00am - 6:00pm' with no days at all. Likely weekdays for a childcare centre, but that's an assumption, not the page.",
+      "source": "https://www.kinderberryhill.com/schools/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12754419101": {
+      "name": "Grace Loves Lace",
+      "reason": "Nine different schedules in the page's JSON-LD — it lists every showroom worldwide with no way to tell which is Minneapolis.",
+      "source": "https://graceloveslace.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-14011118284": {
+      "name": "Kemmitt, Sanford & Kramer",
+      "reason": "schema.org says Mo-Su 00:00-23:59, i.e. open 24/7. That's a boilerplate default, not a law firm's real hours.",
+      "source": "https://ksk.law/",
+      "checkedOn": "2026-08-06"
+    }
+  }
+}

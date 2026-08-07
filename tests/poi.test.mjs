@@ -175,3 +175,31 @@ test("the first occurrence is the one kept", () => {
   const second = at("CRAVE", 44.975, -93.27);
   assert.equal(dedupePois([first, second], 25)[0].id, first.id);
 });
+
+test("the same name inside one building is one place, however far apart the pins", () => {
+  // Gold Metal Flour is mapped twice as two 'sign' records 27m apart in
+  // Humboldt Annex — just past the 25m distance rule, so both survived and
+  // the map drew two pins for one sign. Across the whole dataset only five
+  // name+building groups exist and the other four are "Elevator", which is
+  // generically named and exempt, so this rule collapses exactly the real
+  // duplicate and nothing else.
+  const at = (name, lat, lon, buildingId, category = "sign") => ({
+    id: `${name}-${lat}`, name, category, lat, lon, buildingId,
+  });
+  // ~27m apart, the real separation — deliberately past the 25m rule.
+  const same = dedupePois([at("Gold Metal Flour", 44.98, -93.27, "humboldt"),
+                           at("Gold Metal Flour", 44.98027, -93.27, "humboldt")], 25);
+  assert.equal(same.length, 1, "one sign, one pin");
+
+  // Two branches of a chain in DIFFERENT buildings both survive, however
+  // close — Classic Cookie Co. and Sorrento Cucina are real pairs 44m and
+  // 53m apart in neighbouring buildings.
+  const branches = dedupePois([at("Sorrento Cucina", 44.98, -93.27, "emery", "fast_food"),
+                               at("Sorrento Cucina", 44.98047, -93.27, "mcknight", "fast_food")], 25);
+  assert.equal(branches.length, 2, "different buildings are different branches");
+
+  // Generic names stay exempt: two lifts in one lobby are two lifts.
+  const lifts = dedupePois([at("Elevator", 44.98, -93.27, "b", "elevator"),
+                            at("Elevator", 44.98, -93.27, "b", "elevator")], 25);
+  assert.equal(lifts.length, 2);
+});
