@@ -119,7 +119,15 @@ real hardware must be verified *before* submitting — the withdraw path
 (`PATCH /v1/reviewSubmissions/{id}` `{canceled: true}`) only exists until
 review completes.
 
-## 1.3 — submitting without a device walk (Joey's call, 2026-08-06)
+## 1.4 — prepared, NOT submitted (2026-08-07)
+
+`MARKETING_VERSION` is 1.4. Eight user-visible bugs fixed, found by two
+fresh-context sweeps. Build goes to TestFlight; **Joey submits it himself**
+after walking it. 1.3 was still WAITING_FOR_REVIEW ~15 hours after
+submission, so 1.2's one-hour approval was not the new normal — there is
+time to test before sending this one.
+
+## 1.3 — submitted without a device walk (Joey's call, 2026-08-06)
 
 `MARKETING_VERSION` is 1.3. Screenshots recaptured against the six-chip row.
 
@@ -155,6 +163,20 @@ you actually want to know.
 • Route start and end points now land on the actual skyway door.
 • Simplified the filters: "Food" now covers restaurants and convenience
   stores, and shops and services are combined under "Misc."
+```
+
+## What's New — 1.4
+
+```
+Better routes, and a lot of small things that were quietly wrong.
+
+• Routes are smarter about the walk inside each building, not just the bridges between them — most trips are now shorter, and the longest are several minutes shorter.
+• Places with accents or apostrophes in their names — Pizza Lucé, Fogo de Chão, Jalapeño Mexican Grill, Tom's Watch Bar — can now be found by typing them however you like.
+• Somewhere open around the clock now says "Open 24 hours" instead of claiming it closes at midnight.
+• The Government Plaza and Warehouse District light-rail stations are searchable.
+• "You've arrived" no longer appears while you're still walking.
+• Starting a second trip now routes from where you actually are, instead of where your last trip began.
+• Opening hours for more restaurants, shops and services, and fewer places whose hours were dropped over a stray space.
 ```
 
 ## What's New — 1.3
