@@ -431,6 +431,13 @@
       "source": "https://www.losocampoexpress.com/",
       "checkedOn": "2026-08-07",
       "note": "Own site, 40 S Seventh St Ste 203 — matches City Center. Aggregator summaries claimed 9am-3pm; the restaurant's own page says 11am-2:30pm, so the first-party figure is the one recorded."
+    },
+    "poi-12634128533": {
+      "name": "Salt & Flour Kitchen",
+      "openingHours": "We-Th 15:00-21:00; Fr-Sa 15:00-22:00; Su 15:00-21:00",
+      "source": "https://saltandflourkitchen.com/",
+      "checkedOn": "2026-08-07",
+      "note": "350 North 5th Street, exactly our host building. The page renders hour values in one column and day names in another; read semantically rather than paired by position. Mon and Tue published as Closed."
     }
   },
   "skipped": {

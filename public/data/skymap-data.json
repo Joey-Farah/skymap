@@ -24658,7 +24658,10 @@
    "group": "food",
    "lat": 44.982736,
    "lon": -93.276383,
-   "buildingId": "north-loop-green-commercial-1281801622"
+   "buildingId": "north-loop-green-commercial-1281801622",
+   "openingHours": "We-Th 15:00-21:00; Fr-Sa 15:00-22:00; Su 15:00-21:00",
+   "hoursSource": "https://saltandflourkitchen.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12634128534",
