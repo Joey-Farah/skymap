@@ -759,6 +759,30 @@
       "reason": "Mother Dough's locations page lists Maison Margaux at 224 N 1st St as COMING SOON — it has not opened, so there are no hours to publish. Possible premature POI rather than a missing-hours one.",
       "source": "https://motherdoughbakery.com/locations",
       "checkedOn": "2026-08-07"
+    },
+    "poi-12862838549": {
+      "name": "Krona Cafe",
+      "reason": "Northstar Center's own site lists this tenant with a description but publishes no hours on the directory page, and its per-tenant menu pages return HTTP 401 (password-protected). Building-directory route attempted and blocked, not merely absent.",
+      "source": "https://www.northstarcenterminneapolis.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12862838551": {
+      "name": "Walkin Dog",
+      "reason": "Northstar Center's own site lists this tenant with a description but publishes no hours on the directory page, and its per-tenant menu pages return HTTP 401 (password-protected). Building-directory route attempted and blocked, not merely absent.",
+      "source": "https://www.northstarcenterminneapolis.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12862838552": {
+      "name": "Northstar Cafeteria",
+      "reason": "Northstar Center's own site lists this tenant with a description but publishes no hours on the directory page, and its per-tenant menu pages return HTTP 401 (password-protected). Building-directory route attempted and blocked, not merely absent.",
+      "source": "https://www.northstarcenterminneapolis.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12862838553": {
+      "name": "General Store",
+      "reason": "Northstar Center's own site lists this tenant with a description but publishes no hours on the directory page, and its per-tenant menu pages return HTTP 401 (password-protected). Building-directory route attempted and blocked, not merely absent.",
+      "source": "https://www.northstarcenterminneapolis.com/",
+      "checkedOn": "2026-08-07"
     }
   }
 }
