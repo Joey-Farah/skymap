@@ -24380,7 +24380,10 @@
    "buildingId": "free-spirit-building-78061942",
    "nearby": true,
    "website": "https://publicstorage.com/",
-   "logo": "publicstorage-com"
+   "logo": "publicstorage-com",
+   "openingHours": "Mo-Fr 09:30-18:00; Sa-Su 09:30-17:00",
+   "hoursSource": "https://www.publicstorage.com/self-storage-mn-minneapolis/5241.html",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12754418501",
@@ -24417,7 +24420,10 @@
    "buildingId": "5th-street-ramp-b-30062750",
    "nearby": true,
    "website": "https://publicstorage.com/",
-   "logo": "publicstorage-com"
+   "logo": "publicstorage-com",
+   "openingHours": "Mo-Fr 06:00-18:00; Sa-Su 06:00-17:00",
+   "hoursSource": "https://www.publicstorage.com/self-storage-mn-minneapolis/2494.html",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12754418802",

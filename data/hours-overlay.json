@@ -697,6 +697,20 @@
    "source": "https://locations.massageenvy.com/minnesota/minneapolis/321-s-washington-ave-.html",
    "checkedOn": "2026-08-07",
    "note": "The page shows only 'Open today 10:00 AM - 5:00 PM' until that line is clicked, which reveals the week — five different closing times across seven days, none of which a live-status line would have told you. Address 321 S. Washington Ave geocodes 19 m from this POI, and it is the chain's only Minneapolis location."
+  },
+  "poi-12754418102": {
+   "name": "Public Storage (425 Washington Ave N)",
+   "openingHours": "Mo-Fr 09:30-18:00; Sa-Su 09:30-17:00",
+   "source": "https://www.publicstorage.com/self-storage-mn-minneapolis/5241.html",
+   "checkedOn": "2026-08-07",
+   "note": "Published as 'Property Open'. Matched by geocode, which mattered: our two Public Storage POIs turned out to be crossed relative to the obvious reading of the listing order — this one is 425 Washington Ave N at 0 m, not the 424 N 3rd Ave facility 395 m away."
+  },
+  "poi-12754418701": {
+   "name": "Public Storage (424 N 3rd Ave)",
+   "openingHours": "Mo-Fr 06:00-18:00; Sa-Su 06:00-17:00",
+   "source": "https://www.publicstorage.com/self-storage-mn-minneapolis/2494.html",
+   "checkedOn": "2026-08-07",
+   "note": "Published as 'Property Open'; 11 m from this POI. Opens at 6:00 AM against the other Minneapolis branch's 9:30 AM — three and a half hours apart on the same chain, which is why branch hours are never carried across."
   }
  },
  "skipped": {
@@ -1418,6 +1432,48 @@
    "name": "FedEx Office",
    "reason": "FedEx's own locator lists three Print & Ship Centers in Minneapolis — 1001 Marquette Ave (Hilton), 1300 Nicollet Mall (Hyatt Regency) and 1430 W Lake St — and none is at this POI. The nearest, 1001 Marquette, geocodes 306-369 m away and 1300 Nicollet Mall 772 m away. The skyway store appears to have closed; its hours were not borrowed from a neighbour.",
    "source": "https://local.fedex.com/en-us/mn/minneapolis",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-2071078928": {
+   "name": "Exosite",
+   "reason": "An industrial IoT software company. Rendered site (8,764 chars) is product, news and 'Contact Us / Schedule a Demo' — no opening hours and no public counter.",
+   "source": "https://www.exosite.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-3067586077": {
+   "name": "BBDO Minneapolis",
+   "reason": "bbdompls.com redirects to bbdomw.com, the agency's surviving site, which is a campaign portfolio with no office hours. The Minneapolis-specific site no longer exists separately.",
+   "source": "https://bbdompls.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-4620068026": {
+   "name": "Goal Pyramid",
+   "reason": "A goal-setting web app, not a place — its site (446 chars) describes the product and has no premises hours.",
+   "source": "https://goalpyramid.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12870055620": {
+   "name": "Clientek",
+   "reason": "Software consultancy. Rendered site (5,053 chars) covers services and an intro-call scheduler; no opening hours.",
+   "source": "https://www.clientek.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13713067309": {
+   "name": "Ascent Solutions",
+   "reason": "Microsoft security consultancy. Rendered site (2,343 chars) has services, careers and an emergency-help line but no opening hours.",
+   "source": "https://www.meetascent.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13713067312": {
+   "name": "US Solar",
+   "reason": "Community-solar subscription company. Rendered site (4,184 chars) is consumer sign-up flow; no office hours.",
+   "source": "https://www.us-solar.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13134637745": {
+   "name": "Alta Planning + Design",
+   "reason": "Planning and design firm. Rendered site (2,917 chars) is about/work/careers/contact with no opening hours.",
+   "source": "https://altago.com/",
    "checkedOn": "2026-08-07"
   }
  }
