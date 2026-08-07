@@ -12180,28 +12180,8 @@
      44.978756
     ]
    ],
-   "hours": [
-    [
-     600,
-     1020
-    ],
-    null,
-    null,
-    null,
-    [
-     600,
-     960
-    ],
-    [
-     600,
-     960
-    ],
-    [
-     600,
-     1020
-    ]
-   ],
-   "hoursNote": "Building hours from OSM (not skyway-specific).",
+   "hours": null,
+   "hoursNote": "OSM publishes hours for the venue here, not for walking through.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Mill%20City%20Museum-20070704.jpg?width=640",
     "attribution": "quaziefoto from Ann Arbor · CC BY 2.0",
@@ -15162,37 +15142,8 @@
      44.984926
     ]
    ],
-   "hours": [
-    [
-     660,
-     1260
-    ],
-    [
-     660,
-     1260
-    ],
-    [
-     660,
-     1260
-    ],
-    [
-     660,
-     1260
-    ],
-    [
-     660,
-     1260
-    ],
-    [
-     660,
-     1320
-    ],
-    [
-     660,
-     1320
-    ]
-   ],
-   "hoursNote": "Building hours from OSM (not skyway-specific)."
+   "hours": null,
+   "hoursNote": "OSM publishes hours for the venue here, not for walking through."
   },
   {
    "id": "north-loop-green-360-1281792415",
@@ -16210,37 +16161,8 @@
      44.979899
     ]
    ],
-   "hours": [
-    [
-     720,
-     1080
-    ],
-    [
-     1140,
-     1320
-    ],
-    [
-     1140,
-     1320
-    ],
-    [
-     1140,
-     1320
-    ],
-    [
-     360,
-     1320
-    ],
-    [
-     360,
-     1320
-    ],
-    [
-     420,
-     1200
-    ]
-   ],
-   "hoursNote": "Building hours from OSM (not skyway-specific)."
+   "hours": null,
+   "hoursNote": "OSM publishes hours for the venue here, not for walking through."
   },
   {
    "id": "deluxe-plaza-1462073358",

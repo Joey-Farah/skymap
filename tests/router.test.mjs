@@ -933,3 +933,32 @@ test("an overlay entry may only outrank OSM when it says so, with a reason", () 
     );
   }
 });
+
+test("hours retracted as not-an-access-claim are actually gone from the dataset", () => {
+  // OSM's plain `opening_hours` on a building means "when this venue does
+  // its business". For most downtown towers that coincides with when you
+  // can walk in, which is why the extractor accepts it. For a museum it is
+  // ticketing hours, for a food hall it is service hours, for a condo it is
+  // whatever amenity got tagged — none of which is a statement about
+  // passing through. Routing on those is the same mistake DEFAULT_HOURS
+  // made: a weaker claim promoted to a stronger one.
+  //
+  // Retraction is per-building and must say why, so the judgement is
+  // reviewable rather than a silent category ban — plenty of residential
+  // and venue buildings do publish real access windows.
+  const overlay = JSON.parse(readFileSync("data/hours-overlay.json", "utf8"));
+  const byId = new Map(live.buildings.map((b) => [b.id, b]));
+  for (const [id, entry] of Object.entries(overlay.notAccessHours ?? {})) {
+    const building = byId.get(id);
+    assert.ok(building, `${id} (${entry.name}): no such building`);
+    assert.ok(
+      entry.reason && entry.reason.length > 40,
+      `${id} retracts hours without explaining why they aren't access hours`,
+    );
+    assert.equal(
+      building.hours,
+      null,
+      `${id} (${entry.name}) is retracted but still ships hours — rerun apply-hours-overlay`,
+    );
+  }
+});

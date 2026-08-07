@@ -799,6 +799,23 @@
    "note": "The same handbook is the source for 111 Washington Square, which needed no override because OSM had no hours for it."
   }
  },
+ "notAccessHours": {
+  "mill-city-museum-157035918": {
+   "name": "Mill City Museum",
+   "reason": "OSM opening_hours here is the museum's ticketed visiting schedule — closed Monday through Wednesday, which is a museum's week, not a building's. The skyway door is not a claim this tag makes.",
+   "checkedOn": "2026-08-07"
+  },
+  "graze-food-hall-by-travail-1223123290": {
+   "name": "Graze Food Hall by Travail",
+   "reason": "OSM opening_hours here is the food hall's service window (11:00 daily). A building whose doors are described as opening at 11am is being described as a restaurant, not as a route through.",
+   "checkedOn": "2026-08-07"
+  },
+  "the-crossings-1411646515": {
+   "name": "The Crossings",
+   "reason": "OSM opening_hours here reads 19:00-22:00 Monday to Wednesday but 06:00-22:00 Thursday and Friday, which cannot describe access to a residential building — residents would be locked out all day midweek. It is some amenity's schedule.",
+   "checkedOn": "2026-08-07"
+  }
+ },
  "skipped": {
   "poi-4087475806": {
    "name": "Monello",

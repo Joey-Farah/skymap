@@ -92,7 +92,32 @@ for (const [id, entry] of Object.entries(overlay.hours)) {
   applied++;
 }
 
+// Retractions run after the additions above, so a building can never be
+// both given curated hours and stripped of them in the same pass — if an
+// operator ever publishes a real access window for one of these, its
+// `hours` entry lands first and the retraction below is what has to be
+// removed, which the mismatch reported here makes obvious.
+let retracted = 0;
+for (const [id, entry] of Object.entries(overlay.notAccessHours ?? {})) {
+  const building = buildingsById.get(id);
+  if (!building) {
+    problems.push(`${id} (${entry.name}): no such building — id changed or the building was removed`);
+    continue;
+  }
+  if (!entry.reason) {
+    problems.push(`${id} (${entry.name}): retracted without saying why it isn't an access claim`);
+    continue;
+  }
+  if (building.hours === null) continue; // idempotent re-run, or OSM dropped the tag
+  building.hours = null;
+  building.hoursNote = "OSM publishes hours for the venue here, not for walking through.";
+  delete building.hoursSource;
+  delete building.hoursCheckedOn;
+  retracted++;
+}
+
 console.log(`applied ${applied} of ${Object.keys(overlay.hours).length} overlay entries`);
+console.log(`retracted (OSM hours that were never an access claim): ${retracted}`);
 console.log(`skipped (recorded, deliberately not applied): ${Object.keys(overlay.skipped ?? {}).length}`);
 for (const p of problems) console.log(`  ! ${p}`);
 
