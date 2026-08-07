@@ -1969,6 +1969,54 @@
    "reason": "steelmanexchange.com renders 84 characters: 'We're under construction. Please check back for an update soon.' A placeholder rather than a dead domain, so worth retrying on a later pass.",
    "source": "https://steelmanexchange.com/",
    "checkedOn": "2026-08-07"
+  },
+  "33-south-sixth-27346721": {
+   "name": "33 South Sixth",
+   "reason": "BLOCKED, not empty. City Center runs a real tenant handbook at 33southsixthcitycenter.com with Security pages for building access and after-hours access — exactly where Washington Square's hours lived — but both redirect to 'Please sign in with your ETS login'. The hours very likely exist; they are behind tenant authentication we do not have.",
+   "source": "https://33southsixthcitycenter.com/main.cfm?sid=security&pid=baccess",
+   "checkedOn": "2026-08-07"
+  },
+  "city-of-lakes-building-45452110": {
+   "name": "City of Lakes Building",
+   "reason": "A City of Minneapolis office building with no site of its own. minneapolismn.gov's building-locations page does publish real hours — Public Service Building and City Hall are both 'Open to the public 6 a.m. - 6 p.m. Monday - Friday' — but it lists only those two and does not name City of Lakes at all. Nothing to borrow from, and the two named buildings already carry OSM hours.",
+   "source": "https://www.minneapolismn.gov/contact-us/building-locations/",
+   "checkedOn": "2026-08-07"
+  },
+  "lee-lofts-45758932": {
+   "name": "Lee Lofts",
+   "reason": "Residential despite OSM filing it under category 'office' — the name gives it away, and the category mismatch is worth noting separately. An apartment or loft building is entered with a resident key rather than during a published window, so there are no public opening hours to record. Same structural answer as the seventeen buildings OSM does label residential; sampled and confirmed on that pass (4marq.com now a GoDaddy auction, rockislandlofts.com leasing marketing only).",
+   "source": "(structural; category mismatch noted)",
+   "checkedOn": "2026-08-07"
+  },
+  "washburn-lofts-101549023": {
+   "name": "Washburn Lofts",
+   "reason": "Residential despite OSM filing it under category 'office' — the name gives it away, and the category mismatch is worth noting separately. An apartment or loft building is entered with a resident key rather than during a published window, so there are no public opening hours to record. Same structural answer as the seventeen buildings OSM does label residential; sampled and confirmed on that pass (4marq.com now a GoDaddy auction, rockislandlofts.com leasing marketing only).",
+   "source": "(structural; category mismatch noted)",
+   "checkedOn": "2026-08-07"
+  },
+  "dock-street-apartments-198929965": {
+   "name": "Dock Street Apartments",
+   "reason": "Residential despite OSM filing it under category 'office' — the name gives it away, and the category mismatch is worth noting separately. An apartment or loft building is entered with a resident key rather than during a published window, so there are no public opening hours to record. Same structural answer as the seventeen buildings OSM does label residential; sampled and confirmed on that pass (4marq.com now a GoDaddy auction, rockislandlofts.com leasing marketing only).",
+   "source": "(structural; category mismatch noted)",
+   "checkedOn": "2026-08-07"
+  },
+  "lasalle-apartments-461227722": {
+   "name": "LaSalle Apartments",
+   "reason": "Residential despite OSM filing it under category 'office' — the name gives it away, and the category mismatch is worth noting separately. An apartment or loft building is entered with a resident key rather than during a published window, so there are no public opening hours to record. Same structural answer as the seventeen buildings OSM does label residential; sampled and confirmed on that pass (4marq.com now a GoDaddy auction, rockislandlofts.com leasing marketing only).",
+   "source": "(structural; category mismatch noted)",
+   "checkedOn": "2026-08-07"
+  },
+  "aster-house-125437510": {
+   "name": "Aster House",
+   "reason": "Residential despite OSM filing it under category 'office' — the name gives it away, and the category mismatch is worth noting separately. An apartment or loft building is entered with a resident key rather than during a published window, so there are no public opening hours to record. Same structural answer as the seventeen buildings OSM does label residential; sampled and confirmed on that pass (4marq.com now a GoDaddy auction, rockislandlofts.com leasing marketing only).",
+   "source": "(structural; category mismatch noted)",
+   "checkedOn": "2026-08-07"
+  },
+  "the-newell-1530645870": {
+   "name": "The Newell",
+   "reason": "Residential despite OSM filing it under category 'office' — the name gives it away, and the category mismatch is worth noting separately. An apartment or loft building is entered with a resident key rather than during a published window, so there are no public opening hours to record. Same structural answer as the seventeen buildings OSM does label residential; sampled and confirmed on that pass (4marq.com now a GoDaddy auction, rockislandlofts.com leasing marketing only).",
+   "source": "(structural; category mismatch noted)",
+   "checkedOn": "2026-08-07"
   }
  },
  "conflicts": {

@@ -2164,7 +2164,7 @@
    "category": "office",
    "address": "33 South 6th Street",
    "website": null,
-   "status": "none",
+   "status": "blocked",
    "note": "Own tenant portal (33southsixthcitycenter.com) publishes no skyway or building access hours.",
    "checkedOn": "2026-08-07"
   },
@@ -2270,7 +2270,8 @@
    "category": "office",
    "address": "309 2nd Avenue South",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "grain-exchange-main-building-45452111": {
    "kind": "building",
@@ -2323,7 +2324,8 @@
    "category": "office",
    "address": "280 2nd Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "radisson-red-minneapolis-downtown-60613336": {
    "kind": "building",
@@ -2534,7 +2536,8 @@
    "category": "office",
    "address": "700 South 2nd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "juvenile-justice-center-101549026": {
    "kind": "building",
@@ -2586,7 +2589,8 @@
    "category": "office",
    "address": "25 Main Street Southeast",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "riverplace-125437526": {
    "kind": "building",
@@ -2725,7 +2729,8 @@
    "category": "office",
    "address": "337 Washington Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "elevate-apartments-220494794": {
    "kind": "building",
@@ -2844,7 +2849,8 @@
    "category": "office",
    "address": "36 South 9th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "lasalle-plaza-461227727": {
    "kind": "building",
@@ -2995,7 +3001,8 @@
    "category": "office",
    "address": "300 6th Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   }
  }
 }
