@@ -718,6 +718,13 @@
    "source": "https://www.hirshfields.com/store-locator/",
    "checkedOn": "2026-08-07",
    "note": "Hirshfield's runs TWO stores 51 m apart on the same street with different hours: the Contractor Service Center at 725 2nd Ave N opens 6:30AM, and this Design Resource Showroom at 721 opens 8:00AM and closes 4:30 rather than 4:00. Ours matches the showroom by exact name and address (8 m). Picking the nearer-looking of two same-brand entries would have been wrong by ninety minutes at the start of every weekday. Closed weekends, which the locator states. Reachable only via /store-locator/ — the /locations/ path the nav implies is a 404."
+  },
+  "poi-1352105236": {
+   "name": "Flutter Bridal Co.",
+   "openingHours": "Mo 10:00-18:00; Th-Fr 10:00-18:00; Sa 09:00-18:00; Su 11:00-16:00",
+   "source": "https://www.flutterbridalco.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Closed Tuesday AND Wednesday, which their table states outright. They also run a Dallas store with a different week on the same page, so the Minneapolis column was taken specifically. Address 43 SE Main St Suite 141 geocodes 41-51 m from this POI — the building holds several suites and the pin lands on neighbouring tenants."
   }
  },
  "skipped": {
@@ -1619,6 +1626,36 @@
    "name": "Déjà Vu",
    "reason": "dejavu.com/locations/minneapolis/ renders 128 characters: 'Maintenance mode is on. Site will be available soon.' Nothing is published to read right now — this is a temporary state rather than a permanent absence, so it is worth retrying on a later pass.",
    "source": "https://dejavu.com/locations/minneapolis/",
+   "checkedOn": "2026-08-07"
+  },
+  "north-loop-green-commercial-1281801622": {
+   "name": "North Loop Green Commercial",
+   "reason": "The development's site is an events and leasing showcase — upcoming events, live/work/play copy — with no building or skyway hours.",
+   "source": "https://northloopgreen.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "north-loop-green-360-1281792415": {
+   "name": "North Loop Green 360",
+   "reason": "Same site as the commercial building and equally silent on hours; this is the residential tower, which would not publish public access hours in any case.",
+   "source": "https://northloopgreen.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "riverplace-125437526": {
+   "name": "Riverplace",
+   "reason": "riverplace.com belongs to Landmark Realty in Arlington, Virginia — a different Riverplace entirely, down to a Virginia Fair Housing notice. The Minneapolis complex has no first-party site at that domain, and the Virginia company's 9-5 office hours are emphatically not this building's.",
+   "source": "https://www.riverplace.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "ids-center-1385236413": {
+   "name": "IDS Center",
+   "reason": "idscenter.com is now a parked domain for sale through Afternic — 367 characters of sale notice and keyword links. The busiest skyway hub downtown has no surviving first-party site at its obvious address.",
+   "source": "https://www.idscenter.com/lander",
+   "checkedOn": "2026-08-07"
+  },
+  "grain-exchange-main-building-45452111": {
+   "name": "Grain Exchange Main Building",
+   "reason": "grainexchangebuilding.com is a building in the Exchange District of WINNIPEG, MANITOBA — same name, different country. Its pages carry no hours either, but the point is that it is not this building and nothing on it could have been used. Minneapolis Grain Exchange at 400 South 4th Street has no first-party site at the obvious domain.",
+   "source": "https://grainexchangebuilding.com/",
    "checkedOn": "2026-08-07"
   }
  }

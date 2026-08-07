@@ -1043,7 +1043,8 @@
    "name": "Flutter Bridal Co.",
    "group": "other",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-2090002163": {
    "kind": "poi",
@@ -2256,7 +2257,8 @@
    "category": "office",
    "address": "400 South 4th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "target-plaza-45452119": {
    "kind": "building",
@@ -2558,7 +2560,8 @@
    "category": "office",
    "address": "1 Main Street Southeast",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "grain-exchange-annex-126015103": {
    "kind": "building",
@@ -2873,7 +2876,8 @@
    "category": "residential",
    "address": "360 North 5th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "north-loop-green-commercial-1281801622": {
    "kind": "building",
@@ -2881,7 +2885,8 @@
    "category": "office",
    "address": "350 North 5th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "murrays-1334632160": {
    "kind": "building",
@@ -2898,7 +2903,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "shelby-commons-1388384208": {
    "kind": "building",

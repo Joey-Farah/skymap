@@ -23859,7 +23859,10 @@
    "lat": 44.985869,
    "lon": -93.257992,
    "buildingId": "aster-house-125437510",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Mo 10:00-18:00; Th-Fr 10:00-18:00; Sa 09:00-18:00; Su 11:00-16:00",
+   "hoursSource": "https://www.flutterbridalco.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-2090002163",
