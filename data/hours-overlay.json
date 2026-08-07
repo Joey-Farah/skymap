@@ -1970,5 +1970,16 @@
    "source": "https://steelmanexchange.com/",
    "checkedOn": "2026-08-07"
   }
+ },
+ "conflicts": {
+  "100-washington-square-44164776": {
+   "name": "100 Washington Square",
+   "issue": "OSM gives this building Su 08:00-18:00, Mo-Fr 06:00-18:00, Sa 08:00-18:00 — open every day of the week. Shorenstein, its landlord, publishes 'Building Hours 6:00 a.m. - 6:00 p.m. M-F, Closed Sat & Sun' for the Washington Square campus in its own tenant handbook, and adds that an access card is required all weekend. The two disagree about whether you can walk in on a Saturday, which is exactly the kind of claim the router acts on.",
+   "osmHours": "Su 08:00-18:00; Mo-Fr 06:00-18:00; Sa 08:00-18:00",
+   "landlordHours": "Mo-Fr 06:00-18:00",
+   "source": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
+   "resolution": "NOT changed. apply-hours-overlay.mjs treats OSM as authoritative by design — the reasoning being that OSM is maintained by people who can see the door — and overriding it silently for one building would undo that policy without a decision. Raised for Joey instead. If the landlord should win over OSM where both exist, that is a rule change worth making deliberately and applying everywhere.",
+   "checkedOn": "2026-08-07"
+  }
  }
 }
