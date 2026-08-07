@@ -1687,7 +1687,8 @@
    "name": "Star Tribune",
    "group": "other",
    "website": "https://www.startribune.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-4620068026": {
    "kind": "poi",
@@ -1730,14 +1731,16 @@
    "name": "Boston Consulting Group",
    "group": "other",
    "website": "https://www.bcg.com/offices/minneapolis/default.aspx",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6661087680": {
    "kind": "poi",
    "name": "McKinsey & Company",
    "group": "other",
    "website": "https://www.mckinsey.com/midwest/minneapolis",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11292231484": {
    "kind": "poi",
@@ -1772,7 +1775,8 @@
    "name": "Engel & Völkers",
    "group": "other",
    "website": "https://www.engelvoelkers.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12870055617": {
    "kind": "poi",
@@ -1795,7 +1799,8 @@
    "name": "Dorsey & Whitney LLP",
    "group": "other",
    "website": "https://www.dorsey.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12896972584": {
    "kind": "poi",
@@ -1831,7 +1836,8 @@
    "name": "Owámniyomni Okhódayapi",
    "group": "other",
    "website": "https://owamniyomni.org/about/#the-project",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13629208522": {
    "kind": "poi",
@@ -1860,7 +1866,8 @@
    "name": "Industrious",
    "group": "other",
    "website": "https://www.industriousoffice.com/locations/323-washington-ave-n-suite-200",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13713067312": {
    "kind": "poi",
@@ -1875,7 +1882,8 @@
    "name": "Rally",
    "group": "other",
    "website": "https://www.rallyhealth.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13715425020": {
    "kind": "poi",
@@ -2170,7 +2178,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "st-anthony-main-39707475": {
    "kind": "building",
@@ -2261,7 +2270,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "international-market-square-45498285": {
    "kind": "building",
@@ -2368,7 +2378,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "helland-center-89061924": {
    "kind": "building",
@@ -2376,7 +2387,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "kopp-hall-89061932": {
    "kind": "building",
@@ -2384,7 +2396,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "textile-building-89080618": {
    "kind": "building",
@@ -2424,7 +2437,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "minneapolis-event-centers-92905847": {
    "kind": "building",
@@ -2440,7 +2454,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "the-andrus-99714289": {
    "kind": "building",
@@ -2512,7 +2527,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "parking-lot-e-122795248": {
    "kind": "building",
@@ -2688,7 +2704,8 @@
    "category": "office",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "hyatt-centric-downtown-minneapolis-354742163": {
    "kind": "building",

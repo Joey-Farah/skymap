@@ -1475,6 +1475,108 @@
    "reason": "Planning and design firm. Rendered site (2,917 chars) is about/work/careers/contact with no opening hours.",
    "source": "https://altago.com/",
    "checkedOn": "2026-08-07"
+  },
+  "clark-danielson-college-life-center-39239951": {
+   "name": "Clark Danielson College Life Center",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "opus-hall-45452121": {
+   "name": "Opus Hall",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "technical-building-89061902": {
+   "name": "Technical Building",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "helland-center-89061924": {
+   "name": "Helland Center",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "kopp-hall-89061932": {
+   "name": "Kopp Hall",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "school-of-law-92810608": {
+   "name": "School of Law",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "terrence-murphy-hall-93481572": {
+   "name": "Terrence Murphy Hall",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "miller-hall-122795138": {
+   "name": "Miller Hall",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "schulze-hall-266689885": {
+   "name": "Schulze Hall",
+   "reason": "St Thomas says its interactive campus map 'includes information such as hours of operation', but campusmap.stthomas.edu renders 542 characters to a browser and exposes no hours in its markup or in any JSON it fetches — the data sits behind per-building interaction that returns nothing readable. The Minneapolis campus page, the Visit OPUS page and the maps-directions page were each rendered and none carries building hours. The Mon-Thu 7am-10pm figure that search offers comes from chamberofcommerce.com, an aggregator.",
+   "source": "https://campusmap.stthomas.edu/?focus=MPLS",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-3435820921": {
+   "name": "Star Tribune",
+   "reason": "A newspaper's news site. Rendered fully (12,059 chars) and carries no office or lobby hours — there is no public counter to publish hours for.",
+   "source": "https://www.startribune.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-6661087680": {
+   "name": "McKinsey & Company",
+   "reason": "Office page renders (2,521 chars) with practice areas and contact links; no opening hours. Consultancies do not run a walk-in office.",
+   "source": "https://www.mckinsey.com/us/minneapolis",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-6177009255": {
+   "name": "Boston Consulting Group",
+   "reason": "Office page renders (3,669 chars) and gives the address (60 South 6th Street Suite 2300) plus phone and fax, but no opening hours.",
+   "source": "https://www.bcg.com/offices/minneapolis/default",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12872001189": {
+   "name": "Dorsey & Whitney LLP",
+   "reason": "Law firm site renders (814 chars above the fold) with locations and practice navigation; no office hours published for the Minneapolis office.",
+   "source": "https://www.dorsey.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13715425019": {
+   "name": "Rally",
+   "reason": "rallyhealth.com is now a stub reading 'Now part of Optum' with only footer links — the company has been absorbed and the site publishes nothing, hours included.",
+   "source": "https://www.rallyhealth.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13713067311": {
+   "name": "Industrious",
+   "reason": "The location page renders (6,551 chars) and lists amenities exhaustively — including '24/7 Security' and 'Complimentary Meeting Room Hours' — but never states when the coworking space is open. Membership access is not a published walk-in window.",
+   "source": "https://www.industriousoffice.com/locations/323-washington-ave-n-suite-200",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12513647698": {
+   "name": "Engel & Völkers",
+   "reason": "The URL in our data is the group's global site, which redirects to /de/en and shows international lifestyle marketing. No Minneapolis office page and no hours are reachable from it.",
+   "source": "https://www.engelvoelkers.com",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13628477786": {
+   "name": "Owámniyomni Okhódayapi",
+   "reason": "Renders fully (26,582 chars) but the site is about a site restoration currently under construction — it publishes project updates and history, not visiting hours, because the place is not yet open to visit.",
+   "source": "https://owamniyomni.org/about/",
+   "checkedOn": "2026-08-07"
   }
  }
 }
