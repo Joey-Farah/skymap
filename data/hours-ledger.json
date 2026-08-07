@@ -1057,7 +1057,8 @@
    "name": "Sew Biz Tailoring",
    "group": "other",
    "website": "http://sewbiztailoring.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5355792471": {
    "kind": "poi",
@@ -1195,7 +1196,8 @@
    "name": "Vow'd",
    "group": "other",
    "website": "https://vowdweddings.com/store?name=Minneapolis",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12002109881": {
    "kind": "poi",
@@ -1308,7 +1310,8 @@
    "name": "Uniquely Global",
    "group": "other",
    "website": "https://www.chameleonconsortium.com/retailers/uniquely-global/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862806767": {
    "kind": "poi",

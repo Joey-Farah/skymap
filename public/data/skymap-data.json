@@ -24273,7 +24273,10 @@
    "buildingId": "intersect-apartments-1216920711",
    "nearby": true,
    "website": "https://vowdweddings.com/store?name=Minneapolis",
-   "logo": "vowdweddings-com"
+   "logo": "vowdweddings-com",
+   "openingHours": "Mo 10:30-18:00; We-Fr 10:30-18:00; Sa 09:00-18:00; Su 10:30-18:00",
+   "hoursSource": "https://vowdweddings.com/store?name=Minneapolis",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12002109881",

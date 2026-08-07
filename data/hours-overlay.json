@@ -683,6 +683,13 @@
    "source": "https://www.centralmnlegal.org/contact/minneapolis/",
    "checkedOn": "2026-08-07",
    "note": "Published as 'Office Hours', with Friday closing at noon rather than matching the rest of the week. Address 111 N 5th Street Suite 402 geocodes to this POI exactly (0 m)."
+  },
+  "poi-11328332530": {
+   "name": "Vow'd",
+   "openingHours": "Mo 10:30-18:00; We-Fr 10:30-18:00; Sa 09:00-18:00; Su 10:30-18:00",
+   "source": "https://vowdweddings.com/store?name=Minneapolis",
+   "checkedOn": "2026-08-07",
+   "note": "Closed Tuesday, which their table states outright rather than omitting — the sort of single-day hole a weekday-uniform guess erases. Address 222 N 2nd St geocodes to this POI exactly (0 m). Appointments are offered but the shop also invites walk-ins, so these are genuine opening hours."
   }
  },
  "skipped": {
@@ -1386,6 +1393,18 @@
    "name": "Augsburg Fortress Publishers",
    "reason": "Rendered site (3,004 chars) is a publisher's corporate and catalogue site — mission, imprints, careers — with no opening hours and no public counter.",
    "source": "http://www.augsburgfortresspublishers.org",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12862806766": {
+   "name": "Uniquely Global",
+   "reason": "Its page on the Chameleon Consortium retailer directory renders fully and gives the location (Gaviidae 130, street level) plus a product description, but publishes no hours. The shop has no site of its own.",
+   "source": "https://www.chameleonconsortium.com/retailers/uniquely-global/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-4679771192": {
+   "name": "Sew Biz Tailoring",
+   "reason": "sewbiztailoring.com does not resolve — DNS failure, confirmed on a second attempt after an earlier render errored. No surviving first-party site and no social presence under this name.",
+   "source": "(dead domain)",
    "checkedOn": "2026-08-07"
   }
  }
