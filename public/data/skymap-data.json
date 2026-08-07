@@ -22929,7 +22929,10 @@
    "buildingId": "50-south-sixth-99714290",
    "level": "0",
    "website": "https://www.theoceanaire.com/",
-   "logo": "theoceanaire-com"
+   "logo": "theoceanaire-com",
+   "openingHours": "Su-Th 16:00-21:00; Fr-Sa 16:00-22:00",
+   "hoursSource": "https://www.theoceanaire.com/location/minneapolis-mn/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-550953427",
@@ -24169,7 +24172,10 @@
    "buildingId": "city-center-27346720",
    "nearby": true,
    "website": "https://tomswatchbar.com/location/minneapolis/",
-   "logo": "tomswatchbar-com"
+   "logo": "tomswatchbar-com",
+   "openingHours": "Mo-Su 11:00-24:00",
+   "hoursSource": "https://tomswatchbar.com/location/minneapolis/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-11211330419",
@@ -24223,7 +24229,10 @@
    "buildingId": "lee-lofts-45758932",
    "nearby": true,
    "website": "https://upstairscircus.com/mpls/",
-   "logo": "upstairscircus-com"
+   "logo": "upstairscircus-com",
+   "openingHours": "Tu-Th 15:00-22:00; Fr 12:00-23:00; Sa 11:00-23:00; Su 11:00-18:00",
+   "hoursSource": "https://upstairscircus.com/mpls/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-11248558005",

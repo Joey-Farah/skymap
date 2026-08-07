@@ -226,6 +226,26 @@
       "openingHours": "Mo-Fr 10:00-18:00",
       "source": "https://strivebookstore.com/",
       "checkedOn": "2026-08-07"
+    },
+    "poi-550953417": {
+      "name": "The Oceanaire Seafood Room",
+      "openingHours": "Su-Th 16:00-21:00; Fr-Sa 16:00-22:00",
+      "source": "https://www.theoceanaire.com/location/minneapolis-mn/",
+      "checkedOn": "2026-08-07",
+      "note": "Minneapolis location page specifically — the brand's /hours-and-locations/ lists several cities with different hours. Happy-hour and holiday rows ignored."
+    },
+    "poi-11072221405": {
+      "name": "Tom’s Watch Bar",
+      "openingHours": "Mo-Su 11:00-24:00",
+      "source": "https://tomswatchbar.com/location/minneapolis/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-11248558002": {
+      "name": "Upstairs Circus",
+      "openingHours": "Tu-Th 15:00-22:00; Fr 12:00-23:00; Sa 11:00-23:00; Su 11:00-18:00",
+      "source": "https://upstairscircus.com/mpls/",
+      "checkedOn": "2026-08-07",
+      "note": "Monday absent from the published list, i.e. closed."
     }
   },
   "skipped": {
@@ -281,6 +301,54 @@
       "name": "Moss Optical",
       "reason": "Only hours on the page are a one-off date ('Friday May 23 8:30 AM to 2:00 PM') — a special notice, not a weekly schedule.",
       "source": "https://mossoptical.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-506466720": {
+      "name": "7th Street Entry",
+      "reason": "Music venue — the page lists show dates, not opening hours.",
+      "source": "https://first-avenue.com/venue/7th-st-entry/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-3699941024": {
+      "name": "Stadium Bar and Grill",
+      "reason": "No day-by-day hours published; only 'OPEN SUNDAYS FOR TOURNAMENT ACTION'.",
+      "source": "https://www.stadiumbarmn.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-2527309568": {
+      "name": "Slam Academy",
+      "reason": "Class schedules only, no opening hours.",
+      "source": "https://slamacademy.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-6178628386": {
+      "name": "Manny's Steakhouse",
+      "reason": "No hours anywhere on the rendered site.",
+      "source": "https://mannyssteakhouse.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-10270382209": {
+      "name": "Wood + Paddle Eatery",
+      "reason": "No hours anywhere on the rendered site.",
+      "source": "https://woodandpaddlemn.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-7838159627": {
+      "name": "Gold Room",
+      "reason": "Only a recurring social-hour event (Fridays 6-11pm), not opening hours.",
+      "source": "https://goldroommn.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-2093790846": {
+      "name": "Ruth's Chris Steak House",
+      "reason": "The locator renders other cities' stores; no Minneapolis-specific hours isolated.",
+      "source": "https://www.ruthschris.com/restaurant-locations/minneapolis/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-2387563249": {
+      "name": "The Capital Grille",
+      "reason": "Own site renders a day-picker that exposes only one day at a time; aggregators have hours but aren't first-party.",
+      "source": "https://www.thecapitalgrille.com/locations/mn/minneapolis/minneapolis/8016",
       "checkedOn": "2026-08-07"
     }
   }

@@ -40,14 +40,16 @@
    "name": "7th Street Entry",
    "group": "food",
    "website": "https://first-avenue.com/venue/7th-st-entry/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-550953417": {
    "kind": "poi",
    "name": "The Oceanaire Seafood Room",
    "group": "food",
    "website": "https://www.theoceanaire.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-553119984": {
    "kind": "poi",
@@ -82,7 +84,8 @@
    "name": "Ruth's Chris Steak House",
    "group": "food",
    "website": "http://www.ruthschris.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2093861357": {
    "kind": "poi",
@@ -96,7 +99,8 @@
    "name": "The Capital Grille",
    "group": "food",
    "website": "https://www.thecapitalgrille.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2387569338": {
    "kind": "poi",
@@ -110,7 +114,7 @@
    "name": "The Brother's Deli",
    "group": "food",
    "website": "https://www.thebrothersdeli.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-2527309568": {
@@ -118,7 +122,8 @@
    "name": "Slam Academy",
    "group": "other",
    "website": "https://slamacademy.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2719874232": {
    "kind": "poi",
@@ -153,14 +158,15 @@
    "name": "Stadium Bar and Grill",
    "group": "food",
    "website": "https://www.stadiumbarmn.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-4087475806": {
    "kind": "poi",
    "name": "Monello",
    "group": "food",
    "website": "https://www.monellompls.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-4564574481": {
@@ -245,7 +251,8 @@
    "name": "Manny's Steakhouse",
    "group": "food",
    "website": "https://mannyssteakhouse.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6560546755": {
    "kind": "poi",
@@ -259,7 +266,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -288,14 +295,15 @@
    "name": "Gold Room",
    "group": "food",
    "website": "https://goldroommn.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-7838159628": {
    "kind": "poi",
    "name": "Breakfast Bar",
    "group": "food",
    "website": "https://www.breakfastbarofmn.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-9394789068": {
@@ -318,7 +326,8 @@
    "name": "Wood + Paddle Eatery",
    "group": "food",
    "website": "https://woodandpaddlemn.com/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-10925436338": {
    "kind": "poi",
@@ -340,7 +349,8 @@
    "name": "Tom’s Watch Bar",
    "group": "food",
    "website": "https://tomswatchbar.com/location/minneapolis/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11248558000": {
    "kind": "poi",
@@ -354,7 +364,8 @@
    "name": "Upstairs Circus",
    "group": "food",
    "website": "https://upstairscircus.com/mpls/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11248558005": {
    "kind": "poi",
@@ -751,7 +762,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {
@@ -852,7 +863,7 @@
    "name": "Kinderberry Hill",
    "group": "other",
    "website": "https://www.kinderberryhill.com/schools/minneapolis/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13628473443": {
@@ -1157,7 +1168,7 @@
    "name": "Grace Loves Lace",
    "group": "other",
    "website": "https://graceloveslace.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-12768888509": {
@@ -1278,7 +1289,7 @@
    "name": "Moss Optical",
    "group": "other",
    "website": "https://www.mossoptical.com/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-13265552504": {
@@ -1773,7 +1784,7 @@
    "name": "Kemmitt, Sanford & Kramer",
    "group": "other",
    "website": "https://ksk.law/",
-   "status": "ambiguous",
+   "status": "none",
    "checkedOn": "2026-08-07"
   },
   "poi-14022958821": {
