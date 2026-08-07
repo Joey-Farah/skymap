@@ -25513,7 +25513,10 @@
    "lat": 44.976239,
    "lon": -93.268073,
    "buildingId": "capella-tower-115559604",
-   "level": "1"
+   "level": "1",
+   "openingHours": "Mo-Fr 10:00-14:00",
+   "hoursSource": "https://eatspicyfeta.com/contact",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13255099525",
@@ -26121,7 +26124,10 @@
    "lat": 44.98401,
    "lon": -93.279035,
    "buildingId": "ford-center-29060527",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Th-Sa 16:00-22:00",
+   "hoursSource": "https://info.traxburgersandbar.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13823736884",

@@ -578,6 +578,20 @@
    "source": "https://www.treatsmn.com/s/store-locator",
    "checkedOn": "2026-08-07",
    "note": "Their store locator shows only a live Open-until line until the store card is clicked, which reveals the week. North Loop store, 314 N 2nd St — OSM independently places a Treats at this POI exact coordinates on the same block."
+  },
+  "poi-13189788423": {
+   "name": "Spicy Feta",
+   "openingHours": "Mo-Fr 10:00-14:00",
+   "source": "https://eatspicyfeta.com/contact",
+   "checkedOn": "2026-08-07",
+   "note": "Week read from behind the All-hours expander on their own contact page; address 225 S 6th St geocodes 39 m from this POI, inside Capella Tower. Worth noting the search summary for this shop said 8am-2pm — the operator page says 10am, two hours later."
+  },
+  "poi-13812237869": {
+   "name": "Trax Burgers and Bar",
+   "openingHours": "Th-Sa 16:00-22:00",
+   "source": "https://info.traxburgersandbar.com/",
+   "checkedOn": "2026-08-07",
+   "note": "Closed Sunday through Wednesday, which their own hours table states explicitly rather than omitting. Our data files this POI under Ford Center, but it geocodes 37 m from the published address (525 N 5th St) and 136 m from Ford Center (420 N 5th St) — the building assignment is a nearest-centroid artifact, the POI itself is this restaurant. The site adds that they also open for all Fillmore Minneapolis shows; that is an extension on top of the table, not a replacement."
   }
  },
  "skipped": {
@@ -951,6 +965,18 @@
    "name": "Starbucks (33 South Sixth)",
    "reason": "Store 11987, which our data links to, does not appear anywhere in the 50 nearest stores Starbucks own API returns for this address — the chain no longer lists a store at 33 S 6th St / City Center. The nearest it does list is the Westin at 88 S 6th St, 179 m away in a different building, and its hours were not borrowed.",
    "source": "https://www.starbucks.com/store-locator",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12768888511": {
+   "name": "Barkalows Too",
+   "reason": "SPS Tower publishes a skyway-retail page that names Barkalows Too on the 4th street skyway level, but prints no hours for it or for any other tenant. The 7:30am-3:00pm figure that search returns comes from Apple Maps and Yelp, not the shop or the landlord.",
+   "source": "https://spstower.com/skyway-retails/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13451748944": {
+   "name": "Sushi Mi",
+   "reason": "No first-party site. Canadian Pacific Plaza publishes an amenities page but no tenant directory and no mention of this counter. Search returns two differently-named sushi bars at the same 120 S 6th St address, one of them marked closed, so even the identity is unresolved — not just the hours.",
+   "source": "https://www.canadianpacificplaza.com/details/",
    "checkedOn": "2026-08-07"
   }
  }

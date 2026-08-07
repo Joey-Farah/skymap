@@ -756,7 +756,8 @@
    "name": "Spicy Feta",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13255099525": {
    "kind": "poi",
@@ -851,7 +852,8 @@
    "name": "Sushi Mi",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748950": {
    "kind": "poi",
@@ -952,7 +954,8 @@
    "name": "Trax",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13823736884": {
    "kind": "poi",
@@ -1268,7 +1271,8 @@
    "name": "Barkalows Too",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12810525201": {
    "kind": "poi",
