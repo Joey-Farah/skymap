@@ -287,7 +287,8 @@
    "name": "Last Call",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6780251056": {
    "kind": "poi",
@@ -1358,14 +1359,16 @@
    "name": "The City Market",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552506": {
    "kind": "poi",
    "name": "Fresh Mart",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552510": {
    "kind": "poi",

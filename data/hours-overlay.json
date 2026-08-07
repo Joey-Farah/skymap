@@ -783,6 +783,24 @@
       "reason": "Northstar Center's own site lists this tenant with a description but publishes no hours on the directory page, and its per-tenant menu pages return HTTP 401 (password-protected). Building-directory route attempted and blocked, not merely absent.",
       "source": "https://www.northstarcenterminneapolis.com/",
       "checkedOn": "2026-08-07"
+    },
+    "poi-13265552506": {
+      "name": "Fresh Mart (LaSalle Plaza)",
+      "reason": "LaSalle Plaza's own site is a leasing site — amenities described in general terms, no tenant directory and no hours. Office towers publish leasing pages; only retail-anchored buildings like IDS Crystal Court publish tenant hours.",
+      "source": "https://www.lasalleplaza.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-6780251055": {
+      "name": "Last Call (Butler Square)",
+      "reason": "Butler Square's own site covers leasing and amenities with no tenant directory and no hours.",
+      "source": "https://butlersquare.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-13265552504": {
+      "name": "The City Market (City Center)",
+      "reason": "City Center publishes mall-wide hours (M-F 10-7, Sat 10-6, Sun select stores 12-5) but no per-tenant directory. Mall hours are not this shop's hours — skyway-level food counters routinely open earlier and close before the retail floor.",
+      "source": "(searched; no official per-tenant directory found)",
+      "checkedOn": "2026-08-07"
     }
   }
 }
