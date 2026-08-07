@@ -1555,63 +1555,72 @@
    "name": "W Minneapolis - The Foshay",
    "group": "hotel",
    "website": "http://www.wminneapolishotel.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-2093832071": {
    "kind": "poi",
    "name": "Hyatt Place Minneapolis/Downtown",
    "group": "hotel",
    "website": "http://hyattplaceminneapolisdowntown.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-3624150279": {
    "kind": "poi",
    "name": "Residence Inn Minneapolis Downtown/City Center",
    "group": "hotel",
    "website": "https://www.marriott.com/hotels/travel/mspri-residence-inn-minneapolis-downtown-city-center",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-5794676451": {
    "kind": "poi",
    "name": "Hyatt Regency Minneapolis",
    "group": "hotel",
    "website": "https://www.hyatt.com/en-US/hotel/minnesota/hyatt-regency-minneapolis/msprm",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-10938393782": {
    "kind": "poi",
    "name": "Four Seasons Hotel",
    "group": "hotel",
    "website": "https://www.fourseasons.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12919709245": {
    "kind": "poi",
    "name": "Cambria Hotel Minneapolis Downtown",
    "group": "hotel",
    "website": "https://www.choicehotels.com/minnesota/minneapolis/cambria-hotels/mn206",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12919709246": {
    "kind": "poi",
    "name": "Fairfield Inn & Suites Minneapolis Downtown",
    "group": "hotel",
    "website": "https://www.marriott.com/en-us/hotels/mspfd-fairfield-inn-and-suites-minneapolis-downtown/overview/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12998345224": {
    "kind": "poi",
    "name": "Oaklands on Ninth",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13976329959": {
    "kind": "poi",
    "name": "Canopy by Hilton Minneapolis Mill District",
    "group": "hotel",
    "website": "https://canopy3.hilton.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-1077152564": {
    "kind": "poi",
@@ -1973,91 +1982,104 @@
    "name": "Lofton Hotel",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-holiday-inn-express-minneapolis-downtown-convention-center-28490028": {
    "kind": "poi",
    "name": "Holiday Inn Express Minneapolis Downtown Convention Center",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-doubletree-suites-by-hilton-hotel-minneapolis-45066437": {
    "kind": "poi",
    "name": "DoubleTree Suites by Hilton Hotel Minneapolis",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-hewing-hotel-45758924": {
    "kind": "poi",
    "name": "Hewing Hotel",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-residence-inn-at-the-depot-48816164": {
    "kind": "poi",
    "name": "Residence Inn at the Depot",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-normandy-inn-suites-63619638": {
    "kind": "poi",
    "name": "Normandy Inn & Suites",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-hilton-garden-inn-minneapolis-downtown-63619639": {
    "kind": "poi",
    "name": "Hilton Garden Inn Minneapolis Downtown",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-aloft-minneapolis-81049120": {
    "kind": "poi",
    "name": "Aloft Minneapolis",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-hotel-indigo-minneapolis-downtown-156909962": {
    "kind": "poi",
    "name": "Hotel Indigo Minneapolis Downtown",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-the-chambers-hotel-156974227": {
    "kind": "poi",
    "name": "The Chambers Hotel",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-elliot-park-hotel-613598897": {
    "kind": "poi",
    "name": "Elliot Park Hotel",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-element-minneapolis-downtown-900175940": {
    "kind": "poi",
    "name": "Element Minneapolis Downtown",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "landmark-ac-hotel-by-marriott-minneapolis-downtown-941828949": {
    "kind": "poi",
    "name": "AC Hotel by Marriott Minneapolis Downtown",
    "group": "hotel",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "park-and-shop-ramp-27346580": {
    "kind": "building",

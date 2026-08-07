@@ -1033,6 +1033,138 @@
    "reason": "No first-party site and no Instagram at the obvious handles. A parking-ramp counter with no web presence of any kind.",
    "source": "(searched; none found)",
    "checkedOn": "2026-08-07"
+  },
+  "poi-2093790844": {
+   "name": "W Minneapolis - The Foshay",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned 403 (bot protection; a real browser gets a challenge page too).",
+   "source": "http://www.wminneapolishotel.com",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-2093832071": {
+   "name": "Hyatt Place Minneapolis/Downtown",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned 429 (bot protection; a real browser gets a challenge page too).",
+   "source": "http://hyattplaceminneapolisdowntown.com",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-3624150279": {
+   "name": "Residence Inn Minneapolis Downtown/City Center",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned 403 (bot protection; a real browser gets a challenge page too).",
+   "source": "https://www.marriott.com/hotels/travel/mspri-residence-inn-minneapolis-downtown-city-center",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-5794676451": {
+   "name": "Hyatt Regency Minneapolis",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned 429 (bot protection; a real browser gets a challenge page too).",
+   "source": "https://www.hyatt.com/en-US/hotel/minnesota/hyatt-regency-minneapolis/msprm",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-10938393782": {
+   "name": "Four Seasons Hotel",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned 200 (95251 chars, no hours token — the global corporate site rather than a property page).",
+   "source": "https://www.fourseasons.com",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12919709245": {
+   "name": "Cambria Hotel Minneapolis Downtown",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned 403 (bot protection; a real browser gets a challenge page too).",
+   "source": "https://www.choicehotels.com/minnesota/minneapolis/cambria-hotels/mn206",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12919709246": {
+   "name": "Fairfield Inn & Suites Minneapolis Downtown",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned 403 (bot protection; a real browser gets a challenge page too).",
+   "source": "https://www.marriott.com/en-us/hotels/mspfd-fairfield-inn-and-suites-minneapolis-downtown/overview/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-12998345224": {
+   "name": "Oaklands on Ninth",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13976329959": {
+   "name": "Canopy by Hilton Minneapolis Mill District",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. Its site was fetched and returned ERR:TypeError (bot protection; a real browser gets a challenge page too).",
+   "source": "https://canopy3.hilton.com",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-lofton-hotel-27346710": {
+   "name": "Lofton Hotel",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-holiday-inn-express-minneapolis-downtown-convention-center-28490028": {
+   "name": "Holiday Inn Express Minneapolis Downtown Convention Center",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-doubletree-suites-by-hilton-hotel-minneapolis-45066437": {
+   "name": "DoubleTree Suites by Hilton Hotel Minneapolis",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-hewing-hotel-45758924": {
+   "name": "Hewing Hotel",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-residence-inn-at-the-depot-48816164": {
+   "name": "Residence Inn at the Depot",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-normandy-inn-suites-63619638": {
+   "name": "Normandy Inn & Suites",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-hilton-garden-inn-minneapolis-downtown-63619639": {
+   "name": "Hilton Garden Inn Minneapolis Downtown",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-aloft-minneapolis-81049120": {
+   "name": "Aloft Minneapolis",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-hotel-indigo-minneapolis-downtown-156909962": {
+   "name": "Hotel Indigo Minneapolis Downtown",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-the-chambers-hotel-156974227": {
+   "name": "The Chambers Hotel",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-elliot-park-hotel-613598897": {
+   "name": "Elliot Park Hotel",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-element-minneapolis-downtown-900175940": {
+   "name": "Element Minneapolis Downtown",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "landmark-ac-hotel-by-marriott-minneapolis-downtown-941828949": {
+   "name": "AC Hotel by Marriott Minneapolis Downtown",
+   "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
+   "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
   }
  }
 }
