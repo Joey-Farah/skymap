@@ -599,6 +599,20 @@
    "source": "https://www.usbankplazampls.com/main.cfm?sid=amenities&pid=rservices",
    "checkedOn": "2026-08-07",
    "note": "U.S. Bank Plaza publishes its own tenant retail page and prints this shop's hours on it — the landlord for this specific store, the same kind of source as the IDS Crystal Court directory. Deliberately not extended to the other stores of the same brand; see the skipped entries."
+  },
+  "red-building-143058259": {
+   "name": "HCMC Red Building",
+   "openingHours": "24/7",
+   "source": "https://hennepinhealthcare.org/locations/hcmc/",
+   "checkedOn": "2026-08-07",
+   "note": "Hennepin Healthcare lists this building at 730 South 8th Street with \"8th Street entrance, Emergency, is open to public 24/7\". Address matches ours exactly. It is also the only campus entrance open after 6pm and at weekends, which makes getting this one right worth more than the rest of the campus combined."
+  },
+  "purple-building-143058257": {
+   "name": "HCMC Purple Building",
+   "openingHours": "Mo-Fr 06:30-20:00; Sa-Su 08:00-16:30",
+   "source": "https://hennepinhealthcare.org/locations/hcmc/",
+   "checkedOn": "2026-08-07",
+   "note": "These are the published hours of the Purple 2 entrance from the HCMC parking ramp — the public way in. The first-level entrance is restricted to Purple Building clinic patients, so it is not the public access window and was not used. Address 716 South 7th Street matches ours."
   }
  },
  "skipped": {
@@ -1164,6 +1178,42 @@
    "name": "AC Hotel by Marriott Minneapolis Downtown",
    "reason": "A hotel does not publish opening hours: it publishes check-in and check-out times, which describe when a room becomes yours, not when the building is enterable. There is nothing to record even where the site loads. Per Joey: omit rather than assert 24/7 — let the reader assume it. No website in our data, and not individually fetched — the conclusion here is structural rather than per-property.",
    "source": "(no site in dataset)",
+   "checkedOn": "2026-08-07"
+  },
+  "orange-building-143056848": {
+   "name": "HCMC Orange Building",
+   "reason": "Hennepin Healthcare publishes no hours for this building. Its entry reads only \"Nearest entrance to Orange Building, use Blue Building entrance\". The Blue Building (also 900 South 8th Street) publishes 6:30am-6pm M-F, closed Sat and Sun — recorded here so the finding is not lost, but deliberately NOT applied as Orange hours: those are a different building doors, and substituting them is the same move as carrying a chain hours between branches.",
+   "source": "https://hennepinhealthcare.org/locations/hcmc/",
+   "checkedOn": "2026-08-07"
+  },
+  "ambulatory-outpatient-specialty-center-411211095": {
+   "name": "Ambulatory Outpatient Specialty Center",
+   "reason": "Not named on the Hennepin Healthcare campus building list, which covers Red, Purple, Orange, Green, Blue, Shapiro and the Clinic & Specialty Center. Cannot be matched to a published entrance without guessing which of those it is.",
+   "source": "https://hennepinhealthcare.org/locations/hcmc/",
+   "checkedOn": "2026-08-07"
+  },
+  "park-and-shop-ramp-27346580": {
+   "name": "Park and Shop Ramp",
+   "reason": "The City page for parking ramps publishes no hours at all, only a link to mplsparking.com and a phone number. mplsparking.com lists its ramps with clearance heights and vehicle-entry streets but no hours. The 24/7 figure that search returns comes from Yelp and Parkopedia.",
+   "source": "https://www.minneapolismn.gov/getting-around/parking-driving/parking-ramps-lots",
+   "checkedOn": "2026-08-07"
+  },
+  "hcmc-purple-parking-ramp-27346755": {
+   "name": "HCMC Purple Parking Ramp",
+   "reason": "Hennepin Healthcare names three patient ramps by cross-street but publishes no hours for any of them. The Purple 2 pedestrian entrance from this ramp does have hours (recorded against the Purple Building), but that is the building door, not the ramp.",
+   "source": "https://hennepinhealthcare.org/locations/hcmc/",
+   "checkedOn": "2026-08-07"
+  },
+  "macphail-center-for-music-81049070": {
+   "name": "MacPhail Center for Music",
+   "reason": "Publishes two seasonal schedules — academic year September to May (Mon-Fri 9am-9pm, Sat 8am-6pm, Sun 12-5pm) and summer (Mon-Thu 9am-9pm, Fri 9am-4:30pm, Sat 9am-3pm closed August, Sun closed). One week cannot hold both, and picking either is wrong for half the year. This is also what surfaced the month-scope parser bug fixed in 5511649.",
+   "source": "https://macphail.org/locations/minneapolis/",
+   "checkedOn": "2026-08-07"
+  },
+  "saint-olaf-catholic-church-126015108": {
+   "name": "Saint Olaf Catholic Church",
+   "reason": "Links a current building-hours schedule from its home page, but the target is a 1.4MB scanned sign PDF with no text layer — the file contains only compressed image streams, so there is nothing machine-readable to quote and nothing legible to transcribe.",
+   "source": "https://www.saintolaf.org/",
    "checkedOn": "2026-08-07"
   }
  }

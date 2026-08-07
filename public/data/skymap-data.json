@@ -10446,8 +10446,39 @@
      44.972491
     ]
    ],
-   "hours": null,
-   "hoursNote": "No published hours found."
+   "hours": [
+    [
+     480,
+     990
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     390,
+     1200
+    ],
+    [
+     480,
+     990
+    ]
+   ],
+   "hoursNote": "Curated from the operator's own published hours.",
+   "hoursSource": "https://hennepinhealthcare.org/locations/hcmc/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "red-building-143058259",
@@ -10582,8 +10613,39 @@
      44.972491
     ]
    ],
-   "hours": null,
-   "hoursNote": "No published hours found."
+   "hours": [
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ],
+    [
+     0,
+     1440
+    ]
+   ],
+   "hoursNote": "Curated from the operator's own published hours.",
+   "hoursSource": "https://hennepinhealthcare.org/locations/hcmc/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "gaviidae-common-156909893",

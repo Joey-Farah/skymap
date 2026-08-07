@@ -2087,7 +2087,8 @@
    "category": "parking",
    "address": "24 South 8th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "minneapolis-marriott-city-center-27346715": {
    "kind": "building",
@@ -2121,7 +2122,8 @@
    "category": "parking",
    "address": "South 6th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "ford-center-29060527": {
    "kind": "building",
@@ -2297,7 +2299,8 @@
    "category": "office",
    "address": "501 South 2nd Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "metropolitan-lofts-81049075": {
    "kind": "building",
@@ -2513,7 +2516,8 @@
    "category": "venue",
    "address": "215 South 8th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "706-building-126116977": {
    "kind": "building",
@@ -2537,7 +2541,8 @@
    "category": "hospital",
    "address": "900 South 8th Street",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "purple-building-143058257": {
    "kind": "building",
@@ -2545,7 +2550,8 @@
    "category": "hospital",
    "address": "716 South 7th Street",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "red-building-143058259": {
    "kind": "building",
@@ -2553,7 +2559,8 @@
    "category": "hospital",
    "address": "730 South 8th Street",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "minneapolis-club-156909955": {
    "kind": "building",
@@ -2681,7 +2688,8 @@
    "category": "hospital",
    "address": "Minneapolis",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "edition-apartments-510-413691176": {
    "kind": "building",
