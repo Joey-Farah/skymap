@@ -8471,8 +8471,33 @@
      44.978864
     ]
    ],
-   "hours": null,
-   "hoursNote": "No published hours found."
+   "hours": [
+    null,
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    [
+     480,
+     990
+    ],
+    null
+   ],
+   "hoursNote": "Curated from the operator's own published hours.",
+   "hoursSource": "https://www.hirshfields.com/store-locator/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "washburn-lofts-101549023",

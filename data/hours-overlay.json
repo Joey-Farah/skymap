@@ -711,6 +711,13 @@
    "source": "https://www.publicstorage.com/self-storage-mn-minneapolis/2494.html",
    "checkedOn": "2026-08-07",
    "note": "Published as 'Property Open'; 11 m from this POI. Opens at 6:00 AM against the other Minneapolis branch's 9:30 AM — three and a half hours apart on the same chain, which is why branch hours are never carried across."
+  },
+  "hirshfields-design-resource-showroom-101142650": {
+   "name": "Hirshfield's Design Resource Showroom",
+   "openingHours": "Mo-Fr 08:00-16:30",
+   "source": "https://www.hirshfields.com/store-locator/",
+   "checkedOn": "2026-08-07",
+   "note": "Hirshfield's runs TWO stores 51 m apart on the same street with different hours: the Contractor Service Center at 725 2nd Ave N opens 6:30AM, and this Design Resource Showroom at 721 opens 8:00AM and closes 4:30 rather than 4:00. Ours matches the showroom by exact name and address (8 m). Picking the nearer-looking of two same-brand entries would have been wrong by ninety minutes at the start of every weekday. Closed weekends, which the locator states. Reachable only via /store-locator/ — the /locations/ path the nav implies is a 404."
   }
  },
  "skipped": {
@@ -1606,6 +1613,12 @@
    "name": "Paul Baertschi Attorney",
    "reason": "tallenandbaertschi.com does not resolve — DNS failure on both www and apex, confirmed across two separate attempts on different passes. No surviving first-party site. A solo law practice would not publish walk-in hours in any case.",
    "source": "(dead domain)",
+   "checkedOn": "2026-08-07"
+  },
+  "deja-vu-89080678": {
+   "name": "Déjà Vu",
+   "reason": "dejavu.com/locations/minneapolis/ renders 128 characters: 'Maintenance mode is on. Site will be available soon.' Nothing is published to read right now — this is a temporary state rather than a permanent absence, so it is worth retrying on a later pass.",
+   "source": "https://dejavu.com/locations/minneapolis/",
    "checkedOn": "2026-08-07"
   }
  }

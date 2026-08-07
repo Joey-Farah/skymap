@@ -2416,7 +2416,8 @@
    "category": "office",
    "address": "315 Washington Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "archdale-apartments-92810569": {
    "kind": "building",
@@ -2491,7 +2492,8 @@
    "category": "office",
    "address": "721 2nd Avenue North",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "washburn-lofts-101549023": {
    "kind": "building",
