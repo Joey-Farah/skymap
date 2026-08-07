@@ -40,9 +40,24 @@ for (const [id, entry] of Object.entries(overlay.hours)) {
     // A building that has since grown real OSM hours is the better source,
     // exactly as for POIs — but here "has hours" is a non-null array, since
     // null is this dataset's encoding for "nobody publishes them".
+    // OSM is authoritative by default, on the reasoning that it is
+    // maintained by people who can see the door. An entry may outrank it
+    // only by saying so explicitly AND saying why, which keeps the default
+    // intact and makes every exception findable in one grep.
+    //
+    // The case this exists for: a landlord publishing its own building's
+    // access policy in its own tenant handbook is the operator stating its
+    // own rules, and outranks a third-party map edit that may predate the
+    // current policy by years.
     if (building.hours !== null && building.hoursSource !== entry.source) {
-      problems.push(`${id} (${entry.name}): OSM now has hours — retire this overlay entry`);
-      continue;
+      if (!entry.overridesOsm) {
+        problems.push(`${id} (${entry.name}): OSM now has hours — retire this overlay entry`);
+        continue;
+      }
+      if (!entry.overrideReason) {
+        problems.push(`${id} (${entry.name}): overridesOsm set without an overrideReason`);
+        continue;
+      }
     }
     if (building.hoursSource === entry.source) continue; // idempotent re-run
     building.hours = parsed;

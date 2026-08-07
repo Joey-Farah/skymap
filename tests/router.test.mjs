@@ -915,3 +915,21 @@ test("a route with no drawn geometry snaps nothing", () => {
   assert.equal(snapToRoute([], 44.975, -93.269, 40), null);
   assert.equal(snapToRoute([[-93.27, 44.975]], 44.975, -93.269, 40), null);
 });
+
+test("an overlay entry may only outrank OSM when it says so, with a reason", () => {
+  // The applier treats OSM as authoritative, so a curated entry normally
+  // yields to it. A landlord publishing its own building's access policy is
+  // the one case that should win — but letting overlay quietly beat OSM
+  // would erase that judgement everywhere it was never intended. So the
+  // override is opt-in per entry and must carry its justification, and this
+  // asserts that of every override actually shipped.
+  const overlay = JSON.parse(readFileSync("data/hours-overlay.json", "utf8"));
+  for (const [id, entry] of Object.entries(overlay.hours)) {
+    if (!entry.overridesOsm) continue;
+    assert.ok(entry.source, `${id} overrides OSM without naming a source`);
+    assert.ok(
+      entry.overrideReason && entry.overrideReason.length > 40,
+      `${id} overrides OSM without explaining why`,
+    );
+  }
+});

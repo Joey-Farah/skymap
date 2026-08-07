@@ -4511,10 +4511,7 @@
     ]
    ],
    "hours": [
-    [
-     480,
-     1080
-    ],
+    null,
     [
      360,
      1080
@@ -4535,17 +4532,16 @@
      360,
      1080
     ],
-    [
-     480,
-     1080
-    ]
+    null
    ],
-   "hoursNote": "Building hours from OSM (not skyway-specific).",
+   "hoursNote": "Curated from the operator's own published hours.",
    "image": {
     "url": "https://commons.wikimedia.org/wiki/Special:FilePath/100%20Washington%20Square%20Minneapolis%201.jpg?width=640",
     "attribution": "AlexiusHoratius · CC BY-SA 3.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:100%20Washington%20Square%20Minneapolis%201.jpg"
-   }
+   },
+   "hoursSource": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "two22-44684851",

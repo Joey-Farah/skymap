@@ -788,6 +788,15 @@
    "source": "https://ids-center.com/business/ny-jewelry/",
    "checkedOn": "2026-08-07",
    "note": "From the IDS Center's own merchant directory, which prints HOURS per tenant — the same landlord source that unlocked four Crystal Court POIs earlier in this pass. Closed weekends, stated. Address 80 South Eighth Street Suite 212; the geocode lands 46-49 m away on the tower's other entries (a Starbucks and a bank at the same street number), which is what a large building looks like rather than a mismatch."
+  },
+  "100-washington-square-44164776": {
+   "name": "100 Washington Square",
+   "openingHours": "Mo-Fr 06:00-18:00",
+   "source": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
+   "checkedOn": "2026-08-07",
+   "overridesOsm": true,
+   "overrideReason": "OSM has this building open Su 08:00-18:00, Mo-Fr 06:00-18:00, Sa 08:00-18:00 — every day of the week. Shorenstein, the landlord, publishes 'Building Hours 6:00 a.m. - 6:00 p.m. M-F, Closed Sat & Sun' for the Washington Square campus in its own tenant handbook, and adds that an access card is required from 6pm to 6am and all weekend. The operator stating its own access policy outranks a third-party map edit that may predate the current policy by years, and this matches what the City's 2025 committee record says actually happens downtown. Weekday hours are identical in both sources; the disagreement is solely about weekends, where OSM would have the router send someone to a door that needs a card they do not have.",
+   "note": "The same handbook is the source for 111 Washington Square, which needed no override because OSM had no hours for it."
   }
  },
  "skipped": {
@@ -2455,7 +2464,7 @@
    "osmHours": "Su 08:00-18:00; Mo-Fr 06:00-18:00; Sa 08:00-18:00",
    "landlordHours": "Mo-Fr 06:00-18:00",
    "source": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
-   "resolution": "NOT changed. apply-hours-overlay.mjs treats OSM as authoritative by design — the reasoning being that OSM is maintained by people who can see the door — and overriding it silently for one building would undo that policy without a decision. Raised for Joey instead. If the landlord should win over OSM where both exist, that is a rule change worth making deliberately and applying everywhere.",
+   "resolution": "RESOLVED 2026-08-07 in favour of the landlord, via a new per-entry `overridesOsm` flag rather than a change to the default. OSM still wins everywhere else; an overlay entry can outrank it only by setting overridesOsm AND supplying an overrideReason, and a test in tests/router.test.mjs asserts every shipped override carries both. That keeps the reasoning behind the default intact — OSM is maintained by people who can see the door — while letting an operator's own published access policy win for its own building, which is the narrow case where it clearly should.",
    "checkedOn": "2026-08-07"
   }
  },
