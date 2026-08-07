@@ -25167,7 +25167,10 @@
    "lon": -93.279888,
    "buildingId": "school-of-law-92810608",
    "nearby": true,
-   "website": "https://www.bucadibeppo.com/"
+   "website": "https://www.bucadibeppo.com/",
+   "openingHours": "Mo-Th 11:00-21:30; Fr-Sa 11:00-22:30; Su 11:00-21:00",
+   "hoursSource": "https://dineatbuca.com/locations/minneapolis/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12896972583",
@@ -26119,7 +26122,10 @@
    "buildingId": "free-spirit-building-78061942",
    "nearby": true,
    "website": "https://noloskitchen.com/",
-   "logo": "noloskitchen-com"
+   "logo": "noloskitchen-com",
+   "openingHours": "Mo-Th 09:00-22:00; Fr-Sa 09:00-24:00; Su 09:00-21:00",
+   "hoursSource": "https://noloskitchen.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13850108423",

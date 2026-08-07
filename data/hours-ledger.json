@@ -94,7 +94,8 @@
    "name": "Kindee Thai",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-2387563249": {
    "kind": "poi",
@@ -155,7 +156,8 @@
    "name": "Workshop at Union",
    "group": "food",
    "website": "http://workshopatunion.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-3699941024": {
    "kind": "poi",
@@ -396,7 +398,8 @@
    "name": "Fairgrounds Craft Coffee and Tea",
    "group": "coffee",
    "website": "https://www.fairgrounds.cafe/cafe-minneapolis-north-loop/",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-11664061541": {
    "kind": "poi",
@@ -599,7 +602,8 @@
    "name": "Planet Smoothie",
    "group": "food",
    "website": "https://www.planetsmoothie.com/stores/minneapolis/19239",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862838544": {
    "kind": "poi",
@@ -661,7 +665,8 @@
    "name": "Buca di Beppo",
    "group": "food",
    "website": "https://www.bucadibeppo.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12902687650": {
    "kind": "poi",
@@ -697,7 +702,8 @@
    "name": "Currie Food Hall",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-12971797978": {
    "kind": "poi",
@@ -929,7 +935,8 @@
    "name": "Bellecour",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13812237869": {
    "kind": "poi",
@@ -943,7 +950,8 @@
    "name": "Nolo's Kitchen & Bar",
    "group": "food",
    "website": "https://noloskitchen.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13965983641": {
    "kind": "poi",
