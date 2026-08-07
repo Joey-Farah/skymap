@@ -1,0 +1,130 @@
+{
+  "_readme": [
+    "Curated opening hours for POIs OpenStreetMap doesn't carry.",
+    "",
+    "Every entry records where the hours came from and when they were checked, so a",
+    "stale or wrong entry can be traced and re-verified rather than argued about.",
+    "Applied to public/data/skymap-data.json by scripts/apply-hours-overlay.mjs, and",
+    "kept separate from the extraction so `npm run data:osm` can't silently drop it.",
+    "",
+    "Rules for adding an entry:",
+    "  - First-party sources only: the business's own site, or its own listing on its",
+    "    chain's locator. Another company's curated hours database is theirs, not ours.",
+    "  - If a page states two schedules that disagree, do not pick one. Leave it out",
+    "    and note it in `skipped` below. A confidently wrong 'Open' is worse than a",
+    "    blank line: it sends someone to a locked door.",
+    "  - `00:00-00:00` in schema.org means CLOSED that day. Omit the day; never",
+    "    translate it as open all day.",
+    "  - Values are OSM opening_hours syntax, the same grammar src/opening-hours.ts",
+    "    already parses for OSM-sourced hours.",
+    "",
+    "Contribute these upstream to OSM too — then the extraction picks them up and",
+    "this file shrinks instead of growing."
+  ],
+  "hours": {
+    "poi-3233781288": {
+      "name": "Crooked Pint Ale House",
+      "openingHours": "Mo-Fr 11:00-24:00; Sa-Su 10:00-24:00",
+      "source": "https://www.crookedpint.com/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-11211330419": {
+      "name": "On The Rox",
+      "openingHours": "Mo-Su 16:00-26:00",
+      "source": "https://mplsontherox.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Published as 16:00-02:00. Written as 26:00 — the OSM idiom for closing after midnight, and the only over-midnight form src/opening-hours.ts accepts."
+    },
+    "poi-5955577503": {
+      "name": "Freshii",
+      "openingHours": "Mo-Su 09:00-17:00",
+      "source": "https://www.freshii.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12753315923": {
+      "name": "Jimmy John's (Sixth & Marquette)",
+      "openingHours": "Mo-Fr 10:30-18:00",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-1885.html",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 00:00-00:00, i.e. closed — omitted rather than rendered as all-day."
+    },
+    "poi-12753315922": {
+      "name": "Caribou Coffee",
+      "openingHours": "Mo-Fr 06:00-16:00",
+      "source": "https://locations.cariboucoffee.com/us/mn/minneapolis",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12753315926": {
+      "name": "Chipotle",
+      "openingHours": "Mo-Fr 10:30-18:00",
+      "source": "https://locations.chipotle.com/mn/minneapolis/200-s-6th-st",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 00:00-00:00 (closed)."
+    },
+    "poi-12768849147": {
+      "name": "Einstein Bros Bagels",
+      "openingHours": "Mo-Fr 06:00-14:00",
+      "source": "https://locations.einsteinbros.com/us/mn/minneapolis",
+      "checkedOn": "2026-08-06",
+      "note": "Sa/Su published as 00:00-00:00 (closed)."
+    },
+    "poi-12862838550": {
+      "name": "Star Bar & Bistro",
+      "openingHours": "Mo-Th 06:30-22:00; Fr-Sa 06:30-23:00; Su 08:00-22:00",
+      "source": "https://starbarbistro.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12971774443": {
+      "name": "Skyway Wok",
+      "openingHours": "Mo-Fr 06:30-14:30",
+      "source": "https://foodeist.com/place/skywaywok",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13410756394": {
+      "name": "Hibachi Daruma",
+      "openingHours": "Mo-Fr 11:00-18:30; Sa 11:30-18:30",
+      "source": "https://www.hibachidaruma.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-12038736442": {
+      "name": "Bricksworth Beer Co. — North Loop",
+      "openingHours": "Su-Th 11:00-23:00; Fr-Sa 11:00-24:00",
+      "source": "https://www.bricksworthbeer.co/north-loop-home",
+      "checkedOn": "2026-08-06",
+      "note": "Fr/Sa published as 11:00-23:59; recorded as 24:00, the OSM idiom for close of day."
+    },
+    "poi-13630053263": {
+      "name": "Parlay",
+      "openingHours": "Mo 16:00-21:00; Th-Fr 16:00-21:00; Sa-Su 10:00-21:00",
+      "source": "https://www.parlaymn.com/",
+      "checkedOn": "2026-08-06",
+      "note": "Tu/We published as 00:00-00:00 (closed)."
+    }
+  },
+  "skipped": {
+    "poi-2427534130": {
+      "name": "The Brother's Deli",
+      "reason": "Three different schedules on one site: JSON-LD says Tu-Fr 07:30-13:30, the main section Mo-Th 07:30-13:30, the footer Mo-Fr 10:30-13:30. No way to tell which is current.",
+      "source": "https://www.thebrothersdeli.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-4087475806": {
+      "name": "Monello",
+      "reason": "schema.org openingHours present but every value is an empty string; no hours in the visible page either.",
+      "source": "https://www.monellompls.com/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-6560546760": {
+      "name": "Jimmy John's (third downtown location)",
+      "reason": "Locator page returns the same store record for several of our POI ids; can't tell which physical shop this id is without disambiguating on address.",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/",
+      "checkedOn": "2026-08-06"
+    },
+    "poi-13410756379": {
+      "name": "Jimmy John's (Nicollet)",
+      "reason": "Same ambiguity as above.",
+      "source": "https://locations.jimmyjohns.com/mn/minneapolis/",
+      "checkedOn": "2026-08-06"
+    }
+  }
+}

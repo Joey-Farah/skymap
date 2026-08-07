@@ -23234,7 +23234,10 @@
    "buildingId": "gateway-municipal-garage-81049104",
    "nearby": true,
    "website": "https://www.crookedpint.com/minneapolis/",
-   "logo": "crookedpint-com"
+   "logo": "crookedpint-com",
+   "openingHours": "Mo-Fr 11:00-24:00; Sa-Su 10:00-24:00",
+   "hoursSource": "https://www.crookedpint.com/minneapolis/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-3235588407",
@@ -23671,7 +23674,10 @@
    "buildingId": "gaviidae-common-156909893",
    "level": "1",
    "website": "https://www.freshii.com/",
-   "logo": "freshii-com"
+   "logo": "freshii-com",
+   "openingHours": "Mo-Su 09:00-17:00",
+   "hoursSource": "https://www.freshii.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-5955577511",
@@ -24170,7 +24176,10 @@
    "buildingId": "sheraton-minneapolis-downtown-convention-center-1394814185",
    "nearby": true,
    "website": "https://mplsontherox.com/",
-   "logo": "mplsontherox-com"
+   "logo": "mplsontherox-com",
+   "openingHours": "Mo-Su 16:00-26:00",
+   "hoursSource": "https://mplsontherox.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-11232656337",
@@ -24323,7 +24332,10 @@
    "buildingId": "t3-723284484",
    "nearby": true,
    "website": "https://www.bricksworthbeer.co/north-loop-home",
-   "logo": "bricksworthbeer-co"
+   "logo": "bricksworthbeer-co",
+   "openingHours": "Su-Th 11:00-23:00; Fr-Sa 11:00-24:00",
+   "hoursSource": "https://www.bricksworthbeer.co/north-loop-home",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12154494729",
@@ -24691,7 +24703,10 @@
    "buildingId": "us-bank-plaza-126015100",
    "level": "1",
    "website": "https://locations.cariboucoffee.com/us/mn/minneapolis/200-south-6th-street",
-   "logo": "locations-cariboucoffee-com"
+   "logo": "locations-cariboucoffee-com",
+   "openingHours": "Mo-Fr 06:00-16:00",
+   "hoursSource": "https://locations.cariboucoffee.com/us/mn/minneapolis",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12753315923",
@@ -24704,7 +24719,10 @@
    "buildingId": "us-bank-plaza-126015100",
    "level": "1",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-192.html",
-   "logo": "locations-jimmyjohns-com"
+   "logo": "locations-jimmyjohns-com",
+   "openingHours": "Mo-Fr 10:30-18:00",
+   "hoursSource": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-1885.html",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12753315924",
@@ -24744,7 +24762,10 @@
    "buildingId": "us-bank-plaza-126015100",
    "level": "0",
    "website": "https://locations.chipotle.com/mn/minneapolis/200-s-sixth-st",
-   "logo": "locations-chipotle-com"
+   "logo": "locations-chipotle-com",
+   "openingHours": "Mo-Fr 10:30-18:00",
+   "hoursSource": "https://locations.chipotle.com/mn/minneapolis/200-s-6th-st",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12754418101",
@@ -24782,7 +24803,10 @@
    "buildingId": "wells-fargo-550-407613510",
    "level": "1",
    "website": "https://locations.einsteinbros.com/us/mn/minneapolis/550-s-4th-street",
-   "logo": "locations-einsteinbros-com"
+   "logo": "locations-einsteinbros-com",
+   "openingHours": "Mo-Fr 06:00-14:00",
+   "hoursSource": "https://locations.einsteinbros.com/us/mn/minneapolis",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12768888510",
@@ -24965,7 +24989,10 @@
    "nearby": true,
    "level": "0",
    "website": "https://starbarbistro.com/",
-   "logo": "starbarbistro-com"
+   "logo": "starbarbistro-com",
+   "openingHours": "Mo-Th 06:30-22:00; Fr-Sa 06:30-23:00; Su 08:00-22:00",
+   "hoursSource": "https://starbarbistro.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12862838551",
@@ -25182,7 +25209,10 @@
    "buildingId": "the-crossings-1411646515",
    "level": "1",
    "website": "https://foodeist.com/place/skywaywok",
-   "logo": "foodeist-com"
+   "logo": "foodeist-com",
+   "openingHours": "Mo-Fr 06:30-14:30",
+   "hoursSource": "https://foodeist.com/place/skywaywok",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-12971797978",
@@ -25574,7 +25604,10 @@
    "buildingId": "metro-apartments-156912887",
    "level": "0",
    "website": "https://www.hibachidaruma.com/",
-   "logo": "hibachidaruma-com"
+   "logo": "hibachidaruma-com",
+   "openingHours": "Mo-Fr 11:00-18:30; Sa 11:30-18:30",
+   "hoursSource": "https://www.hibachidaruma.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13451748944",
@@ -25815,7 +25848,10 @@
    "buildingId": "state-theatre-156912879",
    "nearby": true,
    "website": "https://www.parlaymn.com/",
-   "logo": "parlaymn-com"
+   "logo": "parlaymn-com",
+   "openingHours": "Mo 16:00-21:00; Th-Fr 16:00-21:00; Sa-Su 10:00-21:00",
+   "hoursSource": "https://www.parlaymn.com/",
+   "hoursCheckedOn": "2026-08-06"
   },
   {
    "id": "poi-13634346631",
