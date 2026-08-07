@@ -24963,7 +24963,10 @@
    "buildingId": "six-quebec-156912888",
    "level": "1",
    "website": "https://www.myburgerusa.com/location/skyway/",
-   "logo": "myburgerusa-com"
+   "logo": "myburgerusa-com",
+   "openingHours": "Mo-Fr 10:30-14:30",
+   "hoursSource": "https://www.myburgerusa.com/location/skyway/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-12862838548",
@@ -25754,7 +25757,10 @@
    "buildingId": "plymouth-building-156909952",
    "level": "0",
    "website": "https://lyonspub.com/",
-   "logo": "lyonspub-com"
+   "logo": "lyonspub-com",
+   "openingHours": "Mo-Sa 11:00-26:00",
+   "hoursSource": "https://lyonspub.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13451748990",
@@ -27351,7 +27357,10 @@
    "buildingId": "medical-arts-building-92905817",
    "level": "0",
    "website": "https://strivepubandco.com/",
-   "logo": "strivepubandco-com"
+   "logo": "strivepubandco-com",
+   "openingHours": "Mo-Fr 10:00-18:00",
+   "hoursSource": "https://strivebookstore.com/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13379110274",

@@ -566,7 +566,8 @@
    "name": "MyBurger",
    "group": "food",
    "website": "https://www.myburgerusa.com/location/skyway/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-12862838548": {
    "kind": "poi",
@@ -836,7 +837,8 @@
    "name": "Lyon's Pub",
    "group": "food",
    "website": "https://lyonspub.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748991": {
    "kind": "poi",
@@ -1276,7 +1278,8 @@
    "name": "Moss Optical",
    "group": "other",
    "website": "https://www.mossoptical.com/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265552504": {
    "kind": "poi",
@@ -1304,7 +1307,8 @@
    "name": "Strive Bookstore",
    "group": "other",
    "website": "https://strivepubandco.com/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756369": {
    "kind": "poi",
