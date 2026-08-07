@@ -543,6 +543,13 @@
    "source": "https://dineatbuca.com/locations/minneapolis/",
    "checkedOn": "2026-08-07",
    "note": "bucadibeppo.com no longer resolves; the chain's first-party site is dineatbuca.com. Address on the page (1204 Harmon Place) matches this POI."
+  },
+  "poi-13991578596": {
+   "name": "Nur House Cafe",
+   "openingHours": "Su-Th 06:30-20:00; Fr-Sa 08:00-21:00",
+   "source": "https://www.instagram.com/nurhousecafe/",
+   "checkedOn": "2026-08-07",
+   "note": "No website; the operator publishes address and hours in their own Instagram bio. The bio address (515 South 4th St) geocodes to this POI's exact coordinates."
   }
  },
  "skipped": {
@@ -868,6 +875,36 @@
    "name": "Currie Food Hall",
    "reason": "curriefoodhall.com 301s to minneapolis.picnicfood.com, an ordering portal whose only text is 'Order Now From Your Digital Food Court' — no address and no hours anywhere on it.",
    "source": "https://minneapolis.picnicfood.com/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13255099525": {
+   "name": "Hyderabad Indian Grill",
+   "reason": "The chain's own locations page (hyderabadindiangrill.com now 301s to hellohyderabad.us) lists six stores and none of them is downtown, on 4th Street North, or in the Textile Building. The nearest listed store, North Loop at 430 N 1st Ave Ste 150, geocodes 117 m away — a different building. Its hours were not borrowed.",
+   "source": "https://hellohyderabad.us/page/locations",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13965983651": {
+   "name": "Skyway Pho",
+   "reason": "No first-party web presence found under this name — no site, no Instagram at the obvious handles. Search returns only skyway-wide dining guides and a different, closed restaurant at the same address (Skyway Wok).",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-13451748950": {
+   "name": "Triesta Cafe",
+   "reason": "Instagram profile exists but the bio carries only a Facebook link and no hours or address; that Facebook page is no longer publicly viewable (\"This content isn't available right now\"). No other first-party source.",
+   "source": "https://www.instagram.com/triestacafe/",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-14022958820": {
+   "name": "Classic Cookie Co.",
+   "reason": "No first-party site. The @classiccookieco Instagram account is a private, unrelated business located in YVR (Vancouver), not this skyway tenant.",
+   "source": "(searched; none found)",
+   "checkedOn": "2026-08-07"
+  },
+  "poi-1077152385": {
+   "name": "The Cabana Club",
+   "reason": "Location confirmed — the site's address (201 SE Main St) geocodes to this POI's exact coordinates. But the page and its own footer disagree about Wednesday: the primary listing says Mon-Fri 11am-10pm, the footer says Wed opens at 10am with the weekend. Six days agree, Wednesday does not, and the site itself says hours are subject to change. Not resolved by picking one.",
+   "source": "http://cabanaclubmpls.com/",
    "checkedOn": "2026-08-07"
   }
  }

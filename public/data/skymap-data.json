@@ -26276,7 +26276,10 @@
    "lat": 44.976548,
    "lon": -93.262804,
    "buildingId": "edition-apartments-510-413691176",
-   "nearby": true
+   "nearby": true,
+   "openingHours": "Su-Th 06:30-20:00; Fr-Sa 08:00-21:00",
+   "hoursSource": "https://www.instagram.com/nurhousecafe/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13993589138",

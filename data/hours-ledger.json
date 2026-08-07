@@ -71,7 +71,8 @@
    "name": "The Cabana Club",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-2093784239": {
    "kind": "poi",
@@ -756,7 +757,8 @@
    "name": "Hyderabad Indian Grill",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13265533199": {
    "kind": "poi",
@@ -850,7 +852,8 @@
    "name": "Triesta Cafe",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748953": {
    "kind": "poi",
@@ -965,14 +968,16 @@
    "name": "Skyway Pho",
    "group": "food",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-13991578596": {
    "kind": "poi",
    "name": "Nur House Cafe",
    "group": "coffee",
    "website": null,
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-14003692666": {
    "kind": "poi",
@@ -986,7 +991,8 @@
    "name": "Classic Cookie Co.",
    "group": "coffee",
    "website": null,
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-14022958823": {
    "kind": "poi",
