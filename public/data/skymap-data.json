@@ -24254,7 +24254,10 @@
    "buildingId": "lee-lofts-45758932",
    "nearby": true,
    "website": "https://redrabbitmn.com/north-loop/",
-   "logo": "redrabbitmn-com"
+   "logo": "redrabbitmn-com",
+   "openingHours": "Tu-Th 11:00-22:00; Fr 11:00-23:00; Sa 10:00-23:00; Su 10:00-22:00",
+   "hoursSource": "https://redrabbitmn.com/north-loop/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-11328332531",
@@ -25354,7 +25357,10 @@
    "buildingId": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
    "level": "1",
    "website": "https://www.potbelly.com/locations/minnesota/rand-tower",
-   "logo": "potbelly-com"
+   "logo": "potbelly-com",
+   "openingHours": "Mo-Fr 08:00-16:00",
+   "hoursSource": "https://www.potbelly.com/locations/minnesota/rand-tower",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13171473235",
@@ -25537,7 +25543,10 @@
    "buildingId": "lasalle-plaza-461227727",
    "level": "0",
    "website": "https://www.parkdental.com/location/park-dental-lasalle-plaza/",
-   "logo": "parkdental-com"
+   "logo": "parkdental-com",
+   "openingHours": "Mo-Th 07:00-18:00; Fr 07:00-14:00",
+   "hoursSource": "https://www.parkdental.com/location/park-dental-lasalle-plaza/",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13324074369",
@@ -25684,7 +25693,10 @@
    "buildingId": "city-center-27346720",
    "level": "1",
    "website": "https://bell.bank/Locations/Twin-Cities-Area/Minneapolis-City-Center",
-   "logo": "bell-bank"
+   "logo": "bell-bank",
+   "openingHours": "Mo-Fr 08:00-17:00",
+   "hoursSource": "https://bell.bank/Locations/Twin-Cities-Area/Minneapolis-City-Center",
+   "hoursCheckedOn": "2026-08-07"
   },
   {
    "id": "poi-13451748957",

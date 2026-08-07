@@ -40,7 +40,7 @@
    "name": "7th Street Entry",
    "group": "food",
    "website": "https://first-avenue.com/venue/7th-st-entry/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-550953417": {
@@ -84,7 +84,7 @@
    "name": "Ruth's Chris Steak House",
    "group": "food",
    "website": "http://www.ruthschris.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-2093861357": {
@@ -99,7 +99,7 @@
    "name": "The Capital Grille",
    "group": "food",
    "website": "https://www.thecapitalgrille.com",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-2387569338": {
@@ -114,7 +114,7 @@
    "name": "The Brother's Deli",
    "group": "food",
    "website": "https://www.thebrothersdeli.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-2527309568": {
@@ -122,7 +122,7 @@
    "name": "Slam Academy",
    "group": "other",
    "website": "https://slamacademy.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-2719874232": {
@@ -158,7 +158,7 @@
    "name": "Stadium Bar and Grill",
    "group": "food",
    "website": "https://www.stadiumbarmn.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-4087475806": {
@@ -166,7 +166,7 @@
    "name": "Monello",
    "group": "food",
    "website": "https://www.monellompls.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-4564574481": {
@@ -230,7 +230,8 @@
    "name": "The UPS Store",
    "group": "other",
    "website": "https://www.theupsstore.com/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-5955586644": {
    "kind": "poi",
@@ -266,7 +267,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-3836.html",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-6780251055": {
@@ -303,7 +304,7 @@
    "name": "Breakfast Bar",
    "group": "food",
    "website": "https://www.breakfastbarofmn.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-9394789068": {
@@ -311,7 +312,8 @@
    "name": "Wellstone International High School",
    "group": "other",
    "website": "https://wellstone.mpschools.org/",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-9509044247": {
    "kind": "poi",
@@ -372,7 +374,8 @@
    "name": "Red Rabbit",
    "group": "food",
    "website": "https://redrabbitmn.com/north-loop/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-11328332531": {
    "kind": "poi",
@@ -534,7 +537,8 @@
    "name": "Subway",
    "group": "food",
    "website": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
-   "status": "pending"
+   "status": "ambiguous",
+   "checkedOn": "2026-08-07"
   },
   "poi-12786616349": {
    "kind": "poi",
@@ -692,7 +696,8 @@
    "name": "Potbelly",
    "group": "food",
    "website": "https://www.potbelly.com/locations/minnesota/rand-tower",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13189788423": {
    "kind": "poi",
@@ -748,7 +753,8 @@
    "name": "Park Dental",
    "group": "other",
    "website": "https://www.parkdental.com/location/park-dental-lasalle-plaza/",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13410756366": {
    "kind": "poi",
@@ -762,7 +768,7 @@
    "name": "Jimmy John's",
    "group": "food",
    "website": "https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-0190.html",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-13410756385": {
@@ -799,7 +805,8 @@
    "name": "Bell Bank",
    "group": "other",
    "website": "https://bell.bank/Locations/Twin-Cities-Area/Minneapolis-City-Center",
-   "status": "pending"
+   "status": "done",
+   "checkedOn": "2026-08-07"
   },
   "poi-13451748957": {
    "kind": "poi",
@@ -863,7 +870,7 @@
    "name": "Kinderberry Hill",
    "group": "other",
    "website": "https://www.kinderberryhill.com/schools/minneapolis/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-13628473443": {
@@ -1168,7 +1175,7 @@
    "name": "Grace Loves Lace",
    "group": "other",
    "website": "https://graceloveslace.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-12768888509": {
@@ -1289,7 +1296,7 @@
    "name": "Moss Optical",
    "group": "other",
    "website": "https://www.mossoptical.com/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-13265552504": {
@@ -1784,7 +1791,7 @@
    "name": "Kemmitt, Sanford & Kramer",
    "group": "other",
    "website": "https://ksk.law/",
-   "status": "none",
+   "status": "ambiguous",
    "checkedOn": "2026-08-07"
   },
   "poi-14022958821": {

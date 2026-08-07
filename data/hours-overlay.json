@@ -267,6 +267,34 @@
       "source": "https://goldroommn.com/contact/",
       "checkedOn": "2026-08-07",
       "note": "Tue/Wed published as Closed; Monday not listed; Sunday brunch is monthly, so left out rather than shown as weekly. Closes 2am, written as 26:00."
+    },
+    "poi-11248558005": {
+      "name": "Red Rabbit",
+      "openingHours": "Tu-Th 11:00-22:00; Fr 11:00-23:00; Sa 10:00-23:00; Su 10:00-22:00",
+      "source": "https://redrabbitmn.com/north-loop/",
+      "checkedOn": "2026-08-07",
+      "note": "North Loop page specifically — the site also lists a St Paul branch. Monday published as Closed."
+    },
+    "poi-13030049627": {
+      "name": "Potbelly (Rand Tower)",
+      "openingHours": "Mo-Fr 08:00-16:00",
+      "source": "https://www.potbelly.com/locations/minnesota/rand-tower",
+      "checkedOn": "2026-08-07",
+      "note": "Sa/Su absent from the shop-hours list, i.e. closed."
+    },
+    "poi-13265552513": {
+      "name": "Park Dental (LaSalle Plaza)",
+      "openingHours": "Mo-Th 07:00-18:00; Fr 07:00-14:00",
+      "source": "https://www.parkdental.com/location/park-dental-lasalle-plaza/",
+      "checkedOn": "2026-08-07",
+      "note": "Clinical hours, which is when you can actually be seen. Business-office phone hours run later on Friday and are not the same thing."
+    },
+    "poi-13451748953": {
+      "name": "Bell Bank (City Center)",
+      "openingHours": "Mo-Fr 08:00-17:00",
+      "source": "https://bell.bank/Locations/Twin-Cities-Area/Minneapolis-City-Center",
+      "checkedOn": "2026-08-07",
+      "note": "Lobby hours; Saturdays published as Closed."
     }
   },
   "skipped": {
@@ -352,6 +380,24 @@
       "name": "The Capital Grille",
       "reason": "Own site renders a day-picker that exposes only one day at a time; aggregators have hours but aren't first-party.",
       "source": "https://www.thecapitalgrille.com/locations/mn/minneapolis/minneapolis/8016",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-9394789068": {
+      "name": "Wellstone International High School",
+      "reason": "Publishes 'Hours: 8:30 a.m. - 3:10 p.m.' with no days. Weekdays is near-certain for a school and still an assumption the page doesn't make.",
+      "source": "https://wellstone.mpschools.org/about/contact",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-5955582351": {
+      "name": "The UPS Store",
+      "reason": "OSM points at the chain homepage, which only says 'hours of operation may vary by location'. No store-specific page reached.",
+      "source": "https://www.theupsstore.com/",
+      "checkedOn": "2026-08-07"
+    },
+    "poi-12768849145": {
+      "name": "Subway (701 4th Ave S)",
+      "reason": "Store page shows a live status ('Closed - Opens at 9:00 AM') rather than a weekly schedule; the week is behind an interaction the probe doesn't perform.",
+      "source": "https://restaurants.subway.com/united-states/mn/minneapolis/701-4th-avenue-south",
       "checkedOn": "2026-08-07"
     }
   }
