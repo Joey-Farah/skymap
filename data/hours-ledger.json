@@ -1724,7 +1724,8 @@
    "name": "Paul Baertschi Attorney",
    "group": "other",
    "website": "http://www.tallenandbaertschi.com",
-   "status": "pending"
+   "status": "none",
+   "checkedOn": "2026-08-07"
   },
   "poi-6177009255": {
    "kind": "poi",

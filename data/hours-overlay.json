@@ -1601,6 +1601,12 @@
    "reason": "Utility corporate site: billing, outages, service. No hours published for the Minneapolis office building this POI represents.",
    "source": "https://www.centerpointenergy.com/en-us/",
    "checkedOn": "2026-08-07"
+  },
+  "poi-6057647459": {
+   "name": "Paul Baertschi Attorney",
+   "reason": "tallenandbaertschi.com does not resolve — DNS failure on both www and apex, confirmed across two separate attempts on different passes. No surviving first-party site. A solo law practice would not publish walk-in hours in any case.",
+   "source": "(dead domain)",
+   "checkedOn": "2026-08-07"
   }
  }
 }
