@@ -119,28 +119,48 @@ real hardware must be verified *before* submitting — the withdraw path
 (`PATCH /v1/reviewSubmissions/{id}` `{canceled: true}`) only exists until
 review completes.
 
-## 1.5 — queued behind 1.4 (2026-08-08)
+## 1.5 — in flight (2026-08-08)
 
-Nothing to do until 1.4 is `READY_FOR_SALE`. Commits are on `main` and
-**unpushed on purpose**: pushing builds a new binary, and while 1.4 sits in
-review that only invites a withdraw-and-resubmit for no user-visible gain.
+`MARKETING_VERSION` is 1.5. Prepare with `prepare-1.5.sh`, notes in
+`release-notes/1.5.txt`. Screenshots carry over from 1.3; no UI changed.
 
-Waiting to go out:
+**Bump the version before pushing after a release goes live.** 1.4 reached
+`READY_FOR_SALE` on 2026-08-07, which closes its train. The next push built
+build 48 still stamped 1.4, and Apple rejected the upload at ingest —
+`ITMS-90186` (train closed) and `ITMS-90062` (version not higher than the
+approved one). Nothing was wrong with the binary. Build 48 does not exist
+in App Store Connect; it never got past ingest.
 
-- `0d3697b` — the operator's own hours outrank OSM by default, with a
-  source requirement and staleness warnings. **Changes no shipped data**
-  (verified byte-identical); it governs the next `npm run data:osm`.
-- `af332ef` — docs only, the attribution line in the 1.4 notes.
+What 1.5 contains, and how it got there:
 
-Push both once 1.4 ships, then bump `MARKETING_VERSION`, regenerate the
-notes, and reuse `prepare-1.4.sh` as the template (gate on the previous
-version being `READY_FOR_SALE`, resolve the build by number, stop before
-submit).
+- `5dbaeb8` — the version bump itself.
+- `e2b2a6e` — storefronts follow the operator-wins rule that `0d3697b` gave
+  buildings. The two paths had disagreed since yesterday.
+- `b2efdac` — the regenerated dataset, the first since 1.4.
 
-Also worth folding in: the six data follow-ups in
-`docs/hours-curation-run.md` — three POIs that look like closed businesses,
-two sitting far from their published address, a duplicate Jack Link's, and
-a rename. None of them are code.
+The regeneration is what gives 1.5 user-visible content: the two commits
+inherited from the 1.4 window changed no shipped bytes on their own, because
+`0d3697b` only governs what the *next* extraction does. Running it picked up
+15 new POIs, dropped 6, and tightened a number of schedules.
+
+**Regenerating is two commands, not one.** `npm run data:osm --apply` writes
+only the OSM layer; `node scripts/apply-hours-overlay.mjs --write` merges the
+curated hours back on top. Running the first without the second silently
+drops all 113 curated entries — it looks like a successful run.
+
+Re-downloading OSM means the overlay and OSM can collide, and they now do:
+OSM had independently gained hours for four curated storefronts. Under the
+old POI rule OSM won, which would have shipped Hibachi Daruma closing at
+19:00 over the 18:30 its own site publishes. The applier now reports
+genuinely redundant entries separately (`Sota` is the only one) so they can
+be retired deliberately rather than as a side effect of a release.
+
+Still unfolded: the six data follow-ups in `docs/hours-curation-run.md` —
+three POIs that look like closed businesses, two sitting far from their
+published address, a duplicate Jack Link's, and a rename. None are code.
+Freshii is worth adding to that list: its curated hours and OSM's disagree
+in both directions (`Mo-Su 09:00-17:00` against weekday 06:00 starts and a
+closed Sunday), so it wants a hand re-check rather than a precedence rule.
 
 ## 1.4 — prepared, NOT submitted (2026-08-07)
 
