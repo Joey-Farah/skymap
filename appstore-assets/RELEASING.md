@@ -119,6 +119,29 @@ real hardware must be verified *before* submitting — the withdraw path
 (`PATCH /v1/reviewSubmissions/{id}` `{canceled: true}`) only exists until
 review completes.
 
+## 1.5 — queued behind 1.4 (2026-08-08)
+
+Nothing to do until 1.4 is `READY_FOR_SALE`. Commits are on `main` and
+**unpushed on purpose**: pushing builds a new binary, and while 1.4 sits in
+review that only invites a withdraw-and-resubmit for no user-visible gain.
+
+Waiting to go out:
+
+- `0d3697b` — the operator's own hours outrank OSM by default, with a
+  source requirement and staleness warnings. **Changes no shipped data**
+  (verified byte-identical); it governs the next `npm run data:osm`.
+- `af332ef` — docs only, the attribution line in the 1.4 notes.
+
+Push both once 1.4 ships, then bump `MARKETING_VERSION`, regenerate the
+notes, and reuse `prepare-1.4.sh` as the template (gate on the previous
+version being `READY_FOR_SALE`, resolve the build by number, stop before
+submit).
+
+Also worth folding in: the six data follow-ups in
+`docs/hours-curation-run.md` — three POIs that look like closed businesses,
+two sitting far from their published address, a duplicate Jack Link's, and
+a rename. None of them are code.
+
 ## 1.4 — prepared, NOT submitted (2026-08-07)
 
 `MARKETING_VERSION` is 1.4. Eight user-visible bugs fixed, found by two
