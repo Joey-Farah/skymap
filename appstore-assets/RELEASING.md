@@ -207,6 +207,7 @@ Hours you can trust — and honesty about the ones we don't have.
 • The Government Plaza and Warehouse District light-rail stations are searchable.
 • "You've arrived" no longer appears while you're still walking.
 • Starting a second trip now routes from where you actually are, instead of where your last trip began.
+• The map's credits now name OpenStreetMap for the skyway data itself, not just the map underneath it.
 ```
 
 ## What's New — 1.3
