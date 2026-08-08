@@ -5,15 +5,15 @@
  * regenerated from OSM and would otherwise lose every curated hour on the
  * next `npm run data:osm`. Run this after any extraction.
  *
- * OSM always wins. If a POI has picked up real `opening_hours` upstream,
- * that is the better source — it is maintained by people who can see the
- * door — and the overlay entry has done its job and can be retired.
+ * The operator wins — for storefronts as well as buildings, since 2026-08-08.
+ * See hours-precedence.mjs for why. Where OSM has independently arrived at
+ * the same hours the overlay entry is redundant and reported as retirable.
  *
  *   node scripts/apply-hours-overlay.mjs [--write]
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseOpeningHours } from "../src/opening-hours.ts";
-import { decideBuilding, stalenessWarnings } from "./hours-precedence.mjs";
+import { decideBuilding, decidePoi, stalenessWarnings } from "./hours-precedence.mjs";
 
 const DATA = "public/data/skymap-data.json";
 const OVERLAY = "data/hours-overlay.json";
@@ -30,6 +30,9 @@ const buildingsById = new Map(data.buildings.map((b) => [b.id, b]));
 
 let applied = 0;
 const problems = [];
+// Entries OSM has independently caught up with. Not problems — the data is
+// right either way — so they are reported separately and don't fail the run.
+const retirable = [];
 for (const [id, entry] of Object.entries(overlay.hours)) {
   const parsed = parseOpeningHours(entry.openingHours);
   const building = buildingsById.get(id);
@@ -60,15 +63,19 @@ for (const [id, entry] of Object.entries(overlay.hours)) {
     problems.push(`${id} (${entry.name}): unparseable opening_hours ${JSON.stringify(entry.openingHours)}`);
     continue;
   }
-  if (poi.openingHours) {
-    // Distinguish "already applied" from "OSM caught up" — they call for
-    // opposite actions, and a run over an already-patched dataset would
-    // otherwise report every entry as retirable.
-    if (poi.hoursSource === entry.source) continue; // idempotent re-run
-    problems.push(`${id} (${entry.name}): OSM now has hours — retire this overlay entry`);
+  // Same policy as buildings, and for the same reason: the operator is the
+  // primary source for its own storefront.
+  const decision = decidePoi(poi, entry);
+  if (decision.action === "problem") {
+    problems.push(`${id} (${entry.name}): ${decision.reason}`);
     continue;
   }
-  poi.openingHours = entry.openingHours;
+  if (decision.action === "skip") continue;
+  if (decision.action === "retire") {
+    retirable.push(`${id} (${entry.name}): OSM independently has the same hours — overlay entry is redundant`);
+    continue;
+  }
+  poi.openingHours = decision.openingHours;
   poi.hoursSource = entry.source;
   poi.hoursCheckedOn = entry.checkedOn;
   applied++;
@@ -102,6 +109,11 @@ console.log(`applied ${applied} of ${Object.keys(overlay.hours).length} overlay 
 console.log(`retracted (OSM hours that were never an access claim): ${retracted}`);
 console.log(`skipped (recorded, deliberately not applied): ${Object.keys(overlay.skipped ?? {}).length}`);
 for (const p of problems) console.log(`  ! ${p}`);
+
+if (retirable.length) {
+  console.log(`\n${retirable.length} overlay entries OSM has caught up with:`);
+  for (const r of retirable) console.log(`  - ${r}`);
+}
 
 // Not a failure — the data is still the best we have. But these now beat
 // OSM by default, so a silent decay would be wrong in the confident

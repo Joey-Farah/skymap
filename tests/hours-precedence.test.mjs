@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { decideBuilding, stalenessWarnings, STALE_AFTER_DAYS } from "../scripts/hours-precedence.mjs";
+import { decideBuilding, decidePoi, stalenessWarnings, STALE_AFTER_DAYS } from "../scripts/hours-precedence.mjs";
 
 const NOW = new Date(2026, 7, 8); // 2026-08-08
 const entry = {
@@ -19,6 +19,29 @@ test("an operator's own published hours outrank OSM", () => {
   const osmHours = Array(7).fill([390, 1320]); // open every day, 06:30-22:00
   const d = decideBuilding({ hours: osmHours }, entry);
   assert.equal(d.action, "apply");
+});
+
+test("a storefront's own published hours outrank OSM too", () => {
+  // Storefronts ran the opposite rule until 2026-08-08 — OSM won and the
+  // overlay entry was reported as retirable. Regenerating after OSM picked
+  // up hours for Hibachi Daruma would have shipped a 19:00 close over the
+  // restaurant's own 18:30, which is the overstatement the whole curation
+  // pass exists to avoid. One rule for both shapes.
+  const d = decidePoi({ openingHours: "Mo-Fr 11:00-19:00; Sa 11:30-19:00; Su off" }, entry);
+  assert.equal(d.action, "apply");
+  assert.equal(d.openingHours, entry.openingHours);
+});
+
+test("a storefront entry that merely agrees with OSM is retirable, not a conflict", () => {
+  // The overlay has done its job here; keeping it around means re-checking
+  // a claim OSM already carries.
+  const d = decidePoi({ openingHours: entry.openingHours }, entry);
+  assert.equal(d.action, "retire");
+});
+
+test("re-running over an already-applied storefront changes nothing", () => {
+  const applied = { openingHours: entry.openingHours, hoursSource: entry.source };
+  assert.equal(decidePoi(applied, entry).action, "skip");
 });
 
 test("an operator entry still fills a gap when OSM knows nothing", () => {
