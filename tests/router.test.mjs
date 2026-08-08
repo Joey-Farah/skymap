@@ -916,20 +916,24 @@ test("a route with no drawn geometry snaps nothing", () => {
   assert.equal(snapToRoute([[-93.27, 44.975]], 44.975, -93.269, 40), null);
 });
 
-test("an overlay entry may only outrank OSM when it says so, with a reason", () => {
-  // The applier treats OSM as authoritative, so a curated entry normally
-  // yields to it. A landlord publishing its own building's access policy is
-  // the one case that should win — but letting overlay quietly beat OSM
-  // would erase that judgement everywhere it was never intended. So the
-  // override is opt-in per entry and must carry its justification, and this
-  // asserts that of every override actually shipped.
+test("every curated entry names a source and a date, since they outrank OSM", () => {
+  // Since 2026-08-08 an operator's own published hours beat OSM by default
+  // (scripts/hours-precedence.mjs). That is only defensible while every
+  // entry says where it came from and when it was checked — otherwise the
+  // default lets an unsourced guess win, which is the exact thing the
+  // curation pass refused to ship. The old `overridesOsm` opt-in is gone;
+  // this is what replaced it.
   const overlay = JSON.parse(readFileSync("data/hours-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.hours)) {
-    if (!entry.overridesOsm) continue;
-    assert.ok(entry.source, `${id} overrides OSM without naming a source`);
+    assert.ok(entry.source, `${id} (${entry.name}) outranks OSM without naming a source`);
+    assert.match(
+      entry.checkedOn ?? "",
+      /^\d{4}-\d{2}-\d{2}$/,
+      `${id} (${entry.name}) has no checkedOn date, so it can never be shown to be stale`,
+    );
     assert.ok(
-      entry.overrideReason && entry.overrideReason.length > 40,
-      `${id} overrides OSM without explaining why`,
+      !entry.overridesOsm,
+      `${id} still carries overridesOsm, a mechanism that no longer exists`,
     );
   }
 });

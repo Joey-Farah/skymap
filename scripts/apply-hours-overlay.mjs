@@ -13,6 +13,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseOpeningHours } from "../src/opening-hours.ts";
+import { decideBuilding, stalenessWarnings } from "./hours-precedence.mjs";
 
 const DATA = "public/data/skymap-data.json";
 const OVERLAY = "data/hours-overlay.json";
@@ -33,34 +34,15 @@ for (const [id, entry] of Object.entries(overlay.hours)) {
   const parsed = parseOpeningHours(entry.openingHours);
   const building = buildingsById.get(id);
   if (building) {
-    if (!parsed) {
-      problems.push(`${id} (${entry.name}): unparseable opening_hours ${JSON.stringify(entry.openingHours)}`);
+    // The precedence policy lives in hours-precedence.mjs so it can be read
+    // and tested on its own. Short version: the operator wins.
+    const decision = decideBuilding(building, entry);
+    if (decision.action === "problem") {
+      problems.push(`${id} (${entry.name}): ${decision.reason}`);
       continue;
     }
-    // A building that has since grown real OSM hours is the better source,
-    // exactly as for POIs — but here "has hours" is a non-null array, since
-    // null is this dataset's encoding for "nobody publishes them".
-    // OSM is authoritative by default, on the reasoning that it is
-    // maintained by people who can see the door. An entry may outrank it
-    // only by saying so explicitly AND saying why, which keeps the default
-    // intact and makes every exception findable in one grep.
-    //
-    // The case this exists for: a landlord publishing its own building's
-    // access policy in its own tenant handbook is the operator stating its
-    // own rules, and outranks a third-party map edit that may predate the
-    // current policy by years.
-    if (building.hours !== null && building.hoursSource !== entry.source) {
-      if (!entry.overridesOsm) {
-        problems.push(`${id} (${entry.name}): OSM now has hours — retire this overlay entry`);
-        continue;
-      }
-      if (!entry.overrideReason) {
-        problems.push(`${id} (${entry.name}): overridesOsm set without an overrideReason`);
-        continue;
-      }
-    }
-    if (building.hoursSource === entry.source) continue; // idempotent re-run
-    building.hours = parsed;
+    if (decision.action === "skip") continue;
+    building.hours = decision.hours;
     building.hoursNote = "Curated from the operator's own published hours.";
     building.hoursSource = entry.source;
     building.hoursCheckedOn = entry.checkedOn;
@@ -120,6 +102,15 @@ console.log(`applied ${applied} of ${Object.keys(overlay.hours).length} overlay 
 console.log(`retracted (OSM hours that were never an access claim): ${retracted}`);
 console.log(`skipped (recorded, deliberately not applied): ${Object.keys(overlay.skipped ?? {}).length}`);
 for (const p of problems) console.log(`  ! ${p}`);
+
+// Not a failure — the data is still the best we have. But these now beat
+// OSM by default, so a silent decay would be wrong in the confident
+// direction, which is the failure mode this whole pass existed to remove.
+const stale = stalenessWarnings(overlay.hours);
+if (stale.length) {
+  console.log(`\n${stale.length} curated entries want re-checking:`);
+  for (const s of stale) console.log(`  ~ ${s}`);
+}
 
 const eat = data.pois.filter((p) => ["food", "coffee"].includes(p.group));
 const have = eat.filter((p) => p.openingHours).length;

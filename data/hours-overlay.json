@@ -794,9 +794,7 @@
    "openingHours": "Mo-Fr 06:00-18:00",
    "source": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
    "checkedOn": "2026-08-07",
-   "overridesOsm": true,
-   "overrideReason": "OSM has this building open Su 08:00-18:00, Mo-Fr 06:00-18:00, Sa 08:00-18:00 — every day of the week. Shorenstein, the landlord, publishes 'Building Hours 6:00 a.m. - 6:00 p.m. M-F, Closed Sat & Sun' for the Washington Square campus in its own tenant handbook, and adds that an access card is required from 6pm to 6am and all weekend. The operator stating its own access policy outranks a third-party map edit that may predate the current policy by years, and this matches what the City's 2025 committee record says actually happens downtown. Weekday hours are identical in both sources; the disagreement is solely about weekends, where OSM would have the router send someone to a door that needs a card they do not have.",
-   "note": "The same handbook is the source for 111 Washington Square, which needed no override because OSM had no hours for it."
+   "note": "Disagrees with OSM, which has this building open every day; Shorenstein's tenant handbook says weekdays only, card required evenings and weekends. Kept because the operator wins by default (see scripts/hours-precedence.mjs); before 2026-08-08 this needed an explicit override flag. Full account in overlay.conflicts. The same handbook is the source for 111 Washington Square."
   }
  },
  "notAccessHours": {
@@ -2481,7 +2479,7 @@
    "osmHours": "Su 08:00-18:00; Mo-Fr 06:00-18:00; Sa 08:00-18:00",
    "landlordHours": "Mo-Fr 06:00-18:00",
    "source": "https://tenants.washingtonsquare-mn.com/tenant-handbook-new/building-operations/building-hours-access",
-   "resolution": "RESOLVED 2026-08-07 in favour of the landlord, via a new per-entry `overridesOsm` flag rather than a change to the default. OSM still wins everywhere else; an overlay entry can outrank it only by setting overridesOsm AND supplying an overrideReason, and a test in tests/router.test.mjs asserts every shipped override carries both. That keeps the reasoning behind the default intact — OSM is maintained by people who can see the door — while letting an operator's own published access policy win for its own building, which is the narrow case where it clearly should.",
+   "resolution": "RESOLVED 2026-08-07 in favour of the landlord. Originally via a per-entry `overridesOsm` flag, because OSM was authoritative by default. On 2026-08-08 that default was inverted — an operator publishing its own building's access policy is the primary source for its own door — so the flag became meaningless and was removed. The evidence for the flip: of the eight buildings with operator-sourced hours, seven were STRICTER than the alternative, and overstating hours sends someone to a locked door while understating them costs a detour. See scripts/hours-precedence.mjs and tests/hours-precedence.test.mjs.",
    "checkedOn": "2026-08-07"
   }
  },
