@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-07-31T18:57:27.496Z"
+  "generated": "2026-08-08T16:01:07.768Z"
  },
  "buildings": [
   {
@@ -689,7 +689,7 @@
   {
    "id": "mayo-clinic-square-27346712",
    "name": "Mayo Clinic Square",
-   "address": "Minneapolis",
+   "address": "600 Hennepin Avenue",
    "category": "office",
    "lat": 44.978898,
    "lon": -93.274852,
@@ -5737,7 +5737,7 @@
   {
    "id": "730-building-45581646",
    "name": "730 Building",
-   "address": "Minneapolis",
+   "address": "730 2nd Avenue South",
    "category": "office",
    "lat": 44.9753,
    "lon": -93.270424,
@@ -7003,70 +7003,6 @@
     "attribution": "Susanlesch · CC BY 2.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:MacPhail-20071218.jpg"
    }
-  },
-  {
-   "id": "metropolitan-lofts-81049075",
-   "name": "Metropolitan Lofts",
-   "address": "545 South 2nd Street",
-   "category": "residential",
-   "lat": 44.97923,
-   "lon": -93.259821,
-   "footprint": [
-    [
-     -93.259864,
-     44.979462
-    ],
-    [
-     -93.259339,
-     44.979245
-    ],
-    [
-     -93.259636,
-     44.978887
-    ],
-    [
-     -93.259715,
-     44.97892
-    ],
-    [
-     -93.259768,
-     44.978943
-    ],
-    [
-     -93.259857,
-     44.978981
-    ],
-    [
-     -93.259691,
-     44.979178
-    ],
-    [
-     -93.260064,
-     44.979335
-    ],
-    [
-     -93.260021,
-     44.979387
-    ],
-    [
-     -93.259983,
-     44.979374
-    ],
-    [
-     -93.25995,
-     44.979414
-    ],
-    [
-     -93.259917,
-     44.979399
-    ],
-    [
-     -93.259864,
-     44.979462
-    ]
-   ],
-   "hours": null,
-   "hoursNote": "No published hours found."
   },
   {
    "id": "depot-office-center-81049079",
@@ -9568,126 +9504,6 @@
    "hoursNote": "Building hours from OSM (not skyway-specific)."
   },
   {
-   "id": "saint-olaf-catholic-church-126015108",
-   "name": "Saint Olaf Catholic Church",
-   "address": "215 South 8th Street",
-   "category": "venue",
-   "lat": 44.9743,
-   "lon": -93.270027,
-   "footprint": [
-    [
-     -93.270584,
-     44.97427
-    ],
-    [
-     -93.270203,
-     44.974112
-    ],
-    [
-     -93.27022,
-     44.974092
-    ],
-    [
-     -93.270067,
-     44.974027
-    ],
-    [
-     -93.270078,
-     44.974015
-    ],
-    [
-     -93.269979,
-     44.973971
-    ],
-    [
-     -93.269891,
-     44.973932
-    ],
-    [
-     -93.269869,
-     44.973959
-    ],
-    [
-     -93.269854,
-     44.973955
-    ],
-    [
-     -93.269726,
-     44.974112
-    ],
-    [
-     -93.269777,
-     44.974133
-    ],
-    [
-     -93.269653,
-     44.974279
-    ],
-    [
-     -93.269682,
-     44.974293
-    ],
-    [
-     -93.269646,
-     44.974347
-    ],
-    [
-     -93.269849,
-     44.974433
-    ],
-    [
-     -93.269847,
-     44.974443
-    ],
-    [
-     -93.269933,
-     44.974478
-    ],
-    [
-     -93.269942,
-     44.974472
-    ],
-    [
-     -93.269971,
-     44.974491
-    ],
-    [
-     -93.269986,
-     44.97448
-    ],
-    [
-     -93.270091,
-     44.974553
-    ],
-    [
-     -93.27022,
-     44.97458
-    ],
-    [
-     -93.270213,
-     44.974601
-    ],
-    [
-     -93.270279,
-     44.974615
-    ],
-    [
-     -93.270288,
-     44.974595
-    ],
-    [
-     -93.270305,
-     44.9746
-    ],
-    [
-     -93.270584,
-     44.97427
-    ]
-   ],
-   "hours": null,
-   "hoursNote": "No published hours found."
-  },
-  {
    "id": "minneapolis-public-service-center-126116946",
    "name": "Minneapolis Public Service Center",
    "address": "Minneapolis",
@@ -9856,7 +9672,7 @@
   {
    "id": "705-building-126116975",
    "name": "705 Building",
-   "address": "Minneapolis",
+   "address": "705 Marquette Avenue",
    "category": "office",
    "lat": 44.97593,
    "lon": -93.270621,
@@ -9935,7 +9751,7 @@
   {
    "id": "706-building-126116977",
    "name": "706 Building",
-   "address": "Minneapolis",
+   "address": "706 2nd Avenue South",
    "category": "office",
    "lat": 44.975691,
    "lon": -93.270184,
@@ -10088,8 +9904,8 @@
    "name": "Guthrie Theater",
    "address": "818 South 2nd Street",
    "category": "office",
-   "lat": 44.97822,
-   "lon": -93.255486,
+   "lat": 44.978218,
+   "lon": -93.255493,
    "footprint": [
     [
      -93.255532,
@@ -10154,6 +9970,10 @@
     [
      -93.255972,
      44.97813
+    ],
+    [
+     -93.255961,
+     44.97812
     ],
     [
      -93.255938,
@@ -11512,6 +11332,70 @@
    }
   },
   {
+   "id": "portland-avenue-ramp-156909997",
+   "name": "Portland Avenue Ramp",
+   "address": "Minneapolis",
+   "category": "parking",
+   "lat": 44.979108,
+   "lon": -93.259908,
+   "footprint": [
+    [
+     -93.260028,
+     44.97932
+    ],
+    [
+     -93.259983,
+     44.979374
+    ],
+    [
+     -93.260001,
+     44.979381
+    ],
+    [
+     -93.260018,
+     44.979388
+    ],
+    [
+     -93.260313,
+     44.979049
+    ],
+    [
+     -93.259851,
+     44.97885
+    ],
+    [
+     -93.2598,
+     44.978828
+    ],
+    [
+     -93.259754,
+     44.978878
+    ],
+    [
+     -93.259715,
+     44.97892
+    ],
+    [
+     -93.259768,
+     44.978943
+    ],
+    [
+     -93.259857,
+     44.978981
+    ],
+    [
+     -93.259691,
+     44.979178
+    ],
+    [
+     -93.260028,
+     44.97932
+    ]
+   ],
+   "hours": null,
+   "hoursNote": "No published hours found."
+  },
+  {
    "id": "state-theatre-156912879",
    "name": "State Theatre",
    "address": "805 Hennepin Avenue",
@@ -12112,12 +11996,20 @@
    "name": "Mill City Museum",
    "address": "704 South 2nd Street",
    "category": "office",
-   "lat": 44.978902,
-   "lon": -93.257045,
+   "lat": 44.978877,
+   "lon": -93.257081,
    "footprint": [
     [
      -93.257556,
      44.978756
+    ],
+    [
+     -93.257422,
+     44.978701
+    ],
+    [
+     -93.25731,
+     44.978654
     ],
     [
      -93.257188,
@@ -13787,7 +13679,12 @@
     ]
    ],
    "hours": null,
-   "hoursNote": "No published hours found."
+   "hoursNote": "No published hours found.",
+   "image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Mpls%20YMCA%20Central%20Bldg.jpg?width=640",
+    "attribution": "McGhiever · CC BY 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mpls%20YMCA%20Central%20Bldg.jpg"
+   }
   },
   {
    "id": "lasalle-plaza-461227727",
@@ -17839,8 +17736,8 @@
      44.975757
     ],
     [
-     -93.270499,
-     44.975948
+     -93.270541,
+     44.9759
     ]
    ]
   },
@@ -18529,21 +18426,6 @@
     ]
    ],
    "hasSteps": true
-  },
-  {
-   "from": "deluxe-plaza-1462073358",
-   "to": "saint-olaf-catholic-church-126015108",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270891,
-     44.974374
-    ],
-    [
-     -93.270618,
-     44.974227
-    ]
-   ]
   },
   {
    "from": "medical-arts-building-92905817",
@@ -19268,21 +19150,6 @@
    ]
   },
   {
-   "from": "two22-44684851",
-   "to": "saint-olaf-catholic-church-126015108",
-   "crossing": "Minneapolis Skyway",
-   "geometry": [
-    [
-     -93.270183,
-     44.97404
-    ],
-    [
-     -93.270618,
-     44.974227
-    ]
-   ]
-  },
-  {
    "from": "energy-center-ramp-28490490",
    "to": "ameriprise-financial-headquarters-28490454",
    "crossing": "Minneapolis Skyway",
@@ -19569,7 +19436,7 @@
    ]
   },
   {
-   "from": "metropolitan-lofts-81049075",
+   "from": "portland-avenue-ramp-156909997",
    "to": "depot-office-center-81049079",
    "crossing": "skyway",
    "geometry": [
@@ -20277,6 +20144,16 @@
    "buildingId": "minneapolis-event-centers-92905847"
   },
   {
+   "id": "poi-1077152517",
+   "name": "Lonely's Bar",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.984624,
+   "lon": -93.255376,
+   "buildingId": "st-anthony-main-39707475"
+  },
+  {
    "id": "poi-1077152668",
    "name": "Aster Cafe",
    "category": "cafe",
@@ -20570,8 +20447,8 @@
    "lat": 44.975061,
    "lon": -93.27055,
    "buildingId": "730-building-45581646",
-   "openingHours": "Mo-Fr 07:00-15:00; Sa,Su 07:30-14:00",
-   "website": "https://henhouseeatery.com/",
+   "openingHours": "Mo-Fr 07:00-15:00; Sa-Su 07:30-14:00",
+   "website": "https://www.henhouseeatery.com/",
    "logo": "henhouseeatery-com"
   },
   {
@@ -20631,8 +20508,8 @@
    "category": "clinic",
    "kind": "amenity",
    "group": "other",
-   "lat": 44.97722,
-   "lon": -93.254938,
+   "lat": 44.977258,
+   "lon": -93.254955,
    "buildingId": "riverfront-municipal-parking-ramp-99717608",
    "nearby": true,
    "openingHours": "Mo-Fr 08:00-17:00",
@@ -20966,9 +20843,9 @@
    "lon": -93.27115,
    "buildingId": "gaviidae-common-156909893",
    "level": "1",
-   "website": "https://www.freshii.com/",
-   "logo": "freshii-com",
    "openingHours": "Mo-Su 09:00-17:00",
+   "website": "https://freshiimn.com",
+   "logo": "freshiimn-com",
    "hoursSource": "https://www.freshii.com/",
    "hoursCheckedOn": "2026-08-06"
   },
@@ -21280,7 +21157,8 @@
    "lon": -93.271949,
    "buildingId": "textile-building-89080618",
    "nearby": true,
-   "website": "https://www.breakfastbarofmn.com/"
+   "website": "https://www.breakfastbarofmn.com/",
+   "logo": "breakfastbarofmn-com"
   },
   {
    "id": "poi-7838159754",
@@ -22343,6 +22221,7 @@
    "lon": -93.270037,
    "buildingId": "six-quebec-156912888",
    "level": "1",
+   "openingHours": "Mo-Fr 07:00-14:00; Sa-Su off",
    "website": "https://www.eggflipmn.com/",
    "logo": "eggflipmn-com"
   },
@@ -22541,7 +22420,7 @@
    "group": "other",
    "lat": 44.979706,
    "lon": -93.259736,
-   "buildingId": "metropolitan-lofts-81049075",
+   "buildingId": "portland-avenue-ramp-156909997",
    "nearby": true,
    "website": "https://www.millerslandingseniorliving.com",
    "logo": "millerslandingseniorliving-com",
@@ -23022,9 +22901,9 @@
    "lon": -93.272524,
    "buildingId": "metro-apartments-156912887",
    "level": "0",
+   "openingHours": "Mo-Fr 11:00-18:30; Sa 11:30-18:30",
    "website": "https://www.hibachidaruma.com/",
    "logo": "hibachidaruma-com",
-   "openingHours": "Mo-Fr 11:00-18:30; Sa 11:30-18:30",
    "hoursSource": "https://www.hibachidaruma.com/",
    "hoursCheckedOn": "2026-08-06"
   },
@@ -23131,11 +23010,9 @@
    "lon": -93.269907,
    "buildingId": "six-quebec-156912888",
    "level": "1",
-   "website": "https://sotashopmn.com/",
-   "logo": "sotashopmn-com",
    "openingHours": "Mo-Th 11:00-16:00; Fr 11:00-14:00",
-   "hoursSource": "https://sotashopmn.com/hours-%26-location",
-   "hoursCheckedOn": "2026-08-07"
+   "website": "https://sotashopmn.com/",
+   "logo": "sotashopmn-com"
   },
   {
    "id": "poi-13451748985",
@@ -23224,26 +23101,15 @@
    "logo": "chase-com"
   },
   {
-   "id": "poi-13512736097",
-   "name": "Classic Cookie Co.",
-   "category": "fast_food",
-   "kind": "amenity",
-   "group": "food",
-   "lat": 44.978336,
-   "lon": -93.267041,
-   "buildingId": "emery-autograph-collection-62006964",
-   "openingHours": "Mo-Fr 11:00-16:00",
-   "website": "http://mplsclassiccookie.mysite.com/"
-  },
-  {
    "id": "poi-13524599047",
    "name": "Sorrento Cucina",
    "category": "fast_food",
    "kind": "amenity",
    "group": "food",
-   "lat": 44.978306,
-   "lon": -93.267067,
-   "buildingId": "emery-autograph-collection-62006964",
+   "lat": 44.977923,
+   "lon": -93.267369,
+   "buildingId": "mcknight-building-41763761",
+   "level": "1",
    "openingHours": "Mo-Fr 11:00-15:00",
    "website": "https://sorrentocucina.wordpress.com/",
    "logo": "sorrentocucina-wordpress-com"
@@ -23488,7 +23354,9 @@
    "lon": -93.266723,
    "buildingId": "330-south-second-45452108",
    "level": "1",
-   "openingHours": "Mo-Fr 08:00-14:00"
+   "openingHours": "Mo-Fr 08:00-14:00",
+   "website": "https://eggflipusa.com/eggflip330",
+   "logo": "eggflipusa-com"
   },
   {
    "id": "poi-13965983653",
@@ -23638,17 +23506,6 @@
    "logo": "barrampls-com"
   },
   {
-   "id": "poi-14022958820",
-   "name": "Classic Cookie Co.",
-   "category": "cafe",
-   "kind": "amenity",
-   "group": "coffee",
-   "lat": 44.977991,
-   "lon": -93.267323,
-   "buildingId": "mcknight-building-41763761",
-   "level": "1"
-  },
-  {
    "id": "poi-14022958823",
    "name": "Good To Go Mediterranean",
    "category": "fast_food",
@@ -23716,19 +23573,6 @@
    "openingHours": "Mo-Fr 07:00-17:00",
    "website": "https://cardigandonuts.com/",
    "logo": "cardigandonuts-com"
-  },
-  {
-   "id": "poi-14022958831",
-   "name": "Sorrento Cucina",
-   "category": "fast_food",
-   "kind": "amenity",
-   "group": "food",
-   "lat": 44.977876,
-   "lon": -93.267353,
-   "buildingId": "mcknight-building-41763761",
-   "level": "1",
-   "website": "https://sorrentocucina.wordpress.com/",
-   "logo": "sorrentocucina-wordpress-com"
   },
   {
    "id": "poi-14022958834",
@@ -23820,6 +23664,58 @@
    "lon": -93.284377,
    "buildingId": "shelby-commons-1388384208",
    "nearby": true
+  },
+  {
+   "id": "poi-14072826904",
+   "name": "Champa Cafe",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.978949,
+   "lon": -93.267231,
+   "buildingId": "330-south-second-45452108",
+   "level": "2",
+   "openingHours": "Mo,Fr 08:00-14:00; Tu-Th 08:00-15:00; Sa-Su off",
+   "website": "https://www.champacafe.us/",
+   "logo": "champacafe-us"
+  },
+  {
+   "id": "poi-14073438200",
+   "name": "Giulia",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.978456,
+   "lon": -93.267016,
+   "buildingId": "emery-autograph-collection-62006964",
+   "website": "https://www.dinegiulia.com/",
+   "logo": "dinegiulia-com"
+  },
+  {
+   "id": "poi-14073475113",
+   "name": "WCCO",
+   "category": "studio",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.9758,
+   "lon": -93.269207,
+   "buildingId": "hyatt-centric-downtown-minneapolis-354742163",
+   "nearby": true,
+   "website": "https://www.audacy.com/wccoradio",
+   "logo": "audacy-com"
+  },
+  {
+   "id": "poi-14073670158",
+   "name": "Five Guys",
+   "category": "fast_food",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.978016,
+   "lon": -93.271,
+   "buildingId": "60-south-sixth-156909966",
+   "openingHours": "Mo-Su 08:00-21:00",
+   "website": "https://restaurants.fiveguys.com/555-nicollet-mall",
+   "logo": "restaurants-fiveguys-com"
   },
   {
    "id": "poi-1352105236",
@@ -24022,9 +23918,9 @@
    "lon": -93.270948,
    "buildingId": "gaviidae-common-156909893",
    "level": "1",
+   "openingHours": "Tu-Sa 09:30-18:30",
    "website": "https://emeraldcitydayspa.com/",
    "logo": "emeraldcitydayspa-com",
-   "openingHours": "Tu-Sa 09:30-18:30",
    "hoursSource": "https://www.emeraldcitydayspa.com/",
    "hoursCheckedOn": "2026-08-07"
   },
@@ -24036,7 +23932,8 @@
    "group": "other",
    "lat": 44.977489,
    "lon": -93.271302,
-   "buildingId": "gaviidae-common-156909893"
+   "buildingId": "gaviidae-common-156909893",
+   "website": "https://heelwhore.com"
   },
   {
    "id": "poi-5955577508",
@@ -24157,6 +24054,7 @@
    "lon": -93.271974,
    "buildingId": "ids-center-1385236413",
    "level": "0",
+   "openingHours": "Mo-Fr 08:00-18:00; Sa 10:00-18:00; Su off",
    "website": "https://office.fedex.com/",
    "logo": "office-fedex-com"
   },
@@ -24316,6 +24214,7 @@
    "lat": 44.975855,
    "lon": -93.271055,
    "buildingId": "733-building-126116972",
+   "level": "0",
    "openingHours": "Mo-Fr 08:30-16:00",
    "website": "https://www.metrotransit.org/service-centers",
    "logo": "metrotransit-org"
@@ -24879,7 +24778,8 @@
    "lat": 44.975112,
    "lon": -93.2722,
    "buildingId": "rsm-plaza-357019983",
-   "level": "0"
+   "level": "0",
+   "openingHours": "Tu-Th 10:00-17:00; Fr 09:00-17:00; Sa,Su,Mo off"
   },
   {
    "id": "poi-13410756378",
@@ -24915,6 +24815,18 @@
    "level": "0",
    "openingHours": "Mo-Fr 10:00-17:00",
    "website": "https://appearancessalonmpls.com"
+  },
+  {
+   "id": "poi-13512736097",
+   "name": "Classic Cookie Co.",
+   "category": "pastry",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.977986,
+   "lon": -93.267324,
+   "buildingId": "mcknight-building-41763761",
+   "level": "1",
+   "openingHours": "Mo-Fr 11:00-16:00"
   },
   {
    "id": "poi-13627698551",
@@ -25082,6 +24994,17 @@
    "nearby": true
   },
   {
+   "id": "poi-14073883883",
+   "name": "Nature’s Syrup",
+   "category": "beauty",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.975475,
+   "lon": -93.271287,
+   "buildingId": "733-building-126116972",
+   "level": "1"
+  },
+  {
    "id": "poi-3344218389",
    "name": "Anytime Fitness",
    "category": "fitness_centre",
@@ -25150,6 +25073,17 @@
    "buildingId": "t3-723284484",
    "website": "https://www.thegrindmpls.com/",
    "logo": "thegrindmpls-com"
+  },
+  {
+   "id": "poi-14073883886",
+   "name": "Resist With Us",
+   "category": "fitness_centre",
+   "kind": "leisure",
+   "group": "other",
+   "lat": 44.980334,
+   "lon": -93.261123,
+   "buildingId": "macphail-center-for-music-81049070",
+   "nearby": true
   },
   {
    "id": "poi-5955582354",
@@ -25236,8 +25170,8 @@
    "category": "viewpoint",
    "kind": "tourism",
    "group": "landmark",
-   "lat": 44.977805,
-   "lon": -93.253318,
+   "lat": 44.977807,
+   "lon": -93.253315,
    "buildingId": "guthrie-theater-129937715",
    "nearby": true
   },
@@ -25513,6 +25447,39 @@
    "lat": 44.983965,
    "lon": -93.254392,
    "buildingId": "minneapolis-event-centers-92905847",
+   "nearby": true
+  },
+  {
+   "id": "poi-14073883877",
+   "name": "Mississippi River Panorama",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.979501,
+   "lon": -93.254744,
+   "buildingId": "guthrie-theater-129937715",
+   "nearby": true
+  },
+  {
+   "id": "poi-14073883878",
+   "name": "Tailrace Skyline",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.97967,
+   "lon": -93.255483,
+   "buildingId": "guthrie-theater-129937715",
+   "nearby": true
+  },
+  {
+   "id": "poi-14073883880",
+   "name": "What is Urban Archaeology?",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.979912,
+   "lon": -93.256756,
+   "buildingId": "mill-city-museum-157035918",
    "nearby": true
   },
   {
@@ -26047,7 +26014,7 @@
    "group": "other",
    "lat": 44.980297,
    "lon": -93.259197,
-   "buildingId": "metropolitan-lofts-81049075",
+   "buildingId": "macphail-center-for-music-81049070",
    "nearby": true,
    "website": "https://owamniyomni.org/about/#the-project",
    "logo": "owamniyomni-org"
@@ -26272,6 +26239,32 @@
    "level": "9"
   },
   {
+   "id": "poi-14073475114",
+   "name": "Audacy",
+   "category": "company",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.97589,
+   "lon": -93.269145,
+   "buildingId": "hyatt-centric-downtown-minneapolis-354742163",
+   "nearby": true,
+   "website": "https://www.audacy.com",
+   "logo": "audacy-com"
+  },
+  {
+   "id": "poi-14073883890",
+   "name": "Cynthia Froid Group",
+   "category": "estate_agent",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.978276,
+   "lon": -93.257234,
+   "buildingId": "mill-city-museum-157035918",
+   "nearby": true,
+   "website": "https://www.cynthiafroid.com",
+   "logo": "cynthiafroid-com"
+  },
+  {
    "id": "poi-11328332532",
    "name": "Core Lifestyle Center",
    "category": "physiotherapist",
@@ -26427,17 +26420,6 @@
    "group": "landmark",
    "lat": 44.978875,
    "lon": -93.256456,
-   "buildingId": "humboldt-annex-157035925",
-   "nearby": true
-  },
-  {
-   "id": "poi-12895850119",
-   "name": "Gold Metal Flour",
-   "category": "sign",
-   "kind": "historic",
-   "group": "landmark",
-   "lat": 44.978752,
-   "lon": -93.25616,
    "buildingId": "humboldt-annex-157035925",
    "nearby": true
   },
@@ -27076,7 +27058,7 @@
    "group": "transit",
    "lat": 44.974519,
    "lon": -93.270443,
-   "buildingId": "saint-olaf-catholic-church-126015108",
+   "buildingId": "deluxe-plaza-1462073358",
    "exterior": true
   },
   {
@@ -28636,6 +28618,16 @@
    "lat": 44.972199,
    "lon": -93.268375,
    "buildingId": "ameriprise-financial-headquarters-28490454"
+  },
+  {
+   "id": "landmark-saint-olaf-catholic-church-126015108",
+   "name": "Saint Olaf Catholic Church",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.9743,
+   "lon": -93.270027,
+   "buildingId": "two22-44684851"
   },
   {
    "id": "landmark-hotel-indigo-minneapolis-downtown-156909962",
@@ -32619,6 +32611,52 @@
   {
    "buildingId": "705-building-126116975",
    "doorA": [
+    -93.270541,
+    44.9759
+   ],
+   "doorB": [
+    -93.270499,
+    44.975948
+   ],
+   "geometry": [
+    [
+     -93.270541,
+     44.9759
+    ],
+    [
+     -93.270499,
+     44.975948
+    ]
+   ]
+  },
+  {
+   "buildingId": "705-building-126116975",
+   "doorA": [
+    -93.270541,
+    44.9759
+   ],
+   "doorB": [
+    -93.270485,
+    44.976025
+   ],
+   "geometry": [
+    [
+     -93.270541,
+     44.9759
+    ],
+    [
+     -93.270499,
+     44.975948
+    ],
+    [
+     -93.270485,
+     44.976025
+    ]
+   ]
+  },
+  {
+   "buildingId": "705-building-126116975",
+   "doorA": [
     -93.270499,
     44.975948
    ],
@@ -32810,92 +32848,6 @@
     [
      -93.271599,
      44.974131
-    ]
-   ]
-  },
-  {
-   "buildingId": "deluxe-plaza-1462073358",
-   "doorA": [
-    -93.271179,
-    44.975
-   ],
-   "doorB": [
-    -93.270891,
-    44.974374
-   ],
-   "geometry": [
-    [
-     -93.271179,
-     44.975
-    ],
-    [
-     -93.271258,
-     44.974899
-    ],
-    [
-     -93.271069,
-     44.974821
-    ],
-    [
-     -93.271244,
-     44.974596
-    ],
-    [
-     -93.271125,
-     44.974438
-    ],
-    [
-     -93.27093,
-     44.97439
-    ],
-    [
-     -93.270891,
-     44.974374
-    ]
-   ]
-  },
-  {
-   "buildingId": "deluxe-plaza-1462073358",
-   "doorA": [
-    -93.271599,
-    44.974131
-   ],
-   "doorB": [
-    -93.270891,
-    44.974374
-   ],
-   "geometry": [
-    [
-     -93.271599,
-     44.974131
-    ],
-    [
-     -93.271558,
-     44.974174
-    ],
-    [
-     -93.271505,
-     44.974148
-    ],
-    [
-     -93.271337,
-     44.974345
-    ],
-    [
-     -93.271241,
-     44.974305
-    ],
-    [
-     -93.271125,
-     44.974438
-    ],
-    [
-     -93.27093,
-     44.97439
-    ],
-    [
-     -93.270891,
-     44.974374
     ]
    ]
   },
@@ -35544,31 +35496,6 @@
     [
      -93.269958,
      44.979181
-    ]
-   ]
-  },
-  {
-   "buildingId": "two22-44684851",
-   "doorA": [
-    -93.269554,
-    44.973746
-   ],
-   "doorB": [
-    -93.270183,
-    44.97404
-   ],
-   "geometry": [
-    [
-     -93.269554,
-     44.973746
-    ],
-    [
-     -93.269993,
-     44.973951
-    ],
-    [
-     -93.270183,
-     44.97404
     ]
    ]
   },
