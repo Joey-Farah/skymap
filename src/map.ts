@@ -36,6 +36,13 @@ function prefersDark(): boolean {
   return typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
+/** ODbL attribution for the skyway data itself, which is extracted from
+ * OpenStreetMap and is a derivative database — the licence asks that a
+ * produced work say so and name the licence, not just link the project.
+ * Kept as one string so MapLibre de-duplicates it across our sources. */
+export const OSM_ATTRIBUTION =
+  '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, ODbL';
+
 /** Minimal style used when the basemap host is unreachable (offline etc.). */
 function fallbackStyle(dark: boolean): maplibregl.StyleSpecification {
   return {
@@ -437,13 +444,23 @@ export class SkymapView {
   }
 
   private addLayers() {
-    this.map.addSource("skyway-bridges", { type: "geojson", data: bridgesFC(this.data, this.when) });
-    this.map.addSource("skyway-indoor", { type: "geojson", data: indoorFC(this.data, this.when) });
-    this.map.addSource("skyway-buildings", { type: "geojson", data: buildingsFC(this.data, this.when) });
+    // Our own layers carry their own credit. The basemap's TileJSON already
+    // says "Data from OpenStreetMap", but that covers the tiles under us,
+    // not the skyway network, buildings and businesses drawn on top — which
+    // are a derivative database extracted from OSM and owed attribution in
+    // their own right under ODbL. Without this the only visible credit is
+    // the basemap's, and offline there is none at all: the fallback style
+    // has no sources, so the OSM-derived overlay would be the only thing on
+    // screen with nothing crediting it. MapLibre merges and de-duplicates
+    // source attributions into the one control.
+    const osm = OSM_ATTRIBUTION;
+    this.map.addSource("skyway-bridges", { type: "geojson", attribution: osm, data: bridgesFC(this.data, this.when) });
+    this.map.addSource("skyway-indoor", { type: "geojson", attribution: osm, data: indoorFC(this.data, this.when) });
+    this.map.addSource("skyway-buildings", { type: "geojson", attribution: osm, data: buildingsFC(this.data, this.when) });
     this.map.addSource("skyway-route", { type: "geojson", data: lineFC([]) });
     this.map.addSource("skyway-route-done", { type: "geojson", data: lineFC([]) });
     this.map.addSource("skyway-walker", { type: "geojson", data: pointFC(null) });
-    this.map.addSource("skyway-pois", { type: "geojson", data: poisFC(this.data.pois ?? []) });
+    this.map.addSource("skyway-pois", { type: "geojson", attribution: osm, data: poisFC(this.data.pois ?? []) });
 
     this.map.addLayer({
       id: "skyway-buildings-fill",

@@ -962,3 +962,26 @@ test("hours retracted as not-an-access-claim are actually gone from the dataset"
     );
   }
 });
+
+test("the skyway data credits OpenStreetMap in its own right", async () => {
+  // The basemap's TileJSON credits OSM for the tiles. That is not credit
+  // for this app's own extracted network, and offline it is not on screen
+  // at all — the fallback style has no sources. ODbL asks a produced work
+  // to name the source and the licence, so assert both survive any future
+  // rewording.
+  // Read rather than import: map.ts pulls in maplibre-gl's stylesheet, which
+  // node can't load, and there is no DOM harness in this repo.
+  const src = readFileSync(join(ROOT, "src/map.ts"), "utf8");
+  const declared = src.match(/export const OSM_ATTRIBUTION =\s*([\s\S]*?);\n/);
+  assert.ok(declared, "OSM_ATTRIBUTION must exist");
+  assert.match(declared[1], /OpenStreetMap/, "attribution must name OpenStreetMap");
+  assert.match(declared[1], /ODbL/, "attribution must name the licence");
+  assert.match(declared[1], /openstreetmap\.org\/copyright/, "attribution must link OSM's copyright page");
+
+  // The credit is worthless if it isn't attached to the layers it covers.
+  for (const source of ["skyway-bridges", "skyway-indoor", "skyway-buildings", "skyway-pois"]) {
+    const added = src.match(new RegExp(`addSource\\("${source}",\\s*\\{([^}]*)\\}`));
+    assert.ok(added, `${source} must be added to the map`);
+    assert.match(added[1], /attribution/, `${source} draws OSM data but carries no attribution`);
+  }
+});
