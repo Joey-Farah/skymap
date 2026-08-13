@@ -38,6 +38,40 @@ const MAX_WALK_SPEED = 2.2; // m/s
 const BACK_SLACK = 8; // m
 const FORWARD_SLACK = 8; // m
 
+/**
+ * How far a fix must sit from where we believe the walker is before that
+ * gap stops being explainable as drift.
+ *
+ * This can't be tight. Indoor error alone reaches 90 m in the recorded
+ * walks, and a threshold inside that band would announce "you've left the
+ * route" to someone standing squarely on a skyway — the exact false
+ * confidence this whole change exists to remove. So the cost is asymmetric
+ * and deliberate: a genuine departure takes a while to notice, and in
+ * exchange nobody walking their route is ever told they aren't.
+ */
+const OFF_ROUTE_METERS = 100;
+
+/** Consecutive fixes past that distance before we believe it. One wild fix
+ * is a wild fix; five in a row is a walker somewhere else. */
+const OFF_ROUTE_FIXES = 5;
+
+/**
+ * How much further away the fixes must have got over that run.
+ *
+ * Distance alone can't separate the two cases — 90 m of indoor drift and
+ * 90 m of walking away are the same number. What separates them is shape:
+ * drift rattles around a distance, while someone leaving gets steadily
+ * further away, at walking pace, and never comes back. Requiring the gap
+ * to have *grown* keeps a drifting walker on their route without needing
+ * a threshold so high that leaving takes a block to notice.
+ */
+const OFF_ROUTE_GROWTH = 25; // m
+
+/** How close a fix has to come back before we start trusting the route
+ * again. Tighter than leaving, so recovery needs real evidence rather than
+ * one lucky sample. */
+const REACQUIRE_METERS = 30;
+
 export interface Placement {
   /** Where to draw the walker, [lon, lat] — always a point on the route. */
   coord: [number, number];
@@ -45,6 +79,12 @@ export interface Placement {
   alongMeters: number;
   /** How far is left to walk from there. */
   remainingMeters: number;
+  /**
+   * The fixes stopped being explainable by walking this route. The position
+   * is the last one we believed, held still — it is stale by construction,
+   * and the UI owes the walker that fact rather than a confident dot.
+   */
+  offRoute: boolean;
 }
 
 export class RouteTracker {
@@ -61,6 +101,10 @@ export class RouteTracker {
    * gets believed outright, with nothing to constrain it. */
   private along = 0;
   private atMs: number;
+  /** Consecutive fixes too far away to explain by walking. */
+  private streak = 0;
+  private offRoute = false;
+  private gapAtStreakStart = 0;
 
   constructor(coords: [number, number][], startedAtMs = 0) {
     this.coords = coords;
@@ -84,15 +128,56 @@ export class RouteTracker {
     if (this.coords.length < 2) return null;
 
     const seconds = Math.max(0, (atMs - this.atMs) / 1000);
+    this.atMs = atMs;
+
+    if (this.offRoute) {
+      // Already lost them. Re-acquisition is unconstrained on purpose: a
+      // walker who rejoins the route may do so a long way from where they
+      // left it, and making them earn it back at walking pace would keep
+      // the dot wrong for the rest of the trip.
+      const candidate = this.nearestAlong(lat, lon, 0, this.total);
+      if (this.residual(lat, lon, candidate) <= REACQUIRE_METERS) {
+        this.along = candidate;
+        this.offRoute = false;
+        this.streak = 0;
+      }
+      return this.placement();
+    }
+
     const reach = MAX_WALK_SPEED * seconds;
-    this.along = this.nearestAlong(
+    const candidate = this.nearestAlong(
       lat,
       lon,
       this.along - BACK_SLACK,
       this.along + reach + FORWARD_SLACK,
     );
-    this.atMs = atMs;
+
+    const gap = this.residual(lat, lon, candidate);
+    if (gap > OFF_ROUTE_METERS) {
+      if (this.streak === 0) this.gapAtStreakStart = gap;
+      this.streak++;
+    } else {
+      this.streak = 0;
+    }
+
+    // Suspicion alone must not stop the dot. A walker in a bad patch of
+    // indoor GPS throws single fixes past the threshold routinely, and
+    // holding position on each one leaves them standing still on screen
+    // while they walk — the same complaint in a quieter form. Only the
+    // conclusion freezes anything.
+    if (this.streak >= OFF_ROUTE_FIXES && gap - this.gapAtStreakStart >= OFF_ROUTE_GROWTH) {
+      this.offRoute = true;
+      return this.placement();
+    }
+
+    this.along = candidate;
     return this.placement();
+  }
+
+  /** How far the fix sits from a candidate position on the route. */
+  private residual(lat: number, lon: number, along: number): number {
+    const p = this.pointAt(along);
+    return haversineMeters(lat, lon, p[1], p[0]);
   }
 
   private placement(): Placement {
@@ -101,6 +186,7 @@ export class RouteTracker {
       coord: this.pointAt(along),
       alongMeters: along,
       remainingMeters: Math.max(0, this.total - along),
+      offRoute: this.offRoute,
     };
   }
 

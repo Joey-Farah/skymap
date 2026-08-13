@@ -54,6 +54,7 @@ test("a walker on the route is placed on every fix, despite 90 m of drift", () =
     fixes++;
 
     assert.ok(placed, `fix ${t} produced no position — this is the street jump`);
+    assert.ok(!placed.offRoute, `fix ${t}: 90 m of drift was mistaken for leaving the route`);
     const error = haversineMeters(placed.coord[1], placed.coord[0], truth[1], truth[0]);
     worstError = Math.max(worstError, error);
   }
@@ -62,6 +63,39 @@ test("a walker on the route is placed on every fix, despite 90 m of drift", () =
   assert.ok(
     worstError <= 25,
     `worst placement was ${worstError.toFixed(0)} m from the walker; want <= 25 m`,
+  );
+});
+
+/**
+ * The flip side of never giving up: a tracker that always finds an answer
+ * will happily coast someone along a route they abandoned two blocks ago.
+ * Leaving has to be noticed and said out loud, not absorbed as noise.
+ */
+test("walking away from the route is reported, and the dot stops", () => {
+  const tracker = new RouteTracker(ROUTE);
+  let atMs = walkTo(tracker, 100);
+
+  // Turn east and keep going — off the route, at a walking pace.
+  let placed = null;
+  let declaredAt = null;
+  const coords = [];
+  for (let i = 1; i <= 120; i++) {
+    const away = i * 1.35 * 2;
+    const fix = [LON0 + away / M_PER_DEG_LON, LAT0 + 100 / M_PER_DEG_LAT];
+    placed = tracker.update(fix[1], fix[0], (atMs += 2000));
+    if (placed.offRoute && declaredAt === null) declaredAt = away;
+    if (declaredAt !== null) coords.push(placed.coord);
+  }
+
+  assert.ok(declaredAt !== null, "walked 300 m off the route and it was never reported");
+  assert.ok(
+    declaredAt <= 150,
+    `took ${declaredAt.toFixed(0)} m of walking away to notice; want <= 150 m`,
+  );
+  const moved = coords.map((c) => haversineMeters(c[1], c[0], coords[0][1], coords[0][0]));
+  assert.ok(
+    Math.max(...moved) < 1,
+    "the dot kept moving after we knew we'd lost the walker; it should hold",
   );
 });
 
