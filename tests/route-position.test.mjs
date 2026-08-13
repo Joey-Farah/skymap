@@ -99,6 +99,36 @@ test("walking away from the route is reported, and the dot stops", () => {
   );
 });
 
+/**
+ * Detours end. Someone who ducks out to street level and comes back up
+ * three buildings along has to be picked up where they actually are — if
+ * rejoining had to be earned back at walking pace from where they left,
+ * the dot would stay wrong for the rest of the trip.
+ */
+test("rejoining the route is picked up again", () => {
+  const tracker = new RouteTracker(ROUTE);
+  let atMs = walkTo(tracker, 100);
+
+  for (let i = 1; i <= 120; i++) {
+    const away = i * 1.35 * 2;
+    tracker.update(LAT0 + 100 / M_PER_DEG_LAT, LON0 + away / M_PER_DEG_LON, (atMs += 2000));
+  }
+  assert.ok(tracker.update(LAT0 + 100 / M_PER_DEG_LAT, LON0 + 300 / M_PER_DEG_LON, (atMs += 2000)).offRoute);
+
+  // Back on the skyway, 220 m along — well past where they stepped off.
+  let placed = null;
+  for (let i = 0; i < 4; i++) {
+    const truth = truthAt(220);
+    placed = tracker.update(truth[1], truth[0], (atMs += 2000));
+  }
+
+  assert.equal(placed.offRoute, false, "walker rejoined the route and was still reported lost");
+  assert.ok(
+    Math.abs(placed.alongMeters - 220) <= 25,
+    `picked back up at ${placed.alongMeters.toFixed(0)} m; walker was at 220 m`,
+  );
+});
+
 /** Walk a tracker to `meters` along at a believable pace, and hand back the
  * clock so a test can carry on from there. */
 function walkTo(tracker, meters, { speed = 1.35, dtMs = 2000, drift = 0 } = {}) {
