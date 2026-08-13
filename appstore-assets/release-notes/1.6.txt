@@ -1,0 +1,7 @@
+Your position stays on the skyway.
+
+Walking a route indoors, the blue dot could suddenly jump into the street a block away — GPS can't tell that you're a floor above the road, and the app took its worst reading at face value. It now tracks how far along your route you've walked and only ever moves you as far as walking allows, so a bad reading nudges you instead of teleporting you.
+
+If you do leave your route, SkyMap says so and holds your last known spot rather than quietly guessing.
+
+Also fixed: the turn instruction at the top of the screen now follows light and dark mode properly, and its second line is readable again.

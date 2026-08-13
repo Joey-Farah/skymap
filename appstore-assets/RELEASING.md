@@ -28,14 +28,35 @@ is kept for history — don't follow it for updates.)
    up under the app's Builds list. Processing typically takes 10–30 minutes
    after the cloud build goes green.
 
-4. **Create the new version in App Store Connect**: My Apps → SkyMap Minneapolis
+4. **Add the build to the TestFlight group — this is a real step, not a
+   side effect.** It has now been missed on three separate releases (44, 45,
+   and build 50 = all of 1.5), each time leaving Joey's TestFlight showing an
+   older version while everyone assumed distribution was automatic. It isn't.
+
+   ```
+   POST /v1/betaGroups/1c4607e4-7ed4-46eb-98d2-dbb602b51bf1/relationships/builds
+   {"data": [{"type": "builds", "id": "<build uuid>"}]}
+   ```
+
+   **Verify by listing the group**, not by trusting the POST or any build
+   state — `internalBuildState == READY_FOR_BETA_TESTING` means *eligible*,
+   not *distributed*:
+
+   ```
+   GET /v1/betaGroups/1c4607e4-7ed4-46eb-98d2-dbb602b51bf1/builds
+   ```
+
+   The build number you just uploaded must be in that list. The POST can also
+   404 for ~15 minutes after upload while the build reports VALID; retry.
+
+5. **Create the new version in App Store Connect**: My Apps → SkyMap Minneapolis
    → the **+** next to "iOS App" in the left sidebar → enter the same version
    string from step 1.
 
-5. **Fill in "What's New in This Version"** — required for every update, unlike
+6. **Fill in "What's New in This Version"** — required for every update, unlike
    the initial submission. Text for the current release is below.
 
-6. **Attach the build**, then Save → Add for Review → Submit.
+7. **Attach the build**, then Save → Add for Review → Submit.
 
    Export Compliance was answered once ("None of the algorithms mentioned
    above" — SkyMap only uses system HTTPS, no custom or linked crypto) and
@@ -118,6 +139,64 @@ found something. Approval beat the walk. Anything that has to be verified on
 real hardware must be verified *before* submitting — the withdraw path
 (`PATCH /v1/reviewSubmissions/{id}` `{canceled: true}`) only exists until
 review completes.
+
+## 1.6 — submitted 2026-08-13
+
+Three bugs from real use. The headline one: walking a route, on the route,
+the position dot jumped into the street a block away.
+
+```
+version id     4375e4c5-bfa4-4ecf-bf80-19b11fc34c22
+build          51 (VALID, from merge commit 59a4af1)
+submission id  4f0e1597-d6f6-4bc7-bcd7-7c0ea15121e1
+withdraw       PATCH /v1/reviewSubmissions/4f0e1597-d6f6-4bc7-bcd7-7c0ea15121e1
+               {"attributes": {"canceled": true}}   — until review completes
+```
+
+**The fix.** `snapToActiveRoute` returned null past 60 m, which cleared our
+marker *and* dropped `.walker-snapped`, un-hiding MapLibre's raw dot — a
+floor below, out in the road. So the app answered its least certain moments
+with its worst available position. `src/route-position.ts` replaces it: a
+fix is evidence about a position, not a position. `RouteTracker` holds one
+number, metres along the route, and each fix may move it only as far as a
+walker could have walked. There is no null case on a live route.
+
+Measured over 60 real routes, fixes every 2 s:
+
+| drift | placed before | placed after | median err before | after |
+|-------|---------------|--------------|-------------------|-------|
+|  30 m | 100%          | 100%         | 19 m              |  9 m  |
+|  60 m |  86%          | 100%         | 41 m              | 14 m  |
+|  90 m |  63%          | 100%         | 65 m              | 17 m  |
+| 120 m |  45%          | 100%         | 92 m              | 20 m  |
+
+**Alternatives measured and rejected — don't re-propose:** raising the 60 m
+threshold (every proximity variant that placed more often placed worse; at
+120 m, 89% of placements land >25 m from truth), and snapping to the whole
+network (worse than the old code — parallel skyways a block apart, so
+"nearest walkable thing" picks the wrong corridor).
+
+Off-route detection uses *growth*, not distance: 90 m of drift and 90 m of
+walking away are the same number, so it needs 5 consecutive fixes >100 m
+plus 25 m of growth. Then the dot freezes, fades to 40%, and the banner
+says so.
+
+Also: `.nav-banner` had a hardcoded background and text colour — the one
+surface ignoring the theme tokens. Dark navy on a light map, and a subtitle
+at 75% white in dark mode. It already carried `.panel`; deleting the
+override was the whole fix.
+
+**Screenshots not refreshed, and that's correct** — all five are dark mode,
+where the banner shifted only (23,36,58) → (23,29,49).
+
+**Submitted without a hardware walk**, third release running. Joey installed
+build 51 from TestFlight to walk it during review.
+
+**Still open (cosmetic, not shipped):** `findIndoorLink` in `src/map.ts`
+matches corridor doors with `coordsEqual` at 1e-7 deg (~1 cm), so routes
+discard a real indoor corridor on **181 of 1,809** building traversals and
+draw a straight cut through the building. Needs a metres-based tolerance.
+Measured to have zero effect on positioning.
 
 ## 1.5 — in flight (2026-08-08)
 
