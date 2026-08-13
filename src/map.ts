@@ -5,11 +5,10 @@ import { isClosingSoon, isOpenAt } from "./hours.ts";
 import {
   buildingExitPoint,
   polylineMeters,
-  remainingRouteMeters,
   sliceAlong,
-  snapToRoute,
   walkedPrefix,
 } from "./router.ts";
+import { RouteTracker, type Placement } from "./route-position.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS } from "./poi.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
@@ -21,17 +20,6 @@ import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 const LIGHT_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const DARK_STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 const DOWNTOWN_CENTER: [number, number] = [-93.2697, 44.976];
-/** How far off the route a fix can be and still be treated as drift rather
- * than a walker who's left it.
- *
- * Indoor skyway error runs 20-50 m, so 40 would reject the top of the very
- * band this exists to absorb — someone whose drift ran to 45 m would watch
- * the dot drop back into the street, which is the reported bug. 60 covers
- * the band with headroom and is still well under a downtown block (~100 m),
- * so stepping outside still stops the correction rather than pinning you to
- * a line you're no longer walking. */
-const SNAP_MAX_METERS = 60;
-
 function prefersDark(): boolean {
   return typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: dark)").matches;
 }
@@ -281,6 +269,10 @@ export class SkymapView {
   /** The active route's own drawn polyline — what remainingMeters projects
    * a live GPS fix onto. Empty when there's no active route. */
   private activeRouteCoords: [number, number][] = [];
+  /** Live only while a route is being walked — it carries the trip's
+   * accumulated belief about where the walker is, so it is created with the
+   * route and dropped with it. */
+  private tracker: RouteTracker | null = null;
 
   constructor(
     container: HTMLElement,
@@ -706,6 +698,7 @@ export class SkymapView {
       this.markers = [];
       if (!route || route.steps.length < 2) {
         this.activeRouteCoords = [];
+        this.tracker = null;
         routeSrc?.setData(lineFC([]));
         this.setWalkedProgress(null);
         // Via setWalkerPosition, not the source directly: it also un-hides
@@ -737,6 +730,9 @@ export class SkymapView {
       const lineTo = poiCoords?.toNearby ? buildingExitPoint(last, toTowards) : toCoord;
       const coords = routeCoords(route, lineFrom, lineTo, this.data.indoorLinks);
       this.activeRouteCoords = coords;
+      // A fresh trip starts at the beginning of the line, which is where
+      // the walker asked to start from — see RouteTracker's seeding note.
+      this.tracker = new RouteTracker(coords, Date.now());
       this.setWalkedProgress(null); // a fresh route has nothing behind you yet
       this.markers.push(
         new maplibregl.Marker({ element: routeMarkerElement("#16a34a") }).setLngLat(fromCoord).addTo(this.map),
@@ -823,19 +819,24 @@ export class SkymapView {
     src.setData(lineFC(prefix.length > 1 ? prefix : []));
   }
 
-  /** Where a fix should be *drawn* while navigating: on the route line if
-   * it's close enough to believe, otherwise null — leaving MapLibre's raw
-   * dot to tell the truth about a walker who has genuinely left the route. */
-  snapToActiveRoute(lat: number, lon: number): [number, number] | null {
-    return snapToRoute(this.activeRouteCoords, lat, lon, SNAP_MAX_METERS)?.coord ?? null;
+  /**
+   * Fold a live fix into the walker's position on the active route.
+   *
+   * Replaces the old snapToActiveRoute, which projected each fix onto the
+   * line independently and returned null past 60 m. Null meant "no
+   * correction", which un-hid MapLibre's raw dot — a floor below, out in
+   * the street — so the app answered its least certain moments with its
+   * worst available position. RouteTracker cannot return null on a live
+   * route: a fix moves the walker as far as walking allows and no further.
+   */
+  trackPosition(lat: number, lon: number, atMs: number): Placement | null {
+    return this.tracker?.update(lat, lon, atMs) ?? null;
   }
 
-  /** Meters left to walk along the active route's drawn line, from wherever
-   * a fix (live GPS or a manual tap) projects onto it — null with no route
-   * active. See remainingRouteMeters for why this beats a step count. */
-  remainingMeters(lat: number, lon: number): number | null {
-    if (this.activeRouteCoords.length < 2) return null;
-    return remainingRouteMeters(this.activeRouteCoords, lat, lon);
+  /** A tap on the route: the walker correcting us by hand, which outranks
+   * the estimate rather than joining it. */
+  setPositionFromTap(lat: number, lon: number): Placement | null {
+    return this.tracker?.moveTo(lat, lon) ?? null;
   }
 
   focusBuilding(b: Building) {

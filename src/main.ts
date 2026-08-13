@@ -287,8 +287,7 @@ async function boot() {
     applyNavProgress(0);
   }
 
-  function applyNavProgress(fallbackStep: number, at?: { lat: number; lon: number }) {
-    const raw = at ? view.remainingMeters(at.lat, at.lon) : null;
+  function applyNavProgress(fallbackStep: number, raw: number | null = null) {
     // Held to non-increasing across the trip, so indoor GPS drift can't walk
     // the arrival time backwards — see nav-progress.ts.
     if (raw != null) settledRemaining = settleRemaining(settledRemaining, raw);
@@ -428,8 +427,9 @@ async function boot() {
     // the only way to correct a trip that GPS drift had already pushed too
     // far ahead — the dot would move and the step list, walked line and
     // remaining distance would stay wrong for the rest of the walk.
-    applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
-    view.setWalkerPosition([lon, lat]);
+    const placed = view.setPositionFromTap(lat, lon);
+    applyNavProgress(routeStepIndex(activeRoute, lat, lon), placed?.remainingMeters ?? null);
+    view.setWalkerPosition(placed?.coord ?? [lon, lat]);
     view.setWalkedProgress(walkedHighWater);
     manualPositionUntil = Date.now() + MANUAL_POSITION_GRACE_MS;
   }
@@ -445,18 +445,17 @@ async function boot() {
     currentApproach = approach;
     nearBuilding = approach && approach.straightMeters <= 60 ? approach.building : null;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
-      applyNavProgress(routeStepIndex(activeRoute, lat, lon), { lat, lon });
-      // Real GPS is back in control — but drawn on the skyway rather than
-      // wherever the fix landed. Past the snap threshold this goes back to
-      // null and MapLibre's own dot takes over, which is the honest answer
-      // for someone who has actually walked off the route.
-      // Only dim from a fix the snapper was willing to believe. Past the
-      // threshold the dot honestly falls back to MapLibre's raw position,
-      // and drawing a confident grey prefix off that same rejected fix
-      // would contradict it on the same screen.
-      const snapped = view.snapToActiveRoute(lat, lon);
-      view.setWalkerPosition(snapped);
-      view.setWalkedProgress(snapped ? walkedHighWater : null);
+      // The walker stays on the skyway. A fix is evidence, not a position:
+      // it moves them as far along the route as walking allows and no
+      // further, so there is no longer a case where we hand the screen back
+      // to MapLibre's raw dot — which indoors sits a floor below, out in
+      // the street, and was the whole of the reported bug.
+      const placed = view.trackPosition(lat, lon, Date.now());
+      applyNavProgress(routeStepIndex(activeRoute, lat, lon), placed?.remainingMeters ?? null);
+      view.setWalkerPosition(placed?.coord ?? null);
+      // Off-route, the position is the last one we believed rather than a
+      // live reading, so the grey walked prefix stops growing with it.
+      view.setWalkedProgress(placed && !placed.offRoute ? walkedHighWater : null);
     }
     maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(approach);
