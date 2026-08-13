@@ -174,6 +174,21 @@ export class RouteTracker {
     return this.placement();
   }
 
+  /**
+   * Put the walker here, no questions asked — a tap on the route.
+   *
+   * Someone correcting the app by hand is not another noisy sample, and
+   * feeding it through the motion window would make the tap unable to fix
+   * the very situation it exists for: an estimate that has settled
+   * somewhere wrong and will only crawl away from there.
+   */
+  moveTo(lat: number, lon: number): Placement {
+    this.along = this.nearestAlong(lat, lon, 0, this.total);
+    this.offRoute = false;
+    this.streak = 0;
+    return this.placement();
+  }
+
   /** How far the fix sits from a candidate position on the route. */
   private residual(lat: number, lon: number, along: number): number {
     const p = this.pointAt(along);

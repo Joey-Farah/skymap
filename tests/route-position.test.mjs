@@ -129,6 +129,23 @@ test("rejoining the route is picked up again", () => {
   );
 });
 
+/**
+ * Tapping the route is someone telling the app where they are. That has to
+ * outrank the estimate outright — it is the only correction available when
+ * the tracker has settled on the wrong answer, and making the tap merely
+ * one more vote would leave it unable to fix anything.
+ */
+test("tapping the route sets the position outright", () => {
+  const tracker = new RouteTracker(ROUTE);
+  walkTo(tracker, 40);
+
+  const tapped = truthAt(250);
+  const placed = tracker.moveTo(tapped[1], tapped[0]);
+
+  assert.ok(Math.abs(placed.alongMeters - 250) <= 5, `tap landed at ${placed.alongMeters.toFixed(0)} m`);
+  assert.equal(placed.offRoute, false);
+});
+
 /** Walk a tracker to `meters` along at a believable pace, and hand back the
  * clock so a test can carry on from there. */
 function walkTo(tracker, meters, { speed = 1.35, dtMs = 2000, drift = 0 } = {}) {
