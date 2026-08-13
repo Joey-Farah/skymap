@@ -247,12 +247,16 @@ function routeMarkerElement(color: string): HTMLDivElement {
  * animation, and the corrected "you are here" dot. `drawing` tells them
  * apart so each can be coloured for what it means — the animation head
  * belongs to the route, the position dot belongs to you. */
-function pointFC(coord: [number, number] | null, drawing = false): FC {
+function pointFC(coord: [number, number] | null, drawing = false, stale = false): FC {
   if (!coord) return { type: "FeatureCollection", features: [] };
   return {
     type: "FeatureCollection",
     features: [
-      { type: "Feature", properties: { drawing }, geometry: { type: "Point", coordinates: coord } },
+      {
+        type: "Feature",
+        properties: { drawing, stale },
+        geometry: { type: "Point", coordinates: coord },
+      },
     ],
   };
 }
@@ -652,6 +656,12 @@ export class SkymapView {
         "circle-color": ["case", ["get", "drawing"], ROUTE, LOCATION],
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": 2.5,
+        // A held position is still the best answer available, but it is no
+        // longer a live reading — so it stops looking like one. Fading it
+        // is the whole promise of the freeze: the dot never lies about
+        // where you are, and never lies about how sure it is either.
+        "circle-opacity": ["case", ["get", "stale"], 0.4, 1],
+        "circle-stroke-opacity": ["case", ["get", "stale"], 0.4, 1],
       },
     });
   }
@@ -789,9 +799,9 @@ export class SkymapView {
    * .walker-snapped in styles.css). It would be showing the very position
    * we've decided is wrong, and two dots disagreeing by half a block is
    * worse than one dot that's occasionally unsure. */
-  setWalkerPosition(coord: [number, number] | null) {
+  setWalkerPosition(coord: [number, number] | null, stale = false) {
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
-    walkerSrc?.setData(pointFC(coord));
+    walkerSrc?.setData(pointFC(coord, false, stale));
     this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
   }
 

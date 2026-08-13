@@ -287,7 +287,7 @@ async function boot() {
     applyNavProgress(0);
   }
 
-  function applyNavProgress(fallbackStep: number, raw: number | null = null) {
+  function applyNavProgress(fallbackStep: number, raw: number | null = null, offRoute = false) {
     // Held to non-increasing across the trip, so indoor GPS drift can't walk
     // the arrival time backwards — see nav-progress.ts.
     if (raw != null) settledRemaining = settleRemaining(settledRemaining, raw);
@@ -305,7 +305,13 @@ async function boot() {
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;
-    navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
+    // Off the route, the landmark cue is about a step we are no longer sure
+    // the walker is on. Saying so beats naming a coffee shop they can't see.
+    if (offRoute) {
+      navInstructionSub.textContent = "Can't see you on the route — showing your last known spot";
+    } else {
+      navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
+    }
     const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);
     if (canDismissArrival(arrived, remaining)) scheduleArrivalDismiss();
   }
@@ -451,8 +457,8 @@ async function boot() {
       // to MapLibre's raw dot — which indoors sits a floor below, out in
       // the street, and was the whole of the reported bug.
       const placed = view.trackPosition(lat, lon, Date.now());
-      applyNavProgress(routeStepIndex(activeRoute, lat, lon), placed?.remainingMeters ?? null);
-      view.setWalkerPosition(placed?.coord ?? null);
+      applyNavProgress(routeStepIndex(activeRoute, lat, lon), placed?.remainingMeters ?? null, !!placed?.offRoute);
+      view.setWalkerPosition(placed?.coord ?? null, !!placed?.offRoute);
       // Off-route, the position is the last one we believed rather than a
       // live reading, so the grey walked prefix stops growing with it.
       view.setWalkedProgress(placed && !placed.offRoute ? walkedHighWater : null);
