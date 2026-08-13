@@ -64,3 +64,43 @@ test("a walker on the route is placed on every fix, despite 90 m of drift", () =
     `worst placement was ${worstError.toFixed(0)} m from the walker; want <= 25 m`,
   );
 });
+
+/** Walk a tracker to `meters` along at a believable pace, and hand back the
+ * clock so a test can carry on from there. */
+function walkTo(tracker, meters, { speed = 1.35, dtMs = 2000, drift = 0 } = {}) {
+  let atMs = 0;
+  for (let walked = 0; walked <= meters; walked += speed * (dtMs / 1000)) {
+    atMs += dtMs;
+    const truth = truthAt(walked);
+    const fix = drift ? driftedFix(truth, drift, walked) : truth;
+    tracker.update(fix[1], fix[0], atMs);
+  }
+  return atMs;
+}
+
+/**
+ * Waiting for a lift, reading a directory, or queuing for coffee is a
+ * normal part of a trip. The motion window has to permit standing still:
+ * if it only ever admits candidates ahead of the estimate, a stationary
+ * walker is quietly marched toward the destination by their own GPS noise
+ * — and the arrival clock and step list follow them there.
+ */
+test("standing still does not walk the dot forward", () => {
+  const tracker = new RouteTracker(ROUTE);
+  let atMs = walkTo(tracker, 100);
+
+  const before = tracker.update(LAT0 + 100 / M_PER_DEG_LAT, LON0, (atMs += 2000)).alongMeters;
+
+  // Two minutes of not moving, with fixes wandering 40 m around the spot.
+  for (let i = 0; i < 60; i++) {
+    const fix = driftedFix(truthAt(100), 40, i);
+    tracker.update(fix[1], fix[0], (atMs += 2000));
+  }
+
+  const after = tracker.update(LAT0 + 100 / M_PER_DEG_LAT, LON0, (atMs += 2000)).alongMeters;
+  const crept = after - before;
+  assert.ok(
+    Math.abs(crept) <= 15,
+    `stationary walker moved ${crept.toFixed(0)} m along the route; want <= 15 m`,
+  );
+});
