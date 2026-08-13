@@ -15,7 +15,6 @@ import {
   remainingRouteMeters,
   routeStepIndex,
   sliceAlong,
-  snapToRoute,
   tripMinutes,
   walkedPrefix,
   withApproach,
@@ -866,54 +865,6 @@ test("buildingExitPoint still snaps to the footprint when the door is genuinely 
   const nearDoor = [0.0005, 0.00002];
   const exit = buildingExitPoint(building, nearDoor);
   assert.ok(Math.abs(exit[1] - 0) < 1e-6, "should snap onto the near wall, not fall back");
-});
-
-// --- snapToRoute: keeping the walker on the skyway ------------------------
-// A straight leg running due east along 44.9750, roughly 157 m long.
-const straightLeg = [
-  [-93.27, 44.975],
-  [-93.268, 44.975],
-];
-
-test("a drifted fix projects back onto the route line", () => {
-  // 0.00022 degrees of latitude north of the leg — about 24 m, the kind of
-  // drift a second-floor GPS fix produces indoors.
-  const snapped = snapToRoute(straightLeg, 44.97522, -93.269, 40);
-  assert.ok(snapped, "a fix within the threshold should snap, not bail out");
-  assert.ok(Math.abs(snapped.coord[1] - 44.975) < 1e-6, "should land on the leg's latitude");
-  assert.ok(Math.abs(snapped.coord[0] - -93.269) < 1e-6, "should keep its position along the leg");
-  assert.ok(
-    Math.abs(snapped.offsetMeters - 24.5) < 1.5,
-    `offset should report the real drift, got ${snapped.offsetMeters}`,
-  );
-});
-
-test("a fix too far from the route is not snapped at all", () => {
-  // ~100 m off. Past this point the walker genuinely isn't on the route, and
-  // drawing them on it anyway would be confidently wrong — the one failure
-  // mode worse than the drift we're correcting.
-  const snapped = snapToRoute(straightLeg, 44.9759, -93.269, 40);
-  assert.equal(snapped, null);
-});
-
-test("snapping picks the nearest leg, not the first one it finds", () => {
-  // An L: east along the bottom, then north up the right side. A fix beside
-  // the northbound leg must not snap onto the eastbound one it scans first.
-  const elbow = [
-    [-93.27, 44.975],
-    [-93.268, 44.975],
-    [-93.268, 44.977],
-  ];
-  // ~17 m west of the northbound leg, but ~111 m north of the eastbound one.
-  const snapped = snapToRoute(elbow, 44.976, -93.26822, 40);
-  assert.ok(snapped, "should snap to the northbound leg");
-  assert.ok(Math.abs(snapped.coord[0] - -93.268) < 1e-6, "should land on the northbound leg");
-  assert.ok(Math.abs(snapped.coord[1] - 44.976) < 1e-6, "should hold its position along it");
-});
-
-test("a route with no drawn geometry snaps nothing", () => {
-  assert.equal(snapToRoute([], 44.975, -93.269, 40), null);
-  assert.equal(snapToRoute([[-93.27, 44.975]], 44.975, -93.269, 40), null);
 });
 
 test("every curated entry names a source and a date, since they outrank OSM", () => {

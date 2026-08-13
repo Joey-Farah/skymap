@@ -1394,9 +1394,11 @@ a:focus-visible {
   transform: translateX(-50%);
   width: min(400px, calc(100vw - 20px));
   padding: 14px 18px;
-  background: #17243a;
-  border: 0;
-  color: #fff;
+  /* Background, border and text colour come from .panel and the theme
+     tokens. They used to be hardcoded to a dark navy with white text,
+     which made this the one surface in the app that ignored light mode —
+     it stayed dark on a light map, and in dark mode it landed a shade off
+     --card while its subtitle faded into the background. */
   z-index: 11;
 }
 
@@ -1412,7 +1414,11 @@ a:focus-visible {
 
 #nav-instruction-sub {
   font-size: 13px;
-  opacity: 0.75;
+  /* A real colour, not opacity on the parent's. Faded white on the old
+     dark banner was the least readable text in the app; --ink-600 is the
+     same secondary tone every other subtitle uses and it holds its
+     contrast in both themes. */
+  color: var(--ink-600);
   margin-top: 2px;
 }
 

@@ -24,12 +24,15 @@
  * rather than drift.
  *
  * This has to clear the drift band, not sit inside it: indoor skyway error
- * runs 20-50 m, and map.ts already accepts corrections out to
- * SNAP_MAX_METERS = 60 on exactly that reasoning. A threshold below that
- * would classify the very drift this exists to absorb as a genuine detour
- * and believe it. 75 clears the band with headroom and is still under a
- * downtown block (~100 m), so actually leaving the route still registers
- * before you reach the next one. */
+ * runs 20-50 m and reaches 90 m in the recorded walks. A threshold below
+ * that would classify the very drift this exists to absorb as a genuine
+ * detour and believe it. 75 clears the common band with headroom and is
+ * still under a downtown block (~100 m), so actually leaving the route
+ * still registers before you reach the next one.
+ *
+ * Note this is the *arrival clock's* tolerance, not the position's —
+ * route-position.ts decides where the walker is, and does it with a motion
+ * window rather than a distance threshold. */
 export const DETOUR_METERS = 75;
 
 /** How far the computed arrival instant may move before the walker is shown
