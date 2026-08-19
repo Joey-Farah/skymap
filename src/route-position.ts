@@ -31,11 +31,47 @@ import { haversineMeters, nearestOnSegment, polylineMeters } from "./router.ts";
  * it. */
 const MAX_WALK_SPEED = 2.2; // m/s
 
-/** A walker standing still still produces fixes that wander, and their
- * along-route component is as often backwards as forwards. Without a
- * little slack in both directions a stationary walker either creeps
- * forward or gets pinned. */
+/**
+ * How far below the furthest point reached a fix may pull the estimate.
+ *
+ * A walker standing still still produces fixes that wander, and their
+ * along-route component is as often backwards as forwards. Without slack in
+ * both directions a stationary walker either creeps forward or gets pinned,
+ * and a fix that lands behind a drifted estimate can't correct it.
+ *
+ * Measured from the high-water mark rather than from the current estimate,
+ * because those two readings differ exactly where the bug lived. Against the
+ * current estimate the allowance is spent again on every fix, so a patch of
+ * fixes biased the same way — indoor reception lagging behind the walker,
+ * which is what a recorded 1.6 walk shows at 2:57 — marches the dot down the
+ * route 8 m at a time while its owner walks forwards. Against the high-water
+ * mark the same allowance is a band the estimate rattles inside: jitter
+ * costs nothing, and sustained bias stalls instead of accumulating.
+ *
+ * Rate-limiting the retreat instead — capping it at MAX_WALK_SPEED, so the
+ * dot can't go backwards faster than a walker goes forwards — was tried
+ * first and measured worse: it only slowed the slide (32 m to 22 m) and cost
+ * real accuracy elsewhere, taking worst placement under 90 m of drift from
+ * 25 m to 34 m, because recovering from scatter genuinely needs the room.
+ */
 const BACK_SLACK = 8; // m
+
+/**
+ * How many consecutive fixes have to agree before the high-water mark moves.
+ *
+ * The mark can't be the plain maximum of what we've seen. A walker standing
+ * still throws fixes both ways, the mark records the luckiest one, and since
+ * the floor sits BACK_SLACK below the mark, the estimate can never come back
+ * down to the truth — the dot creeps to the destination on noise alone, which
+ * is the failure the stationary test exists to catch.
+ *
+ * So the mark advances to the *weakest* of the last few candidates instead of
+ * the strongest. Scatter can't move it, because one fix reading short holds it
+ * back; sustained walking does, because every candidate in the window has
+ * moved up. It is the same evidence-over-magnitude reasoning the off-route
+ * detector uses, applied to progress rather than departure.
+ */
+const CONFIRM_FIXES = 3;
 const FORWARD_SLACK = 8; // m
 
 /**
@@ -100,6 +136,13 @@ export class RouteTracker {
    * inferring it from a first fix instead means the worst fix of the trip
    * gets believed outright, with nothing to constrain it. */
   private along = 0;
+  /** The furthest along the walker has been believed to be. The backward
+   * allowance is measured from here rather than from the current estimate,
+   * which is what stops it accumulating — see BACK_SLACK. */
+  private furthest = 0;
+  /** The last few candidates, so the high-water mark can be advanced by the
+   * weakest of them rather than by the luckiest — see CONFIRM_FIXES. */
+  private recent: number[] = [];
   private atMs: number;
   /** Consecutive fixes too far away to explain by walking. */
   private streak = 0;
@@ -138,6 +181,8 @@ export class RouteTracker {
       const candidate = this.nearestAlong(lat, lon, 0, this.total);
       if (this.residual(lat, lon, candidate) <= REACQUIRE_METERS) {
         this.along = candidate;
+        this.furthest = candidate;
+        this.recent = [];
         this.offRoute = false;
         this.streak = 0;
       }
@@ -148,7 +193,7 @@ export class RouteTracker {
     const candidate = this.nearestAlong(
       lat,
       lon,
-      this.along - BACK_SLACK,
+      Math.max(this.along, this.furthest) - BACK_SLACK,
       this.along + reach + FORWARD_SLACK,
     );
 
@@ -171,6 +216,11 @@ export class RouteTracker {
     }
 
     this.along = candidate;
+    this.recent.push(candidate);
+    if (this.recent.length > CONFIRM_FIXES) this.recent.shift();
+    if (this.recent.length === CONFIRM_FIXES) {
+      this.furthest = Math.max(this.furthest, Math.min(...this.recent));
+    }
     return this.placement();
   }
 
@@ -184,6 +234,8 @@ export class RouteTracker {
    */
   moveTo(lat: number, lon: number): Placement {
     this.along = this.nearestAlong(lat, lon, 0, this.total);
+    this.furthest = this.along;
+    this.recent = [];
     this.offRoute = false;
     this.streak = 0;
     return this.placement();
