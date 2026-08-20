@@ -36,6 +36,27 @@ test("a hotel is a usable wayfinding cue", () => {
   assert.equal(landmarkNear([{ name: "Lift", buildingId: "ramp", group: "elevator" }], "ramp"), null);
 });
 
+test("a building is not a cue for itself", () => {
+  // Marking on-network buildings put a pin named after the building inside
+  // the building. Left alone those become cues, so a turn in the Emery read
+  // "past Emery, Autograph Collection" — naming the place you are standing
+  // in as the thing to walk past. The synthesized records carry
+  // kind "building" precisely so they can be skipped here.
+  const pois = [
+    { name: "Emery, Autograph Collection", buildingId: "emery", group: "hotel", kind: "building" },
+    { name: "Zebra Lounge", buildingId: "emery", group: "food", kind: "amenity" },
+  ];
+  assert.equal(landmarkNear(pois, "emery").name, "Zebra Lounge", "the real business wins, despite sorting later");
+  assert.equal(landmarkNear([pois[0]], "emery"), null, "a building alone leaves the turn with no cue");
+
+  // A genuine hotel POI that happens to sit in the same building is still a
+  // cue — this must not become "hotels don't count" again.
+  assert.equal(
+    landmarkNear([{ name: "Four Seasons Hotel", buildingId: "emery", group: "hotel", kind: "tourism" }], "emery").name,
+    "Four Seasons Hotel",
+  );
+});
+
 test("wayfinding and food classification is unchanged", () => {
   assert.equal(groupFor("amenity", "elevator"), "elevator");
   assert.equal(groupFor("amenity", "toilets"), "restroom");

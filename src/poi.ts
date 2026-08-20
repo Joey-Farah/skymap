@@ -234,7 +234,7 @@ export function buildingCategory(tags: Record<string, string>): string {
  * cues — deterministic (alphabetically first food POI) so instructions
  * don't flicker between re-renders.
  */
-export function landmarkNear<T extends { name: string; buildingId: string; group: PoiGroup }>(
+export function landmarkNear<T extends { name: string; buildingId: string; group: PoiGroup; kind?: string }>(
   pois: T[],
   buildingId: string,
 ): T | null {
@@ -245,7 +245,11 @@ export function landmarkNear<T extends { name: string; buildingId: string; group
   // where "past the Hilton Garden Inn" earns its place.
   const CUE_GROUPS = new Set<PoiGroup>(["food", "coffee", "landmark", "hotel"]);
   const candidates = pois
-    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group))
+    // kind "building" is the building's own marker, synthesized so it gets a
+    // pin under its category's chip. It is never a cue: it names the building
+    // the walker is already standing in, which turned a turn in the Emery
+    // into "past Emery, Autograph Collection."
+    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group) && p.kind !== "building")
     .sort((a, b) => a.name.localeCompare(b.name));
   return candidates[0] ?? null;
 }
