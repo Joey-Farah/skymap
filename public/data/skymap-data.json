@@ -28708,6 +28708,206 @@
    "lat": 44.981908,
    "lon": -93.277638,
    "buildingId": "5th-street-ramp-b-30062750"
+  },
+  {
+   "id": "building-minneapolis-marriott-city-center-27346715",
+   "name": "Minneapolis Marriott City Center",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.977641,
+   "lon": -93.273449,
+   "buildingId": "minneapolis-marriott-city-center-27346715"
+  },
+  {
+   "id": "building-hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
+   "name": "Hotel Ivy, a Luxury Collection Hotel, Minneapolis",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.9714,
+   "lon": -93.272753,
+   "buildingId": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035"
+  },
+  {
+   "id": "building-hilton-minneapolis-28490639",
+   "name": "Hilton Minneapolis",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.972641,
+   "lon": -93.273054,
+   "buildingId": "hilton-minneapolis-28490639"
+  },
+  {
+   "id": "building-rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
+   "name": "Rand Tower Hotel, Minneapolis, a Tribute Portfolio Hotel",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.977323,
+   "lon": -93.269541,
+   "buildingId": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581"
+  },
+  {
+   "id": "building-united-states-courthouse-and-federal-building-44684856",
+   "name": "United States Courthouse and Federal Building",
+   "category": "government",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.978275,
+   "lon": -93.264625,
+   "buildingId": "united-states-courthouse-and-federal-building-44684856"
+  },
+  {
+   "id": "building-radisson-red-minneapolis-downtown-60613336",
+   "name": "Radisson RED Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.976851,
+   "lon": -93.260515,
+   "buildingId": "radisson-red-minneapolis-downtown-60613336"
+  },
+  {
+   "id": "building-emery-autograph-collection-62006964",
+   "name": "Emery, Autograph Collection",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.978245,
+   "lon": -93.26691,
+   "buildingId": "emery-autograph-collection-62006964"
+  },
+  {
+   "id": "building-westminster-presbyterian-63821145",
+   "name": "Westminster Presbyterian",
+   "category": "venue",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.971314,
+   "lon": -93.276106,
+   "buildingId": "westminster-presbyterian-63821145"
+  },
+  {
+   "id": "building-nicollet-island-inn-80313504",
+   "name": "Nicollet Island Inn",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.985929,
+   "lon": -93.260494,
+   "buildingId": "nicollet-island-inn-80313504"
+  },
+  {
+   "id": "building-orange-building-143056848",
+   "name": "Orange Building",
+   "category": "hospital",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.971742,
+   "lon": -93.261472,
+   "buildingId": "orange-building-143056848"
+  },
+  {
+   "id": "building-purple-building-143058257",
+   "name": "Purple Building",
+   "category": "hospital",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.972873,
+   "lon": -93.261923,
+   "buildingId": "purple-building-143058257"
+  },
+  {
+   "id": "building-red-building-143058259",
+   "name": "Red Building",
+   "category": "hospital",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.972157,
+   "lon": -93.262251,
+   "buildingId": "red-building-143058259"
+  },
+  {
+   "id": "building-plymouth-building-156909952",
+   "name": "Plymouth Building",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.978818,
+   "lon": -93.27277,
+   "buildingId": "plymouth-building-156909952"
+  },
+  {
+   "id": "building-the-westin-minneapolis-156912892",
+   "name": "The Westin Minneapolis",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.977771,
+   "lon": -93.270255,
+   "buildingId": "the-westin-minneapolis-156912892"
+  },
+  {
+   "id": "building-hampton-inn-suites-minneapolis-downtown-198988798",
+   "name": "Hampton Inn & Suites Minneapolis/Downtown",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.977497,
+   "lon": -93.27701,
+   "buildingId": "hampton-inn-suites-minneapolis-downtown-198988798"
+  },
+  {
+   "id": "building-hyatt-centric-downtown-minneapolis-354742163",
+   "name": "Hyatt Centric Downtown Minneapolis",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.975979,
+   "lon": -93.268796,
+   "buildingId": "hyatt-centric-downtown-minneapolis-354742163"
+  },
+  {
+   "id": "building-ambulatory-outpatient-specialty-center-411211095",
+   "name": "Ambulatory Outpatient Specialty Center",
+   "category": "hospital",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.971237,
+   "lon": -93.263144,
+   "buildingId": "ambulatory-outpatient-specialty-center-411211095"
+  },
+  {
+   "id": "building-rbc-gateway-733105254",
+   "name": "RBC Gateway",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.981588,
+   "lon": -93.26905,
+   "buildingId": "rbc-gateway-733105254"
+  },
+  {
+   "id": "building-the-royal-sonesta-minneapolis-downtown-1393159125",
+   "name": "The Royal Sonesta Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.977122,
+   "lon": -93.273732,
+   "buildingId": "the-royal-sonesta-minneapolis-downtown-1393159125"
+  },
+  {
+   "id": "building-minneapolis-city-hall-r4503577",
+   "name": "Minneapolis City Hall",
+   "category": "government",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.977272,
+   "lon": -93.26555,
+   "buildingId": "minneapolis-city-hall-r4503577"
   }
  ],
  "indoorLinks": [
