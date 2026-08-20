@@ -185,3 +185,49 @@ test("standing still does not walk the dot forward", () => {
     `stationary walker moved ${crept.toFixed(0)} m along the route; want <= 15 m`,
   );
 });
+
+/**
+ * The recorded 1.6 walk, at 2:57-3:06: walking forward on the skyway, and
+ * the dot slides back down the route a whole segment while the orange
+ * "remaining" line grows to meet it.
+ *
+ * Indoor fixes don't only scatter, they lag — a patch of bad reception
+ * reads behind where the walker actually is, in the same direction, for
+ * several fixes running. Scattered drift averages out and this does not,
+ * which is why the existing tests miss it.
+ *
+ * The bar is the walker's own experience: they are moving forward, so the
+ * dot may stall, but it must not retreat.
+ */
+test("a backward-biased patch does not walk the dot back down the route", () => {
+  const tracker = new RouteTracker(ROUTE);
+  const SPEED = 1.35; // m/s
+  const DT_MS = 2000;
+  const LAG = 40; // m behind the walker, for the whole patch
+
+  let atMs = walkTo(tracker, 150, { speed: SPEED, dtMs: DT_MS });
+  const before = tracker.update(...truthAt(150).reverse(), (atMs += DT_MS)).alongMeters;
+
+  let walked = 150;
+  let worstRetreat = 0;
+  for (let i = 0; i < 10; i++) {
+    walked += SPEED * (DT_MS / 1000);
+    // Still on the route, still walking forward — the fixes are what's wrong.
+    const fix = driftedFix(truthAt(walked - LAG), 8, i);
+    const placed = tracker.update(fix[1], fix[0], (atMs += DT_MS));
+    worstRetreat = Math.max(worstRetreat, before - placed.alongMeters);
+  }
+
+  // The bar is jitter scale, not zero. BACK_SLACK exists so the estimate can
+  // rattle and be corrected, and the high-water mark takes CONFIRM_FIXES to
+  // advance, so a lag of roughly those two added together is the design
+  // working rather than failing. What must not survive is the reported
+  // symptom: a retreat on the scale of a route segment, which is what walks
+  // the dot back past a landmark the walker has already gone by. This ran at
+  // 32 m before the high-water mark and 12 m after.
+  assert.ok(
+    worstRetreat <= 15,
+    `walker went forward ${(10 * SPEED * (DT_MS / 1000)).toFixed(0)} m and the dot went ` +
+      `back ${worstRetreat.toFixed(0)} m; want <= 15 m`,
+  );
+});

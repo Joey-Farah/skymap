@@ -381,6 +381,15 @@ test("route steps carry cumulative arrival minutes", () => {
   );
 });
 
+/** Since unmapped crossings are now estimated rather than treated as free
+ * (see UNMAPPED_INDOOR_RATIO in router.ts), stripping indoorLinks no longer
+ * gives a zero-distance baseline — it gives the estimate. So what a mapped
+ * corridor is worth is the difference between its real length and the guess
+ * that would have stood in for it. */
+const UNMAPPED_RATIO = 1.26;
+const mappedGain = (link, doorA, doorB) =>
+  (polylineMeters(link) - haversineMeters(doorA[1], doorA[0], doorB[1], doorB[0]) * UNMAPPED_RATIO) / 78;
+
 test("a through-building's real indoor distance is added on top of the flat transit penalty, not in place of it", () => {
   // A -> B -> C, B passed through door-to-door. Bridges are short (10m
   // each) so the effect of the indoor link is unambiguous in the total.
@@ -409,8 +418,9 @@ test("a through-building's real indoor distance is added on top of the flat tran
     withLink.totalMinutes > without.totalMinutes,
     "the real indoor detour adds time, not just the flat per-building constant",
   );
-  const indoorLinkMeters = polylineMeters(mini.indoorLinks[0].geometry);
-  const expectedExtraMinutes = indoorLinkMeters / 78; // WALK_METERS_PER_MIN
+  const expectedExtraMinutes = mappedGain(
+    mini.indoorLinks[0].geometry, [0, 0.0001], [0.0002, 0.0001],
+  );
   assert.ok(
     Math.abs(withLink.totalMinutes - without.totalMinutes - expectedExtraMinutes) < 0.01,
     "the added time matches the indoor link's own real distance",
@@ -447,7 +457,9 @@ test("arriving at a through-building doesn't count the walk through it yet", () 
     Math.abs(withLink.steps[1].arrivalMinutes - without.steps[1].arrivalMinutes) < 1e-9,
     "arrival at B is unchanged by B's own indoor crossing",
   );
-  const expectedExtra = polylineMeters(mini.indoorLinks[0].geometry) / 78;
+  const expectedExtra = mappedGain(
+    mini.indoorLinks[0].geometry, [0, 0.0001], [0.0002, 0.0001],
+  );
   assert.ok(
     Math.abs(withLink.steps[2].arrivalMinutes - without.steps[2].arrivalMinutes - expectedExtra) < 0.01,
     "arrival at C does include the crossing of B",
@@ -939,4 +951,33 @@ test("the skyway data credits OpenStreetMap in its own right", async () => {
     assert.ok(added, `${source} must be added to the map`);
     assert.match(added[1], /attribution/, `${source} draws OSM data but carries no attribution`);
   }
+});
+
+test("walking through a building with no mapped corridor still costs distance", () => {
+  // A -> B -> C again, but nothing is known about B's interior. The walker
+  // still has to cross it: the doors are ~22 m apart, and the real path
+  // between two doors is never shorter than the straight line between them.
+  const hours = [[0, 1440]];
+  const mini = {
+    meta: { name: "t", source: "t", disclaimer: "t", generated: "t" },
+    buildings: [
+      { id: "a", name: "A", address: "", category: "office", lat: 0, lon: 0, footprint: [], hours },
+      { id: "b", name: "B", address: "", category: "office", lat: 0.0001, lon: 0, footprint: [], hours },
+      { id: "c", name: "C", address: "", category: "office", lat: 0.0002, lon: 0, footprint: [], hours },
+    ],
+    edges: [
+      { from: "a", to: "b", crossing: "x", geometry: [[0, 0], [0, 0.0001]] },
+      { from: "b", to: "c", crossing: "x", geometry: [[0.0002, 0.0001], [0.0002, 0.0002]] },
+    ],
+    indoorLinks: [],
+  };
+  const r = new SkywayRouter(mini).route("a", "c", null);
+
+  // The two bridges are ~11 m each. Anything at or below that has charged
+  // nothing at all for crossing B.
+  const bridgesOnly = 22.3;
+  assert.ok(
+    r.totalMeters > bridgesOnly + 15,
+    `route totals ${r.totalMeters.toFixed(0)} m — the ~22 m walk across B was not counted`,
+  );
 });

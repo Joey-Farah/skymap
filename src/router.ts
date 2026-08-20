@@ -11,6 +11,24 @@ export const WALK_METERS_PER_MIN = 78; // ~2.9 mph indoor pace
 // (see indoorLinkMeters), this stays as the leftover non-distance cost.
 const BUILDING_TRANSIT_MIN = 0.75;
 
+/**
+ * What to charge for crossing a building whose interior we don't have.
+ *
+ * Counting it as nothing was free and wrong: the walker crosses that floor
+ * whether or not anyone mapped it. Across 1,856 sampled routes it silently
+ * removed about 15% of the walk from both the distance and the arrival time
+ * — an understatement the walker only discovers by still walking after the
+ * app says they've arrived.
+ *
+ * The straight line between the two doors is the floor for any guess, since
+ * no real path is shorter. Real ones are longer, and the 212 corridors that
+ * *are* mapped say by how much: a median 1.26x their own door-to-door
+ * chord (p90 1.59x). Charging an unmapped crossing what a typical mapped
+ * one of the same span costs is a better answer than zero, and it is
+ * derived from this city's own buildings rather than picked.
+ */
+const UNMAPPED_INDOOR_RATIO = 1.26;
+
 function coordsEqual(a: [number, number], b: [number, number]): boolean {
   return Math.abs(a[0] - b[0]) < 1e-7 && Math.abs(a[1] - b[1]) < 1e-7;
 }
@@ -32,6 +50,12 @@ function indoorLinkMeters(
     if (matches) return polylineMeters(link.geometry);
   }
   return null;
+}
+
+/** Stand-in for a crossing we have no corridor for — see
+ * UNMAPPED_INDOOR_RATIO. */
+function estimatedIndoorMeters(doorA: [number, number], doorB: [number, number]): number {
+  return haversineMeters(doorA[1], doorA[0], doorB[1], doorB[0]) * UNMAPPED_INDOOR_RATIO;
 }
 
 export function haversineMeters(aLat: number, aLon: number, bLat: number, bLon: number): number {
@@ -496,7 +520,8 @@ export class SkywayRouter {
         const throughMeters =
           current === fromId || !arrival || !edge.geometry
             ? 0
-            : (indoorLinkMeters(this.indoorLinks, current, arrival[arrival.length - 1], edge.geometry[0]) ?? 0);
+            : (indoorLinkMeters(this.indoorLinks, current, arrival[arrival.length - 1], edge.geometry[0]) ??
+               estimatedIndoorMeters(arrival[arrival.length - 1], edge.geometry[0]));
         const transit = current === fromId ? 0 : BUILDING_TRANSIT_MIN;
         const tentative =
           dist.get(current)! + (edge.meters + throughMeters) / WALK_METERS_PER_MIN + transit;
@@ -553,8 +578,12 @@ export class SkywayRouter {
       const arrival = steps[i].legGeometry;
       const departure = steps[i + 1].legGeometry;
       if (!arrival || !departure) continue;
-      const m = indoorLinkMeters(this.indoorLinks, steps[i].building.id, arrival[arrival.length - 1], departure[0]);
-      if (m !== null) throughIndoorMeters[i] = m;
+      // Same accounting the search used, so the total the walker is shown
+      // matches the cost the route was chosen on — an unmapped crossing is
+      // estimated rather than treated as free. See UNMAPPED_INDOOR_RATIO.
+      throughIndoorMeters[i] =
+        indoorLinkMeters(this.indoorLinks, steps[i].building.id, arrival[arrival.length - 1], departure[0]) ??
+        estimatedIndoorMeters(arrival[arrival.length - 1], departure[0]);
     }
     // Arrival at step i: walking distance so far (bridges plus real
     // indoor detours already crossed), plus the per-building transit

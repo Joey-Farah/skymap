@@ -1,6 +1,6 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import type { Building, IndoorLink, Poi, RouteResult, SkymapData } from "./types.ts";
+import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isClosingSoon, isOpenAt } from "./hours.ts";
 import {
   buildingExitPoint,
@@ -9,9 +9,11 @@ import {
   walkedPrefix,
 } from "./router.ts";
 import { RouteTracker, type Placement } from "./route-position.ts";
+import { routeCoords } from "./route-geometry.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS } from "./poi.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
+import { haversineMeters, pointInRing } from "./router.ts";
 
 // Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look
 // than Positron's grayscale. Dark: OpenFreeMap's own dark counterpart — a
@@ -139,68 +141,6 @@ function indoorFC(data: SkymapData, when: Date): FC {
   };
 }
 
-function coordsEqual(a: [number, number], b: [number, number]): boolean {
-  return Math.abs(a[0] - b[0]) < 1e-7 && Math.abs(a[1] - b[1]) < 1e-7;
-}
-
-/** A through-building's real indoor path between the door it's entered by
- * and the door it's left by — checked in both directions since a link's
- * own doorA/doorB order doesn't necessarily match the route's direction
- * of travel through it. */
-function findIndoorLink(
-  links: IndoorLink[] | undefined,
-  buildingId: string,
-  arrival: [number, number],
-  departure: [number, number],
-): [number, number][] | null {
-  if (!links) return null;
-  for (const link of links) {
-    if (link.buildingId !== buildingId) continue;
-    if (coordsEqual(link.doorA, arrival) && coordsEqual(link.doorB, departure)) return link.geometry;
-    if (coordsEqual(link.doorB, arrival) && coordsEqual(link.doorA, departure)) {
-      return [...link.geometry].reverse();
-    }
-  }
-  return null;
-}
-
-/** Full route polyline: real bridge geometry when present, centroids otherwise.
- * Starts/ends at the actual from/to point (a POI's precise spot, when
- * there is one) rather than the origin building's centroid — anchoring
- * the line there instead drew a straight cut from the building's
- * interior middle out to the skyway door, which reads as the route
- * "skipping across the building" instead of leaving from where the pin
- * actually is. Passing through a building mid-route gets the same
- * treatment: the real indoor path between the door it arrives through
- * and the door it leaves through, not a straight line between them. */
-function routeCoords(
-  route: RouteResult,
-  fromCoord: [number, number],
-  toCoord: [number, number],
-  indoorLinks?: IndoorLink[],
-): [number, number][] {
-  const coordinates: [number, number][] = [fromCoord];
-  const steps = route.steps;
-  for (let i = 1; i < steps.length; i++) {
-    const s = steps[i];
-    if (s.legGeometry) coordinates.push(...s.legGeometry);
-    else coordinates.push([s.building.lon, s.building.lat]);
-
-    const next = steps[i + 1];
-    if (next?.legGeometry && s.legGeometry) {
-      const arrival = s.legGeometry[s.legGeometry.length - 1];
-      const departure = next.legGeometry[0];
-      const indoor = findIndoorLink(indoorLinks, s.building.id, arrival, departure);
-      // Both endpoints are already present (arrival just pushed above,
-      // departure is next.legGeometry's own first point) — only the
-      // interior waypoints need splicing in.
-      if (indoor) coordinates.push(...indoor.slice(1, -1));
-    }
-  }
-  coordinates.push(toCoord);
-  return coordinates;
-}
-
 function lineFC(coordinates: [number, number][]): FC {
   if (coordinates.length < 2) return { type: "FeatureCollection", features: [] };
   return {
@@ -232,6 +172,11 @@ function poisFC(pois: Poi[]): FC {
  * (skyway-walker layer below): filled circle, white ring, soft shadow.
  * Replaces MapLibre's stock teardrop pin, which is a generic map-pin icon
  * unrelated to anything else this app draws. */
+/** How close a dot has to be to where a building's label is drawn before
+ * the label is hidden. A shade wider than the dot itself, so a label isn't
+ * left half-covered — that reads worse than either state. */
+const LABEL_CLEAR_METERS = 30;
+
 function routeMarkerElement(color: string): HTMLDivElement {
   const el = document.createElement("div");
   el.style.width = "16px";
@@ -269,6 +214,9 @@ export class SkymapView {
   private when: Date = new Date();
   private markers: maplibregl.Marker[] = [];
   private ready = false;
+  /** Buildings whose label a dot is covering — see applyLabelSuppression. */
+  private walkerLabelIds: string[] = [];
+  private routeEndBuildingIds: string[] = [];
   private routeAnim = 0;
   /** The active route's own drawn polyline — what remainingMeters projects
    * a live GPS fix onto. Empty when there's no active route. */
@@ -706,6 +654,8 @@ export class SkymapView {
       const routeSrc = this.map.getSource("skyway-route") as maplibregl.GeoJSONSource;
       for (const m of this.markers) m.remove();
       this.markers = [];
+      this.routeEndBuildingIds = [];
+      this.applyLabelSuppression();
       if (!route || route.steps.length < 2) {
         this.activeRouteCoords = [];
         this.tracker = null;
@@ -748,6 +698,11 @@ export class SkymapView {
         new maplibregl.Marker({ element: routeMarkerElement("#16a34a") }).setLngLat(fromCoord).addTo(this.map),
         new maplibregl.Marker({ element: routeMarkerElement("#dc2626") }).setLngLat(toCoord).addTo(this.map),
       );
+      // The endpoint pins land on their own buildings' labels — the
+      // destination pin covering "733 Building" is the case from the 1.6
+      // recording. Both names are already on screen in the sheet.
+      this.routeEndBuildingIds = [...this.labelUnder(fromCoord), ...this.labelUnder(toCoord)];
+      this.applyLabelSuppression();
       const lons = [...coords.map((c) => c[0]), fromCoord[0], toCoord[0]];
       const lats = [...coords.map((c) => c[1]), fromCoord[1], toCoord[1]];
       this.map.fitBounds(
@@ -803,6 +758,54 @@ export class SkymapView {
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord, false, stale));
     this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
+    this.walkerLabelIds = coord ? this.labelUnder(coord) : [];
+    this.applyLabelSuppression();
+  }
+
+  /**
+   * The buildings whose labels a dot at `coord` is drawn over.
+   *
+   * Containment alone is not enough: in this dataset a building's own point
+   * often falls outside its own OSM polygon — Deluxe Plaza's does — so a
+   * walker standing squarely in it tests negative. Proximity alone is not
+   * enough either, for the reason in the loop. Take either.
+   */
+  private labelUnder(coord: [number, number]): string[] {
+    const hit: string[] = [];
+    for (const b of this.data.buildings) {
+      // Two ways to be on a label, and the route needs both. A walker is
+      // near where the label is *drawn*; an endpoint pin sits on the door
+      // it enters by, which can be 35 m from that point — 733 Building's
+      // is — but is still inside the building the label names.
+      const nearLabel = haversineMeters(coord[1], coord[0], b.lat, b.lon) < LABEL_CLEAR_METERS;
+      const inside = b.footprint.length > 2 && pointInRing(coord[0], coord[1], b.footprint);
+      if (nearLabel || inside) hit.push(b.id);
+    }
+    return hit;
+  }
+
+  /**
+   * Hide the building labels that a dot is sitting on.
+   *
+   * MapLibre's collision cannot arbitrate this. The labels are placed
+   * before a route exists, and placement is retained frame to frame, so an
+   * already-placed label keeps its spot and the dot loses — measured:
+   * putting the dot in an earlier layer changes nothing, and making the dot
+   * yield instead simply hides the dot. Layer order has no say once a label
+   * is down.
+   *
+   * So say it directly. A label under the walker or under a route endpoint
+   * is unreadable anyway, and it is the one label on screen whose name the
+   * walker already has — the banner and the step list both carry it. Hiding
+   * it loses nothing and stops the dot being drawn through text.
+   */
+  private applyLabelSuppression() {
+    if (!this.map.getLayer("skyway-buildings-label")) return;
+    const hidden = [...new Set([...this.walkerLabelIds, ...this.routeEndBuildingIds])];
+    this.map.setFilter(
+      "skyway-buildings-label",
+      hidden.length ? ["!", ["in", ["get", "id"], ["literal", hidden]]] : null,
+    );
   }
 
   /** The route-draw animation's moving head — same layer, but it isn't a

@@ -1,0 +1,9 @@
+Your position no longer slides backwards.
+
+Walking a route, the dot could drift back down the line you'd already walked — the app allowed a step backwards on every reading, and a patch of bad indoor reception spent that allowance over and over. It now measures how far back you can go from the furthest point you've reached, so a bad reading can't march you back past a corner you've already turned.
+
+Routes are also honest about walking through buildings now. Where a building's interior isn't mapped, the walk across it used to count as no distance at all, so arrival times came out optimistic. That stretch is now estimated from the buildings that are mapped — expect times to read a little longer, and to be right.
+
+The last stretch of a route follows the corridor into your destination, instead of drawing a straight line through the walls to the middle of the building.
+
+And your position dot no longer sits on top of a building's name, hiding the label it's standing on.
