@@ -2,6 +2,25 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { buildComboEntries, searchEntries } from "../src/combo.ts";
 
+test("a building's own map marker doesn't duplicate it in search", () => {
+  // Buildings get a POI so they appear under their category's chip — the
+  // pins layer is the only thing that draws them. That marker carries the
+  // building's own name, so without this it lists twice: once as the
+  // building, once as a "business" inside itself whose sublabel is its own
+  // name.
+  const entries = buildComboEntries(
+    [{ id: "marriott", name: "Minneapolis Marriott City Center", address: "30 South 7th Street" }],
+    [
+      { id: "building-marriott", name: "Minneapolis Marriott City Center", buildingId: "marriott", group: "hotel", kind: "building" },
+      { id: "poi-1", name: "Starbucks", buildingId: "marriott", group: "coffee", kind: "amenity" },
+    ],
+  );
+  const marriott = entries.filter((e) => e.label === "Minneapolis Marriott City Center");
+  assert.equal(marriott.length, 1, "listed once");
+  assert.equal(marriott[0].sublabel, "30 South 7th Street", "as the building, with its address");
+  assert.ok(entries.some((e) => e.label === "Starbucks"), "real businesses inside it are untouched");
+});
+
 test("accented names are found by typing them without accents", () => {
   // Twelve real downtown places were unreachable: Pizza Lucé, Fogo de Chão,
   // Jalapeño Mexican Grill, Bép Eatery, Los 3 Costeños, Engel & Völkers and
