@@ -2,6 +2,9 @@
  * colored, and sectioned — shared by the extraction script, map, and sheet. */
 
 import { distanceToFootprint, haversineMeters, pointInRing } from "./router.ts";
+// Type-only, so the types.ts <-> poi.ts cycle (types.ts imports PoiGroup
+// from here) is erased at compile time rather than becoming a real one.
+import type { Poi } from "./types.ts";
 
 export type PoiGroup =
   | "food"
@@ -234,7 +237,48 @@ export function buildingCategory(tags: Record<string, string>): string {
  * cues — deterministic (alphabetically first food POI) so instructions
  * don't flicker between re-renders.
  */
-export function landmarkNear<T extends { name: string; buildingId: string; group: PoiGroup }>(
+/** Building categories that earn a pin of their own.
+ *
+ * Pins come only from the POI layer; a building otherwise renders as a
+ * polygon plus a label that needs zoom 16.4, and the category chips don't
+ * surface buildings at all. So a hotel with no POI inside it is invisible to
+ * someone tapping the Hotels chip — which is how "the Marriott City Center
+ * is not marked" reached the feedback form while the Marriott sat in the
+ * dataset, routable, with three skyway edges.
+ */
+export const MARKED_BUILDING_CATEGORIES = new Set(["venue", "government", "hotel", "hospital"]);
+
+/** The POI record that stands for a building.
+ *
+ * `onNetwork` decides both halves of the record's identity. A building the
+ * skyway reaches hosts its own marker and is `kind: "building"`; one it
+ * can't reach is hosted by `hostId`, a neighbour, and stays `kind:
+ * "landmark"` — the older case this path was written for (Target Field: an
+ * open-air stadium a block off the network).
+ *
+ * The group is asked of `groupFor` rather than asserted, so the classifier
+ * stays the one place that decides. Hardcoding it here is what once filed 13
+ * hotels under Landmarks.
+ */
+export function buildingMarker(
+  building: { id: string; name: string; category: string; lat: number; lon: number },
+  hostId: string,
+  onNetwork: boolean,
+): Poi {
+  const kind = onNetwork ? "building" : "landmark";
+  return {
+    id: `${kind}-${building.id}`,
+    name: building.name,
+    category: building.category,
+    kind,
+    group: groupFor(kind, building.category),
+    lat: building.lat,
+    lon: building.lon,
+    buildingId: hostId,
+  };
+}
+
+export function landmarkNear<T extends { name: string; buildingId: string; group: PoiGroup; kind?: string }>(
   pois: T[],
   buildingId: string,
 ): T | null {
@@ -245,7 +289,11 @@ export function landmarkNear<T extends { name: string; buildingId: string; group
   // where "past the Hilton Garden Inn" earns its place.
   const CUE_GROUPS = new Set<PoiGroup>(["food", "coffee", "landmark", "hotel"]);
   const candidates = pois
-    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group))
+    // kind "building" is the building's own marker, synthesized so it gets a
+    // pin under its category's chip. It is never a cue: it names the building
+    // the walker is already standing in, which turned a turn in the Emery
+    // into "past Emery, Autograph Collection."
+    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group) && p.kind !== "building")
     .sort((a, b) => a.name.localeCompare(b.name));
   return candidates[0] ?? null;
 }

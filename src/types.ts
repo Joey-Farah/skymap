@@ -50,7 +50,10 @@ export interface Poi {
   name: string;
   /** OSM value: "cafe", "restaurant", "clothes", "bus_stop", … */
   category: string;
-  /** Which tag family it came from: "amenity", "shop", "leisure", "tourism", "transit". */
+  /** Which tag family it came from: "amenity", "shop", "leisure", "tourism",
+   * "transit" — or "building", for the marker a building gets so it appears
+   * under its own category's chip. See landmarkNear: a "building" record is
+   * never a wayfinding cue. */
   kind: string;
   /** Display/styling group, derived from kind+category at extraction. */
   group: PoiGroup;

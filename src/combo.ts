@@ -18,7 +18,8 @@ export interface ComboEntry {
 /** Buildings plus their interior businesses, as one searchable, sorted list. */
 export function buildComboEntries(
   buildings: (Pick<Building, "id" | "name" | "address"> & Partial<Pick<Building, "lat" | "lon">>)[],
-  pois: (Pick<Poi, "id" | "name" | "buildingId" | "exterior" | "group"> & Partial<Pick<Poi, "lat" | "lon" | "category">>)[],
+  pois: (Pick<Poi, "id" | "name" | "buildingId" | "exterior" | "group"> &
+    Partial<Pick<Poi, "lat" | "lon" | "category" | "kind">>)[],
 ): ComboEntry[] {
   const byId = new Map(buildings.map((b) => [b.id, b]));
   const entries: ComboEntry[] = buildings.map((b) => ({
@@ -37,6 +38,13 @@ export function buildComboEntries(
     // all. Target Field and US Bank Stadium only looked fine because
     // separate landmark POIs happen to share those names.
     if (p.exterior && p.category !== "station") continue;
+    // A building's own marker exists so the building gets a pin under its
+    // category's chip — the pins layer is the only thing that draws
+    // buildings. It is not a separate place: listing it here put the
+    // Marriott in the results twice, once as itself and once as a business
+    // inside itself whose sublabel was its own name. The building entry
+    // above already covers it, and carries the address.
+    if (p.kind === "building") continue;
     const host = byId.get(p.buildingId);
     if (!host) continue;
     entries.push({

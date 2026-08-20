@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { dedupePois, groupFor, landmarkNear, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
+import { buildingMarker, dedupePois, groupFor, landmarkNear, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
 
 test("a hotel is a hotel however it got into the dataset", () => {
   // Off-network landmark buildings are emitted with kind "landmark", and
@@ -34,6 +34,61 @@ test("a hotel is a usable wayfinding cue", () => {
 
   // Things you can't see from a corridor are still not cues.
   assert.equal(landmarkNear([{ name: "Lift", buildingId: "ramp", group: "elevator" }], "ramp"), null);
+});
+
+test("a building on the network stands for itself", () => {
+  // The reported bug: pins come only from the POI layer, so an on-network
+  // hotel had nothing under the Hotels chip. The marker hosts itself.
+  const marriott = {
+    id: "minneapolis-marriott-city-center-27346715",
+    name: "Minneapolis Marriott City Center",
+    category: "hotel",
+    lat: 44.977641,
+    lon: -93.273449,
+  };
+  const pin = buildingMarker(marriott, marriott.id, true);
+  assert.equal(pin.group, "hotel", "it must land under the chip a visitor would tap");
+  assert.equal(pin.kind, "building");
+  assert.equal(pin.buildingId, marriott.id, "on-network, it hosts itself");
+  assert.equal(pin.id, "building-minneapolis-marriott-city-center-27346715");
+  assert.equal(pin.lat, marriott.lat);
+
+  // Civic and hospital buildings ride along under Misc. rather than earning
+  // a chip of their own.
+  assert.equal(buildingMarker({ ...marriott, category: "hospital" }, "x", true).group, "other");
+  assert.equal(buildingMarker({ ...marriott, category: "government" }, "x", true).group, "other");
+});
+
+test("an unreachable building is still hosted by a neighbour", () => {
+  // The older case this path was written for must not regress: Target Field
+  // is off-network, hosted by the ramp, and stays a landmark.
+  const stadium = { id: "target-field", name: "Target Field", category: "venue", lat: 44.9817, lon: -93.2777 };
+  const pin = buildingMarker(stadium, "target-plaza-ramp", false);
+  assert.equal(pin.kind, "landmark");
+  assert.equal(pin.group, "landmark");
+  assert.equal(pin.buildingId, "target-plaza-ramp", "hosted by the nearest network building");
+  assert.equal(pin.id, "landmark-target-field", "the two origins stay tellable apart by id");
+});
+
+test("a building is not a cue for itself", () => {
+  // Marking on-network buildings put a pin named after the building inside
+  // the building. Left alone those become cues, so a turn in the Emery read
+  // "past Emery, Autograph Collection" — naming the place you are standing
+  // in as the thing to walk past. The synthesized records carry
+  // kind "building" precisely so they can be skipped here.
+  const pois = [
+    { name: "Emery, Autograph Collection", buildingId: "emery", group: "hotel", kind: "building" },
+    { name: "Zebra Lounge", buildingId: "emery", group: "food", kind: "amenity" },
+  ];
+  assert.equal(landmarkNear(pois, "emery").name, "Zebra Lounge", "the real business wins, despite sorting later");
+  assert.equal(landmarkNear([pois[0]], "emery"), null, "a building alone leaves the turn with no cue");
+
+  // A genuine hotel POI that happens to sit in the same building is still a
+  // cue — this must not become "hotels don't count" again.
+  assert.equal(
+    landmarkNear([{ name: "Four Seasons Hotel", buildingId: "emery", group: "hotel", kind: "tourism" }], "emery").name,
+    "Four Seasons Hotel",
+  );
 });
 
 test("wayfinding and food classification is unchanged", () => {
