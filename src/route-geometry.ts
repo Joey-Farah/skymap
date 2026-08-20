@@ -1,5 +1,5 @@
 import type { IndoorLink, RouteResult } from "./types.ts";
-import { haversineMeters } from "./router.ts";
+import { haversineMeters, nearestOnSegment } from "./router.ts";
 
 function coordsEqual(a: [number, number], b: [number, number]): boolean {
   return Math.abs(a[0] - b[0]) < 1e-7 && Math.abs(a[1] - b[1]) < 1e-7;
@@ -61,20 +61,29 @@ function approachGeometry(
     else if (coordsEqual(link.doorB, door)) path = [...link.geometry].reverse();
     if (!path) continue;
 
-    let cut = 0;
-    let nearest = Infinity;
-    for (let i = 0; i < path.length; i++) {
-      const d = haversineMeters(path[i][1], path[i][0], target[1], target[0]);
+    // Where along this corridor the walker is closest to the target, taken
+    // on the segments rather than at the corners. Turning off only at a
+    // vertex means walking past the target to the next corner and back —
+    // a visible dogleg away from where you're going, which is a different
+    // wrong answer from the straight line, not a better one.
+    let cutIndex = 0;
+    let cutPoint: [number, number] | null = null;
+    let nearest = haversineMeters(path[0][1], path[0][0], target[1], target[0]);
+    for (let i = 1; i < path.length; i++) {
+      const proj = nearestOnSegment(target, path[i - 1], path[i]);
+      const d = haversineMeters(proj[1], proj[0], target[1], target[0]);
       if (d < nearest) {
         nearest = d;
-        cut = i;
+        cutIndex = i;
+        cutPoint = proj;
       }
     }
     if (nearest < bestDist) {
       bestDist = nearest;
-      // The door itself is already on the line; only the interior
-      // waypoints up to the turn-off need adding.
-      best = path.slice(1, cut + 1);
+      // The door itself is already on the line; add the corners walked
+      // through, then the point the walker leaves the corridor at.
+      const walked = path.slice(1, cutIndex);
+      best = cutPoint && !coordsEqual(cutPoint, door) ? [...walked, cutPoint] : walked;
     }
   }
   return best;

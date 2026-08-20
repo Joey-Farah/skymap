@@ -117,6 +117,23 @@ test("the final approach follows a corridor, not a straight line to the pin", ()
     `the approach reaches ${worst.toFixed(1)} m from any corridor, further than the pin's own ` +
       `${unavoidable.toFixed(1)} m — it is cutting across the building, not walking round it`,
   );
+
+  // And it leaves the corridor at the closest point on it, not at the next
+  // corner along. Turning off only at a vertex satisfies the check above
+  // while still walking the pin's own length past it and doubling back —
+  // on this route that was an 18 m dogleg where 9 m would do.
+  const M = 111320;
+  const last = coords[coords.length - 1];
+  const turnOff = coords[coords.length - 2];
+  const hop = Math.hypot(
+    (last[0] - turnOff[0]) * Math.cos((last[1] * Math.PI) / 180) * M,
+    (last[1] - turnOff[1]) * M,
+  );
+  assert.ok(
+    hop <= unavoidable + 1,
+    `walker leaves the corridor ${hop.toFixed(1)} m from the pin when the corridor comes within ` +
+      `${unavoidable.toFixed(1)} m — it walked past the turn-off and came back`,
+  );
 });
 
 /** No corridor reaches this door, so a straight line is the truest thing
