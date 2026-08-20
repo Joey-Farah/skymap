@@ -28754,7 +28754,7 @@
    "name": "United States Courthouse and Federal Building",
    "category": "government",
    "kind": "building",
-   "group": "other",
+   "group": "landmark",
    "lat": 44.978275,
    "lon": -93.264625,
    "buildingId": "united-states-courthouse-and-federal-building-44684856"
@@ -28784,7 +28784,7 @@
    "name": "Westminster Presbyterian",
    "category": "venue",
    "kind": "building",
-   "group": "other",
+   "group": "landmark",
    "lat": 44.971314,
    "lon": -93.276106,
    "buildingId": "westminster-presbyterian-63821145"
@@ -28804,7 +28804,7 @@
    "name": "Orange Building",
    "category": "hospital",
    "kind": "building",
-   "group": "other",
+   "group": "landmark",
    "lat": 44.971742,
    "lon": -93.261472,
    "buildingId": "orange-building-143056848"
@@ -28814,7 +28814,7 @@
    "name": "Purple Building",
    "category": "hospital",
    "kind": "building",
-   "group": "other",
+   "group": "landmark",
    "lat": 44.972873,
    "lon": -93.261923,
    "buildingId": "purple-building-143058257"
@@ -28824,7 +28824,7 @@
    "name": "Red Building",
    "category": "hospital",
    "kind": "building",
-   "group": "other",
+   "group": "landmark",
    "lat": 44.972157,
    "lon": -93.262251,
    "buildingId": "red-building-143058259"
@@ -28874,7 +28874,7 @@
    "name": "Ambulatory Outpatient Specialty Center",
    "category": "hospital",
    "kind": "building",
-   "group": "other",
+   "group": "landmark",
    "lat": 44.971237,
    "lon": -93.263144,
    "buildingId": "ambulatory-outpatient-specialty-center-411211095"
@@ -28904,7 +28904,7 @@
    "name": "Minneapolis City Hall",
    "category": "government",
    "kind": "building",
-   "group": "other",
+   "group": "landmark",
    "lat": 44.977272,
    "lon": -93.26555,
    "buildingId": "minneapolis-city-hall-r4503577"

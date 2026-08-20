@@ -53,10 +53,15 @@ test("a building on the network stands for itself", () => {
   assert.equal(pin.id, "building-minneapolis-marriott-city-center-27346715");
   assert.equal(pin.lat, marriott.lat);
 
-  // Civic and hospital buildings ride along under Misc. rather than earning
-  // a chip of their own.
-  assert.equal(buildingMarker({ ...marriott, category: "hospital" }, "x", true).group, "other");
-  assert.equal(buildingMarker({ ...marriott, category: "government" }, "x", true).group, "other");
+  // Civic and hospital buildings group as landmarks — the same answer an
+  // off-network one gets. Grouping must not depend on skyway reach.
+  assert.equal(buildingMarker({ ...marriott, category: "hospital" }, "x", true).group, "landmark");
+  assert.equal(buildingMarker({ ...marriott, category: "government" }, "x", true).group, "landmark");
+  assert.equal(
+    buildingMarker({ ...marriott, category: "government" }, "x", true).group,
+    buildingMarker({ ...marriott, category: "government" }, "x", false).group,
+    "on- and off-network civic buildings must land in the same group",
+  );
 });
 
 test("an unreachable building is still hosted by a neighbour", () => {

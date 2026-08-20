@@ -867,12 +867,17 @@ async function main(osm) {
   // Sheraton is carried by a POI of its own name, so synthesizing a second
   // one would just be a duplicate pin. Checked against names rather than ids
   // because that is how dedupePois decides identity too.
-  const existingPoiNames = new Set(pois.map((p) => p.name));
+  //
+  // Exterior records don't count. Target Field and US Bank Stadium each have
+  // a transit stop of the same name hosted by a different building, so
+  // seeding this from every POI would have suppressed their landmark records
+  // on the next extraction — leaving a bus stop where a searchable,
+  // routable landmark used to be.
+  const existingPoiNames = new Set(pois.filter((p) => !p.exterior).map((p) => p.name));
   let landmarksAttached = 0;
   let buildingsMarked = 0;
   for (const b of buildings) {
     if (!MARKED_BUILDING_CATEGORIES.has(b.category)) continue;
-    if (existingPoiNames.has(b.name)) continue;
     // The same real building can exist as two OSM records (e.g. a way and
     // a relation both mapping it) — keep only the first one encountered.
     if (attachedLandmarkNames.has(b.name)) continue;
@@ -881,6 +886,12 @@ async function main(osm) {
     // needs the nearest-host search below, which is what that search was
     // written for.
     const onNetwork = mainComponent.has(b.id);
+    // Only the marking case is gated on already having a pin. The
+    // off-network landmark path is older than that rule and answers a
+    // different question — "can you get near this at all" — so applying the
+    // name check to it would drop landmarks that merely share a name with a
+    // transit stop.
+    if (onNetwork && existingPoiNames.has(b.name)) continue;
     let host = onNetwork ? finalBuildings.find((fb) => fb.id === b.id) : null;
     if (!onNetwork) {
       let best = MAX_LANDMARK_METERS;

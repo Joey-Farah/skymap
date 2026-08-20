@@ -28,7 +28,7 @@ import {
   stepIndexFromProgress,
 } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
-import { GROUP_COLORS, GROUP_LABELS } from "./poi.ts";
+import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
 
 /**
@@ -89,6 +89,13 @@ async function boot() {
   );
   const poisByBuilding = new Map<string, Poi[]>();
   for (const p of data.pois ?? []) {
+    // A building's own marker is hosted by the building it names, so without
+    // this every marked building listed itself among its interior places —
+    // the Marriott's card carrying a "Hotels (1)" section containing the
+    // Marriott. The marker exists to draw a pin, not to be a place inside
+    // anything. Third consumer to need this guard, after combo.ts and
+    // landmarkNear.
+    if (isBuildingMarker(p)) continue;
     if (!poisByBuilding.has(p.buildingId)) poisByBuilding.set(p.buildingId, []);
     poisByBuilding.get(p.buildingId)!.push(p);
   }
@@ -388,7 +395,14 @@ async function boot() {
   function onPoiTap(p: Poi) {
     if (mode === "nav") return;
     const host = router.building(p.buildingId);
-    if (host) showPlace(host, p);
+    if (!host) return;
+    // The marker stands for its building, so tapping it opens the building's
+    // own card. Routed as a POI it rendered a strictly worse card than the
+    // polygon underneath: the name twice over, no interior places, no photo,
+    // and a grey "Hours unknown" badge — for 13 of the 20 marked buildings
+    // the hours are right there on the building record.
+    if (isBuildingMarker(p)) return showPlace(host);
+    showPlace(host, p);
   }
 
   // --- Live position: snap GPS fixes to the nearest network building -----

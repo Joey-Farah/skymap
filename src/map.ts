@@ -11,7 +11,7 @@ import {
 import { RouteTracker, type Placement } from "./route-position.ts";
 import { routeCoords } from "./route-geometry.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
-import { GROUP_COLORS } from "./poi.ts";
+import { GROUP_COLORS, isBuildingMarker } from "./poi.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
 
@@ -217,6 +217,9 @@ export class SkymapView {
   /** Buildings whose label a dot is covering — see applyLabelSuppression. */
   private walkerLabelIds: string[] = [];
   private routeEndBuildingIds: string[] = [];
+  /** Buildings whose name is already drawn by their own pin. Constant for the
+   * life of the dataset, unlike the two above. */
+  private markedBuildingIds: string[] = [];
   private routeAnim = 0;
   /** The active route's own drawn polyline — what remainingMeters projects
    * a live GPS fix onto. Empty when there's no active route. */
@@ -405,6 +408,9 @@ export class SkymapView {
     this.map.addSource("skyway-route-done", { type: "geojson", data: lineFC([]) });
     this.map.addSource("skyway-walker", { type: "geojson", data: pointFC(null) });
     this.map.addSource("skyway-pois", { type: "geojson", attribution: osm, data: poisFC(this.data.pois ?? []) });
+    // Seeded once: which buildings have a pin carrying their own name, and so
+    // should not also draw a polygon label. See applyLabelSuppression.
+    this.markedBuildingIds = (this.data.pois ?? []).filter(isBuildingMarker).map((p) => p.buildingId);
 
     this.map.addLayer({
       id: "skyway-buildings-fill",
@@ -801,7 +807,14 @@ export class SkymapView {
    */
   private applyLabelSuppression() {
     if (!this.map.getLayer("skyway-buildings-label")) return;
-    const hidden = [...new Set([...this.walkerLabelIds, ...this.routeEndBuildingIds])];
+    // A marked building's name is carried by its pin's label, which says more
+    // than the polygon label does — it has the category icon with it, and it
+    // shows from zoom 15.8 rather than 16.4. Drawing both put the name on
+    // screen twice: past zoom ~18 there is room for the collision engine to
+    // place them both, which is exactly when someone is looking closely.
+    const hidden = [
+      ...new Set([...this.walkerLabelIds, ...this.routeEndBuildingIds, ...this.markedBuildingIds]),
+    ];
     this.map.setFilter(
       "skyway-buildings-label",
       hidden.length ? ["!", ["in", ["get", "id"], ["literal", hidden]]] : null,

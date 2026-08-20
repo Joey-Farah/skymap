@@ -1,4 +1,5 @@
 import type { Building, Poi } from "./types.ts";
+import { isBuildingMarker } from "./poi.ts";
 
 /** One searchable result in the from/to picker: a building or a business inside one. */
 export interface ComboEntry {
@@ -44,7 +45,7 @@ export function buildComboEntries(
     // Marriott in the results twice, once as itself and once as a business
     // inside itself whose sublabel was its own name. The building entry
     // above already covers it, and carries the address.
-    if (p.kind === "building") continue;
+    if (isBuildingMarker(p)) continue;
     const host = byId.get(p.buildingId);
     if (!host) continue;
     entries.push({

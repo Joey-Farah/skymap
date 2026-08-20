@@ -14,14 +14,23 @@
  *
  *   node scripts/mark-buildings.mjs [--write]
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { buildingMarker, MARKED_BUILDING_CATEGORIES } from "../src/poi.ts";
 
+// The .osm.json snapshot is the non---apply output of fetch-osm.mjs and
+// isn't tracked, so it's only here when someone has run an extraction
+// locally. Skipped rather than fatal: without the guard a fresh clone
+// rewrote the dataset and then died on ENOENT, half done.
 const FILES = ["public/data/skymap-data.json", "public/data/skymap-data.osm.json"];
 const write = process.argv.includes("--write");
 
 for (const file of FILES) {
+  if (!existsSync(file)) {
+    console.log(`${file}: not present, skipped`);
+    continue;
+  }
   const data = JSON.parse(readFileSync(file, "utf8"));
+  data.pois ??= [];
 
   // On-network means "has a skyway edge". That is the same question
   // fetch-osm.mjs asks of its main component, answered against the finished

@@ -45,7 +45,13 @@ export function groupFor(kind: string, category: string): PoiGroup {
   // 13 of downtown's hotels were filed under Landmarks, more than were in
   // Hotels. Answering it here instead keeps one classifier, and keeps it
   // *after* LODGING so lodging still wins.
-  if (kind === "landmark") return "landmark";
+  // "building" is the same question as "landmark" here — what kind of place
+  // is this building — and must answer the same way. Deciding it on skyway
+  // reach instead put City Hall and Westminster Presbyterian under Misc.
+  // with a navy pin while Central Lutheran and Fire Station 6, off-network,
+  // stayed purple Landmarks. Same sort of place, opposite treatment.
+  // Lodging is unaffected: LODGING is tested above and still wins.
+  if (kind === "landmark" || kind === "building") return "landmark";
   if (kind === "historic" || LANDMARK_PLACE.test(category)) return "landmark";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
   if (COFFEE.test(category)) return "coffee";
@@ -248,6 +254,19 @@ export function buildingCategory(tags: Record<string, string>): string {
  */
 export const MARKED_BUILDING_CATEGORIES = new Set(["venue", "government", "hotel", "hospital"]);
 
+/** True for the marker that stands for a building rather than a place inside one.
+ *
+ * Four consumers have to know the difference, and the fourth was missed on
+ * the first pass: the map draws it (the whole point), but search must not
+ * list it beside its own building, a building's card must not list it among
+ * its interior places, a tap on it must open the building's card rather than
+ * a POI card, and landmarkNear must not offer it as a cue for itself.
+ * Centralised here so the next consumer greps for one name.
+ */
+export function isBuildingMarker(p: { kind?: string }): boolean {
+  return p.kind === "building";
+}
+
 /** The POI record that stands for a building.
  *
  * `onNetwork` decides both halves of the record's identity. A building the
@@ -293,7 +312,7 @@ export function landmarkNear<T extends { name: string; buildingId: string; group
     // pin under its category's chip. It is never a cue: it names the building
     // the walker is already standing in, which turned a turn in the Emery
     // into "past Emery, Autograph Collection."
-    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group) && p.kind !== "building")
+    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group) && !isBuildingMarker(p))
     .sort((a, b) => a.name.localeCompare(b.name));
   return candidates[0] ?? null;
 }
