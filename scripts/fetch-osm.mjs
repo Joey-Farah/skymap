@@ -29,7 +29,14 @@
 import { writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildingCategory, dedupePois, groupFor, resolvePoiHost } from "../src/poi.ts";
+import {
+  buildingCategory,
+  buildingMarker,
+  dedupePois,
+  groupFor,
+  MARKED_BUILDING_CATEGORIES,
+  resolvePoiHost,
+} from "../src/poi.ts";
 import { parseOpeningHours } from "../src/opening-hours.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -837,7 +844,16 @@ async function main(osm) {
   // parking ramp, not the stadium bowl. Surfaced as a searchable landmark
   // attached to the nearest network building, same pattern as transit
   // stops above, instead of silently not existing with no explanation.
-  const LANDMARK_CATEGORIES = new Set(["venue", "government", "hotel"]);
+  //
+  // On-network buildings in these categories need a marker too, for a
+  // different reason. Pins are drawn only from the POI layer, and buildings
+  // otherwise render as a polygon plus a label that needs zoom 16.4 — so a
+  // hotel with no POI in it is invisible to someone tapping the Hotels chip.
+  // This block used to skip anything already on the network, which inverted
+  // the rule from the visitor's side: the better connected a hotel was, the
+  // less likely it was to be marked. All 14 hotel buildings are on-network,
+  // and a feedback report ("the Marriott City Center is not marked") is what
+  // surfaced it. The skip is now on having a pin, not on being reachable.
   const MAX_LANDMARK_METERS = 400;
   // Geographically nearest isn't the same as usefully routable: prefer
   // attaching to the main downtown component (components[0], the one
@@ -847,51 +863,54 @@ async function main(osm) {
   const largestComponent = components[0] ?? new Set();
   const preferredHosts = finalBuildings.filter((fb) => largestComponent.has(fb.id));
   const attachedLandmarkNames = new Set();
+  // A building whose name is already on the map as a POI needs nothing: the
+  // Sheraton is carried by a POI of its own name, so synthesizing a second
+  // one would just be a duplicate pin. Checked against names rather than ids
+  // because that is how dedupePois decides identity too.
+  const existingPoiNames = new Set(pois.map((p) => p.name));
   let landmarksAttached = 0;
+  let buildingsMarked = 0;
   for (const b of buildings) {
-    if (mainComponent.has(b.id)) continue; // already a real network building
-    if (!LANDMARK_CATEGORIES.has(b.category)) continue;
+    if (!MARKED_BUILDING_CATEGORIES.has(b.category)) continue;
+    if (existingPoiNames.has(b.name)) continue;
     // The same real building can exist as two OSM records (e.g. a way and
     // a relation both mapping it) — keep only the first one encountered.
     if (attachedLandmarkNames.has(b.name)) continue;
-    let host = null;
-    let best = MAX_LANDMARK_METERS;
-    for (const fb of preferredHosts.length ? preferredHosts : finalBuildings) {
-      const d = haversine(b.lat, b.lon, fb.lat, fb.lon);
-      if (d < best) {
-        best = d;
-        host = fb;
+    // On the network, a building hosts its own marker: the pin belongs on
+    // the building it names, at its own point. Only an unreachable building
+    // needs the nearest-host search below, which is what that search was
+    // written for.
+    const onNetwork = mainComponent.has(b.id);
+    let host = onNetwork ? finalBuildings.find((fb) => fb.id === b.id) : null;
+    if (!onNetwork) {
+      let best = MAX_LANDMARK_METERS;
+      for (const fb of preferredHosts.length ? preferredHosts : finalBuildings) {
+        const d = haversine(b.lat, b.lon, fb.lat, fb.lon);
+        if (d < best) {
+          best = d;
+          host = fb;
+        }
       }
     }
     if (!host) continue;
-    pois.push({
-      id: `landmark-${b.id}`,
-      name: b.name,
-      category: b.category,
-      kind: "landmark",
-      // Ask the classifier rather than asserting. Hardcoding "landmark"
-      // here is what put 13 hotels in the Landmarks filter: this block
-      // runs for every off-network building in LANDMARK_CATEGORIES, and
-      // that set includes "hotel".
-      group: groupFor("landmark", b.category),
-      lat: b.lat,
-      lon: b.lon,
-      buildingId: host.id,
-      // Not exterior: unlike transit stops, this must stay searchable and
-      // selectable — picking it should route to its nearest network
-      // building, since that's the closest you can actually get via
-      // skyway. exterior:true is filtered out of the From/To combo
-      // entirely, which would silently defeat the whole point here.
-    });
+    // The record itself is built in src/poi.ts, so this script and the
+    // mark-buildings replay emit byte-identical markers. Notably NOT
+    // exterior: unlike transit stops, these must stay searchable and
+    // selectable, and exterior:true is filtered out of the From/To combo
+    // entirely — which would silently defeat the whole point.
+    pois.push(buildingMarker(b, host.id, onNetwork));
     attachedLandmarkNames.add(b.name);
-    landmarksAttached++;
+    existingPoiNames.add(b.name);
+    if (onNetwork) buildingsMarked++;
+    else landmarksAttached++;
   }
 
   console.log(
     `POIs: ${pois.filter((p) => !p.exterior && !p.nearby).length} inside the network, ` +
       `${nearbyHosted} just outside it, ` +
       `${pois.filter((p) => p.exterior && p.kind === "transit").length} transit stops, ` +
-      `${landmarksAttached} nearby landmarks.`,
+      `${landmarksAttached} nearby landmarks, ` +
+      `${buildingsMarked} buildings marked.`,
   );
 
   // One business held twice by OSM (a node and a way, or two unmerged
