@@ -1,7 +1,21 @@
 # On-network hotel & civic buildings aren't marked on the map
 
-Planned 2026-08-20, from a feedback-form report. Not yet implemented — this doc is
-the handoff for the session that does it.
+Planned and implemented 2026-08-20, from a feedback-form report. Shipping in 1.8.
+
+**Outcome vs. plan.** 20 buildings, not the 19 planned: the count omitted `venue`,
+which was already in the category set, so Westminster Presbyterian qualified too.
+Two things the plan didn't foresee, both found by testing against the original report
+rather than against the implementation:
+
+- The marker duplicated its building in the From/To search — the Marriott came back
+  twice, once as itself and once as a "business" inside itself. `buildComboEntries`
+  now skips `kind: "building"`.
+- The record-building moved into `src/poi.ts` as `buildingMarker`, shared by the
+  extraction and the replay script, rather than being written twice.
+
+The double-label risk the plan flagged did not materialise: MapLibre's collision drops
+the building label in favour of the pin label, so the name draws exactly once.
+Verified in the browser at zoom 17.2.
 
 ## Context
 
