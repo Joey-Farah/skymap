@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-08-23T14:55:53.126Z"
+  "generated": "2026-08-23T14:57:21.214Z"
  },
  "buildings": [
   {
@@ -30263,7 +30263,8 @@
    "openingHours": "Mo-Tu 06:30-17:00; We-Su 06:30-19:00",
    "hoursSource": "https://spyhousecoffee.com/pages/cafes",
    "hoursCheckedOn": "2026-08-22",
-   "website": "https://spyhousecoffee.com/pages/cafes"
+   "website": "https://spyhousecoffee.com/pages/cafes",
+   "logo": "spyhousecoffee-com"
   },
   {
    "id": "poi-x-aurora-marriott-city-center",
@@ -30287,7 +30288,8 @@
    "openingHours": "Mo-Fr 07:00-17:00",
    "hoursSource": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/",
    "hoursCheckedOn": "2026-08-23",
-   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/"
+   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/",
+   "logo": "fourseasons-com"
   },
   {
    "id": "poi-x-mara-rbc-gateway",
@@ -30298,7 +30300,8 @@
    "lat": 44.981588,
    "lon": -93.26905,
    "buildingId": "rbc-gateway-733105254",
-   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/mara/"
+   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/mara/",
+   "logo": "fourseasons-com"
   },
   {
    "id": "poi-x-bep-eatery-fifth-street-towers",
@@ -30312,7 +30315,8 @@
    "openingHours": "Mo-Fr 11:00-14:00",
    "hoursSource": "https://bepeatery.com/",
    "hoursCheckedOn": "2026-08-23",
-   "website": "https://bepeatery.com/"
+   "website": "https://bepeatery.com/",
+   "logo": "bepeatery-com"
   },
   {
    "id": "poi-x-123-sushi-ids-center",

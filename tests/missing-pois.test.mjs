@@ -100,3 +100,15 @@ test("re-applying the overlay never recommends deleting curated data", () => {
   assert.doesNotMatch(out, /caught up with/);
   assert.doesNotMatch(out, /PROBLEM/);
 });
+
+test("every POI id in the dataset is unique", () => {
+  // Re-applying the overlay once inserted a second copy of all seven under
+  // the same ids: the retirable check skips the entry's own record, so it
+  // could not see what it had already written. Two records sharing an id is
+  // the kind of thing that looks fine in a count and breaks on selection.
+  const seen = new Map();
+  for (const p of data.pois) {
+    assert.ok(!seen.has(p.id), `${p.id} (${p.name}) appears twice`);
+    seen.set(p.id, p);
+  }
+});

@@ -12,8 +12,10 @@
  *
  *   node scripts/apply-poi-overlay.mjs [--write]
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { groupFor, nameKey } from "../src/poi.ts";
+import { logoKey } from "../src/logo.ts";
 import { parseOpeningHours } from "../src/opening-hours.ts";
 
 const DATA = "public/data/skymap-data.json";
@@ -23,6 +25,11 @@ const write = process.argv.includes("--write");
 const data = JSON.parse(readFileSync(DATA, "utf8"));
 const overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
 const buildingsById = new Map(data.buildings.map((b) => [b.id, b]));
+
+function logoFor(website) {
+  const key = logoKey(website);
+  return key && existsSync(join("public", "logos", `${key}.png`)) ? key : null;
+}
 
 let applied = 0;
 const problems = [];
@@ -44,6 +51,13 @@ for (const [id, entry] of Object.entries(overlay.added)) {
   // day is unrepresentable in the one-interval shape the app renders.
   if (entry.openingHours && !parseOpeningHours(entry.openingHours)) {
     problems.push(`${id} (${entry.name}): openingHours ${JSON.stringify(entry.openingHours)} does not parse`);
+    continue;
+  }
+  // Already applied. Skipping the entry's own record is what keeps the
+  // retirable check below honest, but it also means a second run would
+  // insert a second copy under the same id -- so answer that case first.
+  if (data.pois.some((p) => p.id === id)) {
+    applied++;
     continue;
   }
   const mine = nameKey(entry.name);
@@ -79,6 +93,12 @@ for (const [id, entry] of Object.entries(overlay.added)) {
       ? { openingHours: entry.openingHours, hoursSource: entry.sources[0], hoursCheckedOn: entry.checkedOn }
       : {}),
     ...(entry.website ? { website: entry.website } : {}),
+    // attachLogos runs inside the extractor, before this file is ever read,
+    // so a curated place would sit next to extracted ones with a monogram
+    // where they have a mark. The download belongs there, not here -- this
+    // only claims a logo already on disk, so applying the overlay stays an
+    // offline operation.
+    ...(logoFor(entry.website) ? { logo: logoFor(entry.website) } : {}),
   });
   applied++;
 }
