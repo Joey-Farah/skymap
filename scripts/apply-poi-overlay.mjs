@@ -13,7 +13,7 @@
  *   node scripts/apply-poi-overlay.mjs [--write]
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { groupFor } from "../src/poi.ts";
+import { groupFor, nameKey } from "../src/poi.ts";
 import { parseOpeningHours } from "../src/opening-hours.ts";
 
 const DATA = "public/data/skymap-data.json";
@@ -24,22 +24,13 @@ const data = JSON.parse(readFileSync(DATA, "utf8"));
 const overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
 const buildingsById = new Map(data.buildings.map((b) => [b.id, b]));
 
-// Names are compared the way a person would read them, not byte for byte:
-// OSM writes "Spyhouse Coffee Roasters" where the operator writes "Spyhouse
-// Coffee", and an accent or an ampersand shouldn't decide whether we ship a
-// duplicate pin.
-const norm = (s) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]/g, "");
-
 let applied = 0;
 const problems = [];
 const retirable = [];
+const absent = [];
 
 for (const [id, entry] of Object.entries(overlay.added)) {
+  if (id.startsWith("_")) continue;
   const building = buildingsById.get(entry.buildingId);
   if (!building) {
     // A renamed or re-extracted building changes id, and silently dropping
@@ -55,9 +46,16 @@ for (const [id, entry] of Object.entries(overlay.added)) {
     problems.push(`${id} (${entry.name}): openingHours ${JSON.stringify(entry.openingHours)} does not parse`);
     continue;
   }
-  const mine = norm(entry.name);
+  const mine = nameKey(entry.name);
   const already = data.pois.find(
-    (p) => p.buildingId === entry.buildingId && (norm(p.name) === mine || norm(p.name).includes(mine)),
+        (p) =>
+      p.id !== id &&
+      p.buildingId === entry.buildingId &&
+      // Prefix, not substring: OSM writes "Spyhouse Coffee Roasters" where
+      // the operator writes "Spyhouse Coffee", but an unanchored match on a
+      // short name like "Mara" would let any future Amara or Tamarack in the
+      // same building suppress it.
+      (nameKey(p.name) === mine || nameKey(p.name).startsWith(mine)),
   );
   if (already) {
     retirable.push(`${id} (${entry.name}): OSM now carries this as ${already.id} — overlay entry is redundant`);
@@ -75,7 +73,11 @@ for (const [id, entry] of Object.entries(overlay.added)) {
     lat: building.lat,
     lon: building.lon,
     buildingId: entry.buildingId,
-    ...(entry.openingHours ? { openingHours: entry.openingHours } : {}),
+    // Same provenance the hours overlay attaches, so a curated hour can be
+    // traced back to what it was read from whichever overlay put it there.
+    ...(entry.openingHours
+      ? { openingHours: entry.openingHours, hoursSource: entry.sources[0], hoursCheckedOn: entry.checkedOn }
+      : {}),
     ...(entry.website ? { website: entry.website } : {}),
   });
   applied++;
@@ -88,9 +90,11 @@ for (const [id, entry] of Object.entries(overlay.removed ?? {})) {
   if (id.startsWith("_")) continue;
   const i = data.pois.findIndex((p) => p.id === id);
   if (i === -1) {
-    // Not a problem: OSM catching up and dropping it itself is the outcome
-    // we want. Reported so the entry can be retired.
-    retirable.push(`${id} (${entry.name}): already absent from the dataset — removal entry is redundant`);
+    // Absent either because OSM dropped it too -- the outcome we want -- or
+    // because this script already ran against this file. Only the first is
+    // grounds for retiring the entry, and the two are indistinguishable
+    // here, so this reports without recommending anything.
+    absent.push(`${id} (${entry.name}): not in the dataset (already removed, or OSM dropped it too)`);
     continue;
   }
   data.pois.splice(i, 1);
@@ -102,7 +106,11 @@ if (retirable.length) {
   console.log(`${retirable.length} overlay ${retirable.length === 1 ? "entry" : "entries"} OSM has caught up with:`);
   for (const r of retirable) console.log(`  - ${r}`);
 }
-console.log(`Curated POIs applied: ${applied} of ${Object.keys(overlay.added).length}.`);
+console.log(`Curated POIs applied: ${applied} of ${Object.keys(overlay.added).filter((k) => !k.startsWith("_")).length}.`);
+if (absent.length) {
+  console.log(`${absent.length} removal ${absent.length === 1 ? "entry" : "entries"} had nothing to remove:`);
+  for (const a of absent) console.log(`  - ${a}`);
+}
 console.log(`Closed POIs removed: ${removed}.`);
 
 if (problems.length) {

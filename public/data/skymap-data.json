@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-08-23T11:53:49.635Z"
+  "generated": "2026-08-23T14:41:12.907Z"
  },
  "buildings": [
   {
@@ -19975,7 +19975,8 @@
    "lon": -93.266531,
    "buildingId": "hennepin-county-government-center-27518018",
    "openingHours": "Mo-Fr 08:00-16:30",
-   "website": "https://mncourts.gov/find-courts/hennepin"
+   "website": "https://mncourts.gov/find-courts/hennepin",
+   "logo": "mncourts-gov"
   },
   {
    "id": "poi-367067933",
@@ -23516,7 +23517,7 @@
    "name": "Elevate Food Hall",
    "category": "food_court",
    "kind": "amenity",
-   "group": "other",
+   "group": "food",
    "lat": 44.981341,
    "lon": -93.265898,
    "buildingId": "100-washington-square-44164776",
@@ -26912,7 +26913,7 @@
    "name": "Target Center",
    "category": "stadium",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.979588,
    "lon": -93.276004,
    "buildingId": "target-center-23125943"
@@ -26922,7 +26923,7 @@
    "name": "City Center",
    "category": "mall",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.977758,
    "lon": -93.272916,
    "buildingId": "city-center-27346720"
@@ -26966,7 +26967,7 @@
    "name": "Ameriprise Financial Headquarters",
    "category": "company",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.972469,
    "lon": -93.269549,
    "buildingId": "ameriprise-financial-headquarters-28490454"
@@ -27039,7 +27040,7 @@
    "name": "Minneapolis Convention Center",
    "category": "conference_centre",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.969507,
    "lon": -93.274095,
    "buildingId": "minneapolis-convention-center-42837791"
@@ -27049,7 +27050,7 @@
    "name": "Orchestra Hall",
    "category": "arts_centre",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.972209,
    "lon": -93.274946,
    "buildingId": "orchestra-hall-43607930"
@@ -27074,7 +27075,8 @@
    "lon": -93.276467,
    "website": "https://www.stdavidsmn.org/about/locations/minneapolis#nicollet-center",
    "buildingId": "westminster-presbyterian-63821145",
-   "nearby": true
+   "nearby": true,
+   "logo": "stdavidsmn-org"
   },
   {
    "id": "poi-w45680519",
@@ -27277,7 +27279,7 @@
    "name": "Deja Vu",
    "category": "stripclub",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.984702,
    "lon": -93.273333,
    "buildingId": "deja-vu-89080678"
@@ -27298,7 +27300,7 @@
    "name": "Historic Wesley Center",
    "category": "community_centre",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.96953,
    "lon": -93.276129,
    "buildingId": "historic-wesley-center-92810581"
@@ -27308,7 +27310,7 @@
    "name": "Minneapolis Event Centers",
    "category": "conference_centre",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.984553,
    "lon": -93.25439,
    "buildingId": "minneapolis-event-centers-92905847"
@@ -27331,7 +27333,7 @@
    "name": "Hirshfield's Design Resource Showroom",
    "category": "interior_decoration",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.978749,
    "lon": -93.288539,
    "buildingId": "hirshfields-design-resource-showroom-101142650"
@@ -27450,7 +27452,7 @@
    "name": "Minneapolis Club",
    "category": "social_centre",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.974867,
    "lon": -93.269585,
    "buildingId": "minneapolis-club-156909955"
@@ -27528,7 +27530,7 @@
    "name": "Jobbers Warehouse Supply Inc",
    "category": "car_parts",
    "kind": "building",
-   "group": "landmark",
+   "group": "other",
    "lat": 44.981065,
    "lon": -93.289993,
    "buildingId": "jobbers-warehouse-supply-inc-240869855"
@@ -27593,16 +27595,6 @@
    "nearby": true
   },
   {
-   "id": "building-15-building-461227729",
-   "name": "15 Building",
-   "category": "yes",
-   "kind": "building",
-   "group": "landmark",
-   "lat": 44.978978,
-   "lon": -93.271836,
-   "buildingId": "15-building-461227729"
-  },
-  {
    "id": "poi-w723284482",
    "name": "The Office Pub & Grill",
    "category": "pub",
@@ -27665,7 +27657,7 @@
    "name": "Graze Food Hall by Travail",
    "category": "food_court",
    "kind": "building",
-   "group": "landmark",
+   "group": "food",
    "lat": 44.985057,
    "lon": -93.277126,
    "buildingId": "graze-food-hall-by-travail-1223123290"
@@ -30089,6 +30081,8 @@
    "lon": -93.26691,
    "buildingId": "emery-autograph-collection-62006964",
    "openingHours": "Mo-Tu 06:30-17:00; We-Su 06:30-19:00",
+   "hoursSource": "https://spyhousecoffee.com/pages/cafes",
+   "hoursCheckedOn": "2026-08-22",
    "website": "https://spyhousecoffee.com/pages/cafes"
   },
   {
@@ -30111,6 +30105,8 @@
    "lon": -93.26905,
    "buildingId": "rbc-gateway-733105254",
    "openingHours": "Mo-Fr 07:00-17:00",
+   "hoursSource": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/",
+   "hoursCheckedOn": "2026-08-23",
    "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/"
   },
   {
@@ -30134,6 +30130,8 @@
    "lon": -93.268411,
    "buildingId": "fifth-street-towers-29080597",
    "openingHours": "Mo-Fr 11:00-14:00",
+   "hoursSource": "https://bepeatery.com/",
+   "hoursCheckedOn": "2026-08-23",
    "website": "https://bepeatery.com/"
   },
   {
@@ -30155,7 +30153,9 @@
    "lat": 44.975516,
    "lon": -93.271044,
    "buildingId": "733-building-126116972",
-   "openingHours": "Mo-Th 10:30-14:45; Fr 10:30-14:30"
+   "openingHours": "Mo-Th 10:30-14:45; Fr 10:30-14:30",
+   "hoursSource": "https://mspmag.com/eat-and-drink/foodie/hidden-gems-sushi-takatsu/",
+   "hoursCheckedOn": "2026-08-23"
   }
  ],
  "indoorLinks": [

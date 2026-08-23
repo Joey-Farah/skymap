@@ -309,6 +309,41 @@ test("a building that earns its own marker does not also become a POI", () => {
   }
 });
 
+test("a ramp is not a venue", () => {
+  // amenity=parking on a building way is the building's own category, which
+  // buildingCategory already carries. Read as a venue it would put a POI
+  // named after the ramp inside the ramp.
+  assert.equal(
+    venuePoiFromBuilding({ building: "yes", name: "Leamington Ramp", amenity: "parking" }, "w3", 44.9, -93.2, "office"),
+    null,
+  );
+});
+
+test("a bare yes is the absence of a category, not one", () => {
+  // office=yes says only "an office is here", which is what a downtown
+  // building is. It shipped the 15 Building as a POI categorised "yes".
+  assert.equal(venuePoiFromBuilding({ building: "yes", name: "15 Building", office: "yes" }, "w4", 44.9, -93.2, "office"), null);
+  // A real office tag still counts.
+  assert.equal(
+    venuePoiFromBuilding({ building: "yes", name: "United Way", office: "ngo" }, "w5", 44.9, -93.2, "office").category,
+    "ngo",
+  );
+});
+
+test("amenity wins when a way carries more than one venue tag", () => {
+  // Which family wins is load-bearing -- it decides both kind and category
+  // -- and was previously undefended. VENUE_TAG_FAMILIES fixes the order.
+  const poi = venuePoiFromBuilding(
+    { building: "yes", name: "Kopp Hall", amenity: "cafe", shop: "books" },
+    "w6",
+    44.9,
+    -93.2,
+    "office",
+  );
+  assert.equal(poi.kind, "amenity");
+  assert.equal(poi.category, "cafe");
+});
+
 test("a building with no business tags yields nothing", () => {
   assert.equal(venuePoiFromBuilding({ building: "yes", name: "706 Building" }, "w2", 44.9, -93.2, "office"), null);
 });
@@ -341,7 +376,9 @@ test("one place is one place however OSM punctuated it", () => {
     25,
   );
   assert.equal(kept.length, 1);
-  assert.equal(kept[0].name, "Jack Links");
+  // Deliberately not asserting *which* spelling survives: the order is the
+  // Overpass response's, so pinning it would cement an arbitrary choice as
+  // intended behaviour. One record is the requirement.
 });
 
 test("genuinely different names still both survive", () => {

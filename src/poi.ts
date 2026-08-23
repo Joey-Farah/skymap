@@ -22,16 +22,30 @@ const COFFEE = /^(cafe|coffee)$/;
 // Convenience stores read as "food" to someone deciding where to grab a
 // snack — the same instinct that reaches for a restaurant, not a filter
 // most people would think to check under "shopping."
-const FOOD = /^(restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli|convenience)$/;
+const FOOD = /^(restaurant|fast_food|bar|pub|ice_cream|bakery|confectionery|deli|convenience|food_court)$/;
 const LANDMARK_AMENITY = /^(library|townhall|courthouse|place_of_worship|theatre|cinema)$/;
 // Somewhere to sleep is its own errand. Filed under Landmarks a hotel is
 // technically findable and practically invisible — and a visitor with a
 // reservation is exactly the person a skyway map is most useful to.
 const LODGING = /^(hotel|hostel|motel|guest_house)$/;
 const TRANSIT = /^(bus_stop|station|tram_stop|stop)$/;
+// Every value buildingCategory can return. A record carrying one of these
+// is describing a building, so Landmarks is the right shelf for it; a
+// record carrying anything else is describing a business that happens to
+// occupy the whole building.
+const BUILDING_CATEGORIES = new Set([
+  "parking",
+  "hotel",
+  "retailHub",
+  "government",
+  "venue",
+  "hospital",
+  "residential",
+  "office",
+]);
 // Parks, plazas and historic markers are things you navigate *to* and
 // point at, which is what the Landmarks group is for.
-const LANDMARK_PLACE = /^(park|garden|memorial|monument|sign|ruins|archaeological_site)$/;
+const LANDMARK_PLACE = /^(park|garden|memorial|monument|sign|ruins|archaeological_site|artwork|attraction|museum|gallery|viewpoint)$/;
 
 export function groupFor(kind: string, category: string): PoiGroup {
   if (category === "elevator") return "elevator";
@@ -51,19 +65,24 @@ export function groupFor(kind: string, category: string): PoiGroup {
   // with a navy pin while Central Lutheran and Fire Station 6, off-network,
   // stayed purple Landmarks. Same sort of place, opposite treatment.
   // Lodging is unaffected: LODGING is tested above and still wins.
-  // Food and coffee are tested before the landmark rules for the same
-  // reason lodging is: a building can *be* a restaurant. Murray's and
-  // Cowboy Jack's are single-tenant buildings whose own way carries
-  // amenity=restaurant, so they reach here as kind "building" -- and
-  // answering "landmark" would file a steakhouse under Landmarks and hide
-  // it from the Food chip, which is the filter someone hunting dinner
-  // actually taps. No building *category* is ever a food category, so
-  // existing markers are unaffected.
-  if (COFFEE.test(category)) return "coffee";
-  if (FOOD.test(category)) return "food";
-  if (kind === "landmark" || kind === "building") return "landmark";
+  // The landmark rule fires only for categories a *building* can hold.
+  //
+  // It used to fire on kind alone, which was safe while a building marker
+  // could only carry a building category. It can't any more: a single-tenant
+  // building now carries its venue's category, so kind "building" arrives
+  // with "restaurant", "mall" or "stripclub". Answering "landmark" for those
+  // filed a steakhouse and a food hall under Landmarks and hid them from the
+  // Food chip -- the filter someone hunting dinner actually taps -- while a
+  // strip club and a car-parts warehouse became landmarks.
+  //
+  // So ask what the category is, not how the record was made. A building
+  // category still means landmark; anything else falls through to the same
+  // rules that classify a POI of that category found any other way.
+  if ((kind === "landmark" || kind === "building") && BUILDING_CATEGORIES.has(category)) return "landmark";
   if (kind === "historic" || LANDMARK_PLACE.test(category)) return "landmark";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
+  if (COFFEE.test(category)) return "coffee";
+  if (FOOD.test(category)) return "food";
   // Everything else that isn't food/coffee/wayfinding — clothing and
   // jewelry stores alongside banks, dentists, chiropractors: whether a
   // place is a "shop" or a "service" isn't a distinction anyone filtering
@@ -162,6 +181,22 @@ const GENERICALLY_NAMED = new Set(["elevator", "toilets"]);
  * the closest genuine same-name pair in the extraction. */
 const SAME_BUILDING_MAX_METERS = 60;
 
+/** A place's name reduced to what decides identity: letters and digits.
+ *
+ * Exported because the POI overlay has to answer the same question -- has
+ * OSM caught up with this entry -- and two normalisers that disagree would
+ * reopen the bug this one closes. It stripped punctuation but not accents,
+ * so "Socca Cafe" and "Socca Cafe" (accented) collapsed in one place and
+ * not the other.
+ */
+export function nameKey(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
 /**
  * Collapse a place that OSM holds twice — a node and a way for one shop,
  * or two nodes nobody merged — while leaving chain branches alone.
@@ -190,7 +225,7 @@ export function dedupePois<T extends { name: string; category: string; lat: numb
     // punctuation are the whole difference; the rest of the name still has
     // to match exactly, so "Mother Dough" and "Mother Dough Bakery" stay
     // two records, as they should.
-    const key = p.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const key = nameKey(p.name);
     if (GENERICALLY_NAMED.has(p.category)) {
       kept.push(p);
       continue;
@@ -334,7 +369,11 @@ export function venuePoiFromBuilding(
   // A ramp tagged amenity=parking is not a venue; it is the building's own
   // category, already carried by buildingCategory.
   if (tags.amenity === "parking") return null;
-  const kind = VENUE_TAG_FAMILIES.find((f) => tags[f]);
+  // `office=yes` says only "an office is here", which is what a downtown
+  // building is. It reached the dataset as a POI categorised "yes" -- the
+  // 15 Building filed under its own address as a category. A bare "yes" is
+  // the absence of a category, not one.
+  const kind = VENUE_TAG_FAMILIES.find((f) => tags[f] && tags[f] !== "yes");
   if (!kind || !tags.name) return null;
   const value = tags[kind];
   return {

@@ -454,7 +454,10 @@ async function main(osm) {
         areaPois.push({ ref: `w${el.id}`, lat: el.center.lat, lon: el.center.lon, tags: el.tags });
       }
     } else if (el.type === "relation") {
-      if (el.tags?.building && el.tags?.name) relationsRaw.push(el);
+      // Same rule as ways: `out center` re-emits a memberless copy, and
+      // pushing that into relationsRaw would stitch an empty ring. It comes
+      // to nothing today only because stitchOuterRing returns null for it.
+      if (el.members && el.tags?.building && el.tags?.name) relationsRaw.push(el);
       else if (el.center && el.tags?.name && !el.tags.building) {
         areaPois.push({ ref: `r${el.id}`, lat: el.center.lat, lon: el.center.lon, tags: el.tags });
       }
@@ -857,8 +860,17 @@ async function main(osm) {
   // Venues mapped as their own area. Same derivation as the building case --
   // the category argument is what gates it, and an area POI has no building
   // category to be marked under, so "" lets every one through.
+  const markedBuildingNames = new Set(
+    buildings.filter((b) => MARKED_BUILDING_CATEGORIES.has(b.category)).map((b) => b.name),
+  );
   let venuesFromAreas = 0;
   for (const a of areaPois) {
+    // A marked building's marker is suppressed when a POI of its own name
+    // already exists (see the marking loop below). An area drawn over a
+    // hotel and named after it would trip that and cost the building its
+    // pin -- the failure the previous release exists to prevent. Nothing in
+    // OSM does this today; nothing stopped it either.
+    if (markedBuildingNames.has(a.tags.name)) continue;
     const venue = venuePoiFromBuilding(a.tags, a.ref, a.lat, a.lon, "");
     if (!venue) continue;
     const host = resolvePoiHost(a.lat, a.lon, finalBuildings, MAX_NEARBY_POI_METERS);

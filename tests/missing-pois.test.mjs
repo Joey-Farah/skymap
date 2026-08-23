@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { buildComboEntries, searchEntries } from "../src/combo.ts";
 
 // These test the reports, not the implementation. A reader said a Spyhouse
@@ -86,4 +87,16 @@ test("every curated place carries its sources", () => {
     assert.ok(entry.sources?.length >= 2, `${id} has fewer than two sources`);
     assert.match(entry.checkedOn, /^\d{4}-\d{2}-\d{2}$/, `${id} has no check date`);
   }
+});
+
+test("re-applying the overlay never recommends deleting curated data", () => {
+  // The overlay reports an entry as retirable when OSM has caught up with
+  // it, and its README says to delete retirable entries. The check matched
+  // the script's own previously-inserted POI, so a second run declared all
+  // seven redundant — and following that instruction would have deleted the
+  // only record of every place OSM doesn't have.
+  const out = execFileSync("node", ["scripts/apply-poi-overlay.mjs"], { encoding: "utf8" });
+  assert.match(out, /Curated POIs applied: 7 of 7\./);
+  assert.doesNotMatch(out, /caught up with/);
+  assert.doesNotMatch(out, /PROBLEM/);
 });
