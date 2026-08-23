@@ -55,6 +55,17 @@ const MIRRORS = process.env.OVERPASS_URL
       "https://overpass.private.coffee/api/interpreter",
     ];
 
+// The tag families a place can be described by. Held as constants because
+// the same families have to be asked for twice -- once as nodes, once as
+// areas -- and the two lists drifting apart is precisely the bug this
+// pipeline already had: the node query knew about music schools and
+// churches while the area query didn't, so a courthouse someone had drawn
+// as an outline stayed invisible for the same reason Murray's did.
+const AMENITY = "cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|stripclub|car_rental|bicycle_rental|bureau_de_change|childcare|kindergarten|school|college|university|music_school|driving_school|marketplace|animal_boarding|studio|prison";
+const LEISURE = "fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game|park|garden";
+const TOURISM = "attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house|information";
+const HISTORIC = "memorial|monument|sign|ruins|archaeological_site|building";
+
 const QUERY = `
 [out:json][timeout:90];
 (
@@ -76,15 +87,15 @@ relation["building"]["name"](${BBOX});
 out body;
 >;
 out skel qt;
-node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|stripclub|car_rental|bicycle_rental|bureau_de_change|childcare|kindergarten|school|college|university|music_school|driving_school|marketplace|animal_boarding|studio|prison)$"]["name"](${BBOX});
+node["amenity"~"^(${AMENITY})$"]["name"](${BBOX});
 out body;
 node["shop"]["name"](${BBOX});
 out body;
-node["leisure"~"^(fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game|park|garden)$"]["name"](${BBOX});
+node["leisure"~"^(${LEISURE})$"]["name"](${BBOX});
 out body;
 node["amenity"="toilets"](${BBOX});
 out body;
-node["tourism"~"^(attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house|information)$"]["name"](${BBOX});
+node["tourism"~"^(${TOURISM})$"]["name"](${BBOX});
 out body;
 // Named offices and healthcare practices: a skyway walker looking for "the
 // Hyatt" is doing the same thing as one looking for a law firm or a clinic
@@ -99,7 +110,7 @@ out body;
 // Grain Belt sign is a Minneapolis landmark people navigate by.
 node["craft"]["name"](${BBOX});
 out body;
-node["historic"~"^(memorial|monument|sign|ruins|archaeological_site|building)$"]["name"](${BBOX});
+node["historic"~"^(${HISTORIC})$"]["name"](${BBOX});
 out body;
 node["highway"="bus_stop"]["name"](${BBOX});
 out body;
@@ -116,15 +127,22 @@ out body;
 // carry a building tag are handled by venuePoiFromBuilding instead, off the
 // footprint we already fetch.
 (
-  way["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|stripclub|marketplace|studio)$"]["name"](${BBOX});
+  way["amenity"~"^(${AMENITY})$"]["name"](${BBOX});
   way["shop"]["name"](${BBOX});
-  way["leisure"~"^(fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game)$"]["name"](${BBOX});
-  way["tourism"~"^(attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house|information)$"]["name"](${BBOX});
+  way["leisure"~"^(${LEISURE})$"]["name"](${BBOX});
+  way["tourism"~"^(${TOURISM})$"]["name"](${BBOX});
+  way["historic"~"^(${HISTORIC})$"]["name"](${BBOX});
   way["office"]["name"](${BBOX});
   way["healthcare"]["name"](${BBOX});
-  relation["amenity"~"^(cafe|restaurant|fast_food|bar|pub|food_court|theatre|arts_centre|events_venue|conference_centre|marketplace)$"]["name"](${BBOX});
+  way["craft"]["name"](${BBOX});
+  relation["amenity"~"^(${AMENITY})$"]["name"](${BBOX});
   relation["shop"]["name"](${BBOX});
-  relation["tourism"~"^(attraction|museum|artwork|gallery|hotel|information)$"]["name"](${BBOX});
+  relation["leisure"~"^(${LEISURE})$"]["name"](${BBOX});
+  relation["tourism"~"^(${TOURISM})$"]["name"](${BBOX});
+  relation["historic"~"^(${HISTORIC})$"]["name"](${BBOX});
+  relation["office"]["name"](${BBOX});
+  relation["healthcare"]["name"](${BBOX});
+  relation["craft"]["name"](${BBOX});
 );
 out center tags;
 `;

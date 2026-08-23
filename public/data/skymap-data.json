@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-08-23T14:41:12.907Z"
+  "generated": "2026-08-23T14:55:53.126Z"
  },
  "buildings": [
   {
@@ -26667,6 +26667,19 @@
    "level": "0;1;2;3;4;5"
   },
   {
+   "id": "poi-w27346775",
+   "name": "Elliot Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.969774,
+   "lon": -93.259706,
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/elliot_park/",
+   "buildingId": "miller-hall-122795138",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
    "id": "poi-w41763934",
    "name": "The Depot Pavilion",
    "category": "events_venue",
@@ -26675,6 +26688,38 @@
    "lat": 44.979795,
    "lon": -93.262723,
    "buildingId": "cortland-mill-district-62006959",
+   "nearby": true
+  },
+  {
+   "id": "poi-w93481561",
+   "name": "University of St. Thomas",
+   "category": "university",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.974091,
+   "lon": -93.277606,
+   "buildingId": "schulze-hall-266689885"
+  },
+  {
+   "id": "poi-w133660900",
+   "name": "Peavey Plaza",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.972344,
+   "lon": -93.275629,
+   "buildingId": "orchestra-hall-43607930",
+   "nearby": true
+  },
+  {
+   "id": "poi-w156909890",
+   "name": "Cancer Survivors Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.981041,
+   "lon": -93.268111,
+   "buildingId": "marquette-plaza-45500036",
    "nearby": true
   },
   {
@@ -26687,6 +26732,17 @@
    "lon": -93.271484,
    "website": "http://www.marquettehotel.com/",
    "buildingId": "ids-center-1385236413"
+  },
+  {
+   "id": "poi-w164953151",
+   "name": "17th Street Overlook",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.966428,
+   "lon": -93.274694,
+   "buildingId": "glendale-111367341",
+   "nearby": true
   },
   {
    "id": "poi-w242506836",
@@ -26710,6 +26766,28 @@
    "website": "https://www.lifetime.life/life-time-locations/mn-minneapolis-target-center.html",
    "buildingId": "target-center-23125943",
    "logo": "lifetime-life"
+  },
+  {
+   "id": "poi-w350497090",
+   "name": "Gethsemane Garden",
+   "category": "garden",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.971867,
+   "lon": -93.268741,
+   "buildingId": "ameriprise-financial-headquarters-28490454",
+   "nearby": true
+  },
+  {
+   "id": "poi-w461216642",
+   "name": "On the Plaza",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.970427,
+   "lon": -93.274966,
+   "buildingId": "westminster-presbyterian-63821145",
+   "nearby": true
   },
   {
    "id": "poi-w461227726",
@@ -26846,6 +26924,17 @@
    "nearby": true
   },
   {
+   "id": "poi-w899706723",
+   "name": "Government Center Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.975261,
+   "lon": -93.267163,
+   "buildingId": "hennepin-county-government-center-27518018",
+   "nearby": true
+  },
+  {
    "id": "poi-w1264664309",
    "name": "Farmers Market Annex",
    "category": "marketplace",
@@ -26898,6 +26987,33 @@
    "logo": "boostmobile-com"
   },
   {
+   "id": "poi-w1536535760",
+   "name": "Historic Main Street Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.985294,
+   "lon": -93.256653,
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/historic_main_street_park/",
+   "buildingId": "st-anthony-main-39707475",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
+   "id": "poi-r6563703",
+   "name": "The Commons",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.97578,
+   "lon": -93.261884,
+   "openingHours": "06:00-24:00",
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/the-commons/",
+   "buildingId": "juvenile-justice-center-101549026",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
    "id": "poi-r12234802",
    "name": "Target Field Station Amphitheatre",
    "category": "theatre",
@@ -26907,6 +27023,70 @@
    "lon": -93.278621,
    "buildingId": "ford-center-29060527",
    "nearby": true
+  },
+  {
+   "id": "poi-r18141932",
+   "name": "Central Mississippi Riverfront Regional Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.985127,
+   "lon": -93.259555,
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/central_mississippi_riverfront_regional_park/",
+   "buildingId": "nicollet-island-inn-80313504",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
+   "id": "poi-r20676683",
+   "name": "Hennepin County Medical Center",
+   "category": "hospital",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.972098,
+   "lon": -93.261425,
+   "openingHours": "24/7",
+   "website": "https://www.hcmc.org/",
+   "buildingId": "orange-building-143056848",
+   "nearby": true,
+   "logo": "hcmc-org"
+  },
+  {
+   "id": "poi-r20809847",
+   "name": "North Central University",
+   "category": "university",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.969202,
+   "lon": -93.261097,
+   "website": "https://www.northcentral.edu/",
+   "buildingId": "miller-hall-122795138",
+   "nearby": true,
+   "logo": "northcentral-edu"
+  },
+  {
+   "id": "poi-r21154041",
+   "name": "North Loop Green",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.983631,
+   "lon": -93.275388,
+   "openingHours": "07:00-22:00",
+   "buildingId": "t3-723284484",
+   "nearby": true
+  },
+  {
+   "id": "poi-r21226354",
+   "name": "Minneapolis College",
+   "category": "college",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.972759,
+   "lon": -93.283284,
+   "website": "https://www.minneapolis.edu/",
+   "buildingId": "technical-building-89061902",
+   "logo": "minneapolis-edu"
   },
   {
    "id": "building-target-center-23125943",
