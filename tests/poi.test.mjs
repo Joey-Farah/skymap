@@ -312,3 +312,17 @@ test("a building that earns its own marker does not also become a POI", () => {
 test("a building with no business tags yields nothing", () => {
   assert.equal(venuePoiFromBuilding({ building: "yes", name: "706 Building" }, "w2", 44.9, -93.2, "office"), null);
 });
+
+test("a building that is a restaurant is filed under food, not landmarks", () => {
+  // Murray's is a single-tenant building: its own OSM way carries
+  // amenity=restaurant, so it reaches groupFor as kind "building". The
+  // landmark rule used to answer first and put a steakhouse in Landmarks,
+  // where nobody hunting dinner would tap. Lodging already won over that
+  // rule for the same reason; food and coffee now do too.
+  assert.equal(groupFor("building", "restaurant"), "food");
+  assert.equal(groupFor("building", "cafe"), "coffee");
+  // The categories a building can hold on its own are untouched.
+  assert.equal(groupFor("building", "venue"), "landmark");
+  assert.equal(groupFor("building", "government"), "landmark");
+  assert.equal(groupFor("building", "hotel"), "hotel");
+});

@@ -51,11 +51,19 @@ export function groupFor(kind: string, category: string): PoiGroup {
   // with a navy pin while Central Lutheran and Fire Station 6, off-network,
   // stayed purple Landmarks. Same sort of place, opposite treatment.
   // Lodging is unaffected: LODGING is tested above and still wins.
+  // Food and coffee are tested before the landmark rules for the same
+  // reason lodging is: a building can *be* a restaurant. Murray's and
+  // Cowboy Jack's are single-tenant buildings whose own way carries
+  // amenity=restaurant, so they reach here as kind "building" -- and
+  // answering "landmark" would file a steakhouse under Landmarks and hide
+  // it from the Food chip, which is the filter someone hunting dinner
+  // actually taps. No building *category* is ever a food category, so
+  // existing markers are unaffected.
+  if (COFFEE.test(category)) return "coffee";
+  if (FOOD.test(category)) return "food";
   if (kind === "landmark" || kind === "building") return "landmark";
   if (kind === "historic" || LANDMARK_PLACE.test(category)) return "landmark";
   if (kind === "tourism" || LANDMARK_AMENITY.test(category)) return "landmark";
-  if (COFFEE.test(category)) return "coffee";
-  if (FOOD.test(category)) return "food";
   // Everything else that isn't food/coffee/wayfinding — clothing and
   // jewelry stores alongside banks, dentists, chiropractors: whether a
   // place is a "shop" or a "service" isn't a distinction anyone filtering
