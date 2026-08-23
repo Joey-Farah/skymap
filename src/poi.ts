@@ -279,6 +279,63 @@ export function isBuildingMarker(p: { kind?: string }): boolean {
  * stays the one place that decides. Hardcoding it here is what once filed 13
  * hotels under Landmarks.
  */
+/** The tag families a POI can come from, in the order the extractor resolves
+ * them. Kept beside venuePoiFromBuilding because both halves — which tag
+ * wins, and what `kind` that implies — have to agree. */
+const VENUE_TAG_FAMILIES = ["amenity", "shop", "tourism", "office", "healthcare", "craft", "leisure"] as const;
+
+/** A venue POI before it has been attached to a host building. `buildingId`
+ * is the caller's job: it comes from resolvePoiHost, which needs the final
+ * building list. `brandWikidata` is transient — fetch-osm resolves it to a
+ * website and deletes it before writing. */
+type VenuePoi = Omit<Poi, "buildingId"> & { brandWikidata?: string };
+
+/** The POI a building's *own* tags describe, when the building is the business.
+ *
+ * OSM maps a place either as a node inside a footprint or as tags on the
+ * footprint itself, and which one you get is an accident of who mapped it.
+ * The extractor only ever read nodes, so every way carrying both `building`
+ * and `amenity` reached the dataset as a building with nothing inside it:
+ * Murray's, Cowboy Jack's, Monte Carlo, Gluek's and 23 more were on the map
+ * as unlabelled polygons, absent from search and from the Food chip. This is
+ * the other half of that read.
+ *
+ * Returns null for buildings in MARKED_BUILDING_CATEGORIES. Those already
+ * stand for themselves via buildingMarker, and fetch-osm suppresses that
+ * marker when a POI of the same name exists — so emitting one here would
+ * quietly undo the marking that 1.8 added, swapping a building card for a
+ * POI card on 20 buildings. Marked buildings keep the marker; only the
+ * unmarked ones need a POI of their own.
+ */
+export function venuePoiFromBuilding(
+  tags: Record<string, string>,
+  wayId: string,
+  lat: number,
+  lon: number,
+  category: string,
+): VenuePoi | null {
+  if (MARKED_BUILDING_CATEGORIES.has(category)) return null;
+  // A ramp tagged amenity=parking is not a venue; it is the building's own
+  // category, already carried by buildingCategory.
+  if (tags.amenity === "parking") return null;
+  const kind = VENUE_TAG_FAMILIES.find((f) => tags[f]);
+  if (!kind || !tags.name) return null;
+  const value = tags[kind];
+  return {
+    id: `poi-${wayId}`,
+    name: tags.name,
+    category: value,
+    kind,
+    group: groupFor(kind, value),
+    lat: +lat.toFixed(6),
+    lon: +lon.toFixed(6),
+    ...(tags.level ? { level: tags.level } : {}),
+    ...(tags.opening_hours ? { openingHours: tags.opening_hours } : {}),
+    ...(tags.website || tags["contact:website"] ? { website: tags.website ?? tags["contact:website"] } : {}),
+    ...(tags["brand:wikidata"] ? { brandWikidata: tags["brand:wikidata"] } : {}),
+  };
+}
+
 export function buildingMarker(
   building: { id: string; name: string; category: string; lat: number; lon: number },
   hostId: string,

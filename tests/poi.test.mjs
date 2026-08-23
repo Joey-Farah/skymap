@@ -1,6 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildingMarker, dedupePois, groupFor, landmarkNear, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
+import {
+  buildingMarker,
+  dedupePois,
+  groupFor,
+  landmarkNear,
+  resolvePoiHost,
+  safeWebsiteUrl,
+  venuePoiFromBuilding,
+} from "../src/poi.ts";
 
 test("a hotel is a hotel however it got into the dataset", () => {
   // Off-network landmark buildings are emitted with kind "landmark", and
@@ -262,4 +270,45 @@ test("the same name inside one building is one place, however far apart the pins
   const lifts = dedupePois([at("Elevator", 44.98, -93.27, "b", "elevator"),
                             at("Elevator", 44.98, -93.27, "b", "elevator")], 25);
   assert.equal(lifts.length, 2);
+});
+
+test("a building that is also a business yields a POI of its own", () => {
+  // Murray's, Cowboy Jack's and 25 others are mapped in OSM as one way
+  // carrying both `building` and `amenity` — the restaurant IS the
+  // building. The extractor read those ways only as buildings, so the
+  // businesses never reached the POI layer and the buildings showed up
+  // with nothing inside them. Zero pins, unsearchable, invisible to the
+  // Food chip.
+  const poi = venuePoiFromBuilding(
+    { building: "yes", name: "Murray's", amenity: "restaurant", website: "https://www.murraysrestaurant.com/" },
+    "w45447291",
+    44.977,
+    -93.272,
+    "office",
+  );
+  assert.equal(poi.name, "Murray's");
+  assert.equal(poi.category, "restaurant");
+  assert.equal(poi.kind, "amenity");
+  assert.equal(poi.group, "food");
+  assert.equal(poi.id, "poi-w45447291");
+  assert.equal(poi.website, "https://www.murraysrestaurant.com/");
+});
+
+test("a building that earns its own marker does not also become a POI", () => {
+  // 1.8 gave 20 unmarked on-network buildings a pin via buildingMarker.
+  // fetch-osm skips that marker when a POI of the same name already
+  // exists, so deriving a POI from a marked building's own tags would
+  // silently undo the marking — the hotel would keep a pin but lose the
+  // building card behind it. Marked categories keep the marker; only the
+  // unmarked ones need this path.
+  for (const category of ["hotel", "venue", "government", "hospital"]) {
+    assert.equal(
+      venuePoiFromBuilding({ building: "hotel", name: "Emery", tourism: "hotel" }, "w1", 44.9, -93.2, category),
+      null,
+    );
+  }
+});
+
+test("a building with no business tags yields nothing", () => {
+  assert.equal(venuePoiFromBuilding({ building: "yes", name: "706 Building" }, "w2", 44.9, -93.2, "office"), null);
 });
