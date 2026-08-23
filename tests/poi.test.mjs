@@ -1,6 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildingMarker, dedupePois, groupFor, landmarkNear, resolvePoiHost, safeWebsiteUrl } from "../src/poi.ts";
+import {
+  buildingMarker,
+  dedupePois,
+  groupFor,
+  landmarkNear,
+  resolvePoiHost,
+  safeWebsiteUrl,
+  venuePoiFromBuilding,
+} from "../src/poi.ts";
 
 test("a hotel is a hotel however it got into the dataset", () => {
   // Off-network landmark buildings are emitted with kind "landmark", and
@@ -262,4 +270,127 @@ test("the same name inside one building is one place, however far apart the pins
   const lifts = dedupePois([at("Elevator", 44.98, -93.27, "b", "elevator"),
                             at("Elevator", 44.98, -93.27, "b", "elevator")], 25);
   assert.equal(lifts.length, 2);
+});
+
+test("a building that is also a business yields a POI of its own", () => {
+  // Murray's, Cowboy Jack's and 25 others are mapped in OSM as one way
+  // carrying both `building` and `amenity` — the restaurant IS the
+  // building. The extractor read those ways only as buildings, so the
+  // businesses never reached the POI layer and the buildings showed up
+  // with nothing inside them. Zero pins, unsearchable, invisible to the
+  // Food chip.
+  const poi = venuePoiFromBuilding(
+    { building: "yes", name: "Murray's", amenity: "restaurant", website: "https://www.murraysrestaurant.com/" },
+    "w45447291",
+    44.977,
+    -93.272,
+    "office",
+  );
+  assert.equal(poi.name, "Murray's");
+  assert.equal(poi.category, "restaurant");
+  assert.equal(poi.kind, "amenity");
+  assert.equal(poi.group, "food");
+  assert.equal(poi.id, "poi-w45447291");
+  assert.equal(poi.website, "https://www.murraysrestaurant.com/");
+});
+
+test("a building that earns its own marker does not also become a POI", () => {
+  // 1.8 gave 20 unmarked on-network buildings a pin via buildingMarker.
+  // fetch-osm skips that marker when a POI of the same name already
+  // exists, so deriving a POI from a marked building's own tags would
+  // silently undo the marking — the hotel would keep a pin but lose the
+  // building card behind it. Marked categories keep the marker; only the
+  // unmarked ones need this path.
+  for (const category of ["hotel", "venue", "government", "hospital"]) {
+    assert.equal(
+      venuePoiFromBuilding({ building: "hotel", name: "Emery", tourism: "hotel" }, "w1", 44.9, -93.2, category),
+      null,
+    );
+  }
+});
+
+test("a ramp is not a venue", () => {
+  // amenity=parking on a building way is the building's own category, which
+  // buildingCategory already carries. Read as a venue it would put a POI
+  // named after the ramp inside the ramp.
+  assert.equal(
+    venuePoiFromBuilding({ building: "yes", name: "Leamington Ramp", amenity: "parking" }, "w3", 44.9, -93.2, "office"),
+    null,
+  );
+});
+
+test("a bare yes is the absence of a category, not one", () => {
+  // office=yes says only "an office is here", which is what a downtown
+  // building is. It shipped the 15 Building as a POI categorised "yes".
+  assert.equal(venuePoiFromBuilding({ building: "yes", name: "15 Building", office: "yes" }, "w4", 44.9, -93.2, "office"), null);
+  // A real office tag still counts.
+  assert.equal(
+    venuePoiFromBuilding({ building: "yes", name: "United Way", office: "ngo" }, "w5", 44.9, -93.2, "office").category,
+    "ngo",
+  );
+});
+
+test("amenity wins when a way carries more than one venue tag", () => {
+  // Which family wins is load-bearing -- it decides both kind and category
+  // -- and was previously undefended. VENUE_TAG_FAMILIES fixes the order.
+  const poi = venuePoiFromBuilding(
+    { building: "yes", name: "Kopp Hall", amenity: "cafe", shop: "books" },
+    "w6",
+    44.9,
+    -93.2,
+    "office",
+  );
+  assert.equal(poi.kind, "amenity");
+  assert.equal(poi.category, "cafe");
+});
+
+test("a building with no business tags yields nothing", () => {
+  assert.equal(venuePoiFromBuilding({ building: "yes", name: "706 Building" }, "w2", 44.9, -93.2, "office"), null);
+});
+
+test("a building that is a restaurant is filed under food, not landmarks", () => {
+  // Murray's is a single-tenant building: its own OSM way carries
+  // amenity=restaurant, so it reaches groupFor as kind "building". The
+  // landmark rule used to answer first and put a steakhouse in Landmarks,
+  // where nobody hunting dinner would tap. Lodging already won over that
+  // rule for the same reason; food and coffee now do too.
+  assert.equal(groupFor("building", "restaurant"), "food");
+  assert.equal(groupFor("building", "cafe"), "coffee");
+  // The categories a building can hold on its own are untouched.
+  assert.equal(groupFor("building", "venue"), "landmark");
+  assert.equal(groupFor("building", "government"), "landmark");
+  assert.equal(groupFor("building", "hotel"), "hotel");
+});
+
+test("one place is one place however OSM punctuated it", () => {
+  // Jack Link's is in the dataset twice inside Mayo Clinic Square, 31 m
+  // apart -- well inside the same-building rule that should have collapsed
+  // it. It survived because the two records spell it "Jack Links" and
+  // "Jack Link's", and identity was keyed on the raw string, so they never
+  // met. An apostrophe is not a second concession stand.
+  const kept = dedupePois(
+    [
+      { name: "Jack Links", category: "yes", lat: 44.9795, lon: -93.2762, buildingId: "mayo" },
+      { name: "Jack Link's", category: "company", lat: 44.9797, lon: -93.2764, buildingId: "mayo" },
+    ],
+    25,
+  );
+  assert.equal(kept.length, 1);
+  // Deliberately not asserting *which* spelling survives: the order is the
+  // Overpass response's, so pinning it would cement an arbitrary choice as
+  // intended behaviour. One record is the requirement.
+});
+
+test("genuinely different names still both survive", () => {
+  // The normalisation only strips punctuation and case; it must not start
+  // merging names that merely resemble each other. Capella Tower really
+  // does hold both of these.
+  const kept = dedupePois(
+    [
+      { name: "Mother Dough", category: "bakery", lat: 44.9772, lon: -93.2712, buildingId: "capella" },
+      { name: "Mother Dough Bakery", category: "bakery", lat: 44.9772, lon: -93.2712, buildingId: "capella" },
+    ],
+    25,
+  );
+  assert.equal(kept.length, 2);
 });

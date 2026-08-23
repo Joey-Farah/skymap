@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-08-08T16:01:07.768Z"
+  "generated": "2026-08-23T14:57:21.214Z"
  },
  "buildings": [
   {
@@ -6230,6 +6230,54 @@
    "hoursNote": "No published hours found."
   },
   {
+   "id": "residence-inn-at-the-depot-48816164",
+   "name": "Residence Inn at the Depot",
+   "address": "425 South Second Street",
+   "category": "hotel",
+   "lat": 44.979795,
+   "lon": -93.26135,
+   "footprint": [
+    [
+     -93.261152,
+     44.97948
+    ],
+    [
+     -93.261143,
+     44.979491
+    ],
+    [
+     -93.260858,
+     44.979829
+    ],
+    [
+     -93.261452,
+     44.98009
+    ],
+    [
+     -93.261913,
+     44.980291
+    ],
+    [
+     -93.262021,
+     44.980165
+    ],
+    [
+     -93.261131,
+     44.979782
+    ],
+    [
+     -93.261328,
+     44.97955
+    ],
+    [
+     -93.261152,
+     44.97948
+    ]
+   ],
+   "hours": null,
+   "hoursNote": "No published hours found."
+  },
+  {
    "id": "radisson-red-minneapolis-downtown-60613336",
    "name": "Radisson RED Minneapolis Downtown",
    "address": "609 South 3rd Street",
@@ -6900,111 +6948,6 @@
    "hoursNote": "No published hours found."
   },
   {
-   "id": "macphail-center-for-music-81049070",
-   "name": "MacPhail Center for Music",
-   "address": "501 South 2nd Street",
-   "category": "office",
-   "lat": 44.979472,
-   "lon": -93.260388,
-   "footprint": [
-    [
-     -93.260366,
-     44.979482
-    ],
-    [
-     -93.26033,
-     44.979516
-    ],
-    [
-     -93.260298,
-     44.979498
-    ],
-    [
-     -93.260273,
-     44.979484
-    ],
-    [
-     -93.260312,
-     44.979449
-    ],
-    [
-     -93.26029,
-     44.97944
-    ],
-    [
-     -93.260281,
-     44.979452
-    ],
-    [
-     -93.260251,
-     44.979441
-    ],
-    [
-     -93.260218,
-     44.979434
-    ],
-    [
-     -93.260195,
-     44.979433
-    ],
-    [
-     -93.260214,
-     44.979407
-    ],
-    [
-     -93.260196,
-     44.979402
-    ],
-    [
-     -93.260375,
-     44.979187
-    ],
-    [
-     -93.260792,
-     44.979372
-    ],
-    [
-     -93.260692,
-     44.979489
-    ],
-    [
-     -93.260669,
-     44.979515
-    ],
-    [
-     -93.260641,
-     44.979548
-    ],
-    [
-     -93.260614,
-     44.979538
-    ],
-    [
-     -93.260506,
-     44.979703
-    ],
-    [
-     -93.260283,
-     44.979631
-    ],
-    [
-     -93.260379,
-     44.979484
-    ],
-    [
-     -93.260366,
-     44.979482
-    ]
-   ],
-   "hours": null,
-   "hoursNote": "No published hours found.",
-   "image": {
-    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/MacPhail-20071218.jpg?width=640",
-    "attribution": "Susanlesch · CC BY 2.0",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:MacPhail-20071218.jpg"
-   }
-  },
-  {
    "id": "depot-office-center-81049079",
    "name": "Depot Office Center",
    "address": "500 Washington Avenue South",
@@ -7081,28 +7024,56 @@
    "name": "Gateway Municipal Garage",
    "address": "Minneapolis",
    "category": "parking",
-   "lat": 44.978611,
-   "lon": -93.262496,
+   "lat": 44.978567,
+   "lon": -93.262535,
    "footprint": [
     [
      -93.262186,
      44.978099
     ],
     [
+     -93.262361,
+     44.978069
+    ],
+    [
      -93.262396,
      44.978063
+    ],
+    [
+     -93.262861,
+     44.978262
     ],
     [
      -93.263226,
      44.978417
     ],
     [
+     -93.263232,
+     44.978435
+    ],
+    [
      -93.263275,
      44.978565
     ],
     [
+     -93.263225,
+     44.978624
+    ],
+    [
+     -93.263134,
+     44.978732
+    ],
+    [
      -93.262999,
      44.978891
+    ],
+    [
+     -93.262932,
+     44.97897
+    ],
+    [
+     -93.262809,
+     44.979117
     ],
     [
      -93.262751,
@@ -7119,6 +7090,22 @@
     [
      -93.261661,
      44.978713
+    ],
+    [
+     -93.261726,
+     44.978637
+    ],
+    [
+     -93.261824,
+     44.978522
+    ],
+    [
+     -93.262027,
+     44.978285
+    ],
+    [
+     -93.262147,
+     44.978144
     ],
     [
      -93.262186,
@@ -19453,7 +19440,7 @@
   },
   {
    "from": "depot-office-center-81049079",
-   "to": "macphail-center-for-music-81049070",
+   "to": "residence-inn-at-the-depot-48816164",
    "crossing": "skyway",
    "geometry": [
     [
@@ -19884,8 +19871,8 @@
      44.979112
     ],
     [
-     -93.28668,
-     44.977184
+     -93.286679,
+     44.977823
     ]
    ],
    "openAir": true
@@ -19986,7 +19973,10 @@
    "group": "landmark",
    "lat": 44.976003,
    "lon": -93.266531,
-   "buildingId": "hennepin-county-government-center-27518018"
+   "buildingId": "hennepin-county-government-center-27518018",
+   "openingHours": "Mo-Fr 08:00-16:30",
+   "website": "https://mncourts.gov/find-courts/hennepin",
+   "logo": "mncourts-gov"
   },
   {
    "id": "poi-367067933",
@@ -20151,7 +20141,9 @@
    "group": "food",
    "lat": 44.984624,
    "lon": -93.255376,
-   "buildingId": "st-anthony-main-39707475"
+   "buildingId": "st-anthony-main-39707475",
+   "website": "https://lonelysbar.com",
+   "logo": "lonelysbar-com"
   },
   {
    "id": "poi-1077152668",
@@ -20168,7 +20160,7 @@
   },
   {
    "id": "poi-1077152679",
-   "name": "St. Anthony Main Theatre",
+   "name": "The Main Cinema",
    "category": "cinema",
    "kind": "amenity",
    "group": "landmark",
@@ -20273,17 +20265,6 @@
    "buildingId": "state-theatre-156912879",
    "website": "https://www.thecapitalgrille.com",
    "logo": "thecapitalgrille-com"
-  },
-  {
-   "id": "poi-2387569338",
-   "name": "The Seville",
-   "category": "stripclub",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.978735,
-   "lon": -93.27707,
-   "buildingId": "7th-street-ramp-a-r2100894",
-   "nearby": true
   },
   {
    "id": "poi-2427534130",
@@ -21000,8 +20981,8 @@
    "category": "restaurant",
    "kind": "amenity",
    "group": "food",
-   "lat": 44.976658,
-   "lon": -93.258932,
+   "lat": 44.976605,
+   "lon": -93.25879,
    "buildingId": "stadium-parking-ramp-40774167",
    "nearby": true,
    "openingHours": "Mo-Th,Su 07:00-22:00; Fr-Sa 07:00-23:00",
@@ -21459,7 +21440,7 @@
    "lon": -93.285428,
    "buildingId": "kopp-hall-89061932",
    "nearby": true,
-   "openingHours": "Su-Th 11:00-21:00; Fr,Sa 11:00-22:00",
+   "openingHours": "11:00-22:00",
    "website": "https://www.gainoimpls.com/",
    "logo": "gainoimpls-com"
   },
@@ -21509,7 +21490,9 @@
    "lat": 44.971397,
    "lon": -93.275909,
    "buildingId": "westminster-presbyterian-63821145",
-   "openingHours": "Su[4] 17:00-18:00"
+   "openingHours": "Su[4] 17:00-18:00",
+   "website": "https://westminstermpls.org/free-community-meals/",
+   "logo": "westminstermpls-org"
   },
   {
    "id": "poi-12030263492",
@@ -21727,6 +21710,43 @@
    "lat": 44.978248,
    "lon": -93.261255,
    "buildingId": "gateway-municipal-garage-81049104",
+   "nearby": true
+  },
+  {
+   "id": "poi-12333223451",
+   "name": "Klassics Kitchen + Cocktails",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.980603,
+   "lon": -93.261357,
+   "buildingId": "residence-inn-at-the-depot-48816164",
+   "nearby": true,
+   "openingHours": "Mo-Fr,Su 08:00-15:00; Sa off",
+   "website": "https://klassicsmn.com",
+   "logo": "klassicsmn-com"
+  },
+  {
+   "id": "poi-12333223452",
+   "name": "C.R.E.A.M Cafe",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.980785,
+   "lon": -93.261497,
+   "buildingId": "residence-inn-at-the-depot-48816164",
+   "nearby": true,
+   "openingHours": "Mo-Th 08:00-15:00; Fr,Su 08:00-16:00; Sa off"
+  },
+  {
+   "id": "poi-12333223453",
+   "name": "City Paws",
+   "category": "animal_boarding",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.98091,
+   "lon": -93.262607,
+   "buildingId": "residence-inn-at-the-depot-48816164",
    "nearby": true
   },
   {
@@ -23435,9 +23455,7 @@
    "lon": -93.262804,
    "buildingId": "edition-apartments-510-413691176",
    "nearby": true,
-   "openingHours": "Su-Th 06:30-20:00; Fr-Sa 08:00-21:00",
-   "hoursSource": "https://www.instagram.com/nurhousecafe/",
-   "hoursCheckedOn": "2026-08-07"
+   "openingHours": "Su-Th 06:30-20:00; Fr-Sa 08:00-21:00"
   },
   {
    "id": "poi-13993589138",
@@ -23452,6 +23470,20 @@
    "openingHours": "Mo-Fr 10:30-15:00; Sa-Su off",
    "website": "https://bambooexpressskyway.com/",
    "logo": "bambooexpressskyway-com"
+  },
+  {
+   "id": "poi-13996575260",
+   "name": "Soul Bowl",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.980666,
+   "lon": -93.261432,
+   "buildingId": "residence-inn-at-the-depot-48816164",
+   "nearby": true,
+   "openingHours": "Mo-Th,Su 11:00-20:00; Fr 11:00-21:00; Sa off",
+   "website": "https://soulbowlmn.com",
+   "logo": "soulbowlmn-com"
   },
   {
    "id": "poi-14003692659",
@@ -23485,7 +23517,7 @@
    "name": "Elevate Food Hall",
    "category": "food_court",
    "kind": "amenity",
-   "group": "other",
+   "group": "food",
    "lat": 44.981341,
    "lon": -93.265898,
    "buildingId": "100-washington-square-44164776",
@@ -24055,19 +24087,8 @@
    "buildingId": "ids-center-1385236413",
    "level": "0",
    "openingHours": "Mo-Fr 08:00-18:00; Sa 10:00-18:00; Su off",
-   "website": "https://office.fedex.com/",
-   "logo": "office-fedex-com"
-  },
-  {
-   "id": "poi-11248557998",
-   "name": "Midwest Motorcycle",
-   "category": "motorcycle",
-   "kind": "shop",
-   "group": "other",
-   "lat": 44.984009,
-   "lon": -93.27211,
-   "buildingId": "lee-lofts-45758932",
-   "nearby": true
+   "website": "https://local.fedex.com/en-us/mn/minneapolis/office-0614",
+   "logo": "local-fedex-com"
   },
   {
    "id": "poi-11248557999",
@@ -25082,7 +25103,7 @@
    "group": "other",
    "lat": 44.980334,
    "lon": -93.261123,
-   "buildingId": "macphail-center-for-music-81049070",
+   "buildingId": "residence-inn-at-the-depot-48816164",
    "nearby": true
   },
   {
@@ -25402,7 +25423,29 @@
    "group": "landmark",
    "lat": 44.980447,
    "lon": -93.261579,
-   "buildingId": "macphail-center-for-music-81049070",
+   "buildingId": "residence-inn-at-the-depot-48816164",
+   "nearby": true
+  },
+  {
+   "id": "poi-13996575244",
+   "name": "Barrels Bags Bust and Beyond",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.98104,
+   "lon": -93.261953,
+   "buildingId": "residence-inn-at-the-depot-48816164",
+   "nearby": true
+  },
+  {
+   "id": "poi-13996575249",
+   "name": "A Little Railroad with a Long History",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.981049,
+   "lon": -93.261908,
+   "buildingId": "residence-inn-at-the-depot-48816164",
    "nearby": true
   },
   {
@@ -25701,7 +25744,8 @@
    "buildingId": "school-of-law-92810608",
    "nearby": true,
    "openingHours": "Mo-Fr 08:30-18:00",
-   "website": "https://www.stephencooperlawfirm.com/"
+   "website": "https://www.stephencooperlawfirm.com/",
+   "logo": "stephencooperlawfirm-com"
   },
   {
    "id": "poi-6661087680",
@@ -26014,7 +26058,7 @@
    "group": "other",
    "lat": 44.980297,
    "lon": -93.259197,
-   "buildingId": "macphail-center-for-music-81049070",
+   "buildingId": "portland-avenue-ramp-156909997",
    "nearby": true,
    "website": "https://owamniyomni.org/about/#the-project",
    "logo": "owamniyomni-org"
@@ -26140,16 +26184,6 @@
    "openingHours": "Mo-Fr 09:00-17:00",
    "website": "https://www.taoglas.com/",
    "logo": "taoglas-com"
-  },
-  {
-   "id": "poi-13921306014",
-   "name": "Jack Link's",
-   "category": "company",
-   "kind": "office",
-   "group": "other",
-   "lat": 44.978731,
-   "lon": -93.274427,
-   "buildingId": "mayo-clinic-square-27346712"
   },
   {
    "id": "poi-13965983655",
@@ -26622,6 +26656,1304 @@
    "level": "0;1"
   },
   {
+   "id": "poi-14105593683",
+   "name": "Elevator",
+   "category": "elevator",
+   "kind": "elevator",
+   "group": "elevator",
+   "lat": 44.978384,
+   "lon": -93.262866,
+   "buildingId": "gateway-municipal-garage-81049104",
+   "level": "0;1;2;3;4;5"
+  },
+  {
+   "id": "poi-w27346775",
+   "name": "Elliot Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.969774,
+   "lon": -93.259706,
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/elliot_park/",
+   "buildingId": "miller-hall-122795138",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
+   "id": "poi-w41763934",
+   "name": "The Depot Pavilion",
+   "category": "events_venue",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.979795,
+   "lon": -93.262723,
+   "buildingId": "cortland-mill-district-62006959",
+   "nearby": true
+  },
+  {
+   "id": "poi-w93481561",
+   "name": "University of St. Thomas",
+   "category": "university",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.974091,
+   "lon": -93.277606,
+   "buildingId": "schulze-hall-266689885"
+  },
+  {
+   "id": "poi-w133660900",
+   "name": "Peavey Plaza",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.972344,
+   "lon": -93.275629,
+   "buildingId": "orchestra-hall-43607930",
+   "nearby": true
+  },
+  {
+   "id": "poi-w156909890",
+   "name": "Cancer Survivors Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.981041,
+   "lon": -93.268111,
+   "buildingId": "marquette-plaza-45500036",
+   "nearby": true
+  },
+  {
+   "id": "poi-w156909956",
+   "name": "The Marquette Hotel, Curio Collection by Hilton",
+   "category": "hotel",
+   "kind": "tourism",
+   "group": "hotel",
+   "lat": 44.976324,
+   "lon": -93.271484,
+   "website": "http://www.marquettehotel.com/",
+   "buildingId": "ids-center-1385236413"
+  },
+  {
+   "id": "poi-w164953151",
+   "name": "17th Street Overlook",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.966428,
+   "lon": -93.274694,
+   "buildingId": "glendale-111367341",
+   "nearby": true
+  },
+  {
+   "id": "poi-w242506836",
+   "name": "Mocha Momma's Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.980198,
+   "lon": -93.269945,
+   "openingHours": "Mo-Fr 08:00-16:00; Sa 08:00-16:00",
+   "buildingId": "minneapolis-central-library-r21107574"
+  },
+  {
+   "id": "poi-w318601934",
+   "name": "Life Time",
+   "category": "fitness_centre",
+   "kind": "leisure",
+   "group": "other",
+   "lat": 44.979202,
+   "lon": -93.275833,
+   "website": "https://www.lifetime.life/life-time-locations/mn-minneapolis-target-center.html",
+   "buildingId": "target-center-23125943",
+   "logo": "lifetime-life"
+  },
+  {
+   "id": "poi-w350497090",
+   "name": "Gethsemane Garden",
+   "category": "garden",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.971867,
+   "lon": -93.268741,
+   "buildingId": "ameriprise-financial-headquarters-28490454",
+   "nearby": true
+  },
+  {
+   "id": "poi-w461216642",
+   "name": "On the Plaza",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.970427,
+   "lon": -93.274966,
+   "buildingId": "westminster-presbyterian-63821145",
+   "nearby": true
+  },
+  {
+   "id": "poi-w461227726",
+   "name": "Embassy Suites by Hilton Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "tourism",
+   "group": "hotel",
+   "lat": 44.978824,
+   "lon": -93.272823,
+   "website": "https://www.hilton.com/en/hotels/mspsses-embassy-suites-minneapolis-downtown/",
+   "buildingId": "plymouth-building-156909952",
+   "logo": "hilton-com"
+  },
+  {
+   "id": "poi-w615652841",
+   "name": "Prairie Kitchen and Bar",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.971257,
+   "lon": -93.277613,
+   "level": "1",
+   "openingHours": "Mo-Su 06:30-24:00",
+   "website": "https://www.hyatt.com/en-US/hotel/minnesota/hyatt-regency-minneapolis/msprm/dining",
+   "buildingId": "sheraton-minneapolis-downtown-convention-center-1394814185",
+   "nearby": true,
+   "logo": "hyatt-com"
+  },
+  {
+   "id": "poi-w617679297",
+   "name": "Front Desk",
+   "category": "information",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.971004,
+   "lon": -93.277916,
+   "level": "1",
+   "buildingId": "sheraton-minneapolis-downtown-convention-center-1394814185",
+   "nearby": true
+  },
+  {
+   "id": "poi-w617723344",
+   "name": "MPLS Market",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.97117,
+   "lon": -93.278043,
+   "level": "1",
+   "openingHours": "06:00-22:00",
+   "website": "https://www.hyatt.com/en-US/hotel/minnesota/hyatt-regency-minneapolis/msprm/dining",
+   "buildingId": "sheraton-minneapolis-downtown-convention-center-1394814185",
+   "nearby": true,
+   "logo": "hyatt-com"
+  },
+  {
+   "id": "poi-w619485329",
+   "name": "Salon Blu",
+   "category": "beauty",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.971131,
+   "lon": -93.278385,
+   "level": "2",
+   "buildingId": "loring-parking-ramp-612097599",
+   "nearby": true
+  },
+  {
+   "id": "poi-w619560603",
+   "name": "Vitali's Café",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.970537,
+   "lon": -93.278254,
+   "level": "2",
+   "website": "https://vitalisbistro.com/",
+   "buildingId": "loring-parking-ramp-612097599",
+   "nearby": true
+  },
+  {
+   "id": "poi-w743651583",
+   "name": "Prairie Tree",
+   "category": "artwork",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.973137,
+   "lon": -93.275334,
+   "buildingId": "target-plaza-45452119",
+   "nearby": true
+  },
+  {
+   "id": "poi-w743651584",
+   "name": "Sculpture Clock",
+   "category": "artwork",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.97282,
+   "lon": -93.275604,
+   "buildingId": "orchestra-hall-43607930",
+   "nearby": true
+  },
+  {
+   "id": "poi-w743651585",
+   "name": "Reading Room",
+   "category": "artwork",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.972368,
+   "lon": -93.276205,
+   "buildingId": "westminster-presbyterian-63821145",
+   "nearby": true
+  },
+  {
+   "id": "poi-w899091130",
+   "name": "Seven Seas",
+   "category": "artwork",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.974817,
+   "lon": -93.259939,
+   "buildingId": "4th-park-1223123289",
+   "nearby": true
+  },
+  {
+   "id": "poi-w899091185",
+   "name": "Legacy Ship",
+   "category": "attraction",
+   "kind": "tourism",
+   "group": "landmark",
+   "lat": 44.973426,
+   "lon": -93.25998,
+   "buildingId": "purple-building-143058257",
+   "nearby": true
+  },
+  {
+   "id": "poi-w899706723",
+   "name": "Government Center Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.975261,
+   "lon": -93.267163,
+   "buildingId": "hennepin-county-government-center-27518018",
+   "nearby": true
+  },
+  {
+   "id": "poi-w1264664309",
+   "name": "Farmers Market Annex",
+   "category": "marketplace",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.980412,
+   "lon": -93.286046,
+   "openingHours": "Sa-Su 07:00-13:00; Nov-Apr off",
+   "website": "http://www.farmersmarketannex.com",
+   "buildingId": "shelby-commons-1388384208",
+   "nearby": true,
+   "logo": "farmersmarketannex-com"
+  },
+  {
+   "id": "poi-w1393147765",
+   "name": "The Depot Renaissance Minneapolis Hotel",
+   "category": "hotel",
+   "kind": "tourism",
+   "group": "hotel",
+   "lat": 44.980307,
+   "lon": -93.262858,
+   "website": "https://www.marriott.com/en-us/hotels/mspdd-renaissance-minneapolis-hotel-the-depot/overview/",
+   "buildingId": "residence-inn-at-the-depot-48816164",
+   "nearby": true,
+   "logo": "marriott-com"
+  },
+  {
+   "id": "poi-w1393671370",
+   "name": "Cowles Center for Dance and the Performing Arts",
+   "category": "arts_centre",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.979299,
+   "lon": -93.273622,
+   "website": "https://www.thecowlescenter.org/",
+   "buildingId": "plymouth-building-156909952",
+   "nearby": true,
+   "logo": "thecowlescenter-org"
+  },
+  {
+   "id": "poi-w1393991637",
+   "name": "Boost Mobile",
+   "category": "mobile_phone",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.975394,
+   "lon": -93.274331,
+   "buildingId": "us-bancorp-center-461224219",
+   "website": "https://www.boostmobile.com/",
+   "logo": "boostmobile-com"
+  },
+  {
+   "id": "poi-w1536535760",
+   "name": "Historic Main Street Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.985294,
+   "lon": -93.256653,
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/historic_main_street_park/",
+   "buildingId": "st-anthony-main-39707475",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
+   "id": "poi-r6563703",
+   "name": "The Commons",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.97578,
+   "lon": -93.261884,
+   "openingHours": "06:00-24:00",
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/the-commons/",
+   "buildingId": "juvenile-justice-center-101549026",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
+   "id": "poi-r12234802",
+   "name": "Target Field Station Amphitheatre",
+   "category": "theatre",
+   "kind": "amenity",
+   "group": "landmark",
+   "lat": 44.983281,
+   "lon": -93.278621,
+   "buildingId": "ford-center-29060527",
+   "nearby": true
+  },
+  {
+   "id": "poi-r18141932",
+   "name": "Central Mississippi Riverfront Regional Park",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.985127,
+   "lon": -93.259555,
+   "website": "https://www.minneapolisparks.org/parks-destinations/parks-lakes/central_mississippi_riverfront_regional_park/",
+   "buildingId": "nicollet-island-inn-80313504",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
+   "id": "poi-r20676683",
+   "name": "Hennepin County Medical Center",
+   "category": "hospital",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.972098,
+   "lon": -93.261425,
+   "openingHours": "24/7",
+   "website": "https://www.hcmc.org/",
+   "buildingId": "orange-building-143056848",
+   "nearby": true,
+   "logo": "hcmc-org"
+  },
+  {
+   "id": "poi-r20809847",
+   "name": "North Central University",
+   "category": "university",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.969202,
+   "lon": -93.261097,
+   "website": "https://www.northcentral.edu/",
+   "buildingId": "miller-hall-122795138",
+   "nearby": true,
+   "logo": "northcentral-edu"
+  },
+  {
+   "id": "poi-r21154041",
+   "name": "North Loop Green",
+   "category": "park",
+   "kind": "leisure",
+   "group": "landmark",
+   "lat": 44.983631,
+   "lon": -93.275388,
+   "openingHours": "07:00-22:00",
+   "buildingId": "t3-723284484",
+   "nearby": true
+  },
+  {
+   "id": "poi-r21226354",
+   "name": "Minneapolis College",
+   "category": "college",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.972759,
+   "lon": -93.283284,
+   "website": "https://www.minneapolis.edu/",
+   "buildingId": "technical-building-89061902",
+   "logo": "minneapolis-edu"
+  },
+  {
+   "id": "building-target-center-23125943",
+   "name": "Target Center",
+   "category": "stadium",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.979588,
+   "lon": -93.276004,
+   "buildingId": "target-center-23125943"
+  },
+  {
+   "id": "building-city-center-27346720",
+   "name": "City Center",
+   "category": "mall",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.977758,
+   "lon": -93.272916,
+   "buildingId": "city-center-27346720"
+  },
+  {
+   "id": "poi-w27346730",
+   "name": "Hennepin County Sheriff",
+   "category": "police",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.973911,
+   "lon": -93.261106,
+   "buildingId": "juvenile-justice-center-101549026",
+   "nearby": true
+  },
+  {
+   "id": "building-hennepin-county-government-center-27518018",
+   "name": "Hennepin County Government Center",
+   "category": "government",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.975848,
+   "lon": -93.26668,
+   "buildingId": "hennepin-county-government-center-27518018"
+  },
+  {
+   "id": "poi-w27518542",
+   "name": "Minneapolis Armory",
+   "category": "music_venue",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.975109,
+   "lon": -93.263604,
+   "website": "https://armorymn.com/",
+   "buildingId": "thrivent-corporate-center-27346744",
+   "nearby": true,
+   "logo": "armorymn-com"
+  },
+  {
+   "id": "building-ameriprise-financial-headquarters-28490454",
+   "name": "Ameriprise Financial Headquarters",
+   "category": "company",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.972469,
+   "lon": -93.269549,
+   "buildingId": "ameriprise-financial-headquarters-28490454"
+  },
+  {
+   "id": "poi-w38400149",
+   "name": "Machine Shop",
+   "category": "events_venue",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.98439,
+   "lon": -93.252736,
+   "website": "https://machineshopmpls.com/",
+   "buildingId": "minneapolis-event-centers-92905847",
+   "nearby": true,
+   "logo": "machineshopmpls-com"
+  },
+  {
+   "id": "poi-w39771719",
+   "name": "Nicollet Island Pavilion",
+   "category": "events_venue",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.984656,
+   "lon": -93.260181,
+   "website": "https://www.minneapolisparks.org/rentals-permits/reception__event_sites/events_at_nicollet_island_pavilion/",
+   "buildingId": "nicollet-island-inn-80313504",
+   "nearby": true,
+   "logo": "minneapolisparks-org"
+  },
+  {
+   "id": "poi-w41414391",
+   "name": "First Avenue",
+   "category": "nightclub",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.978274,
+   "lon": -93.27604,
+   "website": "https://first-avenue.com/venue/first-avenue/",
+   "buildingId": "mayo-clinic-square-27346712",
+   "nearby": true,
+   "logo": "first-avenue-com"
+  },
+  {
+   "id": "poi-w41763757",
+   "name": "Gay 90's",
+   "category": "nightclub",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.98047,
+   "lon": -93.27204,
+   "openingHours": "We-Th 18:00-02:00; Fr-Sa 16:00-03:00; Su 21:00-02:00",
+   "website": "https://gay90s.com",
+   "buildingId": "lumber-exchange-30263208",
+   "nearby": true,
+   "logo": "gay90s-com"
+  },
+  {
+   "id": "building-orpheum-theatre-41763764",
+   "name": "Orpheum Theatre",
+   "category": "theatre",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.976533,
+   "lon": -93.277868,
+   "buildingId": "orpheum-theatre-41763764"
+  },
+  {
+   "id": "building-minneapolis-convention-center-42837791",
+   "name": "Minneapolis Convention Center",
+   "category": "conference_centre",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.969507,
+   "lon": -93.274095,
+   "buildingId": "minneapolis-convention-center-42837791"
+  },
+  {
+   "id": "building-orchestra-hall-43607930",
+   "name": "Orchestra Hall",
+   "category": "arts_centre",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.972209,
+   "lon": -93.274946,
+   "buildingId": "orchestra-hall-43607930"
+  },
+  {
+   "id": "building-city-of-lakes-building-45452110",
+   "name": "City of Lakes Building",
+   "category": "government",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.979205,
+   "lon": -93.266114,
+   "buildingId": "city-of-lakes-building-45452110"
+  },
+  {
+   "id": "poi-w45581663",
+   "name": "St. David’s Center Child & Family Development",
+   "category": "social_facility",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.97255,
+   "lon": -93.276467,
+   "website": "https://www.stdavidsmn.org/about/locations/minneapolis#nicollet-center",
+   "buildingId": "westminster-presbyterian-63821145",
+   "nearby": true,
+   "logo": "stdavidsmn-org"
+  },
+  {
+   "id": "poi-w45680519",
+   "name": "The Butcher's Tale",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.974776,
+   "lon": -93.279819,
+   "website": "https://butcherstale.com/",
+   "buildingId": "school-of-law-92810608",
+   "nearby": true,
+   "logo": "butcherstale-com"
+  },
+  {
+   "id": "poi-w45680522",
+   "name": "Pizza Hut",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.974932,
+   "lon": -93.279104,
+   "website": "https://locations.pizzahut.com/mn/minneapolis/1101-hennepin-ave",
+   "buildingId": "school-of-law-92810608",
+   "nearby": true,
+   "logo": "locations-pizzahut-com"
+  },
+  {
+   "id": "poi-w45680540",
+   "name": "Pantages Theatre",
+   "category": "theatre",
+   "kind": "amenity",
+   "group": "landmark",
+   "lat": 44.978004,
+   "lon": -93.275497,
+   "website": "https://hennepintheatretrust.org/theatres/pantages-theatre/",
+   "buildingId": "mayo-clinic-square-27346712",
+   "nearby": true,
+   "logo": "hennepintheatretrust-org"
+  },
+  {
+   "id": "poi-w45680548",
+   "name": "Gluek's Restaurant & Bar",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.979434,
+   "lon": -93.274018,
+   "openingHours": "Tu-Th 15:00-02:00, Fr,Sa 12:00-02:00",
+   "website": "https://www.glueks.com/",
+   "buildingId": "mayo-clinic-square-27346712",
+   "nearby": true,
+   "logo": "glueks-com"
+  },
+  {
+   "id": "poi-w52324168",
+   "name": "Smith Brothers Service, Inc.",
+   "category": "car_repair",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.972028,
+   "lon": -93.268008,
+   "buildingId": "ameriprise-financial-headquarters-28490454",
+   "nearby": true,
+   "website": "http://www.goodyear.eu/",
+   "logo": "goodyear-eu"
+  },
+  {
+   "id": "poi-w62006968",
+   "name": "Dunn Brothers Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.980775,
+   "lon": -93.26321,
+   "buildingId": "rivergate-apartments-81049129",
+   "nearby": true,
+   "website": "https://dunnbrothers.com/",
+   "logo": "dunnbrothers-com"
+  },
+  {
+   "id": "poi-w78061899",
+   "name": "Sunrise Banks",
+   "category": "bank",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.986471,
+   "lon": -93.275749,
+   "website": "https://www.sunrisebanks.com",
+   "buildingId": "the-falk-45449596",
+   "nearby": true,
+   "logo": "sunrisebanks-com"
+  },
+  {
+   "id": "poi-w78061946",
+   "name": "Cuzzy's",
+   "category": "pub",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.986135,
+   "lon": -93.275259,
+   "openingHours": "Mo-Tu,Su off; We-Th 11:00-22:00; Fr 07:00-02:00; Sa 08:00-02:00",
+   "website": "https://cuzzys.com",
+   "buildingId": "free-spirit-building-78061942",
+   "nearby": true,
+   "logo": "cuzzys-com"
+  },
+  {
+   "id": "poi-w81049070",
+   "name": "MacPhail Center for Music",
+   "category": "music_school",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.979472,
+   "lon": -93.260388,
+   "website": "https://www.macphail.org/",
+   "buildingId": "portland-avenue-ramp-156909997",
+   "nearby": true,
+   "logo": "macphail-org"
+  },
+  {
+   "id": "poi-w81049130",
+   "name": "People Serving People",
+   "category": "social_facility",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.977484,
+   "lon": -93.260211,
+   "website": "https://www.peopleservingpeople.org/",
+   "buildingId": "radisson-red-minneapolis-downtown-60613336",
+   "nearby": true,
+   "logo": "peopleservingpeople-org"
+  },
+  {
+   "id": "poi-w89061914",
+   "name": "Whitney Fine Arts Center",
+   "category": "arts_centre",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.97175,
+   "lon": -93.282578,
+   "buildingId": "helland-center-89061924",
+   "nearby": true
+  },
+  {
+   "id": "poi-w89070219",
+   "name": "National Marrow Donor Program",
+   "category": "association",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.984239,
+   "lon": -93.278586,
+   "website": "https://www.nmdp.org/",
+   "buildingId": "ford-center-29060527",
+   "nearby": true,
+   "logo": "nmdp-org"
+  },
+  {
+   "id": "poi-w89080630",
+   "name": "Goodale Theater",
+   "category": "theatre",
+   "kind": "amenity",
+   "group": "landmark",
+   "lat": 44.9795,
+   "lon": -93.273499,
+   "website": "https://www.cowlesmpls.org/",
+   "buildingId": "plymouth-building-156909952",
+   "nearby": true,
+   "logo": "cowlesmpls-org"
+  },
+  {
+   "id": "poi-w89080632",
+   "name": "J.D. Hoyt's Supper Club",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.984479,
+   "lon": -93.27295,
+   "website": "https://jdhoyts.com/",
+   "buildingId": "deja-vu-89080678",
+   "nearby": true,
+   "logo": "jdhoyts-com"
+  },
+  {
+   "id": "poi-w89080635",
+   "name": "Monte Carlo",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.98469,
+   "lon": -93.271709,
+   "openingHours": "Su-Sa 11:00-23:00",
+   "website": "https://www.montecarlomn.com/",
+   "buildingId": "intersect-apartments-1216920711",
+   "nearby": true,
+   "logo": "montecarlomn-com"
+  },
+  {
+   "id": "building-deja-vu-89080678",
+   "name": "Deja Vu",
+   "category": "stripclub",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.984702,
+   "lon": -93.273333,
+   "buildingId": "deja-vu-89080678"
+  },
+  {
+   "id": "poi-w89080683",
+   "name": "1st Precinct",
+   "category": "police",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.980722,
+   "lon": -93.272374,
+   "buildingId": "lumber-exchange-30263208",
+   "nearby": true
+  },
+  {
+   "id": "building-historic-wesley-center-92810581",
+   "name": "Historic Wesley Center",
+   "category": "community_centre",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.96953,
+   "lon": -93.276129,
+   "buildingId": "historic-wesley-center-92810581"
+  },
+  {
+   "id": "building-minneapolis-event-centers-92905847",
+   "name": "Minneapolis Event Centers",
+   "category": "conference_centre",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.984553,
+   "lon": -93.25439,
+   "buildingId": "minneapolis-event-centers-92905847"
+  },
+  {
+   "id": "poi-w101142612",
+   "name": "Hirshfield's Minneapolis Contractor Service Center",
+   "category": "paint",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.978474,
+   "lon": -93.289055,
+   "website": "https://www.hirshfields.com/store-locator/minneapolis/",
+   "buildingId": "hirshfields-design-resource-showroom-101142650",
+   "nearby": true,
+   "logo": "hirshfields-com"
+  },
+  {
+   "id": "building-hirshfields-design-resource-showroom-101142650",
+   "name": "Hirshfield's Design Resource Showroom",
+   "category": "interior_decoration",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.978749,
+   "lon": -93.288539,
+   "buildingId": "hirshfields-design-resource-showroom-101142650"
+  },
+  {
+   "id": "poi-w101142653",
+   "name": "Thomas Printworks",
+   "category": "copyshop",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.97855,
+   "lon": -93.289861,
+   "website": "https://thomasprintworks.com/",
+   "buildingId": "hirshfields-design-resource-showroom-101142650",
+   "nearby": true,
+   "logo": "thomasprintworks-com"
+  },
+  {
+   "id": "poi-w111391464",
+   "name": "Elliot Recreation Center",
+   "category": "community_centre",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.969342,
+   "lon": -93.259808,
+   "buildingId": "parking-lot-e-122795248",
+   "nearby": true
+  },
+  {
+   "id": "poi-w119004359",
+   "name": "Lotus Restaurant Minneapolis",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.969714,
+   "lon": -93.280039,
+   "level": "0",
+   "openingHours": "Mo-Sa 11:00-21:00; Su 12:00-20:00",
+   "website": "https://www.lotusdtmsp.com/",
+   "buildingId": "loring-parking-ramp-612097599",
+   "nearby": true,
+   "logo": "lotusdtmsp-com"
+  },
+  {
+   "id": "poi-w119004729",
+   "name": "WCCO",
+   "category": "studio",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.972924,
+   "lon": -93.274485,
+   "website": "https://minnesota.cbslocal.com/",
+   "buildingId": "orchestra-hall-43607930",
+   "nearby": true,
+   "logo": "minnesota-cbslocal-com"
+  },
+  {
+   "id": "building-aster-house-125437510",
+   "name": "Aster House",
+   "category": "restaurant",
+   "kind": "building",
+   "group": "food",
+   "lat": 44.986377,
+   "lon": -93.258529,
+   "buildingId": "aster-house-125437510"
+  },
+  {
+   "id": "poi-w126116974",
+   "name": "The Family Partnership",
+   "category": "ngo",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.973616,
+   "lon": -93.266702,
+   "website": "https://www.thefamilypartnership.org/",
+   "buildingId": "centre-village-44164774",
+   "nearby": true,
+   "logo": "thefamilypartnership-org"
+  },
+  {
+   "id": "poi-w126116981",
+   "name": "Greater Twin Cities United Way",
+   "category": "ngo",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.973766,
+   "lon": -93.267036,
+   "website": "https://www.gtcuw.org",
+   "buildingId": "701-building-126116979",
+   "nearby": true,
+   "logo": "gtcuw-org"
+  },
+  {
+   "id": "building-guthrie-theater-129937715",
+   "name": "Guthrie Theater",
+   "category": "theatre",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.978218,
+   "lon": -93.255493,
+   "buildingId": "guthrie-theater-129937715"
+  },
+  {
+   "id": "poi-w146806763",
+   "name": "T.J. Jones Library",
+   "category": "library",
+   "kind": "amenity",
+   "group": "landmark",
+   "lat": 44.968479,
+   "lon": -93.260355,
+   "buildingId": "parking-lot-e-122795248",
+   "nearby": true
+  },
+  {
+   "id": "building-minneapolis-club-156909955",
+   "name": "Minneapolis Club",
+   "category": "social_centre",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.974867,
+   "lon": -93.269585,
+   "buildingId": "minneapolis-club-156909955"
+  },
+  {
+   "id": "building-state-theatre-156912879",
+   "name": "State Theatre",
+   "category": "theatre",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.97667,
+   "lon": -93.275581,
+   "buildingId": "state-theatre-156912879"
+  },
+  {
+   "id": "poi-w156964015",
+   "name": "American Academy of Neurology",
+   "category": "association",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.977727,
+   "lon": -93.256437,
+   "website": "https://www.aan.com",
+   "buildingId": "riverfront-municipal-parking-ramp-99717608",
+   "nearby": true,
+   "logo": "aan-com"
+  },
+  {
+   "id": "poi-w156974229",
+   "name": "Mackenzie",
+   "category": "bar",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.97632,
+   "lon": -93.277624,
+   "openingHours": "Mo-Su 11:00-01:00",
+   "buildingId": "orpheum-theatre-41763764",
+   "nearby": true
+  },
+  {
+   "id": "building-cowboy-jacks-157031168",
+   "name": "Cowboy Jack's",
+   "category": "restaurant",
+   "kind": "building",
+   "group": "food",
+   "lat": 44.981215,
+   "lon": -93.274414,
+   "buildingId": "cowboy-jacks-157031168"
+  },
+  {
+   "id": "building-mill-city-museum-157035918",
+   "name": "Mill City Museum",
+   "category": "museum",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.978877,
+   "lon": -93.257081,
+   "buildingId": "mill-city-museum-157035918"
+  },
+  {
+   "id": "poi-w240869821",
+   "name": "Gulfeagle Supply",
+   "category": "roofer",
+   "kind": "craft",
+   "group": "other",
+   "lat": 44.980587,
+   "lon": -93.291448,
+   "website": "https://www.gulfeaglesupply.com/",
+   "buildingId": "jobbers-warehouse-supply-inc-240869855",
+   "nearby": true,
+   "logo": "gulfeaglesupply-com"
+  },
+  {
+   "id": "building-jobbers-warehouse-supply-inc-240869855",
+   "name": "Jobbers Warehouse Supply Inc",
+   "category": "car_parts",
+   "kind": "building",
+   "group": "other",
+   "lat": 44.981065,
+   "lon": -93.289993,
+   "buildingId": "jobbers-warehouse-supply-inc-240869855"
+  },
+  {
+   "id": "poi-w265230951",
+   "name": "Jungle Red",
+   "category": "hairdresser",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.969311,
+   "lon": -93.279797,
+   "buildingId": "loring-parking-ramp-612097599",
+   "nearby": true
+  },
+  {
+   "id": "poi-w287798005",
+   "name": "Caribou Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.98372,
+   "lon": -93.278831,
+   "buildingId": "ford-center-29060527",
+   "nearby": true,
+   "website": "https://www.cariboucoffee.com/",
+   "logo": "cariboucoffee-com"
+  },
+  {
+   "id": "poi-w316003609",
+   "name": "Lehman's Garage",
+   "category": "car_repair",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.972884,
+   "lon": -93.263367,
+   "website": "https://lehmansgarage.com/",
+   "buildingId": "hcmc-purple-parking-ramp-27346755",
+   "nearby": true
+  },
+  {
+   "id": "poi-w316003610",
+   "name": "House of Charity Food Centre",
+   "category": "social_facility",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.972663,
+   "lon": -93.263489,
+   "website": "https://www.houseofcharity.org/",
+   "buildingId": "red-building-143058259",
+   "nearby": true
+  },
+  {
+   "id": "poi-w461219672",
+   "name": "Lumen Technologies Building",
+   "category": "company",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.977655,
+   "lon": -93.266693,
+   "buildingId": "mcknight-building-41763761",
+   "nearby": true
+  },
+  {
+   "id": "poi-w723284482",
+   "name": "The Office Pub & Grill",
+   "category": "pub",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.984549,
+   "lon": -93.273196,
+   "website": "https://theofficepubandgrill.com/",
+   "buildingId": "deja-vu-89080678",
+   "nearby": true
+  },
+  {
+   "id": "building-minneapolis-public-service-building-746039475",
+   "name": "Minneapolis Public Service Building",
+   "category": "government",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.975868,
+   "lon": -93.265187,
+   "buildingId": "minneapolis-public-service-building-746039475"
+  },
+  {
+   "id": "poi-w916054575",
+   "name": "Abiitan Mill City",
+   "category": "social_facility",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.980497,
+   "lon": -93.261139,
+   "website": "https://ecumen.org/abiitan-mill-city/",
+   "buildingId": "residence-inn-at-the-depot-48816164",
+   "nearby": true,
+   "logo": "ecumen-org"
+  },
+  {
+   "id": "poi-w1008131991",
+   "name": "Candyland",
+   "category": "confectionery",
+   "kind": "shop",
+   "group": "food",
+   "lat": 44.977273,
+   "lon": -93.273954,
+   "buildingId": "the-royal-sonesta-minneapolis-downtown-1393159125",
+   "nearby": true
+  },
+  {
+   "id": "poi-w1064683435",
+   "name": "Hideaway Cabin Bar",
+   "category": "bar",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.984273,
+   "lon": -93.254234,
+   "openingHours": "Mo off; Tu-Th 16:00-21:00; Fr 16:00-22:00; Sa 12:00-22:00; Su 12:00-21:00",
+   "buildingId": "minneapolis-event-centers-92905847",
+   "nearby": true
+  },
+  {
+   "id": "building-graze-food-hall-by-travail-1223123290",
+   "name": "Graze Food Hall by Travail",
+   "category": "food_court",
+   "kind": "building",
+   "group": "food",
+   "lat": 44.985057,
+   "lon": -93.277126,
+   "buildingId": "graze-food-hall-by-travail-1223123290"
+  },
+  {
+   "id": "poi-w1284960758",
+   "name": "Greenway Liquor",
+   "category": "alcohol",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.96951,
+   "lon": -93.279881,
+   "level": "0",
+   "buildingId": "loring-parking-ramp-612097599",
+   "nearby": true
+  },
+  {
+   "id": "poi-w1295109277",
+   "name": "Ping's Szechuan Bar & Grill",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.96878,
+   "lon": -93.277507,
+   "level": "0",
+   "openingHours": "Mo-Th 11:00-22:00; Fr 11:00-23:00; Sa 12:00-23:00; Su 12:00-21:00",
+   "website": "https://pingsmpls.com",
+   "buildingId": "minneapolis-convention-center-42837791",
+   "nearby": true,
+   "logo": "pingsmpls-com"
+  },
+  {
+   "id": "poi-w1327589443",
+   "name": "Rainbow Road",
+   "category": "clothes",
+   "kind": "shop",
+   "group": "other",
+   "lat": 44.969565,
+   "lon": -93.280001,
+   "openingHours": "Mo-Sa 10:00-20:00; Su 10:00-18:00",
+   "buildingId": "loring-parking-ramp-612097599",
+   "nearby": true
+  },
+  {
+   "id": "building-murrays-1334632160",
+   "name": "Murray's",
+   "category": "restaurant",
+   "kind": "building",
+   "group": "food",
+   "lat": 44.978601,
+   "lon": -93.272386,
+   "buildingId": "murrays-1334632160"
+  },
+  {
+   "id": "poi-w1336995865",
+   "name": "Twin Cities Pride",
+   "category": "social_facility",
+   "kind": "amenity",
+   "group": "other",
+   "lat": 44.971492,
+   "lon": -93.285758,
+   "website": "https://tcpride.org",
+   "buildingId": "kopp-hall-89061932",
+   "nearby": true,
+   "logo": "tcpride-org"
+  },
+  {
+   "id": "poi-w1352475557",
+   "name": "RE/MAX",
+   "category": "estate_agent",
+   "kind": "office",
+   "group": "other",
+   "lat": 44.972209,
+   "lon": -93.285909,
+   "website": "https://results.net/offices/minneapolis-loring-park/99",
+   "buildingId": "kopp-hall-89061932",
+   "nearby": true,
+   "logo": "results-net"
+  },
+  {
+   "id": "poi-w1393159268",
+   "name": "Skyway Theatre",
+   "category": "theatre",
+   "kind": "amenity",
+   "group": "landmark",
+   "lat": 44.977365,
+   "lon": -93.274899,
+   "website": "https://skywaytheatre.com",
+   "buildingId": "park-and-shop-ramp-27346580",
+   "nearby": true,
+   "logo": "skywaytheatre-com"
+  },
+  {
+   "id": "poi-w1393673581",
+   "name": "Dudley Riggs Theatre",
+   "category": "theatre",
+   "kind": "amenity",
+   "group": "landmark",
+   "lat": 44.976876,
+   "lon": -93.276847,
+   "website": "https://hennepinarts.org/venues/dudley-riggs-theatre",
+   "buildingId": "lasalle-plaza-461227727",
+   "nearby": true,
+   "logo": "hennepinarts-org"
+  },
+  {
+   "id": "building-minneapolis-central-library-r21107574",
+   "name": "Minneapolis Central Library",
+   "category": "library",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.980488,
+   "lon": -93.270141,
+   "buildingId": "minneapolis-central-library-r21107574"
+  },
+  {
    "id": "poi-622227484",
    "name": "16 St / Hwy 94",
    "category": "bus_stop",
@@ -26733,12 +28065,12 @@
   },
   {
    "id": "poi-622227523",
-   "name": "Hennepin Ave & Laurel Ave (Spruce)",
+   "name": "Hennepin & Laurel Station",
    "category": "bus_stop",
    "kind": "transit",
    "group": "transit",
-   "lat": 44.97384,
-   "lon": -93.282864,
+   "lat": 44.97385,
+   "lon": -93.282824,
    "buildingId": "technical-building-89061902",
    "exterior": true
   },
@@ -26748,8 +28080,8 @@
    "category": "bus_stop",
    "kind": "transit",
    "group": "transit",
-   "lat": 44.97345,
-   "lon": -93.283306,
+   "lat": 44.973526,
+   "lon": -93.283183,
    "buildingId": "technical-building-89061902",
    "exterior": true
   },
@@ -27448,7 +28780,7 @@
   },
   {
    "id": "poi-622227728",
-   "name": "Chicago (Kirby Puckett)",
+   "name": "4th St S & Chicago Ave",
    "category": "bus_stop",
    "kind": "transit",
    "group": "transit",
@@ -27899,7 +29231,7 @@
   },
   {
    "id": "poi-622227907",
-   "name": "2nd Avenue & Washington Avenue",
+   "name": "2nd Ave S & Washington Ave S",
    "category": "bus_stop",
    "kind": "transit",
    "group": "transit",
@@ -28081,7 +29413,7 @@
    "group": "transit",
    "lat": 44.97912,
    "lon": -93.261684,
-   "buildingId": "gateway-municipal-garage-81049104",
+   "buildingId": "residence-inn-at-the-depot-48816164",
    "exterior": true
   },
   {
@@ -28490,6 +29822,16 @@
    "buildingId": "mayo-clinic-square-27346712"
   },
   {
+   "id": "building-minneapolis-marriott-city-center-27346715",
+   "name": "Minneapolis Marriott City Center",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.977641,
+   "lon": -93.273449,
+   "buildingId": "minneapolis-marriott-city-center-27346715"
+  },
+  {
    "id": "landmark-holiday-inn-express-minneapolis-downtown-convention-center-28490028",
    "name": "Holiday Inn Express Minneapolis Downtown Convention Center",
    "category": "hotel",
@@ -28500,6 +29842,36 @@
    "buildingId": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035"
   },
   {
+   "id": "building-hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
+   "name": "Hotel Ivy, a Luxury Collection Hotel, Minneapolis",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.9714,
+   "lon": -93.272753,
+   "buildingId": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035"
+  },
+  {
+   "id": "building-hilton-minneapolis-28490639",
+   "name": "Hilton Minneapolis",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.972641,
+   "lon": -93.273054,
+   "buildingId": "hilton-minneapolis-28490639"
+  },
+  {
+   "id": "building-rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
+   "name": "Rand Tower Hotel, Minneapolis, a Tribute Portfolio Hotel",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.977323,
+   "lon": -93.269541,
+   "buildingId": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581"
+  },
+  {
    "id": "landmark-central-lutheran-church-43346042",
    "name": "Central Lutheran Church",
    "category": "venue",
@@ -28508,6 +29880,16 @@
    "lat": 44.96947,
    "lon": -93.271046,
    "buildingId": "minneapolis-convention-center-42837791"
+  },
+  {
+   "id": "building-united-states-courthouse-and-federal-building-44684856",
+   "name": "United States Courthouse and Federal Building",
+   "category": "government",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.978275,
+   "lon": -93.264625,
+   "buildingId": "united-states-courthouse-and-federal-building-44684856"
   },
   {
    "id": "landmark-doubletree-suites-by-hilton-hotel-minneapolis-45066437",
@@ -28550,14 +29932,34 @@
    "buildingId": "100-washington-square-44164776"
   },
   {
-   "id": "landmark-residence-inn-at-the-depot-48816164",
+   "id": "building-residence-inn-at-the-depot-48816164",
    "name": "Residence Inn at the Depot",
    "category": "hotel",
-   "kind": "landmark",
+   "kind": "building",
    "group": "hotel",
-   "lat": 44.979833,
-   "lon": -93.261376,
-   "buildingId": "gateway-municipal-garage-81049104"
+   "lat": 44.979795,
+   "lon": -93.26135,
+   "buildingId": "residence-inn-at-the-depot-48816164"
+  },
+  {
+   "id": "building-radisson-red-minneapolis-downtown-60613336",
+   "name": "Radisson RED Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.976851,
+   "lon": -93.260515,
+   "buildingId": "radisson-red-minneapolis-downtown-60613336"
+  },
+  {
+   "id": "building-emery-autograph-collection-62006964",
+   "name": "Emery, Autograph Collection",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.978245,
+   "lon": -93.26691,
+   "buildingId": "emery-autograph-collection-62006964"
   },
   {
    "id": "landmark-normandy-inn-suites-63619638",
@@ -28578,6 +29980,26 @@
    "lat": 44.970249,
    "lon": -93.269924,
    "buildingId": "leamington-municipal-ramp-28490447"
+  },
+  {
+   "id": "building-westminster-presbyterian-63821145",
+   "name": "Westminster Presbyterian",
+   "category": "venue",
+   "kind": "building",
+   "group": "landmark",
+   "lat": 44.971314,
+   "lon": -93.276106,
+   "buildingId": "westminster-presbyterian-63821145"
+  },
+  {
+   "id": "building-nicollet-island-inn-80313504",
+   "name": "Nicollet Island Inn",
+   "category": "hotel",
+   "kind": "building",
+   "group": "hotel",
+   "lat": 44.985929,
+   "lon": -93.260494,
+   "buildingId": "nicollet-island-inn-80313504"
   },
   {
    "id": "landmark-family-justice-center-81049078",
@@ -28630,174 +30052,14 @@
    "buildingId": "two22-44684851"
   },
   {
-   "id": "landmark-hotel-indigo-minneapolis-downtown-156909962",
-   "name": "Hotel Indigo Minneapolis Downtown",
-   "category": "hotel",
-   "kind": "landmark",
-   "group": "hotel",
-   "lat": 44.976282,
-   "lon": -93.269591,
-   "buildingId": "groove-lofts-156909964"
-  },
-  {
-   "id": "landmark-the-chambers-hotel-156974227",
-   "name": "The Chambers Hotel",
-   "category": "hotel",
-   "kind": "landmark",
-   "group": "hotel",
-   "lat": 44.975988,
-   "lon": -93.277054,
-   "buildingId": "fair-school-for-arts-45680534"
-  },
-  {
-   "id": "landmark-fire-station-6-158466775",
-   "name": "Fire Station 6",
-   "category": "government",
+   "id": "landmark-green-building-143056838",
+   "name": "Green Building",
+   "category": "hospital",
    "kind": "landmark",
    "group": "landmark",
-   "lat": 44.967509,
-   "lon": -93.275524,
-   "buildingId": "historic-wesley-center-92810581"
-  },
-  {
-   "id": "landmark-elliot-park-hotel-613598897",
-   "name": "Elliot Park Hotel",
-   "category": "hotel",
-   "kind": "landmark",
-   "group": "hotel",
-   "lat": 44.972064,
-   "lon": -93.266541,
-   "buildingId": "centre-village-44164774"
-  },
-  {
-   "id": "landmark-us-bank-stadium-743461508",
-   "name": "US Bank Stadium",
-   "category": "venue",
-   "kind": "landmark",
-   "group": "landmark",
-   "lat": 44.9734,
-   "lon": -93.25722,
-   "buildingId": "stadium-parking-ramp-40774167"
-  },
-  {
-   "id": "landmark-element-minneapolis-downtown-900175940",
-   "name": "Element Minneapolis Downtown",
-   "category": "hotel",
-   "kind": "landmark",
-   "group": "hotel",
-   "lat": 44.983937,
-   "lon": -93.279362,
-   "buildingId": "t3-723284484"
-  },
-  {
-   "id": "landmark-ac-hotel-by-marriott-minneapolis-downtown-941828949",
-   "name": "AC Hotel by Marriott Minneapolis Downtown",
-   "category": "hotel",
-   "kind": "landmark",
-   "group": "hotel",
-   "lat": 44.980026,
-   "lon": -93.271311,
-   "buildingId": "midtown-parking-ramp-27346722"
-  },
-  {
-   "id": "landmark-target-field-r2203690",
-   "name": "Target Field",
-   "category": "venue",
-   "kind": "landmark",
-   "group": "landmark",
-   "lat": 44.981908,
-   "lon": -93.277638,
-   "buildingId": "5th-street-ramp-b-30062750"
-  },
-  {
-   "id": "building-minneapolis-marriott-city-center-27346715",
-   "name": "Minneapolis Marriott City Center",
-   "category": "hotel",
-   "kind": "building",
-   "group": "hotel",
-   "lat": 44.977641,
-   "lon": -93.273449,
-   "buildingId": "minneapolis-marriott-city-center-27346715"
-  },
-  {
-   "id": "building-hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035",
-   "name": "Hotel Ivy, a Luxury Collection Hotel, Minneapolis",
-   "category": "hotel",
-   "kind": "building",
-   "group": "hotel",
-   "lat": 44.9714,
-   "lon": -93.272753,
-   "buildingId": "hotel-ivy-a-luxury-collection-hotel-minneapolis-28490035"
-  },
-  {
-   "id": "building-hilton-minneapolis-28490639",
-   "name": "Hilton Minneapolis",
-   "category": "hotel",
-   "kind": "building",
-   "group": "hotel",
-   "lat": 44.972641,
-   "lon": -93.273054,
-   "buildingId": "hilton-minneapolis-28490639"
-  },
-  {
-   "id": "building-rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581",
-   "name": "Rand Tower Hotel, Minneapolis, a Tribute Portfolio Hotel",
-   "category": "hotel",
-   "kind": "building",
-   "group": "hotel",
-   "lat": 44.977323,
-   "lon": -93.269541,
-   "buildingId": "rand-tower-hotel-minneapolis-a-tribute-portfolio-hotel-29080581"
-  },
-  {
-   "id": "building-united-states-courthouse-and-federal-building-44684856",
-   "name": "United States Courthouse and Federal Building",
-   "category": "government",
-   "kind": "building",
-   "group": "landmark",
-   "lat": 44.978275,
-   "lon": -93.264625,
-   "buildingId": "united-states-courthouse-and-federal-building-44684856"
-  },
-  {
-   "id": "building-radisson-red-minneapolis-downtown-60613336",
-   "name": "Radisson RED Minneapolis Downtown",
-   "category": "hotel",
-   "kind": "building",
-   "group": "hotel",
-   "lat": 44.976851,
-   "lon": -93.260515,
-   "buildingId": "radisson-red-minneapolis-downtown-60613336"
-  },
-  {
-   "id": "building-emery-autograph-collection-62006964",
-   "name": "Emery, Autograph Collection",
-   "category": "hotel",
-   "kind": "building",
-   "group": "hotel",
-   "lat": 44.978245,
-   "lon": -93.26691,
-   "buildingId": "emery-autograph-collection-62006964"
-  },
-  {
-   "id": "building-westminster-presbyterian-63821145",
-   "name": "Westminster Presbyterian",
-   "category": "venue",
-   "kind": "building",
-   "group": "landmark",
-   "lat": 44.971314,
-   "lon": -93.276106,
-   "buildingId": "westminster-presbyterian-63821145"
-  },
-  {
-   "id": "building-nicollet-island-inn-80313504",
-   "name": "Nicollet Island Inn",
-   "category": "hotel",
-   "kind": "building",
-   "group": "hotel",
-   "lat": 44.985929,
-   "lon": -93.260494,
-   "buildingId": "nicollet-island-inn-80313504"
+   "lat": 44.971351,
+   "lon": -93.260977,
+   "buildingId": "moment-apartments-1222145087"
   },
   {
    "id": "building-orange-building-143056848",
@@ -28840,6 +30102,16 @@
    "buildingId": "plymouth-building-156909952"
   },
   {
+   "id": "landmark-hotel-indigo-minneapolis-downtown-156909962",
+   "name": "Hotel Indigo Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "hotel",
+   "lat": 44.976282,
+   "lon": -93.269591,
+   "buildingId": "groove-lofts-156909964"
+  },
+  {
    "id": "building-the-westin-minneapolis-156912892",
    "name": "The Westin Minneapolis",
    "category": "hotel",
@@ -28848,6 +30120,26 @@
    "lat": 44.977771,
    "lon": -93.270255,
    "buildingId": "the-westin-minneapolis-156912892"
+  },
+  {
+   "id": "landmark-the-chambers-hotel-156974227",
+   "name": "The Chambers Hotel",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "hotel",
+   "lat": 44.975988,
+   "lon": -93.277054,
+   "buildingId": "fair-school-for-arts-45680534"
+  },
+  {
+   "id": "landmark-fire-station-6-158466775",
+   "name": "Fire Station 6",
+   "category": "government",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.967509,
+   "lon": -93.275524,
+   "buildingId": "historic-wesley-center-92810581"
   },
   {
    "id": "building-hampton-inn-suites-minneapolis-downtown-198988798",
@@ -28880,6 +30172,16 @@
    "buildingId": "ambulatory-outpatient-specialty-center-411211095"
   },
   {
+   "id": "landmark-elliot-park-hotel-613598897",
+   "name": "Elliot Park Hotel",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "hotel",
+   "lat": 44.972064,
+   "lon": -93.266541,
+   "buildingId": "centre-village-44164774"
+  },
+  {
    "id": "building-rbc-gateway-733105254",
    "name": "RBC Gateway",
    "category": "hotel",
@@ -28888,6 +30190,36 @@
    "lat": 44.981588,
    "lon": -93.26905,
    "buildingId": "rbc-gateway-733105254"
+  },
+  {
+   "id": "landmark-us-bank-stadium-743461508",
+   "name": "US Bank Stadium",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.9734,
+   "lon": -93.25722,
+   "buildingId": "stadium-parking-ramp-40774167"
+  },
+  {
+   "id": "landmark-element-minneapolis-downtown-900175940",
+   "name": "Element Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "hotel",
+   "lat": 44.983937,
+   "lon": -93.279362,
+   "buildingId": "t3-723284484"
+  },
+  {
+   "id": "landmark-ac-hotel-by-marriott-minneapolis-downtown-941828949",
+   "name": "AC Hotel by Marriott Minneapolis Downtown",
+   "category": "hotel",
+   "kind": "landmark",
+   "group": "hotel",
+   "lat": 44.980026,
+   "lon": -93.271311,
+   "buildingId": "midtown-parking-ramp-27346722"
   },
   {
    "id": "building-the-royal-sonesta-minneapolis-downtown-1393159125",
@@ -28900,6 +30232,16 @@
    "buildingId": "the-royal-sonesta-minneapolis-downtown-1393159125"
   },
   {
+   "id": "landmark-target-field-r2203690",
+   "name": "Target Field",
+   "category": "venue",
+   "kind": "landmark",
+   "group": "landmark",
+   "lat": 44.981908,
+   "lon": -93.277638,
+   "buildingId": "5th-street-ramp-b-30062750"
+  },
+  {
    "id": "building-minneapolis-city-hall-r4503577",
    "name": "Minneapolis City Hall",
    "category": "government",
@@ -28908,6 +30250,96 @@
    "lat": 44.977272,
    "lon": -93.26555,
    "buildingId": "minneapolis-city-hall-r4503577"
+  },
+  {
+   "id": "poi-x-spyhouse-emery",
+   "name": "Spyhouse Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.978245,
+   "lon": -93.26691,
+   "buildingId": "emery-autograph-collection-62006964",
+   "openingHours": "Mo-Tu 06:30-17:00; We-Su 06:30-19:00",
+   "hoursSource": "https://spyhousecoffee.com/pages/cafes",
+   "hoursCheckedOn": "2026-08-22",
+   "website": "https://spyhousecoffee.com/pages/cafes",
+   "logo": "spyhousecoffee-com"
+  },
+  {
+   "id": "poi-x-aurora-marriott-city-center",
+   "name": "Aurora Restaurant & Bar",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.977641,
+   "lon": -93.273449,
+   "buildingId": "minneapolis-marriott-city-center-27346715"
+  },
+  {
+   "id": "poi-x-socca-rbc-gateway",
+   "name": "Socca Café",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.981588,
+   "lon": -93.26905,
+   "buildingId": "rbc-gateway-733105254",
+   "openingHours": "Mo-Fr 07:00-17:00",
+   "hoursSource": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/",
+   "hoursCheckedOn": "2026-08-23",
+   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/",
+   "logo": "fourseasons-com"
+  },
+  {
+   "id": "poi-x-mara-rbc-gateway",
+   "name": "Mara",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.981588,
+   "lon": -93.26905,
+   "buildingId": "rbc-gateway-733105254",
+   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/mara/",
+   "logo": "fourseasons-com"
+  },
+  {
+   "id": "poi-x-bep-eatery-fifth-street-towers",
+   "name": "Bep Eatery",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.978238,
+   "lon": -93.268411,
+   "buildingId": "fifth-street-towers-29080597",
+   "openingHours": "Mo-Fr 11:00-14:00",
+   "hoursSource": "https://bepeatery.com/",
+   "hoursCheckedOn": "2026-08-23",
+   "website": "https://bepeatery.com/",
+   "logo": "bepeatery-com"
+  },
+  {
+   "id": "poi-x-123-sushi-ids-center",
+   "name": "123 Sushi",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.976079,
+   "lon": -93.27201,
+   "buildingId": "ids-center-1385236413"
+  },
+  {
+   "id": "poi-x-sushi-takatsu-733-building",
+   "name": "Sushi Takatsu",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.975516,
+   "lon": -93.271044,
+   "buildingId": "733-building-126116972",
+   "openingHours": "Mo-Th 10:30-14:45; Fr 10:30-14:30",
+   "hoursSource": "https://mspmag.com/eat-and-drink/foodie/hidden-gems-sushi-takatsu/",
+   "hoursCheckedOn": "2026-08-23"
   }
  ],
  "indoorLinks": [
@@ -34769,16 +36201,20 @@
      44.978891
     ],
     [
-     -93.262943,
-     44.978859
+     -93.26293,
+     44.978861
     ],
     [
-     -93.263211,
-     44.978558
+     -93.263191,
+     44.978562
     ],
     [
-     -93.262757,
-     44.978369
+     -93.262842,
+     44.97841
+    ],
+    [
+     -93.262751,
+     44.97837
     ],
     [
      -93.262792,

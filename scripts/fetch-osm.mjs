@@ -36,6 +36,7 @@ import {
   groupFor,
   MARKED_BUILDING_CATEGORIES,
   resolvePoiHost,
+  venuePoiFromBuilding,
 } from "../src/poi.ts";
 import { parseOpeningHours } from "../src/opening-hours.ts";
 
@@ -53,6 +54,17 @@ const MIRRORS = process.env.OVERPASS_URL
       "https://overpass.kumi.systems/api/interpreter",
       "https://overpass.private.coffee/api/interpreter",
     ];
+
+// The tag families a place can be described by. Held as constants because
+// the same families have to be asked for twice -- once as nodes, once as
+// areas -- and the two lists drifting apart is precisely the bug this
+// pipeline already had: the node query knew about music schools and
+// churches while the area query didn't, so a courthouse someone had drawn
+// as an outline stayed invisible for the same reason Murray's did.
+const AMENITY = "cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|stripclub|car_rental|bicycle_rental|bureau_de_change|childcare|kindergarten|school|college|university|music_school|driving_school|marketplace|animal_boarding|studio|prison";
+const LEISURE = "fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game|park|garden";
+const TOURISM = "attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house|information";
+const HISTORIC = "memorial|monument|sign|ruins|archaeological_site|building";
 
 const QUERY = `
 [out:json][timeout:90];
@@ -75,15 +87,15 @@ relation["building"]["name"](${BBOX});
 out body;
 >;
 out skel qt;
-node["amenity"~"^(cafe|restaurant|fast_food|bar|pub|ice_cream|food_court|bank|pharmacy|clinic|doctors|dentist|veterinary|post_office|theatre|cinema|library|townhall|courthouse|place_of_worship|arts_centre|community_centre|social_facility|events_venue|conference_centre|nightclub|casino|stripclub|car_rental|bicycle_rental|bureau_de_change|childcare|kindergarten|school|college|university|music_school|driving_school|marketplace|animal_boarding|studio|prison)$"]["name"](${BBOX});
+node["amenity"~"^(${AMENITY})$"]["name"](${BBOX});
 out body;
 node["shop"]["name"](${BBOX});
 out body;
-node["leisure"~"^(fitness_centre|bowling_alley|sports_centre|amusement_arcade|dance|escape_game|park|garden)$"]["name"](${BBOX});
+node["leisure"~"^(${LEISURE})$"]["name"](${BBOX});
 out body;
 node["amenity"="toilets"](${BBOX});
 out body;
-node["tourism"~"^(attraction|museum|artwork|gallery|viewpoint|hotel|hostel|motel|guest_house|information)$"]["name"](${BBOX});
+node["tourism"~"^(${TOURISM})$"]["name"](${BBOX});
 out body;
 // Named offices and healthcare practices: a skyway walker looking for "the
 // Hyatt" is doing the same thing as one looking for a law firm or a clinic
@@ -98,7 +110,7 @@ out body;
 // Grain Belt sign is a Minneapolis landmark people navigate by.
 node["craft"]["name"](${BBOX});
 out body;
-node["historic"~"^(memorial|monument|sign|ruins|archaeological_site|building)$"]["name"](${BBOX});
+node["historic"~"^(${HISTORIC})$"]["name"](${BBOX});
 out body;
 node["highway"="bus_stop"]["name"](${BBOX});
 out body;
@@ -106,6 +118,33 @@ node["railway"~"^(station|tram_stop)$"]["name"](${BBOX});
 out body;
 node["highway"="elevator"](${BBOX});
 out body;
+// The same tag families as areas rather than points. A place is mapped as a
+// way or a relation whenever someone drew its outline instead of dropping a
+// pin, which is an accident of who mapped it, not a difference in kind:
+// Mocha Momma's, Vitali's Cafe, the Marquette Hotel and Spoonbridge and
+// Cherry were all invisible for that reason alone. An 'out center' gives a
+// representative point without downloading the member nodes; ways that also
+// carry a building tag are handled by venuePoiFromBuilding instead, off the
+// footprint we already fetch.
+(
+  way["amenity"~"^(${AMENITY})$"]["name"](${BBOX});
+  way["shop"]["name"](${BBOX});
+  way["leisure"~"^(${LEISURE})$"]["name"](${BBOX});
+  way["tourism"~"^(${TOURISM})$"]["name"](${BBOX});
+  way["historic"~"^(${HISTORIC})$"]["name"](${BBOX});
+  way["office"]["name"](${BBOX});
+  way["healthcare"]["name"](${BBOX});
+  way["craft"]["name"](${BBOX});
+  relation["amenity"~"^(${AMENITY})$"]["name"](${BBOX});
+  relation["shop"]["name"](${BBOX});
+  relation["leisure"~"^(${LEISURE})$"]["name"](${BBOX});
+  relation["tourism"~"^(${TOURISM})$"]["name"](${BBOX});
+  relation["historic"~"^(${HISTORIC})$"]["name"](${BBOX});
+  relation["office"]["name"](${BBOX});
+  relation["healthcare"]["name"](${BBOX});
+  relation["craft"]["name"](${BBOX});
+);
+out center tags;
 `;
 
 // How far outside every footprint a business can sit and still be attached
@@ -402,6 +441,7 @@ async function main(osm) {
   const ways = [];
   const buildingsRaw = [];
   const poiNodes = [];
+  const areaPois = []; // venues someone outlined instead of pinning
   const waysById = new Map(); // every way, tagged or skeleton — relation members resolve here
   const relationsRaw = [];
 
@@ -420,10 +460,26 @@ async function main(osm) {
         poiNodes.push(el);
       }
     } else if (el.type === "way") {
-      waysById.set(el.id, el);
-      if (el.tags?.building && el.tags?.name) buildingsRaw.push(el);
-      else if (el.tags?.highway) ways.push(el);
-    } else if (el.type === "relation" && el.tags?.building && el.tags?.name) relationsRaw.push(el);
+      // `out center` emits a second, geometry-free copy of any way that also
+      // matched an earlier `out body` statement. Letting that copy win would
+      // strip a building of the ring its footprint is built from, so only a
+      // way that actually carries nodes may replace what's already indexed.
+      if (el.nodes) {
+        waysById.set(el.id, el);
+        if (el.tags?.building && el.tags?.name) buildingsRaw.push(el);
+        else if (el.tags?.highway) ways.push(el);
+      } else if (el.center && el.tags?.name && !el.tags.building) {
+        areaPois.push({ ref: `w${el.id}`, lat: el.center.lat, lon: el.center.lon, tags: el.tags });
+      }
+    } else if (el.type === "relation") {
+      // Same rule as ways: `out center` re-emits a memberless copy, and
+      // pushing that into relationsRaw would stitch an empty ring. It comes
+      // to nothing today only because stitchOuterRing returns null for it.
+      if (el.members && el.tags?.building && el.tags?.name) relationsRaw.push(el);
+      else if (el.center && el.tags?.name && !el.tags.building) {
+        areaPois.push({ ref: `r${el.id}`, lat: el.center.lat, lon: el.center.lon, tags: el.tags });
+      }
+    }
   }
 
   // Buildings mapped as multipolygon relations: stitch outer members into a
@@ -446,6 +502,11 @@ async function main(osm) {
 
   // Building records with footprints.
   const wikidataByBuildingId = new Map();
+  // A building way often carries the business it houses on its own tags
+  // (see venuePoiFromBuilding). The building record deliberately doesn't
+  // keep them -- they'd be written to the dataset -- so hold them here for
+  // the POI pass.
+  const venueSourceByBuildingId = new Map();
   const buildings = buildingsRaw
     .map((w) => {
       const ring = w.nodes.map((id) => nodes.get(id)).filter(Boolean);
@@ -454,6 +515,11 @@ async function main(osm) {
       const c = centroid(fp);
       const id = `${slugify(w.tags.name)}-${w.id}`;
       if (w.tags.wikidata) wikidataByBuildingId.set(id, w.tags.wikidata);
+      // Relations already arrive with an `r` prefix; ways are bare numbers.
+      venueSourceByBuildingId.set(id, {
+        ref: typeof w.id === "number" ? `w${w.id}` : String(w.id),
+        tags: w.tags,
+      });
       // opening_hours:skyway describes the skyway level specifically (what
       // we route through) and is preferred over the building's general
       // opening_hours; both beat the generic schedule when parseable.
@@ -804,6 +870,63 @@ async function main(osm) {
       ...(n.tags["brand:wikidata"] ? { brandWikidata: n.tags["brand:wikidata"] } : {}),
     });
   }
+  // Businesses declared by a building's own tags rather than by a node
+  // inside it. Hosted through resolvePoiHost like any other POI: the
+  // centroid sits inside its own footprint, so a network building hosts its
+  // own venue, and one off the network falls back to a neighbour within
+  // MAX_NEARBY_POI_METERS exactly as a node there would.
+  // Venues mapped as their own area. Same derivation as the building case --
+  // the category argument is what gates it, and an area POI has no building
+  // category to be marked under, so "" lets every one through.
+  const markedBuildingNames = new Set(
+    buildings.filter((b) => MARKED_BUILDING_CATEGORIES.has(b.category)).map((b) => b.name),
+  );
+  let venuesFromAreas = 0;
+  for (const a of areaPois) {
+    // A marked building's marker is suppressed when a POI of its own name
+    // already exists (see the marking loop below). An area drawn over a
+    // hotel and named after it would trip that and cost the building its
+    // pin -- the failure the previous release exists to prevent. Nothing in
+    // OSM does this today; nothing stopped it either.
+    if (markedBuildingNames.has(a.tags.name)) continue;
+    const venue = venuePoiFromBuilding(a.tags, a.ref, a.lat, a.lon, "");
+    if (!venue) continue;
+    const host = resolvePoiHost(a.lat, a.lon, finalBuildings, MAX_NEARBY_POI_METERS);
+    if (!host) continue;
+    if (host.nearby) nearbyHosted++;
+    pois.push({ ...venue, buildingId: host.building.id, ...(host.nearby ? { nearby: true } : {}) });
+    venuesFromAreas++;
+  }
+  console.log(`Venues read from mapped areas: ${venuesFromAreas}.`);
+
+  let venuesFromBuildings = 0;
+  for (const b of buildings) {
+    const src = venueSourceByBuildingId.get(b.id);
+    if (!src) continue;
+    const venue = venuePoiFromBuilding(src.tags, src.ref, b.lat, b.lon, b.category);
+    if (!venue) continue;
+    const host = resolvePoiHost(b.lat, b.lon, finalBuildings, MAX_NEARBY_POI_METERS);
+    if (!host) continue;
+    // A single-tenant building -- Murray's, Cowboy Jack's, the Government
+    // Center -- names its venue exactly what it names itself. Emitting an
+    // ordinary POI there puts two identically named records on the map and
+    // two identical rows in search, the duplication 1.8 removed for marked
+    // buildings. So it becomes the building's own marker instead, carrying
+    // the venue's category rather than the building's: kind "building" is
+    // what search, the building card and landmarkNear already know to
+    // special-case, while category "restaurant" is what puts a steakhouse
+    // under the Food chip.
+    if (venue.name === b.name && host.building.id === b.id) {
+      pois.push(buildingMarker({ ...b, category: venue.category }, b.id, mainComponent.has(b.id)));
+      venuesFromBuildings++;
+      continue;
+    }
+    if (host.nearby) nearbyHosted++;
+    pois.push({ ...venue, buildingId: host.building.id, ...(host.nearby ? { nearby: true } : {}) });
+    venuesFromBuildings++;
+  }
+  console.log(`Venues read from building tags: ${venuesFromBuildings}.`);
+
   await attachLogos(pois);
 
   // Transit stops: street-level, attached to the nearest network building
