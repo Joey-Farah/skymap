@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-08-23T11:45:44.027Z"
+  "generated": "2026-08-23T11:50:11.328Z"
  },
  "buildings": [
   {
@@ -30110,6 +30110,84 @@
    "lat": 44.977272,
    "lon": -93.26555,
    "buildingId": "minneapolis-city-hall-r4503577"
+  },
+  {
+   "id": "poi-x-spyhouse-emery",
+   "name": "Spyhouse Coffee",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.978245,
+   "lon": -93.26691,
+   "buildingId": "emery-autograph-collection-62006964",
+   "openingHours": "Mo-Tu 06:30-17:00; We-Su 06:30-19:00",
+   "website": "https://spyhousecoffee.com/pages/cafes"
+  },
+  {
+   "id": "poi-x-aurora-marriott-city-center",
+   "name": "Aurora Restaurant & Bar",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.977641,
+   "lon": -93.273449,
+   "buildingId": "minneapolis-marriott-city-center-27346715"
+  },
+  {
+   "id": "poi-x-socca-rbc-gateway",
+   "name": "Socca Café",
+   "category": "cafe",
+   "kind": "amenity",
+   "group": "coffee",
+   "lat": 44.981588,
+   "lon": -93.26905,
+   "buildingId": "rbc-gateway-733105254",
+   "openingHours": "Mo-Fr 07:00-17:00",
+   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/socca/"
+  },
+  {
+   "id": "poi-x-mara-rbc-gateway",
+   "name": "Mara",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.981588,
+   "lon": -93.26905,
+   "buildingId": "rbc-gateway-733105254",
+   "website": "https://www.fourseasons.com/minneapolis/dining/restaurants/mara/"
+  },
+  {
+   "id": "poi-x-bep-eatery-fifth-street-towers",
+   "name": "Bep Eatery",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.978238,
+   "lon": -93.268411,
+   "buildingId": "fifth-street-towers-29080597",
+   "openingHours": "Mo-Fr 11:00-14:00",
+   "website": "https://bepeatery.com/"
+  },
+  {
+   "id": "poi-x-123-sushi-ids-center",
+   "name": "123 Sushi",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.976079,
+   "lon": -93.27201,
+   "buildingId": "ids-center-1385236413"
+  },
+  {
+   "id": "poi-x-sushi-takatsu-733-building",
+   "name": "Sushi Takatsu",
+   "category": "restaurant",
+   "kind": "amenity",
+   "group": "food",
+   "lat": 44.975516,
+   "lon": -93.271044,
+   "buildingId": "733-building-126116972",
+   "openingHours": "Mo-Th 10:30-14:45; Fr 10:30-14:30"
   }
  ],
  "indoorLinks": [
