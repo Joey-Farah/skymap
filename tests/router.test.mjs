@@ -19,6 +19,7 @@ import {
   walkedPrefix,
   withApproach,
 } from "../src/router.ts";
+import { landmarkNear, MARKED_BUILDING_CATEGORIES } from "../src/poi.ts";
 import { closingSoonWarnings, isClosingSoon, isOpenAt, nextOccurrence, statusAt } from "../src/hours.ts";
 import { encodeRouteState, feedbackUrl, parseRouteState, reportIssueUrl } from "../src/share.ts";
 
@@ -551,6 +552,32 @@ test("route state round-trips through the URL", () => {
 // --- Live dataset (whatever the app currently ships) ----------------------
 
 const live = JSON.parse(readFileSync(join(ROOT, "public/data/skymap-data.json"), "utf8"));
+
+test("every pin-worthy building is actually marked", () => {
+  // The bug this guards: pins are drawn only from the POI layer, so a
+  // building with no POI inside it is invisible to anyone tapping a
+  // category chip — it renders as a polygon plus a label that needs zoom
+  // 16.4. All 14 hotel buildings were on-network and none carried a pin in
+  // its own name, which is how "the Marriott City Center is not marked"
+  // reached the feedback form while the Marriott sat right here, routable,
+  // with three skyway edges.
+  const names = new Set(live.pois.map((p) => p.name));
+  const unmarked = live.buildings
+    .filter((b) => MARKED_BUILDING_CATEGORIES.has(b.category) && !names.has(b.name))
+    .map((b) => `${b.category}: ${b.name}`);
+  assert.deepEqual(unmarked, [], "these buildings would be invisible under their own chip");
+});
+
+test("a marked building never becomes its own wayfinding cue", () => {
+  // Paired with the filter in landmarkNear. If a marker ever loses its
+  // kind, turns would start naming the building the walker is standing in.
+  for (const p of live.pois) {
+    if (!p.id.startsWith("building-")) continue;
+    assert.equal(p.kind, "building", `${p.name} lost its kind and would become a cue`);
+    assert.equal(p.buildingId, p.id.slice("building-".length), `${p.name} should host itself`);
+    assert.equal(landmarkNear(live.pois, p.buildingId)?.name === p.name, false, `${p.name} cues itself`);
+  }
+});
 
 test("live dataset is internally consistent", () => {
   const ids = new Set(live.buildings.map((b) => b.id));

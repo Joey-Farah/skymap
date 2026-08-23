@@ -1,0 +1,7 @@
+Hotels are on the map now.
+
+Downtown's skyway-connected hotels — the Marriott City Center, the Westin, the Hilton, the Royal Sonesta and ten more — were in SkyMap all along: searchable, routable, connected. They just had no pin. Turn on Hotels and they were the one kind of place that didn't appear, which is a strange way to find out your hotel is in the app.
+
+They have pins now, and so do the buildings that were quiet for the same reason: HCMC's Orange, Purple and Red buildings, the Ambulatory Outpatient Specialty Center, City Hall, the federal courthouse, and Westminster Presbyterian. Twenty buildings in all.
+
+Thanks to the reader who wrote in about the Marriott. That report found a whole class of missing pins, not just one.
