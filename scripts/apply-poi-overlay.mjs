@@ -81,12 +81,29 @@ for (const [id, entry] of Object.entries(overlay.added)) {
   applied++;
 }
 
+// Removals last: a place that is gone should go whether or not it was also
+// curated, and doing it after the adds keeps the two passes independent.
+let removed = 0;
+for (const [id, entry] of Object.entries(overlay.removed ?? {})) {
+  if (id.startsWith("_")) continue;
+  const i = data.pois.findIndex((p) => p.id === id);
+  if (i === -1) {
+    // Not a problem: OSM catching up and dropping it itself is the outcome
+    // we want. Reported so the entry can be retired.
+    retirable.push(`${id} (${entry.name}): already absent from the dataset — removal entry is redundant`);
+    continue;
+  }
+  data.pois.splice(i, 1);
+  removed++;
+}
+
 for (const p of problems) console.error(`PROBLEM ${p}`);
 if (retirable.length) {
   console.log(`${retirable.length} overlay ${retirable.length === 1 ? "entry" : "entries"} OSM has caught up with:`);
   for (const r of retirable) console.log(`  - ${r}`);
 }
 console.log(`Curated POIs applied: ${applied} of ${Object.keys(overlay.added).length}.`);
+console.log(`Closed POIs removed: ${removed}.`);
 
 if (problems.length) {
   console.error("Refusing to write with unresolved problems above.");

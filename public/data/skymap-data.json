@@ -3,7 +3,7 @@
   "name": "Minneapolis Skyway (OSM extraction)",
   "source": "OpenStreetMap via Overpass API — © OpenStreetMap contributors, ODbL",
   "disclaimer": "Map data © OpenStreetMap contributors. Hours are typical skyway schedules — verify with each building.",
-  "generated": "2026-08-23T11:50:11.328Z"
+  "generated": "2026-08-23T11:53:49.635Z"
  },
  "buildings": [
   {
@@ -20266,17 +20266,6 @@
    "logo": "thecapitalgrille-com"
   },
   {
-   "id": "poi-2387569338",
-   "name": "The Seville",
-   "category": "stripclub",
-   "kind": "amenity",
-   "group": "other",
-   "lat": 44.978735,
-   "lon": -93.27707,
-   "buildingId": "7th-street-ramp-a-r2100894",
-   "nearby": true
-  },
-  {
    "id": "poi-2427534130",
    "name": "The Brother's Deli",
    "category": "fast_food",
@@ -24101,17 +24090,6 @@
    "logo": "local-fedex-com"
   },
   {
-   "id": "poi-11248557998",
-   "name": "Midwest Motorcycle",
-   "category": "motorcycle",
-   "kind": "shop",
-   "group": "other",
-   "lat": 44.984009,
-   "lon": -93.27211,
-   "buildingId": "lee-lofts-45758932",
-   "nearby": true
-  },
-  {
    "id": "poi-11248557999",
    "name": "Mitrebox Framing and Gifts",
    "category": "frame",
@@ -26205,16 +26183,6 @@
    "openingHours": "Mo-Fr 09:00-17:00",
    "website": "https://www.taoglas.com/",
    "logo": "taoglas-com"
-  },
-  {
-   "id": "poi-13921306014",
-   "name": "Jack Link's",
-   "category": "company",
-   "kind": "office",
-   "group": "other",
-   "lat": 44.978731,
-   "lon": -93.274427,
-   "buildingId": "mayo-clinic-square-27346712"
   },
   {
    "id": "poi-13965983655",

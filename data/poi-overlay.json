@@ -3,12 +3,12 @@
     "Places OpenStreetMap doesn't carry, and corrections to places it carries wrongly.",
     "",
     "Separate from hours-overlay.json on purpose: that file answers 'when is this open',",
-    "this one answers 'does this exist, and where'. Same discipline though — every entry",
+    "this one answers 'does this exist, and where'. Same discipline though \u2014 every entry",
     "records where it came from and when it was checked, so a stale entry can be",
     "re-verified rather than argued about.",
     "",
     "Applied to public/data/skymap-data.json by scripts/apply-poi-overlay.mjs. Run it",
-    "after every `npm run data:osm`, alongside apply-hours-overlay.mjs — extraction",
+    "after every `npm run data:osm`, alongside apply-hours-overlay.mjs \u2014 extraction",
     "rewrites the dataset and would otherwise drop all of this.",
     "",
     "`added` entries sit at their host building's centroid. We don't have a surveyed",
@@ -16,7 +16,7 @@
     "the building is the honest answer and the only thing routing needs.",
     "",
     "When OSM catches up with an entry, the script reports it as retirable rather than",
-    "emitting a duplicate. Retire it then — the upstream record is the better one.",
+    "emitting a duplicate. Retire it then \u2014 the upstream record is the better one.",
     "",
     "Two independent sources are required before anything lands here, and the operator",
     "wins on conflict. Hotel pages disagree with their own tenants: the Emery listed",
@@ -30,7 +30,10 @@
       "buildingId": "emery-autograph-collection-62006964",
       "openingHours": "Mo-Tu 06:30-17:00; We-Su 06:30-19:00",
       "website": "https://spyhousecoffee.com/pages/cafes",
-      "sources": ["https://spyhousecoffee.com/pages/cafes", "https://www.hotelemery.com/dine/spyhouse/"],
+      "sources": [
+        "https://spyhousecoffee.com/pages/cafes",
+        "https://www.hotelemery.com/dine/spyhouse/"
+      ],
       "checkedOn": "2026-08-22",
       "note": "The report that started this. Emery already carried Giulia, so a foodless-building sweep would never have found it."
     },
@@ -44,10 +47,10 @@
         "https://www.minneapolis.org/directory/aurora-restaurant-bar/"
       ],
       "checkedOn": "2026-08-23",
-      "note": "5th floor. Hours omitted: Aurora runs three services a day (06:30-10:30, 11:00-16:00, 17:00-23:00) and the app renders one interval per day, so the only recordable form would be 06:30-23:00 — which claims it is open across two gaps it is closed. The Marriott City Center is the building 1.7's feedback said was unmarked; it had no food POI either."
+      "note": "5th floor. Hours omitted: Aurora runs three services a day (06:30-10:30, 11:00-16:00, 17:00-23:00) and the app renders one interval per day, so the only recordable form would be 06:30-23:00 \u2014 which claims it is open across two gaps it is closed. The Marriott City Center is the building 1.7's feedback said was unmarked; it had no food POI either."
     },
     "poi-x-socca-rbc-gateway": {
-      "name": "Socca Café",
+      "name": "Socca Caf\u00e9",
       "category": "cafe",
       "kind": "amenity",
       "buildingId": "rbc-gateway-733105254",
@@ -70,7 +73,7 @@
         "https://www.startribune.com/first-look-mara-dips-into-the-mediterranean-at-the-new-four-seasons/600179615"
       ],
       "checkedOn": "2026-08-23",
-      "note": "Hours deliberately absent — not published consistently enough to record. Omitted rather than guessed."
+      "note": "Hours deliberately absent \u2014 not published consistently enough to record. Omitted rather than guessed."
     },
     "poi-x-bep-eatery-fifth-street-towers": {
       "name": "Bep Eatery",
@@ -79,7 +82,10 @@
       "buildingId": "fifth-street-towers-29080597",
       "openingHours": "Mo-Fr 11:00-14:00",
       "website": "https://bepeatery.com/",
-      "sources": ["https://bepeatery.com/", "https://www.minneapolis.org/food-drink/restaurants/skyway-food/"],
+      "sources": [
+        "https://bepeatery.com/",
+        "https://www.minneapolis.org/food-drink/restaurants/skyway-food/"
+      ],
       "checkedOn": "2026-08-23",
       "note": "Skyway level, Ste 210."
     },
@@ -116,6 +122,64 @@
       "what's already been tried rather than re-deriving it.",
       "Broadway Pizza and JR Thai Food (U.S. Bank Plaza), Los Ocampos Express",
       "(City Center / 50 South Sixth). Checked 2026-08-23."
+    ]
+  },
+  "removed": {
+    "_note": [
+      "Places the dataset carries that are not there any more. Removed at apply time",
+      "rather than edited out of skymap-data.json, which extraction rewrites.",
+      "",
+      "A removal needs two sources and a re-check on the day it lands. Removing a real",
+      "place is worse than showing a dead one: a wrong removal is invisible, while a",
+      "dead pin at least gets reported."
+    ],
+    "poi-2387569338": {
+      "name": "The Seville",
+      "reason": "Closed abruptly in March 2026; staff given hours to clear lockers. The club's own site still says 'temporarily closed', but five months on with no reopening, routing someone there is a wasted walk.",
+      "sources": [
+        "https://racketmn.com/sex-news-seville-club-suddenly-closes-sex-world-artifacts-hit-auction-block",
+        "https://bringmethenews.com/minnesota-lifestyle/iconic-minneapolis-strip-club-abruptly-closes"
+      ],
+      "checkedOn": "2026-08-23"
+    },
+    "poi-11248557998": {
+      "name": "Midwest Motorcycle",
+      "reason": "Minneapolis location closed; the operator kept its Myrtle Beach, Sturgis and Daytona stores and shut this one.",
+      "sources": [
+        "https://www.yelp.com/biz/midwest-motorcycle-rental-tours-minneapolis",
+        "https://www.bbb.org/us/mn/minneapolis/profile/motorcycle-dealers/midwest-motorcycle-rental-tours-0704-96017086"
+      ],
+      "checkedOn": "2026-08-23"
+    }
+  },
+  "reverified": {
+    "_note": [
+      "Entries a 2026-08-07 curation pass recorded as broken which re-checking on",
+      "2026-08-23 found to be fine. Kept so the next pass doesn't delete them on the",
+      "strength of the old note. Four of the eight did not survive re-verification --",
+      "which is the argument for re-verifying rather than acting on a fortnight-old list.",
+      "",
+      "poi-9219442092 FedEx Office (IDS Center): recorded as absent from FedEx's own",
+      "locator. It is not -- local.fedex.com lists 80 S 8th St Ste 180 with skyway",
+      "access, current as of July 2026. OPEN.",
+      "",
+      "poi-6780251057 Dreamgirls: recorded as closed. Yelp carries current operating",
+      "hours (We-Sa evenings) as of May 2026. OPEN.",
+      "",
+      "poi-13812237869 Trax: recorded as 'filed under Ford Center but 136 m away'. It",
+      "is 128 m from the centroid and outside the footprint -- and carries nearby:true,",
+      "so the app already says 'nearest skyway access' instead of claiming it is inside.",
+      "Working as designed, not a defect.",
+      "",
+      "poi-12810525201 James & Mary Laurie Booksellers: sources disagree on the address.",
+      "ILAB and ABAA say 250 3rd Ave N Ste 115; Yelp says 933 Marquette. Also carries",
+      "nearby:true. Left in place pending a source that settles it -- not removed on a",
+      "conflict.",
+      "",
+      "poi-5355792471 T-Mobile (IDS Center): not re-verified this pass. Left in place.",
+      "",
+      "The Jack Link's duplicate was real and is fixed in dedupePois instead: identity",
+      "now ignores case and punctuation, so 'Jack Links' and \"Jack Link's\" collapse."
     ]
   }
 }

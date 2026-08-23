@@ -326,3 +326,34 @@ test("a building that is a restaurant is filed under food, not landmarks", () =>
   assert.equal(groupFor("building", "government"), "landmark");
   assert.equal(groupFor("building", "hotel"), "hotel");
 });
+
+test("one place is one place however OSM punctuated it", () => {
+  // Jack Link's is in the dataset twice inside Mayo Clinic Square, 31 m
+  // apart -- well inside the same-building rule that should have collapsed
+  // it. It survived because the two records spell it "Jack Links" and
+  // "Jack Link's", and identity was keyed on the raw string, so they never
+  // met. An apostrophe is not a second concession stand.
+  const kept = dedupePois(
+    [
+      { name: "Jack Links", category: "yes", lat: 44.9795, lon: -93.2762, buildingId: "mayo" },
+      { name: "Jack Link's", category: "company", lat: 44.9797, lon: -93.2764, buildingId: "mayo" },
+    ],
+    25,
+  );
+  assert.equal(kept.length, 1);
+  assert.equal(kept[0].name, "Jack Links");
+});
+
+test("genuinely different names still both survive", () => {
+  // The normalisation only strips punctuation and case; it must not start
+  // merging names that merely resemble each other. Capella Tower really
+  // does hold both of these.
+  const kept = dedupePois(
+    [
+      { name: "Mother Dough", category: "bakery", lat: 44.9772, lon: -93.2712, buildingId: "capella" },
+      { name: "Mother Dough Bakery", category: "bakery", lat: 44.9772, lon: -93.2712, buildingId: "capella" },
+    ],
+    25,
+  );
+  assert.equal(kept.length, 2);
+});

@@ -183,11 +183,19 @@ export function dedupePois<T extends { name: string; category: string; lat: numb
   const kept: T[] = [];
   const byName = new Map<string, T[]>();
   for (const p of pois) {
+    // Identity is keyed on the name as a person reads it, not as OSM typed
+    // it. Jack Link's is in Mayo Clinic Square twice, 31 m apart -- inside
+    // the same-building rule below -- and survived only because one record
+    // spells it "Jack Links" and the other "Jack Link's". Case and
+    // punctuation are the whole difference; the rest of the name still has
+    // to match exactly, so "Mother Dough" and "Mother Dough Bakery" stay
+    // two records, as they should.
+    const key = p.name.toLowerCase().replace(/[^a-z0-9]/g, "");
     if (GENERICALLY_NAMED.has(p.category)) {
       kept.push(p);
       continue;
     }
-    const seen = byName.get(p.name);
+    const seen = byName.get(key);
     // Inside one building the same name is far likelier to be one place
     // mapped twice than two branches, so the cut is wider there. Gold Metal
     // Flour is two 'sign' records 27m apart in Humboldt Annex — past the
@@ -204,7 +212,7 @@ export function dedupePois<T extends { name: string; category: string; lat: numb
       continue;
     if (seen?.some((q) => haversineMeters(p.lat, p.lon, q.lat, q.lon) <= maxMeters)) continue;
     if (seen) seen.push(p);
-    else byName.set(p.name, [p]);
+    else byName.set(key, [p]);
     kept.push(p);
   }
   return kept;
