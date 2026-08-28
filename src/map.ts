@@ -11,7 +11,7 @@ import {
 import { RouteTracker, type Placement } from "./route-position.ts";
 import { routeCoords } from "./route-geometry.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
-import { GROUP_COLORS, isBuildingMarker } from "./poi.ts";
+import { GROUP_COLORS, isBuildingMarker, labelRank } from "./poi.ts";
 import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
@@ -161,6 +161,7 @@ function poisFC(pois: Poi[]): FC {
         id: p.id,
         name: p.name,
         group: p.group,
+        rank: labelRank(p),
       },
       geometry: { type: "Point", coordinates: [p.lon, p.lat] },
     })),
@@ -584,6 +585,9 @@ export class SkymapView {
         "text-padding": 2,
         // A pin without room for its name still shows the pin.
         "text-optional": true,
+        // Who wins the space when not every name fits. Without this the
+        // answer is whatever order the records sit in the data file.
+        "symbol-sort-key": ["get", "rank"],
       },
       paint: {
         "text-color": LABEL_INK,

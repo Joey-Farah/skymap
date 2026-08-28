@@ -101,6 +101,25 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
   elevator: "Elevators",
 };
 
+/**
+ * Placement priority for a POI's name on the map. Lower goes first.
+ *
+ * MapLibre places symbols in sort order and drops whatever no longer fits,
+ * so without a key this is decided by the order records happen to sit in
+ * the data file — which restaurant keeps its name in a crowded block was
+ * an accident of the extractor. Ranking by how much we actually know about
+ * a place makes it a decision, and a stable one: pan away and back and the
+ * same name is still there.
+ *
+ * Hours outrank a website because hours were researched by hand, one place
+ * at a time; a website is a tag that came free with the OSM extract.
+ */
+export function labelRank(poi: Pick<Poi, "openingHours" | "website" | "logo">): number {
+  if (poi.openingHours) return 0;
+  if (poi.website || poi.logo) return 1;
+  return 2;
+}
+
 /** One color per group — shared by the map's pins and the search result
  * icons, so a coffee cup means the same thing wherever you see it. */
 export const GROUP_COLORS: Record<PoiGroup, string> = {
