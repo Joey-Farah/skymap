@@ -12,6 +12,7 @@ import { RouteTracker, type Placement } from "./route-position.ts";
 import { routeCoords } from "./route-geometry.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS, isBuildingMarker } from "./poi.ts";
+import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
 
@@ -54,7 +55,6 @@ const ROUTE = "#e08a00";
 // The platform-conventional "you are here" blue, kept clear of NETWORK so a
 // position never reads as a piece of the skyway drawn under it.
 const LOCATION = "#0a84ff";
-const INK = "#17243a";
 
 /** Use the remote basemap when reachable, else the local fallback. Picks
  * light/dark once at load time, matching the OS preference. */
@@ -161,7 +161,6 @@ function poisFC(pois: Poi[]): FC {
         id: p.id,
         name: p.name,
         group: p.group,
-        color: GROUP_COLORS[p.group] ?? INK,
       },
       geometry: { type: "Point", coordinates: [p.lon, p.lat] },
     })),
@@ -503,8 +502,8 @@ export class SkymapView {
         "text-letter-spacing": 0.02,
       },
       paint: {
-        "text-color": ["case", ["get", "closingSoon"], ROUTE, INK],
-        "text-halo-color": "rgba(255,255,255,0.92)",
+        "text-color": ["case", ["get", "closingSoon"], LABEL_WARNING, LABEL_INK],
+        "text-halo-color": LABEL_HALO,
         "text-halo-width": 1.6,
       },
     });
@@ -591,8 +590,11 @@ export class SkymapView {
         "text-optional": true,
       },
       paint: {
-        "text-color": ["get", "color"],
-        "text-halo-color": "rgba(255,255,255,0.92)",
+        // Ink, not the group's color. The pin above the label already
+        // says which category this is, and says it in a filled shape
+        // rather than in 10.5px letters no one could read in amber.
+        "text-color": LABEL_INK,
+        "text-halo-color": LABEL_HALO,
         "text-halo-width": 1.3,
       },
     });
