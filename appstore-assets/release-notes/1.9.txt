@@ -1,0 +1,9 @@
+Place names you can actually read.
+
+A reader wrote in to say the food places on the map took several passes to make out — and they were right in a way we could measure. Restaurant names were drawn in the same amber as the route line, which against the map behind them is about half the contrast text that size needs. Every name on the map is now drawn in ink instead. Colour still tells you what a place is, but it does it on the pin, where it's a filled shape with a symbol in it rather than ten-point letters.
+
+Fixing that made a second problem obvious: in the busiest blocks the names were piling on top of each other and on top of the pins. Downtown has buildings with half a dozen places inside, and a name like Savouré Vietnamese Eatery was wrapping to three lines across its neighbours. Names are now placed around the pins instead of over them, and they'll shift above, below or beside a pin to find room. The result is a map with more names on it than before, not fewer — a few places that never had room for a label now have one.
+
+When a block still can't fit every name, the choice of which one stays is no longer arbitrary. Places whose opening hours we've checked come first.
+
+Thanks again to the readers writing in. That's two releases running where a single email found something worth fixing.

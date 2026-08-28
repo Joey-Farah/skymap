@@ -11,7 +11,8 @@ import {
 import { RouteTracker, type Placement } from "./route-position.ts";
 import { routeCoords } from "./route-geometry.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
-import { GROUP_COLORS, isBuildingMarker } from "./poi.ts";
+import { GROUP_COLORS, isBuildingMarker, labelRank } from "./poi.ts";
+import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
 
@@ -54,7 +55,6 @@ const ROUTE = "#e08a00";
 // The platform-conventional "you are here" blue, kept clear of NETWORK so a
 // position never reads as a piece of the skyway drawn under it.
 const LOCATION = "#0a84ff";
-const INK = "#17243a";
 
 /** Use the remote basemap when reachable, else the local fallback. Picks
  * light/dark once at load time, matching the OS preference. */
@@ -161,7 +161,7 @@ function poisFC(pois: Poi[]): FC {
         id: p.id,
         name: p.name,
         group: p.group,
-        color: GROUP_COLORS[p.group] ?? INK,
+        rank: labelRank(p),
       },
       geometry: { type: "Point", coordinates: [p.lon, p.lat] },
     })),
@@ -503,8 +503,8 @@ export class SkymapView {
         "text-letter-spacing": 0.02,
       },
       paint: {
-        "text-color": ["case", ["get", "closingSoon"], ROUTE, INK],
-        "text-halo-color": "rgba(255,255,255,0.92)",
+        "text-color": ["case", ["get", "closingSoon"], LABEL_WARNING, LABEL_INK],
+        "text-halo-color": LABEL_HALO,
         "text-halo-width": 1.6,
       },
     });
@@ -547,6 +547,12 @@ export class SkymapView {
     // (cup, bag, person, star…) says what's there without a tap; a plain
     // dot only said "something's here."
     // Transit stops wait for a deeper zoom — 121 of them would swamp the map.
+    //
+    // Pin and name are one symbol, not two layers. As two, the pins set
+    // icon-allow-overlap and so left the collision index entirely, which
+    // meant a name had no idea the pins were there and was painted
+    // straight across them — six restaurants in one building read as a
+    // pile. One symbol gives the pair a single collision box.
     this.map.addLayer({
       id: "skyway-pois",
       type: "symbol",
@@ -556,7 +562,37 @@ export class SkymapView {
       layout: {
         "icon-image": ["concat", "poi-icon-", ["get", "group"]],
         "icon-size": ["interpolate", ["linear"], ["zoom"], 14.8, 0.34, 17, 0.55],
+        // Every pin still draws — a place you can't see is worse than a
+        // name that clips one. But it no longer ignores placement, so it
+        // reserves its space and names get placed around it.
         "icon-allow-overlap": true,
+        "icon-ignore-placement": false,
+        // Names arrive a zoom later than the pins, as they always have.
+        // The step keeps that in one layer instead of two.
+        "text-field": ["step", ["zoom"], "", 15.8, ["get", "name"]],
+        "text-size": 10.5,
+        "text-font": ["Noto Sans Regular"],
+        // Wide rather than tall. At 7 ems "Savouré Vietnamese Eatery" set
+        // three stacked lines whose box swallowed its neighbours; 39% of
+        // POI names wrap past two lines at that width.
+        "text-max-width": 18,
+        // The change that did the real work: try four positions before
+        // giving up. In the worst cluster downtown this both removed the
+        // overlaps and *added* three names that previously never fitted.
+        "text-variable-anchor": ["top", "bottom", "left", "right"],
+        "text-radial-offset": 1.0,
+        "text-justify": "auto",
+        "text-padding": 2,
+        // A pin without room for its name still shows the pin.
+        "text-optional": true,
+        // Who wins the space when not every name fits. Without this the
+        // answer is whatever order the records sit in the data file.
+        "symbol-sort-key": ["get", "rank"],
+      },
+      paint: {
+        "text-color": LABEL_INK,
+        "text-halo-color": LABEL_HALO,
+        "text-halo-width": 1.3,
       },
     });
     this.map.addLayer({
@@ -573,27 +609,6 @@ export class SkymapView {
         "icon-image": "poi-icon-transit",
         "icon-size": 0.4,
         "icon-allow-overlap": true,
-      },
-    });
-    this.map.addLayer({
-      id: "skyway-pois-label",
-      type: "symbol",
-      source: "skyway-pois",
-      minzoom: 15.8,
-      filter: ["!=", ["get", "group"], "transit"],
-      layout: {
-        "text-field": ["get", "name"],
-        "text-size": 10.5,
-        "text-font": ["Noto Sans Regular"],
-        "text-max-width": 7,
-        "text-offset": [0, 0.9],
-        "text-anchor": "top",
-        "text-optional": true,
-      },
-      paint: {
-        "text-color": ["get", "color"],
-        "text-halo-color": "rgba(255,255,255,0.92)",
-        "text-halo-width": 1.3,
       },
     });
 
@@ -887,7 +902,6 @@ export class SkymapView {
       const filter: maplibregl.FilterSpecification =
         nonTransit.length > 0 ? ["in", ["get", "group"], ["literal", nonTransit]] : false;
       this.map.setFilter("skyway-pois", filter);
-      this.map.setFilter("skyway-pois-label", filter);
       this.map.setFilter(
         "skyway-pois-transit",
         groups.includes("transit") ? ["==", ["get", "group"], "transit"] : false,
