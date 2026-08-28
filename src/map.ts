@@ -571,9 +571,17 @@ export class SkymapView {
         "text-field": ["step", ["zoom"], "", 15.8, ["get", "name"]],
         "text-size": 10.5,
         "text-font": ["Noto Sans Regular"],
-        "text-max-width": 7,
-        "text-offset": [0, 0.9],
-        "text-anchor": "top",
+        // Wide rather than tall. At 7 ems "Savouré Vietnamese Eatery" set
+        // three stacked lines whose box swallowed its neighbours; 39% of
+        // POI names wrap past two lines at that width.
+        "text-max-width": 18,
+        // The change that did the real work: try four positions before
+        // giving up. In the worst cluster downtown this both removed the
+        // overlaps and *added* three names that previously never fitted.
+        "text-variable-anchor": ["top", "bottom", "left", "right"],
+        "text-radial-offset": 1.0,
+        "text-justify": "auto",
+        "text-padding": 2,
         // A pin without room for its name still shows the pin.
         "text-optional": true,
       },
