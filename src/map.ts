@@ -546,6 +546,12 @@ export class SkymapView {
     // (cup, bag, person, star…) says what's there without a tap; a plain
     // dot only said "something's here."
     // Transit stops wait for a deeper zoom — 121 of them would swamp the map.
+    //
+    // Pin and name are one symbol, not two layers. As two, the pins set
+    // icon-allow-overlap and so left the collision index entirely, which
+    // meant a name had no idea the pins were there and was painted
+    // straight across them — six restaurants in one building read as a
+    // pile. One symbol gives the pair a single collision box.
     this.map.addLayer({
       id: "skyway-pois",
       type: "symbol",
@@ -555,7 +561,26 @@ export class SkymapView {
       layout: {
         "icon-image": ["concat", "poi-icon-", ["get", "group"]],
         "icon-size": ["interpolate", ["linear"], ["zoom"], 14.8, 0.34, 17, 0.55],
+        // Every pin still draws — a place you can't see is worse than a
+        // name that clips one. But it no longer ignores placement, so it
+        // reserves its space and names get placed around it.
         "icon-allow-overlap": true,
+        "icon-ignore-placement": false,
+        // Names arrive a zoom later than the pins, as they always have.
+        // The step keeps that in one layer instead of two.
+        "text-field": ["step", ["zoom"], "", 15.8, ["get", "name"]],
+        "text-size": 10.5,
+        "text-font": ["Noto Sans Regular"],
+        "text-max-width": 7,
+        "text-offset": [0, 0.9],
+        "text-anchor": "top",
+        // A pin without room for its name still shows the pin.
+        "text-optional": true,
+      },
+      paint: {
+        "text-color": LABEL_INK,
+        "text-halo-color": LABEL_HALO,
+        "text-halo-width": 1.3,
       },
     });
     this.map.addLayer({
@@ -572,30 +597,6 @@ export class SkymapView {
         "icon-image": "poi-icon-transit",
         "icon-size": 0.4,
         "icon-allow-overlap": true,
-      },
-    });
-    this.map.addLayer({
-      id: "skyway-pois-label",
-      type: "symbol",
-      source: "skyway-pois",
-      minzoom: 15.8,
-      filter: ["!=", ["get", "group"], "transit"],
-      layout: {
-        "text-field": ["get", "name"],
-        "text-size": 10.5,
-        "text-font": ["Noto Sans Regular"],
-        "text-max-width": 7,
-        "text-offset": [0, 0.9],
-        "text-anchor": "top",
-        "text-optional": true,
-      },
-      paint: {
-        // Ink, not the group's color. The pin above the label already
-        // says which category this is, and says it in a filled shape
-        // rather than in 10.5px letters no one could read in amber.
-        "text-color": LABEL_INK,
-        "text-halo-color": LABEL_HALO,
-        "text-halo-width": 1.3,
       },
     });
 
@@ -889,7 +890,6 @@ export class SkymapView {
       const filter: maplibregl.FilterSpecification =
         nonTransit.length > 0 ? ["in", ["get", "group"], ["literal", nonTransit]] : false;
       this.map.setFilter("skyway-pois", filter);
-      this.map.setFilter("skyway-pois-label", filter);
       this.map.setFilter(
         "skyway-pois-transit",
         groups.includes("transit") ? ["==", ["get", "group"], "transit"] : false,
