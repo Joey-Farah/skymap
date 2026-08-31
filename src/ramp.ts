@@ -44,8 +44,13 @@ export function clearSavedRamp(store: KeyValueStore): void {
  * "Am I parked in this ramp?" and "where would I join the skyway?" are two
  * different questions with two different budgets — a fix 200m from a ramp
  * is a perfectly good place to start a trip and a terrible reason to offer
- * to remember where you parked. This is the tight one, and it is measured
- * to the footprint, so the far end of a full-block ramp still counts.
+ * to remember where you parked. This is the tight one.
+ *
+ * Measured to the footprint where there is one, so the far end of a traced
+ * full-block ramp still counts. A curated ramp has no footprint and is
+ * measured from its street address instead (see data/parking-overlay.json),
+ * so at an 880-space ramp the far corner can fall outside this — the honest
+ * cost of knowing where a building is without knowing its shape.
  */
 export const AT_RAMP_METERS = 60;
 

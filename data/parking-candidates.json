@@ -8,7 +8,7 @@
   "sources. `footprint` is the traced outline, ready to copy into an overlay entry --",
   "which is the only honest way an overlay entry ever gets one."
  ],
- "generated": "2026-08-31T14:54:48.106Z",
+ "generated": "2026-08-31T15:11:54.258Z",
  "counts": {
   "total": 27,
   "unnamed": 27
@@ -1571,9 +1571,8 @@
     ]
    ],
    "nearest": {
-    "name": "LaSalle Apartments",
-    "id": "lasalle-apartments-461227722",
-    "metres": 54
+    "name": "LaSalle at 10th",
+    "metres": 48
    }
   },
   {

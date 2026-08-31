@@ -49,6 +49,7 @@ test("you can walk out of it -- a findable ramp with no skyway link is worse tha
 test("every curated ramp carries its sources", () => {
   const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.added)) {
+    if (id.startsWith("_")) continue; // the script skips these; the test must agree
     assert.ok(entry.sources?.length >= 2, `${id} has fewer than two sources`);
     assert.match(entry.checkedOn, /^\d{4}-\d{2}-\d{2}$/, `${id} has no check date`);
   }
@@ -71,7 +72,12 @@ test("re-applying the overlay never recommends deleting curated data", () => {
 // component, so parking at any of them could never raise the prompt: the
 // feature was silently unavailable exactly where someone had just parked.
 test("standing in an off-network ramp still counts as parked there", () => {
-  const off = ["hcmc-purple-parking-ramp-27346755", "riverfront-municipal-parking-ramp-99717608", "portland-avenue-ramp-156909997"];
+  const off = [
+    "hcmc-purple-parking-ramp-27346755",
+    "riverfront-municipal-parking-ramp-99717608",
+    "portland-avenue-ramp-156909997",
+    "parking-lot-e-122795248",
+  ];
   for (const id of off) {
     const ramp = data.buildings.find((b) => b.id === id);
     assert.ok(ramp, `${id} is not in the dataset`);
@@ -96,14 +102,30 @@ test("a block away from a ramp is not parking in it", () => {
 });
 
 test("standing in an office building is not parking in one", () => {
-  const office = data.buildings.find((b) => b.category === "office" && b.footprint.length > 2);
-  const at = parkedAt(office.lat, office.lon, data.buildings);
-  assert.equal(at, null, `standing in ${office.name} read as parked in ${at?.name}`);
+  // Every office that isn't next door to a ramp, rather than whichever one
+  // sorts first -- which building this tested used to be an accident of
+  // array order. Downtown ramps abut offices, and Butler Square really does
+  // stand within the budget of 5th Street Ramp B; the budget is a claim
+  // about distance, not about which door you came through. What must never
+  // happen is a ramp being offered from well outside it.
+  const ramps = data.buildings.filter((b) => b.category === "parking");
+  const farFromAnyRamp = data.buildings.filter(
+    (b) => b.category === "office" && ramps.every((r) => metresFrom(r, b) > 150),
+  );
+  assert.ok(farFromAnyRamp.length > 20, `only ${farFromAnyRamp.length} offices stand clear of a ramp`);
+  const wrong = farFromAnyRamp
+    .map((o) => [o, parkedAt(o.lat, o.lon, data.buildings)])
+    .filter(([, at]) => at !== null);
+  assert.deepEqual(
+    wrong.map(([o, at]) => `${o.name} read as parked in ${at.name}`),
+    [],
+  );
 });
 
 test("every curated ramp is findable, and can be walked out of", () => {
   const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.added)) {
+    if (id.startsWith("_")) continue;
     const hits = find(entry.name);
     assert.ok(hits.length > 0, `${entry.name} returns nothing in search`);
     const building = data.buildings.find((b) => b.id === id);
@@ -111,4 +133,67 @@ test("every curated ramp is findable, and can be walked out of", () => {
     const linked = data.edges.some((e) => e.from === id || e.to === id);
     assert.ok(linked, `${entry.name} has no skyway link and cannot be routed out of`);
   }
+});
+
+// --- The overlay script's own branches ---------------------------------
+// The idempotency test above never reaches these: run against the committed
+// dataset, every entry exits at the "already applied" return. So exercise
+// them against a scratch dataset instead.
+import { mkdtempSync, writeFileSync, cpSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+function runOverlayOn(mutate) {
+  const dir = mkdtempSync(join(tmpdir(), "skymap-overlay-"));
+  cpSync("public", join(dir, "public"), { recursive: true });
+  cpSync("data", join(dir, "data"), { recursive: true });
+  cpSync("scripts", join(dir, "scripts"), { recursive: true });
+  cpSync("src", join(dir, "src"), { recursive: true });
+  const path = join(dir, "public/data/skymap-data.json");
+  const data = JSON.parse(readFileSync(path, "utf8"));
+  mutate(data, join(dir, "data/parking-overlay.json"));
+  writeFileSync(path, JSON.stringify(data, null, 1));
+  const out = execFileSync("node", ["scripts/apply-parking-overlay.mjs", "--write"], { cwd: dir, encoding: "utf8" });
+  return { out, after: JSON.parse(readFileSync(path, "utf8")) };
+}
+
+test("a link added to an entry already in the dataset is repaired, not silently dropped", () => {
+  // The ordinary curation loop: an entry gains a connectsTo and the overlay
+  // is re-applied to a dataset that already carries the building. The early
+  // return used to skip the link pass entirely and still report success.
+  const { after } = runOverlayOn((data) => {
+    data.edges = data.edges.filter((e) => e.from !== "hennepin-at-10th-x" && e.to !== "hennepin-at-10th-x");
+  });
+  const links = after.edges.filter((e) => e.from === "hennepin-at-10th-x" || e.to === "hennepin-at-10th-x");
+  assert.equal(links.length, 1, "the ramp's skyway link was not restored");
+});
+
+test("two curated ramps within a block of each other both survive", () => {
+  // The retirable scan reads data.buildings, which the loop appends to as it
+  // goes. Without excluding the overlay's own siblings, the second of two
+  // nearby entries is dropped and reported as redundant -- an instruction to
+  // delete real data. 11th Street Underground stands 68m from Leamington,
+  // so the margin here is real, not theoretical.
+  const { out, after } = runOverlayOn((data, overlayPath) => {
+    const overlay = JSON.parse(readFileSync(overlayPath, "utf8"));
+    const base = overlay.added["hennepin-at-10th-x"];
+    overlay.added["hennepin-at-10th-neighbour-x"] = { ...base, name: "Test Ramp Next Door", lat: base.lat + 0.0002 };
+    writeFileSync(overlayPath, JSON.stringify(overlay, null, 1));
+    data.buildings = data.buildings.filter((b) => !b.id.endsWith("-x"));
+    data.edges = data.edges.filter((e) => !e.from.endsWith("-x") && !e.to.endsWith("-x"));
+  });
+  assert.doesNotMatch(out, /caught up with/, "a curated ramp was reported as redundant with its own sibling");
+  assert.ok(after.buildings.some((b) => b.name === "Test Ramp Next Door"), "the second nearby ramp was dropped");
+});
+
+test("a ramp OSM has since named is still reported as retirable", () => {
+  // The other direction: the check has to keep working against real OSM
+  // records, or the file's whole reason for existing goes with it.
+  const { out } = runOverlayOn((data) => {
+    const ramp = data.buildings.find((b) => b.id === "hennepin-at-10th-x");
+    data.buildings = data.buildings.filter((b) => !b.id.endsWith("-x"));
+    data.edges = data.edges.filter((e) => !e.from.endsWith("-x") && !e.to.endsWith("-x"));
+    data.buildings.push({ ...ramp, id: "hennepin-at-10th-999", name: "Hennepin at 10th Ramp" });
+  });
+  assert.match(out, /caught up with/);
 });

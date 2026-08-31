@@ -469,6 +469,7 @@ async function main(osm) {
   // tagged both parking=multi-storey and building=parking matches two query
   // statements and arrives twice.
   const parkingRaw = new Map();
+  const seenWayIds = new Set(); // one record per way, however many statements matched it
   const waysById = new Map(); // every way, tagged or skeleton — relation members resolve here
   const relationsRaw = [];
 
@@ -493,6 +494,19 @@ async function main(osm) {
       // way that actually carries nodes may replace what's already indexed.
       if (el.nodes) {
         waysById.set(el.id, el);
+        // Overpass prints an element once per `out` statement and does not
+        // dedupe across them, so a named ramp -- which matches the building
+        // query AND both parking queries -- arrives two or three times. The
+        // `out center` guard above doesn't catch it: every one of those
+        // copies carries nodes. Nothing downstream dedupes either, so
+        // without this the next refresh shipped 21 buildings twice and 7 of
+        // them three times, each a stacked polygon and a stacked label.
+        if (seenWayIds.has(el.id)) continue;
+        // Only a tagged copy registers. `>; out skel qt;` also emits ways
+        // that carry nodes and no tags, and letting one of those claim the
+        // id first would drop the tagged copy behind it -- trading 28
+        // duplicate buildings for an unknown number of missing ones.
+        if (el.tags) seenWayIds.add(el.id);
         if (el.tags?.building && el.tags?.name) buildingsRaw.push(el);
         else if (isParkingStructure(el.tags)) parkingRaw.set(el.id, el);
         else if (el.tags?.highway) ways.push(el);

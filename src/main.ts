@@ -558,6 +558,14 @@ async function boot() {
     if (currentApproach) comboFrom.selectCurrentLocation({ silent: true });
     comboTo.select(rampBuilding, undefined, { silent: true });
     computePreview();
+    // Four of downtown's ramps sit on their own islands in the skyway graph,
+    // and now that Save My Ramp can fire at them (see parkedAt) this button
+    // can be pressed with no skyway path to offer. "No route found" is the
+    // right answer to "route me here" and the wrong one to "where is my
+    // car" -- it ends the interaction holding nothing. The card does what
+    // was actually asked: it puts the ramp on the map and names it. The walk
+    // is along the street, which this app has never claimed to route.
+    if (!activeRoute) showPlace(rampBuilding);
   });
 
   // --- Heading-up tracking: Apple-Maps locate cycle -----------------------

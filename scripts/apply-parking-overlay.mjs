@@ -23,6 +23,11 @@ const write = process.argv.includes("--write");
  * A downtown block is roughly 100m, so this stays inside one. */
 const SAME_RAMP_METERS = 45;
 
+/** How far a same-named ramp may sit and still be the same ramp. A curated
+ * entry is positioned from its street address and OSM from a traced outline,
+ * so the two disagree by a building's width, not by a neighbourhood. */
+const SAME_NAME_MAX_METERS = 200;
+
 const data = JSON.parse(readFileSync(DATA, "utf8"));
 const overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
 
@@ -32,9 +37,26 @@ function metresBetween(a, b) {
   return Math.hypot(dLat, dLon);
 }
 
+const curatedIds = new Set(Object.keys(overlay.added).filter((k) => !k.startsWith("_")));
+
 let applied = 0;
 const problems = [];
 const retirable = [];
+
+/** Add this entry's skyway links, if they aren't there already. Separate from
+ * the building so it runs on every pass, not only the one that inserts it. */
+function applyLinks(id, entry) {
+  for (const to of entry.connectsTo ?? []) {
+    if (!data.buildings.some((b) => b.id === to)) {
+      problems.push(`${id} (${entry.name}): connectsTo ${to}, which is not in the dataset`);
+      continue;
+    }
+    if (data.edges.some((e) => (e.from === id && e.to === to) || (e.from === to && e.to === id))) continue;
+    // No geometry: nobody has traced this bridge, and routeCoords already
+    // falls back to centroids for a leg without one.
+    data.edges.push({ from: id, to, crossing: "skyway" });
+  }
+}
 
 for (const [id, entry] of Object.entries(overlay.added)) {
   if (id.startsWith("_")) continue;
@@ -64,7 +86,12 @@ for (const [id, entry] of Object.entries(overlay.added)) {
   }
   // Already applied. Answered before the retirable check below, which skips
   // the entry's own record and would otherwise call it a duplicate of itself.
+  // Links are still re-checked: an entry that gained a connectsTo would
+  // otherwise have it dropped in silence, under a success message, every
+  // time the overlay was re-applied to a dataset that already had the
+  // building -- which is the ordinary curation loop.
   if (data.buildings.some((b) => b.id === id)) {
+    applyLinks(id, entry);
     applied++;
     continue;
   }
@@ -72,8 +99,21 @@ for (const [id, entry] of Object.entries(overlay.added)) {
   const already = data.buildings.find(
     (b) =>
       b.id !== id &&
+      // Only OSM's records can be the thing that "caught up". The loop
+      // appends to data.buildings as it goes, so without this a second
+      // curated ramp within SAME_RAMP_METERS of the first is dropped and
+      // reported as redundant -- advice to delete real data. The margin is
+      // thin on purpose: 11th Street Underground stands 68m from Leamington.
+      !curatedIds.has(b.id) &&
       b.category === "parking" &&
-      (nameKey(b.name).startsWith(mine) || mine.startsWith(nameKey(b.name)) || metresBetween(b, entry) <= SAME_RAMP_METERS),
+      // Same ramp means same place. Either it is close enough that nothing
+      // else could be there, or the names agree *and* it is on the same few
+      // blocks -- a name prefix on its own would let a genuine "Marquette
+      // Parking Ramp North" be swallowed by "Marquette Parking Ramp" and
+      // refused, which is the very failure this file exists to undo.
+      (metresBetween(b, entry) <= SAME_RAMP_METERS ||
+        ((nameKey(b.name).startsWith(mine) || mine.startsWith(nameKey(b.name))) &&
+          metresBetween(b, entry) <= SAME_NAME_MAX_METERS)),
   );
   if (already) {
     retirable.push(`${id} (${entry.name}): OSM now carries this as ${already.id} (${already.name}) — overlay entry is redundant`);
@@ -103,16 +143,7 @@ for (const [id, entry] of Object.entries(overlay.added)) {
   // says there is no such thing. A curated ramp therefore has to say what it
   // connects to -- which is a claim about the world, so it is sourced like
   // every other claim here rather than inferred from proximity.
-  for (const to of entry.connectsTo ?? []) {
-    if (!data.buildings.some((b) => b.id === to)) {
-      problems.push(`${id} (${entry.name}): connectsTo ${to}, which is not in the dataset`);
-      continue;
-    }
-    if (data.edges.some((e) => (e.from === id && e.to === to) || (e.from === to && e.to === id))) continue;
-    // No geometry: nobody has traced this bridge, and routeCoords already
-    // falls back to centroids for a leg without one.
-    data.edges.push({ from: id, to, crossing: "skyway" });
-  }
+  applyLinks(id, entry);
   applied++;
 }
 
