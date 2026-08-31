@@ -59,7 +59,7 @@ test("re-applying the overlay never recommends deleting curated data", () => {
   // script's own previously-inserted record, so a second run declared every
   // entry redundant and the README said to delete them.
   const out = execFileSync("node", ["scripts/apply-parking-overlay.mjs"], { encoding: "utf8" });
-  assert.match(out, /Curated ramps applied: 1 of 1\./);
+  assert.match(out, /Curated ramps applied: (\d+) of \1\./);
   assert.doesNotMatch(out, /caught up with/);
   assert.doesNotMatch(out, /PROBLEM/);
 });
@@ -99,4 +99,16 @@ test("standing in an office building is not parking in one", () => {
   const office = data.buildings.find((b) => b.category === "office" && b.footprint.length > 2);
   const at = parkedAt(office.lat, office.lon, data.buildings);
   assert.equal(at, null, `standing in ${office.name} read as parked in ${at?.name}`);
+});
+
+test("every curated ramp is findable, and can be walked out of", () => {
+  const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
+  for (const [id, entry] of Object.entries(overlay.added)) {
+    const hits = find(entry.name);
+    assert.ok(hits.length > 0, `${entry.name} returns nothing in search`);
+    const building = data.buildings.find((b) => b.id === id);
+    assert.equal(building?.category, "parking", `${entry.name} is not in the dataset as a ramp`);
+    const linked = data.edges.some((e) => e.from === id || e.to === id);
+    assert.ok(linked, `${entry.name} has no skyway link and cannot be routed out of`);
+  }
 });
