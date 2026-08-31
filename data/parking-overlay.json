@@ -1,0 +1,51 @@
+{
+  "_readme": [
+    "Parking ramps OpenStreetMap doesn't carry, curated by hand.",
+    "",
+    "The extractor takes a building only when OSM gives it a name (way[building][name]),",
+    "and 27 of the 50 parking structures inside the downtown bbox are unnamed. Ramps are",
+    "the worst-served category in OSM downtown: mappers trace the parcel and move on, so",
+    "the thing a driver knows the name of is exactly the thing the dataset lacks.",
+    "",
+    "Applied to public/data/skymap-data.json by scripts/apply-parking-overlay.mjs. Run it",
+    "after every `npm run data:osm`, alongside the POI and hours overlays — extraction",
+    "rewrites the dataset and would otherwise drop all of this.",
+    "",
+    "Two independent sources per entry, same rule as poi-overlay.json, and the operator",
+    "wins on conflict. For a municipal ramp that means the city's own directory and the",
+    "management company's facility page.",
+    "",
+    "`footprint` is optional and usually empty. A ramp OSM hasn't mapped has no traced",
+    "outline anywhere public, and drawing a plausible rectangle around the address would",
+    "be inventing survey data. An entry with no footprint is a located building rather",
+    "than an outlined one: distanceToFootprint already falls back to the centroid, so it",
+    "routes and it answers 'am I parked here' — a little less precisely, which is the",
+    "truth about what we know. Fill footprint in only from a cited traced source.",
+    "",
+    "`connectsTo` names the buildings the ramp reaches by skyway. It needs its own two",
+    "sources — a ramp that claims a bridge it doesn't have would route someone into a",
+    "wall — and it carries no geometry, so the route line falls back to centroids for",
+    "that leg, which routeCoords already does for any edge OSM hasn't traced.",
+    "",
+    "When OSM catches up with an entry, the script reports it as retirable rather than",
+    "emitting a second ramp on the same corner. Retire it then — upstream is the better",
+    "record, and it will carry an outline this file can't."
+  ],
+  "added": {
+    "hennepin-at-10th-x": {
+      "name": "Hennepin at 10th",
+      "address": "935 Hennepin Avenue",
+      "category": "parking",
+      "lat": 44.975828,
+      "lon": -93.277499,
+      "footprint": [],
+      "sources": [
+        "https://www.mplsparking.com/",
+        "https://abmparking.com/facilities/935-hennepin-ave-hennepin-at-10th-ramp-garage/"
+      ],
+      "checkedOn": "2026-08-31",
+      "connectsTo": ["fair-school-for-arts-45680534"],
+      "note": "The report that started this file: 'I can never seem to get the Hennepin @ 10th ramp to show up.' 880 spaces, municipal, skyway-connected, and absent from OSM entirely — no building, no amenity=parking, and no Hennepin County parcel under its address either. The city directory and the operator agree on the name and on 935 Hennepin Avenue; the operator adds that it is the southeast corner of Hennepin and S 10th St, vehicles in from 9th and out onto 10th. The two multi-storey ramps OSM does map within 250m are both unnamed and neither is this one."
+    }
+  }
+}

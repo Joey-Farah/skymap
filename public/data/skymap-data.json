@@ -16988,6 +16988,17 @@
     "attribution": "Zachary Korb · CC BY 2.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Public%20library%20minneapolis%20exterior.jpg"
    }
+  },
+  {
+   "id": "hennepin-at-10th-x",
+   "name": "Hennepin at 10th",
+   "address": "935 Hennepin Avenue",
+   "category": "parking",
+   "lat": 44.975828,
+   "lon": -93.277499,
+   "footprint": [],
+   "hours": null,
+   "hoursNote": "No published hours found."
   }
  ],
  "edges": [
@@ -19922,6 +19933,11 @@
      44.978963
     ]
    ]
+  },
+  {
+   "from": "hennepin-at-10th-x",
+   "to": "fair-school-for-arts-45680534",
+   "crossing": "skyway"
   }
  ],
  "pois": [

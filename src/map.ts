@@ -85,7 +85,18 @@ function buildingsFC(data: SkymapData, when: Date): FC {
         closingSoon: isClosingSoon(b, when, 20),
         hub: b.category === "retailHub",
       },
-      geometry: { type: "Polygon", coordinates: [b.footprint] },
+      // A curated building can have no traced outline -- see
+      // data/parking-overlay.json, where drawing a plausible rectangle
+      // around a ramp nobody has surveyed would be inventing the one thing
+      // we don't know. A Polygon with an empty ring is not valid GeoJSON and
+      // costs the whole source, so such a building is a point instead: the
+      // fill and outline layers have nothing to paint, and the label layer
+      // still puts its name where it stands, which is what someone looking
+      // for it on the map needs.
+      geometry:
+        b.footprint.length > 2
+          ? { type: "Polygon", coordinates: [b.footprint] }
+          : { type: "Point", coordinates: [b.lon, b.lat] },
     })),
   };
 }
