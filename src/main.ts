@@ -15,7 +15,7 @@ import { SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
 import { FeedbackForm } from "./feedback-form.ts";
-import { getSavedRamp, saveRamp } from "./ramp.ts";
+import { getSavedRamp, parkedAt, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
@@ -413,8 +413,9 @@ async function boot() {
   // be something you choose, not something that happens to you, and having
   // three of them meant the auto-fill usually raced ahead of the other two
   // and quietly claimed the field before you saw either.
-  /** Where a fix puts you for the Save My Ramp prompt: essentially at the
-   * building, or nothing. */
+  /** Which ramp a fix puts you in for the Save My Ramp prompt: essentially
+   * at it, or nothing. Asked of every parking building, not just routable
+   * ones — see parkedAt. */
   let nearBuilding: Building | null = null;
   /** Where a fix puts you for routing: the nearest way onto the network,
    * reaching well beyond the building you're standing in — see
@@ -455,15 +456,18 @@ async function boot() {
   }
 
   function onPosition(lat: number, lon: number) {
-    // Two different questions, so two different budgets. "Am I parked in
-    // this ramp?" has to mean essentially at it, or Save My Ramp offers to
-    // remember a ramp you merely walked past. "Where would I join the
-    // skyway?" is answerable from much further out — most of downtown is
-    // more than 60m from the network, so the tight budget was withholding
-    // the From row exactly when someone outdoors wanted it.
+    // Two different questions, so two different budgets — and two different
+    // lists. "Am I parked in this ramp?" has to mean essentially at it, or
+    // Save My Ramp offers to remember a ramp you merely walked past, and it
+    // has to ask every ramp: four of downtown's sit off the main component,
+    // and answering this from routableOrigins made the prompt impossible
+    // there. "Where would I join the skyway?" is answerable from much
+    // further out — most of downtown is more than 60m from the network, so
+    // the tight budget was withholding the From row exactly when someone
+    // outdoors wanted it — but only from a building that goes somewhere.
     const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS);
     currentApproach = approach;
-    nearBuilding = approach && approach.straightMeters <= 60 ? approach.building : null;
+    nearBuilding = parkedAt(lat, lon, data.buildings);
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       // The walker stays on the skyway. A fix is evidence, not a position:
       // it moves them as far along the route as walking allows and no
