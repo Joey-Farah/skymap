@@ -26,7 +26,7 @@
  * merged from the seed dataset by matching names.
  */
 
-import { writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -80,6 +80,21 @@ out body;
 >;
 out skel qt;
 way["building"]["name"](${BBOX});
+out body;
+>;
+out skel qt;
+// Parking structures, named or not. A ramp is the one building type whose
+// name a driver knows and OSM usually doesn't: 27 of the 50 downtown
+// parking structures carry no name, so the query above -- which requires
+// one -- has never seen a single one of them. These don't become buildings
+// on their own (an unnamed ramp on the map is a grey shape you can't search
+// for); they become the worklist in data/parking-candidates.json that
+// data/parking-overlay.json is curated from.
+way["amenity"="parking"]["parking"="multi-storey"](${BBOX});
+out body;
+>;
+out skel qt;
+way["building"="parking"](${BBOX});
 out body;
 >;
 out skel qt;
@@ -209,6 +224,14 @@ async function fetchOverpass() {
     console.warn(`  ${lastErr.message} — trying next mirror.`);
   }
   throw lastErr;
+}
+
+/** True for a parking structure -- something you drive into and park inside,
+ * as opposed to a painted rectangle of asphalt. Surface lots are excluded on
+ * purpose: they have no skyway door, no name on a sign, and adding 20-odd of
+ * them to a worklist would bury the ramps that matter. */
+function isParkingStructure(tags = {}) {
+  return tags.parking === "multi-storey" || tags.building === "parking";
 }
 
 function centroid(ring) {
@@ -442,6 +465,11 @@ async function main(osm) {
   const buildingsRaw = [];
   const poiNodes = [];
   const areaPois = []; // venues someone outlined instead of pinning
+  // Unnamed ramps — curation candidates, not buildings. A Map because a ramp
+  // tagged both parking=multi-storey and building=parking matches two query
+  // statements and arrives twice.
+  const parkingRaw = new Map();
+  const seenWayIds = new Set(); // one record per way, however many statements matched it
   const waysById = new Map(); // every way, tagged or skeleton — relation members resolve here
   const relationsRaw = [];
 
@@ -466,7 +494,21 @@ async function main(osm) {
       // way that actually carries nodes may replace what's already indexed.
       if (el.nodes) {
         waysById.set(el.id, el);
+        // Overpass prints an element once per `out` statement and does not
+        // dedupe across them, so a named ramp -- which matches the building
+        // query AND both parking queries -- arrives two or three times. The
+        // `out center` guard above doesn't catch it: every one of those
+        // copies carries nodes. Nothing downstream dedupes either, so
+        // without this the next refresh shipped 21 buildings twice and 7 of
+        // them three times, each a stacked polygon and a stacked label.
+        if (seenWayIds.has(el.id)) continue;
+        // Only a tagged copy registers. `>; out skel qt;` also emits ways
+        // that carry nodes and no tags, and letting one of those claim the
+        // id first would drop the tagged copy behind it -- trading 28
+        // duplicate buildings for an unknown number of missing ones.
+        if (el.tags) seenWayIds.add(el.id);
         if (el.tags?.building && el.tags?.name) buildingsRaw.push(el);
+        else if (isParkingStructure(el.tags)) parkingRaw.set(el.id, el);
         else if (el.tags?.highway) ways.push(el);
       } else if (el.center && el.tags?.name && !el.tags.building) {
         areaPois.push({ ref: `w${el.id}`, lat: el.center.lat, lon: el.center.lon, tags: el.tags });
@@ -1072,6 +1114,8 @@ async function main(osm) {
     indoorLinks,
   };
 
+  writeParkingCandidates([...parkingRaw.values()], nodes, finalBuildings);
+
   const outPath = join(
     ROOT,
     "public",
@@ -1082,6 +1126,66 @@ async function main(osm) {
   writeFileSync(outPath, JSON.stringify(data, null, 1));
   console.log(`Wrote ${outPath}: ${finalBuildings.length} buildings, ${finalEdges.length} links.`);
   if (!APPLY) console.log("Review the output, then re-run with --apply to make it live.");
+}
+
+/**
+ * The curation worklist: every parking structure OSM maps, and whether the
+ * dataset has a name for it.
+ *
+ * Deliberately not part of the shipped dataset. An unnamed ramp is not a
+ * place anyone can look for -- putting it in the app would add a grey
+ * polygon labelled nothing, which is a worse answer than the honest gap.
+ * What it is good for is knowing the gap's size and where to look next, so
+ * it is written beside the overlay it feeds rather than into public/.
+ */
+function writeParkingCandidates(parkingRaw, nodes, finalBuildings) {
+  const overlayPath = join(ROOT, "data", "parking-overlay.json");
+  const curated = existsSync(overlayPath)
+    ? Object.values(JSON.parse(readFileSync(overlayPath, "utf8")).added ?? {}).filter((e) => e.name)
+    : [];
+
+  const candidates = [];
+  for (const w of parkingRaw) {
+    const ring = w.nodes.map((id) => nodes.get(id)).filter(Boolean);
+    if (ring.length < 3) continue;
+    const fp = ring.map((n) => [+n.lon.toFixed(6), +n.lat.toFixed(6)]);
+    const c = centroid(fp);
+    // What the dataset already calls this spot, if anything -- a named ramp
+    // in OSM needs no curation, and a curated entry nearby is probably this
+    // same ramp seen from the other side.
+    const nearest = [...finalBuildings, ...curated]
+      .map((b) => ({ name: b.name, id: b.id, m: haversine(c.lat, c.lon, b.lat, b.lon) }))
+      .sort((a, b) => a.m - b.m)[0];
+    candidates.push({
+      osm: typeof w.id === "number" ? `w${w.id}` : String(w.id),
+      name: w.tags.name ?? null,
+      lat: +c.lat.toFixed(6),
+      lon: +c.lon.toFixed(6),
+      tags: w.tags,
+      footprint: fp,
+      nearest: nearest ? { name: nearest.name, id: nearest.id, metres: Math.round(nearest.m) } : null,
+    });
+  }
+  candidates.sort((a, b) => (a.name ? 1 : 0) - (b.name ? 1 : 0) || a.osm.localeCompare(b.osm));
+
+  const unnamed = candidates.filter((c) => !c.name).length;
+  const out = {
+    _readme: [
+      "The parking structures OSM maps downtown but does not name, generated by",
+      "scripts/fetch-osm.mjs. A ramp OSM does name is already a building in the dataset",
+      "and never appears here.",
+      "Not shipped: this is the worklist data/parking-overlay.json is curated from.",
+      "An entry with name: null is invisible to the app until someone names it from two",
+      "sources. `footprint` is the traced outline, ready to copy into an overlay entry --",
+      "which is the only honest way an overlay entry ever gets one.",
+    ],
+    generated: new Date().toISOString(),
+    counts: { total: candidates.length, unnamed },
+    candidates,
+  };
+  const path = join(ROOT, "data", "parking-candidates.json");
+  writeFileSync(path, JSON.stringify(out, null, 1) + "\n");
+  console.log(`Parking structures OSM leaves unnamed: ${candidates.length}, invisible until curated.`);
 }
 
 // SKYMAP_RAW_IN=/path.json replays a cached Overpass response (see

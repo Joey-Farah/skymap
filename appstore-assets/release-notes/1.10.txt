@@ -1,0 +1,11 @@
+The ramps SkyMap never had.
+
+A reader wrote in to say they could never get the Hennepin @ 10th ramp to show up. They were right, and the reason turned out to be bigger than one ramp: SkyMap only ever knew about a parking ramp if OpenStreetMap had written a name on it. Ramps are the one thing downtown that almost never gets named — 27 of the 50 parking structures inside our map area carry no name at all, so not one of them had ever reached the app. The ramp a driver knows by name is exactly the one the map was least likely to have.
+
+Hennepin at 10th was worse still. It isn't in OpenStreetMap at all, and it has no county parcel under its address either. So it's in by hand now, from the city's own parking directory and the operator's facility page, along with LaSalle at 10th and 11th Street Underground. Every ramp we add this way has to say which building it reaches by skyway, checked against two sources, because a ramp you can find and then can't walk out of is a worse answer than one that's missing.
+
+What you won't see is a shape drawn around them. Nobody has surveyed these outlines, and inventing a plausible rectangle would look exactly like a real one — so they sit on the map as a name where they stand, and route from there.
+
+Save My Ramp got a related fix. It only offered to remember where you parked if the ramp was on the main skyway network, which quietly ruled out four real downtown ramps — including some of the ones with the longest walk to a skyway door, which are precisely the ones worth remembering.
+
+Thanks again to the readers writing in. Three releases running now where one email found something worth fixing.

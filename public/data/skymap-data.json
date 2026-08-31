@@ -16988,6 +16988,39 @@
     "attribution": "Zachary Korb · CC BY 2.0",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Public%20library%20minneapolis%20exterior.jpg"
    }
+  },
+  {
+   "id": "hennepin-at-10th-x",
+   "name": "Hennepin at 10th",
+   "address": "935 Hennepin Avenue",
+   "category": "parking",
+   "lat": 44.975828,
+   "lon": -93.277499,
+   "footprint": [],
+   "hours": null,
+   "hoursNote": "No published hours found."
+  },
+  {
+   "id": "lasalle-at-10th-x",
+   "name": "LaSalle at 10th",
+   "address": "915 LaSalle Avenue",
+   "category": "parking",
+   "lat": 44.975287,
+   "lon": -93.27539,
+   "footprint": [],
+   "hours": null,
+   "hoursNote": "No published hours found."
+  },
+  {
+   "id": "11th-street-underground-x",
+   "name": "11th Street Underground",
+   "address": "1030 2nd Avenue South",
+   "category": "parking",
+   "lat": 44.972496,
+   "lon": -93.272329,
+   "footprint": [],
+   "hours": null,
+   "hoursNote": "No published hours found."
   }
  ],
  "edges": [
@@ -19922,6 +19955,21 @@
      44.978963
     ]
    ]
+  },
+  {
+   "from": "hennepin-at-10th-x",
+   "to": "fair-school-for-arts-45680534",
+   "crossing": "skyway"
+  },
+  {
+   "from": "lasalle-at-10th-x",
+   "to": "target-plaza-iii-44684855",
+   "crossing": "skyway"
+  },
+  {
+   "from": "11th-street-underground-x",
+   "to": "orchestra-hall-43607930",
+   "crossing": "skyway"
   }
  ],
  "pois": [

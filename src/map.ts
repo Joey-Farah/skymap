@@ -85,7 +85,18 @@ function buildingsFC(data: SkymapData, when: Date): FC {
         closingSoon: isClosingSoon(b, when, 20),
         hub: b.category === "retailHub",
       },
-      geometry: { type: "Polygon", coordinates: [b.footprint] },
+      // A curated building can have no traced outline -- see
+      // data/parking-overlay.json, where drawing a plausible rectangle
+      // around a ramp nobody has surveyed would be inventing the one thing
+      // we don't know. A Polygon with an empty ring is not valid GeoJSON and
+      // costs the whole source, so such a building is a point instead: the
+      // fill and outline layers have nothing to paint, and the label layer
+      // still puts its name where it stands, which is what someone looking
+      // for it on the map needs.
+      geometry:
+        b.footprint.length > 2
+          ? { type: "Polygon", coordinates: [b.footprint] }
+          : { type: "Point", coordinates: [b.lon, b.lat] },
     })),
   };
 }
@@ -297,7 +308,7 @@ export class SkymapView {
         return;
       }
       const buildingFeature = this.map.queryRenderedFeatures(e.point, {
-        layers: ["skyway-buildings-fill"],
+        layers: ["skyway-buildings-fill", "skyway-buildings-point"],
       })[0];
       if (buildingFeature) {
         const id = buildingFeature.properties?.id as string | undefined;
@@ -317,7 +328,7 @@ export class SkymapView {
       }).length;
       if (onRoute) onRouteTap?.(e.lngLat.lat, e.lngLat.lng);
     });
-    for (const layer of ["skyway-buildings-fill", "skyway-pois", "skyway-route-casing"]) {
+    for (const layer of ["skyway-buildings-fill", "skyway-buildings-point", "skyway-pois", "skyway-route-casing"]) {
       this.map.on("mouseenter", layer, () => {
         this.map.getCanvas().style.cursor = "pointer";
       });
@@ -428,6 +439,27 @@ export class SkymapView {
           NETWORK,
         ],
         "fill-opacity": ["case", ["get", "closingSoon"], 0.22, ["get", "open"], 0.16, 0.1],
+      },
+    });
+    // A building with no traced outline (see data/parking-overlay.json) is a
+    // Point in this source, and a fill paints nothing for a Point -- so
+    // without a mark of its own it would be untappable, and invisible below
+    // the label layer's zoom. Both matter: the report this answers was
+    // someone unable to find a ramp, and a name you can see and cannot tap
+    // is the same dead end one step further in. Drawn in the closed-grey
+    // rather than the network blue because what it marks is a position we
+    // know and an outline we don't.
+    this.map.addLayer({
+      id: "skyway-buildings-point",
+      type: "circle",
+      source: "skyway-buildings",
+      filter: ["==", ["geometry-type"], "Point"],
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 13, 3.5, 17, 7],
+        "circle-color": ["case", ["get", "open"], NETWORK, CLOSED],
+        "circle-opacity": 0.5,
+        "circle-stroke-width": 1.4,
+        "circle-stroke-color": ["case", ["get", "open"], NETWORK, CLOSED],
       },
     });
     this.map.addLayer({
