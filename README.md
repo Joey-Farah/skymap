@@ -21,8 +21,6 @@ Add to Home Screen; a native iOS wrapper for App Store distribution lives in
 - **What's nearby** — "Show on map" categories (coffee, food, hotels,
   landmarks, shops, restrooms, elevators) in the search sheet; same-name
   chains rank closest-first.
-- **Save My Ramp** — noticed near a parking ramp, one tap to save it and one
-  tap to route back later.
 - **Offline-first PWA** — the service worker precaches the app, the full
   dataset, and business logos; routing works with the network fully dead.
 
