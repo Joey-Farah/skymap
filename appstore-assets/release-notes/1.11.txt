@@ -1,0 +1,7 @@
+Parking prompts are gone.
+
+SkyMap used to notice when you parked in a ramp and ask whether it should remember the spot. It shouldn't have — that isn't what this app is for, and worse, the question wouldn't take no for an answer. Tapping "Not now" put it away until the next time the app came back, and the little button offering to walk you back to your car redrew itself on every launch with nothing on screen that could dismiss it. For anyone who had parked downtown, that left a panel sitting over the map for good.
+
+The whole feature is removed: the prompt, the button, and the part that watched your position to work out which ramp you were standing in. If SkyMap had already saved a ramp for you, this release clears it — you don't need to delete and reinstall the app.
+
+The ramps themselves stay exactly where they are. Everything added last release, including the three hand-curated ones, is still searchable and still routable. SkyMap will take you to a ramp; it just won't ask you about your car.
