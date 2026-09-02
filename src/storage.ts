@@ -11,7 +11,8 @@ export interface KeyValueStore {
  * A native app update replaces the bundle and leaves the WebView's
  * localStorage exactly as it was, so state outlives the code that wrote it
  * — and with the UI gone there is nothing left to clear it with. Save My
- * Ramp proved the cost: a saved ramp survived every relaunch, and deleting
+ * Ramp proved the cost: a saved ramp redrew its "← Back to X" button on
+ * every boot, with nothing on screen that could dismiss it, so deleting
  * and reinstalling the app was the only cure anyone found.
  */
 export const RETIRED_KEYS = [
