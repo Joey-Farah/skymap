@@ -60,7 +60,10 @@ Ramp was silently unavailable at every one of them.
   asks for parking structures whether or not they are named. Candidates deliberately do not
   become buildings on their own: an unnamed ramp is a grey shape nobody can search for.
 - **`parkedAt`** in `src/ramp.ts` — the "am I parked here" question, asked of every parking
-  building, at the tight 60m budget the prompt was always meant to use.
+  building, at the tight 60m budget the prompt was always meant to use. *(Since removed with
+  Save My Ramp itself: the prompt could not be dismissed on device, and asking about parking
+  was outside what this app is for. The curated ramp data below all stays — it is what makes
+  the ramps searchable and routable.)*
 - **Point geometry for untraced buildings** in `src/map.ts`. A `Polygon` with an empty ring
   is invalid GeoJSON and costs the whole source; such a building is drawn as a labelled
   point instead. `distanceToFootprint` already fell back to the centroid.
