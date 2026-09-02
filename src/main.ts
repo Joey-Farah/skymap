@@ -29,6 +29,7 @@ import {
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
+import { clearRetiredKeys } from "./storage.ts";
 
 /**
  * How far off the network "Current Location" will still offer to start a
@@ -727,13 +728,9 @@ async function boot() {
   setInterval(() => view.setTime(selectedTime()), 60_000);
   view.setTime(selectedTime());
 
-  // The per-step "report crossing closed" UI is gone, but reports it filed
-  // live in localStorage for 4 hours and used to silently detour routing —
-  // with no UI left to see or clear them, a stray old tap would just look
-  // like the router picking a bizarre path. Purge on boot until closure
-  // reporting returns as a deliberate feature (incidents.ts is kept and
-  // tested for that day).
-  localStorage.removeItem("skymap.incidents");
+  // State outlives the features that wrote it — a native update swaps the
+  // bundle and leaves localStorage untouched. See RETIRED_KEYS.
+  clearRetiredKeys(localStorage);
 
   // The service worker's whole job is caching over-the-network requests for
   // the PWA. Inside the native wrapper, assets are already bundled on disk —
