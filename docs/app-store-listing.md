@@ -37,10 +37,6 @@ Everything below fits Apple's field limits (noted per field).
 > Coffee, restaurants, shops, restrooms, and elevators, mapped inside the
 > buildings. Searching a chain shows the closest location first.
 >
-> PARKED IN A RAMP?
-> SkyMap notices, offers to remember it, and routes you back at the end
-> of the day.
->
 > BUILT FOR THE SKYWAY
 > Works offline once loaded. No account, no ads, no tracking — your
 > location never leaves your phone. Data from OpenStreetMap, with a

@@ -1,4 +1,4 @@
-import type { KeyValueStore } from "./ramp.ts";
+import type { KeyValueStore } from "./storage.ts";
 
 const KEY = "skymap.recents";
 const MAX_RECENTS = 5;

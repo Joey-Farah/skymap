@@ -43,8 +43,7 @@ crossing and your route recalculates around it instantly. Reports expire
 after four hours, so yesterday's closure doesn't haunt today's map.
 
 **It knows you're on foot, indoors, in winter.** Stairs-free routing for
-accessibility. "Save My Ramp" pins where you parked and routes you back
-with one tap. A reach map shades everything you can walk to indoors in
+accessibility. A reach map shades everything you can walk to indoors in
 5/10/15 minutes — useful for "where can I get lunch without a coat," and
 something no mainstream map offers at all.
 

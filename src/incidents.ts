@@ -1,4 +1,4 @@
-import type { KeyValueStore } from "./ramp.ts";
+import type { KeyValueStore } from "./storage.ts";
 
 /**
  * Client-only translation of the mandated spec's "server pushes an

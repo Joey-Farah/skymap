@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { buildComboEntries, searchEntries } from "../src/combo.ts";
-import { parkedAt } from "../src/ramp.ts";
 
 // A reader said they "can never seem to get the Hennepin @ 10th ramp to
 // show up". They were right, and it was not a search-matching problem: the
@@ -63,63 +62,6 @@ test("re-applying the overlay never recommends deleting curated data", () => {
   assert.match(out, /Curated ramps applied: (\d+) of \1\./);
   assert.doesNotMatch(out, /caught up with/);
   assert.doesNotMatch(out, /PROBLEM/);
-});
-
-// --- Save My Ramp asked the wrong question -----------------------------
-// "Am I parked in this ramp?" and "where would I join the skyway?" are two
-// different questions -- onPosition's own comment says so -- and both were
-// answered from mainNetworkBuildings(). Four real ramps sit off that
-// component, so parking at any of them could never raise the prompt: the
-// feature was silently unavailable exactly where someone had just parked.
-test("standing in an off-network ramp still counts as parked there", () => {
-  const off = [
-    "hcmc-purple-parking-ramp-27346755",
-    "riverfront-municipal-parking-ramp-99717608",
-    "portland-avenue-ramp-156909997",
-    "parking-lot-e-122795248",
-  ];
-  for (const id of off) {
-    const ramp = data.buildings.find((b) => b.id === id);
-    assert.ok(ramp, `${id} is not in the dataset`);
-    const at = parkedAt(ramp.lat, ramp.lon, data.buildings);
-    assert.equal(at?.id, id, `standing in ${ramp.name} does not read as parked there`);
-  }
-});
-
-test("standing in the reported ramp counts as parked there", () => {
-  const ramp = data.buildings.find((b) => b.name === "Hennepin at 10th");
-  assert.equal(parkedAt(ramp.lat, ramp.lon, data.buildings)?.id, ramp.id);
-});
-
-test("a block away from a ramp is not parking in it", () => {
-  // The budget that made this "essentially at it" rather than "somewhere
-  // near it" is the whole reason the prompt isn't noise. Two blocks north
-  // of Hennepin at 10th you are standing in Hawthorne Transportation
-  // Center, which is a different ramp and the right answer -- what must
-  // not happen is being offered the one you have walked away from.
-  const ramp = data.buildings.find((b) => b.name === "Hennepin at 10th");
-  assert.notEqual(parkedAt(ramp.lat + 0.0018, ramp.lon, data.buildings)?.id, ramp.id);
-});
-
-test("standing in an office building is not parking in one", () => {
-  // Every office that isn't next door to a ramp, rather than whichever one
-  // sorts first -- which building this tested used to be an accident of
-  // array order. Downtown ramps abut offices, and Butler Square really does
-  // stand within the budget of 5th Street Ramp B; the budget is a claim
-  // about distance, not about which door you came through. What must never
-  // happen is a ramp being offered from well outside it.
-  const ramps = data.buildings.filter((b) => b.category === "parking");
-  const farFromAnyRamp = data.buildings.filter(
-    (b) => b.category === "office" && ramps.every((r) => metresFrom(r, b) > 150),
-  );
-  assert.ok(farFromAnyRamp.length > 20, `only ${farFromAnyRamp.length} offices stand clear of a ramp`);
-  const wrong = farFromAnyRamp
-    .map((o) => [o, parkedAt(o.lat, o.lon, data.buildings)])
-    .filter(([, at]) => at !== null);
-  assert.deepEqual(
-    wrong.map(([o, at]) => `${o.name} read as parked in ${at.name}`),
-    [],
-  );
 });
 
 test("every curated ramp is findable, and can be walked out of", () => {

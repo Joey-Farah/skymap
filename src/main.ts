@@ -15,7 +15,6 @@ import { SkymapView, resolveStyle } from "./map.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
 import { FeedbackForm } from "./feedback-form.ts";
-import { getSavedRamp, parkedAt, saveRamp } from "./ramp.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
@@ -30,6 +29,7 @@ import {
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
+import { clearRetiredKeys } from "./storage.ts";
 
 /**
  * How far off the network "Current Location" will still offer to start a
@@ -413,10 +413,6 @@ async function boot() {
   // be something you choose, not something that happens to you, and having
   // three of them meant the auto-fill usually raced ahead of the other two
   // and quietly claimed the field before you saw either.
-  /** Which ramp a fix puts you in for the Save My Ramp prompt: essentially
-   * at it, or nothing. Asked of every parking building, not just routable
-   * ones — see parkedAt. */
-  let nearBuilding: Building | null = null;
   /** Where a fix puts you for routing: the nearest way onto the network,
    * reaching well beyond the building you're standing in — see
    * MAX_APPROACH_METERS. */
@@ -456,18 +452,13 @@ async function boot() {
   }
 
   function onPosition(lat: number, lon: number) {
-    // Two different questions, so two different budgets — and two different
-    // lists. "Am I parked in this ramp?" has to mean essentially at it, or
-    // Save My Ramp offers to remember a ramp you merely walked past, and it
-    // has to ask every ramp: four of downtown's sit off the main component,
-    // and answering this from routableOrigins made the prompt impossible
-    // there. "Where would I join the skyway?" is answerable from much
-    // further out — most of downtown is more than 60m from the network, so
-    // the tight budget was withholding the From row exactly when someone
-    // outdoors wanted it — but only from a building that goes somewhere.
+    // "Where would I join the skyway?" is answerable from well beyond the
+    // building you're standing in — most of downtown is more than 60m from
+    // the network, so a tight budget here would withhold the From row
+    // exactly when someone outdoors wanted it — but only from a building
+    // that goes somewhere.
     const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS);
     currentApproach = approach;
-    nearBuilding = parkedAt(lat, lon, data.buildings);
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       // The walker stays on the skyway. A fix is evidence, not a position:
       // it moves them as far along the route as walking allows and no
@@ -481,7 +472,6 @@ async function boot() {
       // live reading, so the grey walked prefix stops growing with it.
       view.setWalkedProgress(placed && !placed.offRoute ? walkedHighWater : null);
     }
-    maybePromptSaveRamp(nearBuilding);
     comboFrom.setCurrentLocation(approach);
     // Same-name chains rank closest-first from where you actually are;
     // the To field prefers the chosen origin as its anchor when one's set.
@@ -502,71 +492,10 @@ async function boot() {
    * true again.
    */
   function forgetPosition() {
-    nearBuilding = null;
     currentApproach = null;
     comboFrom.setCurrentLocation(null);
     comboFrom.setSearchAnchor(null);
   }
-
-  // --- Save My Ramp: notice when you're parked, offer a one-tap way back --
-  const rampPrompt = document.getElementById("ramp-prompt") as HTMLElement;
-  const rampPromptText = document.getElementById("ramp-prompt-text")!;
-  const rampReturn = document.getElementById("ramp-return") as HTMLButtonElement;
-  let promptedForRampId: string | null = null;
-
-  function refreshRampReturnButton() {
-    const ramp = getSavedRamp(localStorage);
-    rampReturn.hidden = !ramp;
-    if (ramp) rampReturn.textContent = `← Back to ${ramp.name}`;
-  }
-  refreshRampReturnButton();
-
-  function maybePromptSaveRamp(building: Building | null) {
-    if (!building || building.category !== "parking") return;
-    const already = getSavedRamp(localStorage);
-    if (already?.id === building.id) return; // already saved, nothing to ask
-    if (promptedForRampId === building.id) return; // asked this session already
-    promptedForRampId = building.id;
-    rampPromptText.textContent = `Parked at ${building.name}?`;
-    rampPrompt.hidden = false;
-  }
-
-  document.getElementById("ramp-prompt-dismiss")!.addEventListener("click", () => {
-    rampPrompt.hidden = true;
-  });
-  document.getElementById("ramp-prompt-save")!.addEventListener("click", () => {
-    if (nearBuilding) saveRamp(localStorage, nearBuilding);
-    rampPrompt.hidden = true;
-    refreshRampReturnButton();
-  });
-  rampReturn.addEventListener("click", () => {
-    const ramp = getSavedRamp(localStorage);
-    const rampBuilding = ramp ? router.building(ramp.id) : undefined;
-    if (!rampBuilding) return;
-    // The button is visible in idle and card mode, which is where someone
-    // who parked and walked away actually is. Without this the whole
-    // handler was a silent no-op: computePreview() returns immediately
-    // unless mode is already "preview", so the combo fields changed and
-    // nothing else did.
-    setMode("preview");
-    // Both selects are silent so the route is computed once, at the end —
-    // a non-silent select fires its own computePreview(), and two passes
-    // back to back race the sheet's entrance animation (see enterPreview).
-    // Same reasoning as enterPreview: whoever is walking back to their ramp
-    // is often outdoors, where the tight radius is empty — and selecting it
-    // as the *current location* is what charges the walk back to the door.
-    if (currentApproach) comboFrom.selectCurrentLocation({ silent: true });
-    comboTo.select(rampBuilding, undefined, { silent: true });
-    computePreview();
-    // Four of downtown's ramps sit on their own islands in the skyway graph,
-    // and now that Save My Ramp can fire at them (see parkedAt) this button
-    // can be pressed with no skyway path to offer. "No route found" is the
-    // right answer to "route me here" and the wrong one to "where is my
-    // car" -- it ends the interaction holding nothing. The card does what
-    // was actually asked: it puts the ramp on the map and names it. The walk
-    // is along the street, which this app has never claimed to route.
-    if (!activeRoute) showPlace(rampBuilding);
-  });
 
   // --- Heading-up tracking: Apple-Maps locate cycle -----------------------
   // Tap 1 centers and tracks, tap 2 rotates the map with your heading,
@@ -799,13 +728,9 @@ async function boot() {
   setInterval(() => view.setTime(selectedTime()), 60_000);
   view.setTime(selectedTime());
 
-  // The per-step "report crossing closed" UI is gone, but reports it filed
-  // live in localStorage for 4 hours and used to silently detour routing —
-  // with no UI left to see or clear them, a stray old tap would just look
-  // like the router picking a bizarre path. Purge on boot until closure
-  // reporting returns as a deliberate feature (incidents.ts is kept and
-  // tested for that day).
-  localStorage.removeItem("skymap.incidents");
+  // State outlives the features that wrote it — a native update swaps the
+  // bundle and leaves localStorage untouched. See RETIRED_KEYS.
+  clearRetiredKeys(localStorage);
 
   // The service worker's whole job is caching over-the-network requests for
   // the PWA. Inside the native wrapper, assets are already bundled on disk —
