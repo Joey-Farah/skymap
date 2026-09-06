@@ -7,14 +7,21 @@ test("an empty message is the one thing worth refusing", () => {
   assert.equal(feedbackProblem({ message: "   \n  " }), "Tell us what's up first.");
 });
 
-test("a message on its own is enough — the email is optional", () => {
-  // Requiring an address would cost reports from people who just want to
-  // flag something and move on, which is most of them.
-  assert.equal(feedbackProblem({ message: "The Hyatt is missing" }), null);
+test("a message with no address is refused, because a reply is the point", () => {
+  // Reversed deliberately. The form was collecting anonymous key-mashing
+  // that nobody could answer or ask about; an address is both the reply
+  // path and the cheapest filter against a pocket-submitted report.
+  const wanted = "Add your email so we can write back.";
+  assert.equal(feedbackProblem({ message: "The Hyatt is missing" }), wanted);
+  assert.equal(feedbackProblem({ message: "The Hyatt is missing", email: "   " }), wanted);
 });
 
-test("an address is only checked when one was actually typed", () => {
-  assert.equal(feedbackProblem({ message: "hi", email: "" }), null);
+test("the message still comes first when both are missing", () => {
+  // Told what to type first, not handed two complaints at once.
+  assert.equal(feedbackProblem({ message: "" }), "Tell us what's up first.");
+});
+
+test("an address that was typed still has to look like one", () => {
   assert.equal(feedbackProblem({ message: "hi", email: "jeb@example.com" }), null);
   // Worth catching: a typo'd address means the reply silently never arrives,
   // and the sender has no way to know that happened.
