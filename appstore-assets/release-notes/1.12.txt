@@ -1,0 +1,7 @@
+Write to us and we can write back.
+
+The feedback form now asks for your email address. It used to be optional, and what arrived was often a pocketful of random characters from a form somebody opened by accident — impossible to answer, and impossible to tell apart from a real report from someone who deserved a reply. Every message that reaches us is read by a person. Now they can answer you.
+
+Also fixed: the skyway lines had faint white nicks cut across them, at the junctions where a bridge meets the corridor it joins. Nothing was wrong with the skyway — the map was drawing the white outline of one line over the top of another, and on a map whose only job is telling you where you can walk, an accidental gap is the worst thing it can say. The paths draw as one continuous run now.
+
+And SkyMap can now tell you when it's out of date. If a version turns out to have a problem, the app will say so and point you at the update instead of leaving you walking around with it. It checks quietly, it never nags twice about the same release, and if you're deep in a building with no signal it says nothing at all and gets out of the way.
