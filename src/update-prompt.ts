@@ -37,6 +37,11 @@ function manifestUrl(): string | null {
 
 type FetchLike = (url: string) => Promise<{ ok: boolean; json(): Promise<unknown> }>;
 
+/** Read past every cache in between. The manifest is the one file whose
+ * whole purpose is to be current, and both the service worker and the
+ * HTTP cache would otherwise happily answer with an old copy. */
+const NO_STORE = { cache: "no-store" as const };
+
 /** Never throws: a gate that fails on its own network call would be the
  * thing keeping people out of the app. */
 export async function fetchManifest(url: string, fetchImpl: FetchLike): Promise<UpdateManifest | null> {
@@ -77,7 +82,7 @@ export class UpdatePrompt {
    * standing in one, on the strength of a file we read last week, would
    * break it exactly where it exists to work.
    */
-  async check(fetchImpl: FetchLike = (u) => fetch(u)): Promise<UpdateGate> {
+  async check(fetchImpl: FetchLike = (u) => fetch(u, NO_STORE)): Promise<UpdateGate> {
     const url = manifestUrl();
     const fresh = url ? await fetchManifest(url, fetchImpl) : null;
     if (fresh) this.store.setItem(CACHE_KEY, JSON.stringify(fresh));
