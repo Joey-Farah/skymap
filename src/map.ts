@@ -478,6 +478,14 @@ export class SkymapView {
     // so a door-to-door walk through a building doesn't look like a gap.
     // Deliberately solid rather than dashed — dashes already mean "closed"
     // on the bridge layer, and overloading that would say the wrong thing.
+    // Every casing first, then every line. Casing and line used to be
+    // added as a pair per source, which put the bridges' 8px white casing
+    // above the indoor 4.5px blue line: at each junction between a bridge
+    // and the corridor it joins, the casing painted a white nick straight
+    // across the blue. It read as a gap in the skyway, which is the one
+    // thing this map must never say by accident. Two coats, not two
+    // stripes -- bridges still sit above the indoor line, so a bridge
+    // crossing a corridor still reads as the thing on top.
     this.map.addLayer({
       id: "skyway-indoor-casing",
       type: "line",
@@ -485,6 +493,16 @@ export class SkymapView {
       layout: { "line-cap": "round", "line-join": "round" },
       paint: { "line-color": "#ffffff", "line-width": 8, "line-opacity": 0.9 },
     });
+    this.map.addLayer({
+      id: "skyway-bridges-casing",
+      type: "line",
+      source: "skyway-bridges",
+      layout: { "line-cap": "round" },
+      paint: { "line-color": "#ffffff", "line-width": 8, "line-opacity": 0.9 },
+    });
+
+    // Bridges above fills, and above the indoor stretches they join:
+    // confident metro-diagram strokes.
     this.map.addLayer({
       id: "skyway-indoor-line",
       type: "line",
@@ -494,15 +512,6 @@ export class SkymapView {
         "line-color": ["case", ["get", "open"], NETWORK, CLOSED],
         "line-width": ["case", ["get", "open"], 4.5, 3],
       },
-    });
-
-    // Bridges above fills: confident metro-diagram strokes.
-    this.map.addLayer({
-      id: "skyway-bridges-casing",
-      type: "line",
-      source: "skyway-bridges",
-      layout: { "line-cap": "round" },
-      paint: { "line-color": "#ffffff", "line-width": 8, "line-opacity": 0.9 },
     });
     this.map.addLayer({
       id: "skyway-bridges-line",
