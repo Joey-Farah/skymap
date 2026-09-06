@@ -13,7 +13,7 @@
  */
 
 import { Capacitor } from "@capacitor/core";
-import { updateGate, type UpdateGate, type UpdateManifest } from "./app-version.ts";
+import { gateFromSources, type UpdateGate, type UpdateManifest } from "./app-version.ts";
 import type { KeyValueStore } from "./storage.ts";
 
 const VERSION = typeof __APP_VERSION__ === "undefined" ? "dev" : __APP_VERSION__;
@@ -87,9 +87,7 @@ export class UpdatePrompt {
     const fresh = url ? await fetchManifest(url, fetchImpl) : null;
     if (fresh) this.store.setItem(CACHE_KEY, JSON.stringify(fresh));
 
-    const gate = updateGate(VERSION, fresh ?? this.cached());
-    if (gate.kind === "block" && !fresh) return { kind: "none" };
-
+    const gate = gateFromSources(VERSION, fresh, this.cached());
     this.render(gate);
     return gate;
   }
@@ -111,6 +109,18 @@ export class UpdatePrompt {
         gate.message || "This version of SkyMap has a problem we've since fixed. Update to keep going.";
       this.wall.hidden = false;
       this.banner.hidden = true;
+      // A wall nobody can reach is just a grey screen. It is the only
+      // control left, so focus moves to it and Tab is held inside: a
+      // screen-reader or keyboard user would otherwise be tabbing around
+      // a map they can no longer see, with no idea anything had appeared.
+      const go = document.getElementById("update-wall-go") as HTMLButtonElement;
+      go.focus();
+      this.wall.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") {
+          e.preventDefault();
+          go.focus();
+        }
+      });
       return;
     }
     if (gate.kind === "suggest") {

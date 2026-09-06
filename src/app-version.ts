@@ -80,3 +80,23 @@ export function updateGate(current: string, manifest: UpdateManifest | null): Up
 
   return NONE;
 }
+
+/**
+ * The gate, given both of what we might know: the manifest just fetched,
+ * and the last one we stored.
+ *
+ * A stale manifest may raise the banner and may never raise the wall. The
+ * wall stops the app dead, and the app's promise is that it works in a
+ * skyway with no signal — shutting someone out down there on the strength
+ * of a file read last week would break it exactly where it exists to work.
+ * A block we can't confirm right now is no block at all.
+ */
+export function gateFromSources(
+  current: string,
+  fresh: UpdateManifest | null,
+  cached: UpdateManifest | null,
+): UpdateGate {
+  if (fresh) return updateGate(current, fresh);
+  const gate = updateGate(current, cached);
+  return gate.kind === "block" ? NONE : gate;
+}

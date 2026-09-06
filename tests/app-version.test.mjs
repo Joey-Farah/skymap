@@ -47,3 +47,18 @@ test("a malformed manifest is treated as no manifest", () => {
   assert.equal(updateGate("1.11", { minVersion: "banana" }).kind, "none");
   assert.equal(updateGate("dev", { minVersion: "1.11" }).kind, "none", "an unbuilt dev version is exempt");
 });
+
+test("a stale manifest may suggest, and may never wall someone in", async () => {
+  const { gateFromSources } = await import("../src/app-version.ts");
+  const blocking = { minVersion: "9.9", message: "broken" };
+
+  // Fetched just now: the wall is allowed.
+  assert.equal(gateFromSources("1.11", blocking, null).kind, "block");
+  // The same file, remembered rather than confirmed: it isn't. Someone in a
+  // skyway with no signal keeps their map.
+  assert.equal(gateFromSources("1.11", null, blocking).kind, "none");
+  // A cached suggestion is still fine — nothing is taken away by it.
+  assert.equal(gateFromSources("1.11", null, { latestVersion: "9.9" }).kind, "suggest");
+  // Fresh wins outright: a floor that has been lowered takes effect now.
+  assert.equal(gateFromSources("1.11", { latestVersion: "1.11" }, blocking).kind, "none");
+});
