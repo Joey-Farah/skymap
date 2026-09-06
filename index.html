@@ -47,6 +47,25 @@
     <div id="app">
       <div id="map"></div>
       <div class="toast" id="toast" role="status" hidden></div>
+      <!-- Update prompts. The banner is a courtesy for an ordinary release;
+           the wall is for a version we know is broken, and is driven by a
+           hosted file so it can be raised and lowered without a release. -->
+      <div class="panel update-banner" id="update-banner" hidden>
+        <span id="update-banner-text"></span>
+        <div class="update-banner-actions">
+          <button id="update-banner-go" type="button">Update</button>
+          <button id="update-banner-dismiss" class="ghost" type="button" aria-label="Dismiss">Later</button>
+        </div>
+      </div>
+      <div class="update-wall" id="update-wall" role="dialog" aria-modal="true"
+           aria-labelledby="update-wall-title" hidden>
+        <div class="panel update-wall-card">
+          <h2 id="update-wall-title">Time to update</h2>
+          <p id="update-wall-text"></p>
+          <button id="update-wall-go" type="button">Open the App Store</button>
+        </div>
+      </div>
+
       <!-- Feedback, in-app. This used to be a mailto: link, which did
            nothing at all for anyone without a mail client configured — a
            silent failure at the exact moment someone was trying to help. -->

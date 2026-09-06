@@ -13,5 +13,9 @@ npm ci
 # UI so the value is visible in the repo and survives a workflow rebuild.
 export VITE_FEEDBACK_ENDPOINT="https://skymap-alpha.vercel.app/api/feedback"
 
+# Same reason, for the update gate: the native build has to be told where
+# the manifest lives, or it can never learn that it is out of date.
+export VITE_UPDATE_MANIFEST="https://skymap-alpha.vercel.app/update.json"
+
 npm run build
 npx cap sync ios

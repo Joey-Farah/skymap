@@ -1582,3 +1582,119 @@ a:focus-visible {
     background: rgba(255, 255, 255, 0.08);
   }
 }
+
+/* --- Update prompts ------------------------------------------------------ */
+
+/* The banner sits where the old Save My Ramp prompt did: above the sheet,
+   below the search bar, out of the map's way. It is a courtesy, so it is
+   the smallest thing on screen that can still be read and dismissed. */
+.update-banner {
+  top: auto;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 66px);
+  left: 10px;
+  right: 10px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 12;
+}
+
+.update-banner[hidden] {
+  display: none;
+}
+
+.update-banner-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.update-banner-actions button {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease);
+}
+
+.update-banner-actions button:active {
+  transform: scale(0.96);
+}
+
+.update-banner-actions button.ghost {
+  background: rgba(20, 33, 61, 0.06);
+  color: var(--ink-600);
+}
+
+@media (prefers-color-scheme: dark) {
+  .update-banner-actions button.ghost {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* The wall covers everything, including the map: this state means the
+   version underneath is one we know gives wrong answers, and a wrong
+   answer about where you can walk is worse than no answer. Above the
+   feedback dialog (41) — nothing outranks it. */
+.update-wall {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20, 33, 61, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.update-wall[hidden] {
+  display: none;
+}
+
+.update-wall-card {
+  position: static;
+  width: 100%;
+  max-width: 380px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.update-wall-card h2 {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.update-wall-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.update-wall-card button {
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
