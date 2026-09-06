@@ -1,0 +1,4 @@
+{
+  "_comment": "The update gate's whole control surface. latestVersion shows a dismissible banner; minVersion shows a wall and should name only a version that is actually broken. Editing this file needs no app release — see src/app-version.ts and appstore-assets/RELEASING.md.",
+  "latestVersion": "1.11"
+}

@@ -47,6 +47,25 @@
     <div id="app">
       <div id="map"></div>
       <div class="toast" id="toast" role="status" hidden></div>
+      <!-- Update prompts. The banner is a courtesy for an ordinary release;
+           the wall is for a version we know is broken, and is driven by a
+           hosted file so it can be raised and lowered without a release. -->
+      <div class="panel update-banner" id="update-banner" hidden>
+        <span id="update-banner-text"></span>
+        <div class="update-banner-actions">
+          <button id="update-banner-go" type="button">Update</button>
+          <button id="update-banner-dismiss" class="ghost" type="button" aria-label="Dismiss">Later</button>
+        </div>
+      </div>
+      <div class="update-wall" id="update-wall" role="dialog" aria-modal="true"
+           aria-labelledby="update-wall-title" hidden>
+        <div class="panel update-wall-card">
+          <h2 id="update-wall-title">Time to update</h2>
+          <p id="update-wall-text"></p>
+          <button id="update-wall-go" type="button">Open the App Store</button>
+        </div>
+      </div>
+
       <!-- Feedback, in-app. This used to be a mailto: link, which did
            nothing at all for anyone without a mail client configured — a
            silent failure at the exact moment someone was trying to help. -->
@@ -57,8 +76,8 @@
         <p class="feedback-sub" id="feedback-sub">What's working, what's not, what would make this better?</p>
         <textarea id="feedback-message" rows="4" placeholder="Type it here"
                   aria-label="Your feedback"></textarea>
-        <input type="email" id="feedback-email" placeholder="Email (only if you want a reply)"
-               autocomplete="email" aria-label="Your email, optional" />
+        <input type="email" id="feedback-email" placeholder="Email" required
+               autocomplete="email" aria-label="Your email" />
         <!-- Honeypot: off-screen, never announced, never tabbed to. A person
              won't fill this in; the things we're keeping out will. -->
         <input type="text" id="feedback-website" class="feedback-hp" tabindex="-1"

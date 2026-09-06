@@ -62,6 +62,39 @@ is kept for history — don't follow it for updates.)
    above" — SkyMap only uses system HTTPS, no custom or linked crypto) and
    hasn't needed re-answering on later builds.
 
+## The update gate (added 1.12)
+
+`public/update.json`, deployed with the web app, is the whole control
+surface for telling installed copies they are behind. The app reads it at
+launch; nothing about it is compiled in, so both of these are an edit and
+a deploy, never a release:
+
+```jsonc
+{
+  "latestVersion": "1.12",   // dismissible banner on anything older
+  "minVersion": "1.11",      // full-screen wall on anything older
+  "message": "…"             // shown on the wall, optional
+}
+```
+
+**After a release goes `READY_FOR_SALE`, set `latestVersion` to it.** That
+is the step that makes the banner do anything; skipping it is silent.
+
+`minVersion` is for a version that is *actually broken* — it stops the app
+dead. Two things keep that honest and both are deliberate:
+
+- The wall is raised only from a manifest fetched just now. A cached
+  manifest can show the banner but never the wall, so nobody standing in a
+  skyway with no signal is shut out on the strength of a stale file.
+- `tests/app-version-manifest.test.mjs` fails the build if the committed
+  manifest would block the version being shipped. That is the guard against
+  bricking every install with one typo.
+
+The native build learns the manifest URL from `VITE_UPDATE_MANIFEST` in
+`ios/App/ci_scripts/ci_post_clone.sh`, the same way the feedback endpoint
+works — `capacitor://localhost` has no server behind it, so a relative path
+would never resolve.
+
 ## Screenshots
 
 Run `npm run screenshots` with the dev server up (`npm run dev -- --port

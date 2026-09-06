@@ -16,7 +16,13 @@ const DIST = join(ROOT, "dist");
 // Skip source maps (large, devtools-only, not needed to run offline) and
 // the raw .osm.json debug dump (a pipeline artifact that ends up in
 // public/ but was never meant to ship).
-const SKIP = /\.map$|\.osm\.json$|^sw\.js$/;
+//
+// update.json is skipped for a different reason: the fetch handler is
+// stale-while-revalidate, so precaching the one file whose entire purpose
+// is to be read fresh would answer every check with the copy from the
+// launch before. It is the update gate's control surface — the point is
+// that editing it takes effect now.
+const SKIP = /\.map$|\.osm\.json$|^sw\.js$|^update\.json$/;
 
 function walk(dir) {
   const out = [];

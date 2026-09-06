@@ -63,6 +63,16 @@ self.addEventListener("fetch", (event) => {
   // Basemap tiles/styles: network first, no caching (respect tile provider).
   if (url.origin !== self.location.origin) return;
 
+  // The update manifest is the one file whose entire job is to be current:
+  // it decides whether this copy of the app is too old to keep using, and
+  // the whole design is that editing it takes effect now. Leaving it to
+  // the handler below would cache it on first fetch and then answer every
+  // later launch from that copy — an urgent minVersion would sit stale in
+  // returning visitors' caches. Keeping it out of the *precache* list does
+  // not help with this; that is a different cache. Skip the worker
+  // entirely and let it go to the network.
+  if (url.pathname.endsWith("/update.json")) return;
+
   // Same-origin: stale-while-revalidate.
   event.respondWith(
     caches.match(event.request).then((cached) => {

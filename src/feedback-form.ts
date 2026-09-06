@@ -76,9 +76,14 @@ export class FeedbackForm {
     if (!endpoint()) return this.handOffToMail();
     this.returnFocusTo = document.activeElement as HTMLElement | null;
     this.title.textContent = target ? "Report an issue" : "Send feedback";
+    // The address is required, so the form says what it is for rather than
+    // presenting a bare mandatory field: people give an email to a person
+    // who will write back, not to a form that insists.
     this.sub.textContent = target
-      ? `What's wrong with ${target.name}? Closed, wrong hours, wrong place, doesn't exist…`
-      : "What's working, what's not, what would make this better?";
+      ? `What's wrong with ${target.name}? Closed, wrong hours, wrong place, doesn't exist… We read every one and reply, so leave an address.`
+      : "What's working, what's not, what would make this better? We read every one and reply, so leave an address.";
+    // The message is cleared, the address deliberately isn't: someone who
+    // reported once already typed it, and it is required now.
     this.message.value = "";
     this.error.hidden = true;
     this.setBusy(false);

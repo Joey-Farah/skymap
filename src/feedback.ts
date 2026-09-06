@@ -21,15 +21,25 @@ export interface FeedbackPayload {
 }
 
 /** The single reason to reject a draft, or null if it's fine to send.
- * Deliberately permissive: a half-formed complaint is still a real signal,
- * and every field we insist on is a report that doesn't get sent. */
+ *
+ * The address used to be optional, on the reasoning that every required
+ * field is a report that doesn't get sent. What actually arrived was
+ * anonymous key-mashing — submitted by accident, unanswerable, and
+ * indistinguishable from a real report nobody could follow up on. So the
+ * address is required now: it is the reply path, and a pocket-submitted
+ * form does not produce one.
+ *
+ * Message first when both are missing. Two complaints at once reads as a
+ * form scolding you rather than telling you what to do next.
+ */
 export function feedbackProblem(draft: FeedbackDraft): string | null {
   if (!draft.message.trim()) return "Tell us what's up first.";
   const email = draft.email?.trim();
+  if (!email) return "Add your email so we can write back.";
   // Only a shape check — anything stricter starts rejecting valid addresses,
   // and the cost of a false reject (a lost report) beats the cost of a false
   // accept (one bounced reply).
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "That email address looks incomplete.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "That email address looks incomplete.";
   return null;
 }
 

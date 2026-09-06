@@ -30,6 +30,7 @@ import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
 import { clearRetiredKeys } from "./storage.ts";
+import { UpdatePrompt } from "./update-prompt.ts";
 
 /**
  * How far off the network "Current Location" will still offer to start a
@@ -731,6 +732,11 @@ async function boot() {
   // State outlives the features that wrote it — a native update swaps the
   // bundle and leaves localStorage untouched. See RETIRED_KEYS.
   clearRetiredKeys(localStorage);
+
+  // Last, and deliberately not awaited: whether this copy is out of date is
+  // the least urgent thing on screen, and a slow or dead network must not
+  // hold up a map someone is already looking at.
+  void new UpdatePrompt().check();
 
   // The service worker's whole job is caching over-the-network requests for
   // the PWA. Inside the native wrapper, assets are already bundled on disk —
