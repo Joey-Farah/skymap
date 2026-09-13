@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/((?!update\\.json$|api/feedback$|support\\.html$|privacy\\.html$).*)",
+      "destination": "https://apps.apple.com/app/id6792509326",
+      "permanent": false
+    }
+  ]
+}
