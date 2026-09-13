@@ -1,0 +1,9 @@
+The last two municipal ramps.
+
+A reader asked us to add parking ramps. Most of downtown's municipal ramps arrived a few releases ago, but two were held back, each missing one fact we couldn't source. Both are in now.
+
+The Plaza ramp, under the Convention Center plaza on 12th Street, had a name and a skyway link but no position we trusted: its street address lands two kilometres away in the North Loop. Its county property record doesn't, so that's where it sits now, across the street from the Convention Center it connects to.
+
+11th & Marquette turned out never to have been missing. It was on the map the whole time, skyway links and all, under the name "Marquette Parking Ramp" — which is not a name anyone parks by. It goes by the name on its sign now.
+
+Search got more forgiving along the way. "Plaza ramp", "11th and Marquette" and "Hennepin at 10th ramp" all used to find nothing, because every word you typed had to appear in a place's name. What kind of place it is counts now too, and "and" matches "&". A name you typed still always comes first.
