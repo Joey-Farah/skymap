@@ -62,6 +62,19 @@ test("renaming 11th & Marquette keeps the skyway links OSM traced", () => {
   assert.ok(links.length >= 4, `11th & Marquette has ${links.length} skyway links, OSM traced 4`);
 });
 
+// Plaza's street address geocodes two kilometres away in the North Loop, so
+// its position comes from the county parcel at 117 S 12th St instead.
+test("Plaza stands on its own parcel, across 12th from the Convention Center", () => {
+  const ramp = data.buildings.find((b) => b.name === "Plaza");
+  assert.ok(ramp, "Plaza is not in the dataset");
+  const off = metresFrom(ramp, { lat: 44.970669, lon: -93.27472 });
+  assert.ok(off <= 60, `Plaza sits ${Math.round(off)}m from its parcel`);
+  assert.ok(
+    data.edges.some((e) => [e.from, e.to].includes(ramp.id) && [e.from, e.to].includes("minneapolis-convention-center-42837791")),
+    "Plaza has no skyway link to the Convention Center",
+  );
+});
+
 test("every curated ramp carries its sources", () => {
   const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.added)) {

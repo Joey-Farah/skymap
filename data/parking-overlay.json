@@ -89,6 +89,24 @@
       ],
       "checkedOn": "2026-08-31",
       "note": "West side of 2nd Ave S between 10th and 11th, underground, with skyway access to Orchestra Hall per the operator -- which is the sourced link, not a guess from proximity. Sits 68m from Leamington Municipal Ramp, close enough to look like a duplicate and far enough to be a second facility: the city directory lists both, at 1001 and 1030 2nd Ave S."
+    },
+    "plaza-x": {
+      "name": "Plaza",
+      "address": "117 South 12th Street",
+      "category": "parking",
+      "lat": 44.970669,
+      "lon": -93.27472,
+      "footprint": [],
+      "connectsTo": [
+        "minneapolis-convention-center-42837791"
+      ],
+      "sources": [
+        "https://www.mplsparking.com/",
+        "https://abmparking.com/facilities/parking-for-117-s-12th-street-plaza/",
+        "https://gis.hennepin.us/arcgis/rest/services/HennepinData/LAND_PROPERTY/MapServer/1/query?where=PID%3D%272702924130281%27&outFields=*&f=json"
+      ],
+      "checkedOn": "2026-09-12",
+      "note": "Held out of 1.10 because the street address geocodes into the North Loop, two kilometres wrong. The position is instead the centroid of Hennepin County parcel 2702924130281 at 117 S 12th St -- owner City of Mpls, taxpayer ABM Parking Services -- which the operator places on the south side of 12th between Marquette and 2nd, underground, 'just across the street' from the Convention Center and 'connected via skyway' to it. That is the sourced link; the parcel's edge is 34m from the Convention Center's footprint, a street's width."
     }
   },
   "renamed": {
