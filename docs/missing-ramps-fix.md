@@ -78,10 +78,10 @@ is filled in only from a cited traced source; the candidates file exists to supp
 
 ## Left undone
 
-- **Plaza ramp** (117 S 12th St) — name and skyway link sourced, position not. The address
-  geocodes into the North Loop, two kilometres wrong. A ramp in the wrong place is worse
-  than a missing one.
-- **11th & Marquette** (1111 Marquette Ave) — position sourced, no skyway link found. This
-  app has nothing useful to say about a ramp you can't walk out of.
+- ~~Plaza ramp~~ — added 2026-09-12, positioned from its county parcel (2702924130281)
+  instead of the geocoder.
+- ~~11th & Marquette~~ — never missing. OSM carried it as "Marquette Parking Ramp" with four
+  skyway links; the county parcel at 1111 Marquette contains that structure. Fixed with a
+  `renamed` overlay entry on 2026-09-12.
 - **The other ~24 unnamed structures**, mostly private and commercial, sitting in
   `data/parking-candidates.json` waiting for a name from two sources.

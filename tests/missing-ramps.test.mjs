@@ -45,6 +45,55 @@ test("you can walk out of it -- a findable ramp with no skyway link is worse tha
   assert.ok(edges.length > 0, "Hennepin at 10th has no skyway link and cannot be routed out of");
 });
 
+// 11th & Marquette was never missing. OSM carries it as "Marquette Parking
+// Ramp", a name nobody parks by, so search for the one on the sign found
+// nothing. The county parcel at 1111 Marquette -- City-owned, ABM the
+// taxpayer -- contains that very structure.
+test("11th & Marquette is findable by the name on its sign", () => {
+  const hits = find("11th & Marquette");
+  assert.ok(hits.length > 0, "11th & Marquette returns nothing in search");
+  assert.equal(hits[0].label, "11th & Marquette");
+});
+
+// Drivers add "ramp" and spell out "and". Search needed every word in the
+// name or address, so each of these found nothing -- and the rename above
+// would otherwise have broken the one that used to work.
+for (const [query, id] of [
+  ["Marquette Parking Ramp", "marquette-parking-ramp-27346594"],
+  ["11th and Marquette", "marquette-parking-ramp-27346594"],
+  ["Marquette ramp", "marquette-parking-ramp-27346594"],
+  ["Plaza ramp", "plaza-x"],
+  ["Hennepin at 10th ramp", "hennepin-at-10th-x"],
+]) {
+  test(`"${query}" finds the ramp`, () => {
+    assert.equal(find(query)[0]?.buildingId, id);
+  });
+}
+
+test("renaming 11th & Marquette keeps the skyway links OSM traced", () => {
+  const ramp = data.buildings.find((b) => b.id === "marquette-parking-ramp-27346594");
+  assert.equal(ramp?.name, "11th & Marquette");
+  const links = data.edges.filter((e) => e.from === ramp.id || e.to === ramp.id);
+  assert.ok(links.length >= 4, `11th & Marquette has ${links.length} skyway links, OSM traced 4`);
+});
+
+// Plaza's street address geocodes two kilometres away in the North Loop, so
+// its position comes from the county parcel at 117 S 12th St instead.
+test("Plaza stands on its own parcel, across 12th from the Convention Center", () => {
+  const ramp = data.buildings.find((b) => b.name === "Plaza");
+  assert.ok(ramp, "Plaza is not in the dataset");
+  // Checked against something the overlay didn't write: the operator puts it
+  // "just across the street" from the Convention Center, and the geocoder's
+  // North Loop answer is two kilometres from that footprint.
+  const mcc = data.buildings.find((b) => b.id === "minneapolis-convention-center-42837791");
+  const off = Math.min(...mcc.footprint.map(([lon, lat]) => metresFrom(ramp, { lat, lon })));
+  assert.ok(off <= 120, `Plaza sits ${Math.round(off)}m from the Convention Center it faces`);
+  assert.ok(
+    data.edges.some((e) => [e.from, e.to].includes(ramp.id) && [e.from, e.to].includes("minneapolis-convention-center-42837791")),
+    "Plaza has no skyway link to the Convention Center",
+  );
+});
+
 test("every curated ramp carries its sources", () => {
   const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.added)) {
@@ -68,8 +117,9 @@ test("every curated ramp is findable, and can be walked out of", () => {
   const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.added)) {
     if (id.startsWith("_")) continue;
+    // Its own record, not merely something: "Plaza" also hits RSM Plaza.
     const hits = find(entry.name);
-    assert.ok(hits.length > 0, `${entry.name} returns nothing in search`);
+    assert.ok(hits.some((h) => h.buildingId === id), `${entry.name} returns nothing in search`);
     const building = data.buildings.find((b) => b.id === id);
     assert.equal(building?.category, "parking", `${entry.name} is not in the dataset as a ramp`);
     const linked = data.edges.some((e) => e.from === id || e.to === id);
@@ -138,4 +188,16 @@ test("a ramp OSM has since named is still reported as retirable", () => {
     data.buildings.push({ ...ramp, id: "hennepin-at-10th-999", name: "Hennepin at 10th Ramp" });
   });
   assert.match(out, /caught up with/);
+});
+
+test("a rename whose building has left the dataset refuses to write", () => {
+  // Re-extraction changes an id when OSM re-traces a way. Applying nothing
+  // under a success message would quietly put the unsearchable name back.
+  assert.throws(
+    () =>
+      runOverlayOn((data) => {
+        data.buildings = data.buildings.filter((b) => b.id !== "marquette-parking-ramp-27346594");
+      }),
+    /rename target is not in the dataset/,
+  );
 });

@@ -31,12 +31,14 @@
     "emitting a second ramp on the same corner. Retire it then — upstream is the better",
     "record, and it will carry an outline this file can't.",
     "",
-    "Two more municipal ramps are known and deliberately absent. The Plaza ramp (117 S 12th",
-    "St, skyway-connected to the Convention Center) has a name and a link but no position we",
-    "trust -- the address geocodes into the North Loop, two kilometres wrong -- and a ramp in",
-    "the wrong place is worse than a missing one. 11th & Marquette (1111 Marquette Ave) has a",
-    "position but no sourced skyway link, and this app has nothing to say about a ramp you",
-    "can't walk out of. Both need a survey, not another search."
+    "When a geocoded address is wrong, the Hennepin County parcel layer is the position",
+    "source: a municipal ramp's parcel names the City as owner and ABM as taxpayer. Plaza's",
+    "address lands two kilometres off; its parcel does not.",
+    "",
+    "`renamed` is for ramps OSM does carry, under a name nobody parks by. It renames in",
+    "place, so the id and the skyway edges traced against it stay OSM's. Same two-source",
+    "rule, and a rename whose id has left the dataset refuses to write rather than quietly",
+    "putting the unsearchable name back."
   ],
   "added": {
     "hennepin-at-10th-x": {
@@ -89,6 +91,35 @@
       ],
       "checkedOn": "2026-08-31",
       "note": "West side of 2nd Ave S between 10th and 11th, underground, with skyway access to Orchestra Hall per the operator -- which is the sourced link, not a guess from proximity. Sits 68m from Leamington Municipal Ramp, close enough to look like a duplicate and far enough to be a second facility: the city directory lists both, at 1001 and 1030 2nd Ave S."
+    },
+    "plaza-x": {
+      "name": "Plaza",
+      "address": "117 South 12th Street",
+      "category": "parking",
+      "lat": 44.970669,
+      "lon": -93.27472,
+      "footprint": [],
+      "connectsTo": [
+        "minneapolis-convention-center-42837791"
+      ],
+      "sources": [
+        "https://www.mplsparking.com/",
+        "https://abmparking.com/facilities/parking-for-117-s-12th-street-plaza/",
+        "https://gis.hennepin.us/arcgis/rest/services/HennepinData/LAND_PROPERTY/MapServer/1/query?where=PID%3D%272702924130281%27&outFields=*&f=json"
+      ],
+      "checkedOn": "2026-09-12",
+      "note": "Held out of 1.10 because the street address geocodes into the North Loop, two kilometres wrong. The position is instead the centroid of Hennepin County parcel 2702924130281 at 117 S 12th St -- owner City of Mpls, taxpayer ABM Parking Services -- which the operator places on the south side of 12th between Marquette and 2nd, underground, 'just across the street' from the Convention Center and 'connected via skyway' to it. That is the sourced link; the parcel's edge is 34m from the Convention Center's footprint, a street's width."
+    }
+  },
+  "renamed": {
+    "marquette-parking-ramp-27346594": {
+      "name": "11th & Marquette",
+      "sources": [
+        "https://www.mplsparking.com/",
+        "https://www.minneapolis.org/minneapolis-convention-center/attendees/public-event-parking-options/"
+      ],
+      "checkedOn": "2026-09-12",
+      "note": "Never missing, only misnamed: OSM calls it Marquette Parking Ramp and nobody parks by that name. Hennepin County parcel 2702924130039 at 1111 Marquette Ave -- owner City of Mpls, taxpayer ABM Parking Services -- contains this OSM structure, and its four traced skyway links match the Minnesota Orchestra's note that the ramp has skyway-level access. The id is OSM's and stays so, because the edges hang off it."
     }
   }
 }

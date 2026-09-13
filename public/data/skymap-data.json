@@ -489,7 +489,7 @@
   },
   {
    "id": "marquette-parking-ramp-27346594",
-   "name": "Marquette Parking Ramp",
+   "name": "11th & Marquette",
    "address": "Minneapolis",
    "category": "parking",
    "lat": 44.971567,
@@ -17021,6 +17021,17 @@
    "footprint": [],
    "hours": null,
    "hoursNote": "No published hours found."
+  },
+  {
+   "id": "plaza-x",
+   "name": "Plaza",
+   "address": "117 South 12th Street",
+   "category": "parking",
+   "lat": 44.970669,
+   "lon": -93.27472,
+   "footprint": [],
+   "hours": null,
+   "hoursNote": "No published hours found."
   }
  ],
  "edges": [
@@ -19969,6 +19980,11 @@
   {
    "from": "11th-street-underground-x",
    "to": "orchestra-hall-43607930",
+   "crossing": "skyway"
+  },
+  {
+   "from": "plaza-x",
+   "to": "minneapolis-convention-center-42837791",
    "crossing": "skyway"
   }
  ],
