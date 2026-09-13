@@ -90,5 +90,16 @@
       "checkedOn": "2026-08-31",
       "note": "West side of 2nd Ave S between 10th and 11th, underground, with skyway access to Orchestra Hall per the operator -- which is the sourced link, not a guess from proximity. Sits 68m from Leamington Municipal Ramp, close enough to look like a duplicate and far enough to be a second facility: the city directory lists both, at 1001 and 1030 2nd Ave S."
     }
+  },
+  "renamed": {
+    "marquette-parking-ramp-27346594": {
+      "name": "11th & Marquette",
+      "sources": [
+        "https://www.mplsparking.com/",
+        "https://www.minneapolis.org/minneapolis-convention-center/attendees/public-event-parking-options/"
+      ],
+      "checkedOn": "2026-09-12",
+      "note": "Never missing, only misnamed: OSM calls it Marquette Parking Ramp and nobody parks by that name. Hennepin County parcel 2702924130039 at 1111 Marquette Ave -- owner City of Mpls, taxpayer ABM Parking Services -- contains this OSM structure, and its four traced skyway links match the Minnesota Orchestra's note that the ramp has skyway-level access. The id is OSM's and stays so, because the edges hang off it."
+    }
   }
 }

@@ -45,6 +45,23 @@ test("you can walk out of it -- a findable ramp with no skyway link is worse tha
   assert.ok(edges.length > 0, "Hennepin at 10th has no skyway link and cannot be routed out of");
 });
 
+// 11th & Marquette was never missing. OSM carries it as "Marquette Parking
+// Ramp", a name nobody parks by, so search for the one on the sign found
+// nothing. The county parcel at 1111 Marquette -- City-owned, ABM the
+// taxpayer -- contains that very structure.
+test("11th & Marquette is findable by the name on its sign", () => {
+  const hits = find("11th & Marquette");
+  assert.ok(hits.length > 0, "11th & Marquette returns nothing in search");
+  assert.equal(hits[0].label, "11th & Marquette");
+});
+
+test("renaming 11th & Marquette keeps the skyway links OSM traced", () => {
+  const ramp = data.buildings.find((b) => b.id === "marquette-parking-ramp-27346594");
+  assert.equal(ramp?.name, "11th & Marquette");
+  const links = data.edges.filter((e) => e.from === ramp.id || e.to === ramp.id);
+  assert.ok(links.length >= 4, `11th & Marquette has ${links.length} skyway links, OSM traced 4`);
+});
+
 test("every curated ramp carries its sources", () => {
   const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.added)) {
@@ -138,4 +155,16 @@ test("a ramp OSM has since named is still reported as retirable", () => {
     data.buildings.push({ ...ramp, id: "hennepin-at-10th-999", name: "Hennepin at 10th Ramp" });
   });
   assert.match(out, /caught up with/);
+});
+
+test("a rename whose building has left the dataset refuses to write", () => {
+  // Re-extraction changes an id when OSM re-traces a way. Applying nothing
+  // under a success message would quietly put the unsearchable name back.
+  assert.throws(
+    () =>
+      runOverlayOn((data) => {
+        data.buildings = data.buildings.filter((b) => b.id !== "marquette-parking-ramp-27346594");
+      }),
+    /rename target is not in the dataset/,
+  );
 });

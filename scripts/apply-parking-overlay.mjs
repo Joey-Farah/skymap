@@ -58,6 +58,26 @@ function applyLinks(id, entry) {
   }
 }
 
+// Ramps OSM carries under a name nobody parks by. Renamed in place so the id,
+// and every skyway edge traced against it, stays OSM's.
+let renamed = 0;
+for (const [id, entry] of Object.entries(overlay.renamed ?? {})) {
+  if (id.startsWith("_")) continue;
+  if (!(entry.sources?.length >= 2) || !/^\d{4}-\d{2}-\d{2}$/.test(entry.checkedOn ?? "")) {
+    problems.push(`${id} (${entry.name}): rename needs two sources and a check date`);
+    continue;
+  }
+  const building = data.buildings.find((b) => b.id === id);
+  if (!building) {
+    // Re-extraction changes an id when OSM renames or re-traces the way. A
+    // rename that silently stops applying puts the unsearchable name back.
+    problems.push(`${id} (${entry.name}): rename target is not in the dataset`);
+    continue;
+  }
+  building.name = entry.name;
+  renamed++;
+}
+
 for (const [id, entry] of Object.entries(overlay.added)) {
   if (id.startsWith("_")) continue;
   // Provenance is the whole basis for trusting a hand-written building, so
@@ -154,6 +174,7 @@ if (retirable.length) {
 }
 const total = Object.keys(overlay.added).filter((k) => !k.startsWith("_")).length;
 console.log(`Curated ramps applied: ${applied} of ${total}.`);
+console.log(`Ramps renamed: ${renamed}.`);
 
 if (problems.length) {
   console.error("Refusing to write with unresolved problems above.");
