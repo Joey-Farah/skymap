@@ -67,8 +67,12 @@ test("renaming 11th & Marquette keeps the skyway links OSM traced", () => {
 test("Plaza stands on its own parcel, across 12th from the Convention Center", () => {
   const ramp = data.buildings.find((b) => b.name === "Plaza");
   assert.ok(ramp, "Plaza is not in the dataset");
-  const off = metresFrom(ramp, { lat: 44.970669, lon: -93.27472 });
-  assert.ok(off <= 60, `Plaza sits ${Math.round(off)}m from its parcel`);
+  // Checked against something the overlay didn't write: the operator puts it
+  // "just across the street" from the Convention Center, and the geocoder's
+  // North Loop answer is two kilometres from that footprint.
+  const mcc = data.buildings.find((b) => b.id === "minneapolis-convention-center-42837791");
+  const off = Math.min(...mcc.footprint.map(([lon, lat]) => metresFrom(ramp, { lat, lon })));
+  assert.ok(off <= 120, `Plaza sits ${Math.round(off)}m from the Convention Center it faces`);
   assert.ok(
     data.edges.some((e) => [e.from, e.to].includes(ramp.id) && [e.from, e.to].includes("minneapolis-convention-center-42837791")),
     "Plaza has no skyway link to the Convention Center",
@@ -98,8 +102,9 @@ test("every curated ramp is findable, and can be walked out of", () => {
   const overlay = JSON.parse(readFileSync("data/parking-overlay.json", "utf8"));
   for (const [id, entry] of Object.entries(overlay.added)) {
     if (id.startsWith("_")) continue;
+    // Its own record, not merely something: "Plaza" also hits RSM Plaza.
     const hits = find(entry.name);
-    assert.ok(hits.length > 0, `${entry.name} returns nothing in search`);
+    assert.ok(hits.some((h) => h.buildingId === id), `${entry.name} returns nothing in search`);
     const building = data.buildings.find((b) => b.id === id);
     assert.equal(building?.category, "parking", `${entry.name} is not in the dataset as a ramp`);
     const linked = data.edges.some((e) => e.from === id || e.to === id);
