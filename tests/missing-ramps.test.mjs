@@ -55,6 +55,21 @@ test("11th & Marquette is findable by the name on its sign", () => {
   assert.equal(hits[0].label, "11th & Marquette");
 });
 
+// Drivers add "ramp" and spell out "and". Search needed every word in the
+// name or address, so each of these found nothing -- and the rename above
+// would otherwise have broken the one that used to work.
+for (const [query, id] of [
+  ["Marquette Parking Ramp", "marquette-parking-ramp-27346594"],
+  ["11th and Marquette", "marquette-parking-ramp-27346594"],
+  ["Marquette ramp", "marquette-parking-ramp-27346594"],
+  ["Plaza ramp", "plaza-x"],
+  ["Hennepin at 10th ramp", "hennepin-at-10th-x"],
+]) {
+  test(`"${query}" finds the ramp`, () => {
+    assert.equal(find(query)[0]?.buildingId, id);
+  });
+}
+
 test("renaming 11th & Marquette keeps the skyway links OSM traced", () => {
   const ramp = data.buildings.find((b) => b.id === "marquette-parking-ramp-27346594");
   assert.equal(ramp?.name, "11th & Marquette");

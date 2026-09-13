@@ -1,5 +1,5 @@
 import type { Building, Poi } from "./types.ts";
-import { isBuildingMarker } from "./poi.ts";
+import { CATEGORY_LABELS, isBuildingMarker } from "./poi.ts";
 
 /** One searchable result in the from/to picker: a building or a business inside one. */
 export interface ComboEntry {
@@ -14,11 +14,14 @@ export interface ComboEntry {
    * sort closest-first to wherever the search is anchored. */
   lat?: number;
   lon?: number;
+  /** What kind of place it is ("Parking ramp"). Searchable but never shown:
+   * people type "Plaza ramp", and the name alone doesn't say ramp. */
+  keywords?: string;
 }
 
 /** Buildings plus their interior businesses, as one searchable, sorted list. */
 export function buildComboEntries(
-  buildings: (Pick<Building, "id" | "name" | "address"> & Partial<Pick<Building, "lat" | "lon">>)[],
+  buildings: (Pick<Building, "id" | "name" | "address"> & Partial<Pick<Building, "lat" | "lon" | "category">>)[],
   pois: (Pick<Poi, "id" | "name" | "buildingId" | "exterior" | "group"> &
     Partial<Pick<Poi, "lat" | "lon" | "category" | "kind">>)[],
 ): ComboEntry[] {
@@ -30,6 +33,7 @@ export function buildComboEntries(
     icon: "building",
     lat: b.lat,
     lon: b.lon,
+    keywords: b.category ? CATEGORY_LABELS[b.category] : undefined,
   }));
   for (const p of pois) {
     // Exterior POIs are kept out because a bus stop isn't somewhere you
@@ -91,6 +95,8 @@ export function foldForSearch(text: string): string {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/['\u2018\u2019\u02bc\u02bb`\u00b4]/g, "")
+    // "11th & Marquette" is said, and typed, as "11th and Marquette".
+    .replace(/\s*&\s*/g, " and ")
     .toLowerCase();
 }
 
@@ -103,6 +109,7 @@ export function foldForSearch(text: string): string {
 function score(entry: ComboEntry, words: string[]): number | null {
   const label = foldForSearch(entry.label);
   const sublabel = foldForSearch(entry.sublabel);
+  const keywords = foldForSearch(entry.keywords ?? "");
   const full = words.join(" ");
   let total = 0;
 
@@ -112,9 +119,13 @@ function score(entry: ComboEntry, words: string[]): number | null {
   for (const word of words) {
     const inLabel = label.indexOf(word);
     const inSub = sublabel.indexOf(word);
-    if (inLabel === -1 && inSub === -1) return null; // every word must hit somewhere
+    const inKeywords = keywords.indexOf(word);
+    if (inLabel === -1 && inSub === -1 && inKeywords === -1) return null; // every word must hit somewhere
     if (inLabel !== -1) total += atWordBoundary(label, inLabel) ? 200 : 100;
     if (inSub !== -1) total += atWordBoundary(sublabel, inSub) ? 50 : 20;
+    // Only enough to count as a hit. A category is shared by dozens of
+    // places, so it must never outrank one whose name holds the word.
+    if (inKeywords !== -1 && inLabel === -1 && inSub === -1) total += 10;
   }
   // Tie-breaker: "Target Field" for query "field target" should outrank
   // "Plaza Near Target Field" — both hit every word at a boundary, but the

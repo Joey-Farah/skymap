@@ -21,6 +21,21 @@ test("a building's own map marker doesn't duplicate it in search", () => {
   assert.ok(entries.some((e) => e.label === "Starbucks"), "real businesses inside it are untouched");
 });
 
+test("a category word narrows a search but never outranks a name", () => {
+  // "ramp" should add to "Plaza", not let the category drown the name: a
+  // place actually called "Ramp Bar" is what someone typing "ramp" means.
+  const entries = buildComboEntries(
+    [
+      { id: "plaza", name: "Plaza", address: "117 South 12th Street", category: "parking" },
+      { id: "rsm", name: "RSM Plaza", address: "801 Nicollet Mall", category: "office" },
+      { id: "bar", name: "Ramp Bar", address: "1 Main Street", category: "venue" },
+    ],
+    [],
+  );
+  assert.deepEqual(searchEntries(entries, "plaza ramp").map((e) => e.buildingId), ["plaza"]);
+  assert.equal(searchEntries(entries, "ramp")[0]?.buildingId, "bar");
+});
+
 test("accented names are found by typing them without accents", () => {
   // Twelve real downtown places were unreachable: Pizza Lucé, Fogo de Chão,
   // Jalapeño Mexican Grill, Bép Eatery, Los 3 Costeños, Engel & Völkers and
