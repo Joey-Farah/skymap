@@ -824,7 +824,11 @@ async function main(osm) {
       visited.add(cur);
       if (cur === endId) break;
       for (const edge of nodeGraph.get(cur) ?? []) {
-        if (!allowed.has(edge.to)) continue;
+        // Corridor points that belong to no building are fair to walk; only
+        // another building's points are off limits. Sheraton's path to the
+        // Loring ramp runs through a stretch no named footprint claims, and
+        // requiring every point inside the Sheraton left its bridge a dead end.
+        if (!allowed.has(edge.to) && buildingFor(edge.to)) continue;
         const n1 = nodes.get(cur);
         const n2 = nodes.get(edge.to);
         const w = haversine(n1.lat, n1.lon, n2.lat, n2.lon);
