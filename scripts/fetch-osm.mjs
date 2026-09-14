@@ -650,11 +650,20 @@ async function main(osm) {
   // this, a long unrelated ground-level footway with no building nearby
   // could in principle bridge two buildings that aren't actually connected.
   const MAX_BRIDGE_METERS = 500;
-  const edgeMap = new Map(); // "a|b" -> {from,to,geometry,crossing,hasSteps}
+  // Keyed by the door at each end, not just the pair of buildings: two
+  // buildings can meet more than once, and a pair key kept whichever
+  // crossing the walk found first and silently dropped the rest (57 of
+  // them — the Marriott's second crossing into City Center among them,
+  // which left its bridge from Mayo drawn as a dead end).
+  const edgeMap = new Map(); // "a@door|b@door" -> {from,to,geometry,crossing,hasSteps}
+  // A pair's first crossing is kept as it always was; later ones are only
+  // candidates until the indoor paths show they lead somewhere (see below).
+  const pairsSeen = new Set();
   for (const [buildingId, anchorNodes] of nodesByBuilding) {
     const visited = new Set(anchorNodes);
     const queue = [...anchorNodes].map((id) => ({
       id,
+      door: id,
       dist: 0,
       geom: [coordOf(id)],
       hasSteps: false,
@@ -695,9 +704,14 @@ async function main(osm) {
         const newOpenAir = cur.openAir || hopOpenAir;
         const newCrossingName = cur.crossingName ?? hopName;
         if (otherBuilding && otherBuilding.id !== buildingId) {
-          const key = [buildingId, otherBuilding.id].sort().join("|");
+          const key = [`${buildingId}@${cur.door}`, `${otherBuilding.id}@${edge.to}`].sort().join("|");
           if (!edgeMap.has(key)) {
+            const pair = [buildingId, otherBuilding.id].sort().join("|");
+            const extra = pairsSeen.has(pair);
+            pairsSeen.add(pair);
             edgeMap.set(key, {
+              ...(extra ? { extra: true } : {}),
+              doorNodes: [cur.door, edge.to],
               from: buildingId,
               to: otherBuilding.id,
               crossing: newCrossingName ?? edge.wayTags?.name ?? "skyway",
@@ -712,6 +726,7 @@ async function main(osm) {
         visited.add(edge.to);
         queue.push({
           id: edge.to,
+          door: cur.door,
           dist: newDist,
           geom: newGeom,
           hasSteps: newHasSteps,
@@ -831,40 +846,86 @@ async function main(osm) {
     return path.map(coordOf);
   }
 
-  const doorsByBuilding = new Map(); // buildingId -> Set(nodeId)
-  for (const e of finalEdges) {
-    const fromDoor = nearestNodeInBuilding(e.geometry[0], e.from);
-    const toDoor = nearestNodeInBuilding(e.geometry[e.geometry.length - 1], e.to);
-    if (fromDoor) {
-      if (!doorsByBuilding.has(e.from)) doorsByBuilding.set(e.from, new Set());
-      doorsByBuilding.get(e.from).add(fromDoor);
+  function indoorLinksFor(edges) {
+    const doorsByBuilding = new Map(); // buildingId -> Set(nodeId)
+    const doorsOfEdge = new Map(); // edge -> [fromDoor, toDoor]
+    for (const e of edges) {
+      const fromDoor = nearestNodeInBuilding(e.geometry[0], e.from);
+      const toDoor = nearestNodeInBuilding(e.geometry[e.geometry.length - 1], e.to);
+      doorsOfEdge.set(e, [fromDoor, toDoor]);
+      if (fromDoor) {
+        if (!doorsByBuilding.has(e.from)) doorsByBuilding.set(e.from, new Set());
+        doorsByBuilding.get(e.from).add(fromDoor);
+      }
+      if (toDoor) {
+        if (!doorsByBuilding.has(e.to)) doorsByBuilding.set(e.to, new Set());
+        doorsByBuilding.get(e.to).add(toDoor);
+      }
     }
-    if (toDoor) {
-      if (!doorsByBuilding.has(e.to)) doorsByBuilding.set(e.to, new Set());
-      doorsByBuilding.get(e.to).add(toDoor);
-    }
-  }
-
-  const indoorLinks = [];
-  for (const [buildingId, doors] of doorsByBuilding) {
-    const doorList = [...doors];
-    for (let i = 0; i < doorList.length; i++) {
-      for (let j = i + 1; j < doorList.length; j++) {
-        const path = shortestPathWithinBuilding(buildingId, doorList[i], doorList[j]);
-        if (path && path.length >= 2) {
-          indoorLinks.push({
-            buildingId,
-            doorA: coordOf(doorList[i]),
-            doorB: coordOf(doorList[j]),
-            geometry: path,
-          });
+    const links = [];
+    const linkedDoors = new Set(); // "buildingId@nodeId" with a path to another door
+    for (const [buildingId, doors] of doorsByBuilding) {
+      const doorList = [...doors];
+      for (let i = 0; i < doorList.length; i++) {
+        for (let j = i + 1; j < doorList.length; j++) {
+          const path = shortestPathWithinBuilding(buildingId, doorList[i], doorList[j]);
+          if (path && path.length >= 2) {
+            links.push({
+              buildingId,
+              doorA: coordOf(doorList[i]),
+              doorB: coordOf(doorList[j]),
+              geometry: path,
+            });
+            linkedDoors.add(`${buildingId}@${doorList[i]}`).add(`${buildingId}@${doorList[j]}`);
+          }
         }
       }
     }
+    return { links, doorsOfEdge, doorsByBuilding, linkedDoors };
+  }
+
+  // A later crossing between the same two buildings earns its place only
+  // when both of its ends lead on: into a traced path to another door, or
+  // straight onto another crossing at the same door. Many don't — ground-
+  // level footways, the same bridge reached from its other end — and keeping
+  // all of them drew more dead ends than they closed (34 -> 51). Filtered,
+  // it's 22 of 36 on the 2026-08-23 data: 14 dead ends gone, none added.
+  // Repeated until nothing more is dropped: a crossing can lead on only
+  // through another extra one that fails, and judging them all in one pass
+  // kept the first as a fresh dead end (5th Street Ramp B, Flour Exchange).
+  const firstCrossings = finalEdges.filter((e) => !e.extra).length;
+  let keptEdges = finalEdges;
+  for (;;) {
+    const draft = indoorLinksFor(keptEdges);
+    const doorUses = new Map(); // "buildingId@nodeId" -> crossings ending there
+    const doors = new Map(); // buildingId -> Set(nodeId)
+    for (const e of keptEdges) {
+      for (const [id, node] of [[e.from, e.doorNodes[0]], [e.to, e.doorNodes[1]]]) {
+        doorUses.set(`${id}@${node}`, (doorUses.get(`${id}@${node}`) ?? 0) + 1);
+        if (!doors.has(id)) doors.set(id, new Set());
+        doors.get(id).add(node);
+      }
+    }
+    const leadsOn = (buildingId, node) =>
+      doors.get(buildingId).size < 2 ||
+      draft.linkedDoors.has(`${buildingId}@${node}`) ||
+      doorUses.get(`${buildingId}@${node}`) > 1;
+    const next = keptEdges.filter((e) => !e.extra || (leadsOn(e.from, e.doorNodes[0]) && leadsOn(e.to, e.doorNodes[1])));
+    if (next.length === keptEdges.length) break;
+    keptEdges = next;
   }
   console.log(
-    `Indoor door-to-door paths: ${indoorLinks.length} across ${doorsByBuilding.size} through-buildings.`,
+    `Extra crossings between an already-linked pair: kept ${keptEdges.length - firstCrossings} of ${finalEdges.length - firstCrossings}.`,
   );
+  keptEdges = [...keptEdges]; // may still be finalEdges itself, emptied next
+  finalEdges.length = 0;
+  for (const e of keptEdges) {
+    delete e.extra;
+    delete e.doorNodes;
+    finalEdges.push(e);
+  }
+  const indoorLinks = indoorLinksFor(finalEdges).links;
+  console.log(`Indoor door-to-door paths: ${indoorLinks.length} across ${new Set(indoorLinks.map((l) => l.buildingId)).size} through-buildings.`);
 
   const relevantWikidata = new Map(
     [...wikidataByBuildingId].filter(([id]) => mainComponent.has(id)),
