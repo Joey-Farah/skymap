@@ -1,0 +1,7 @@
+Skyways that stopped short now go through.
+
+A reader sent a screenshot: the skyway from Mayo Clinic Square ended at the Marriott's door, as if there were nowhere to go, while the map underneath showed the corridor carrying on into City Center. That corridor was real and already mapped. We were throwing it away.
+
+Where two buildings connect more than once, SkyMap only ever kept one of the connections. Fixing that brought back 22 skyway crossings across downtown and closed dead ends at the Marriott, Hotel Ivy and 11th & Marquette, 705 Building, Grain Exchange, Opus Hall and more.
+
+Routes got faster along the way. SkyMap now considers which door you enter each building by, not just which building, so it finds the shorter way through more often. Thousands of routes across the network are now quicker, and none are slower.
