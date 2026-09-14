@@ -39,6 +39,7 @@ const KNOWN_DEAD_ENDS = {
   "north-loop-green-360-1281792415": 2,
   "rbc-gateway-733105254": 2,
   "rsm-plaza-357019983": 1,
+  "sheraton-minneapolis-downtown-convention-center-1394814185": 1,
   "target-center-23125943": 1,
   "technical-building-89061902": 2,
   "the-nic-on-fifth-827452015": 1,
