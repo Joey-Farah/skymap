@@ -982,3 +982,29 @@ test("walking through a building with no mapped corridor still costs distance", 
     `route totals ${r.totalMeters.toFixed(0)} m — the ~22 m walk across B was not counted`,
   );
 });
+
+test("a second crossing into a building is used when its door is nearer the way out", () => {
+  // A and B meet twice. The west bridge is shorter but lands at B's west
+  // door, ~220 m from B's exit to C; the east bridge is a little longer and
+  // lands beside that exit. The search kept one arrival per building — the
+  // cheapest into B — and never reconsidered it, so it walked the length of
+  // B. Recovering real second crossings from OSM made that common: 2,979
+  // routes came out slower with more of the network than with less.
+  const hours = [[0, 1440]];
+  const mini = {
+    meta: { name: "t", source: "t", disclaimer: "t", generated: "t" },
+    buildings: [
+      { id: "a", name: "A", address: "", category: "office", lat: 0, lon: 0.001, footprint: [], hours },
+      { id: "b", name: "B", address: "", category: "office", lat: 0.0003, lon: 0.001, footprint: [], hours },
+      { id: "c", name: "C", address: "", category: "office", lat: 0.0006, lon: 0.002, footprint: [], hours },
+    ],
+    edges: [
+      { from: "a", to: "b", crossing: "west", geometry: [[0, 0.0001], [0, 0.0002]] },
+      { from: "a", to: "b", crossing: "east", geometry: [[0.002, 0], [0.002, 0.0002]] },
+      { from: "b", to: "c", crossing: "x", geometry: [[0.002, 0.0003], [0.002, 0.0005]] },
+    ],
+    indoorLinks: [],
+  };
+  const r = new SkywayRouter(mini).route("a", "c", null);
+  assert.equal(r.steps[1].viaCrossing, "east", `crossed into B by the ${r.steps[1].viaCrossing} bridge`);
+});
