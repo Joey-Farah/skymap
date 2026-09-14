@@ -534,7 +534,12 @@ export class SkywayRouter {
         const b = this.buildings.get(edge.to)!;
         const isEndpoint = edge.to === toId || edge.to === fromId;
         if (when && !isEndpoint && !isOpenAt(b, when)) continue;
-        // A route never passes through the same building twice.
+        // A route never passes through the same building twice. The cost model
+        // would sometimes reward a loop (estimated indoor walks don't obey the
+        // triangle inequality), so this rule is doing real work — at the price
+        // of being approximate: one path is kept per state, and a costlier one
+        // that avoided a building is gone. Checked across every pair at three
+        // times of day, it never cost a route or any time.
         if (onPath(current, edge.to)) continue;
         const door = edge.geometry?.[edge.geometry.length - 1];
         const next = `${edge.to}|${door ? `${door[0]},${door[1]}` : ""}`;
