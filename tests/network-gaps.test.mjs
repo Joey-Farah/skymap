@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
+import { SkywayRouter } from "../src/router.ts";
+
 // A reader's 1.12 screenshot: the bridge from Mayo Clinic Square stopped
 // dead at the Marriott's door, with OSM's own grey corridor carrying on
 // underneath to City Center. OSM maps that corridor as one "Minneapolis
@@ -71,4 +73,32 @@ test("no skyway line ends in a dead end beyond the known ones", () => {
     if (d === 1 && (doors.get(id)?.size ?? 0) > 1) deadEnds[id] = (deadEnds[id] ?? 0) + 1;
   }
   assert.deepEqual(Object.fromEntries(Object.entries(deadEnds).sort()), KNOWN_DEAD_ENDS);
+});
+
+test("more crossings never make a route slower", () => {
+  // The recovered crossings exposed a router that kept one arrival per
+  // building: with more of the network it returned 2,979 slower routes.
+  // Every pair was checked when that was fixed; this samples every seventh
+  // origin to keep the suite quick.
+  const seen = new Set();
+  const firstOnly = {
+    ...data,
+    edges: data.edges.filter((e) => {
+      const pair = [e.from, e.to].sort().join("|");
+      return !seen.has(pair) && seen.add(pair);
+    }),
+  };
+  const full = new SkywayRouter(data);
+  const fewer = new SkywayRouter(firstOnly);
+  const ids = data.buildings.map((b) => b.id);
+  const slower = [];
+  for (const a of ids.filter((_, i) => i % 7 === 0)) {
+    for (const b of ids) {
+      if (a === b) continue;
+      const x = full.route(a, b, null);
+      const y = fewer.route(a, b, null);
+      if (x && y && x.totalMinutes > y.totalMinutes + 1e-9) slower.push(`${a} -> ${b}`);
+    }
+  }
+  assert.deepEqual(slower.slice(0, 5), []);
 });

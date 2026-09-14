@@ -437,7 +437,7 @@ export class SkywayRouter {
   }
 
   /**
-   * A* shortest path. When `when` is set, buildings closed at that time are
+   * Shortest path (by minutes). When `when` is set, buildings closed at that time are
    * not traversable (origin and destination are exempt so you can still
    * route "to the door"). Falls back to hours-blind routing when no open
    * route exists, flagging the result.
@@ -474,70 +474,97 @@ export class SkywayRouter {
     // that meant steering by 749 m of bridge while ignoring 1,604 m of
     // indoor walking, and across the network 14.4% of routes came back over
     // a minute slower than an alternative the router itself scores better.
-    const dist = new Map<string, number>([[fromId, 0]]);
+    // The search runs over (building, door it was entered by), not over
+    // buildings. What crossing a building costs depends on which door you
+    // came in at, so the cheapest way *into* a building is not always the
+    // best way *through* it: kept per building, a short bridge landing at
+    // the far end of B beat a slightly longer one landing beside B's exit,
+    // and was never reconsidered. Once OSM's second crossings between the
+    // same two buildings were recovered, 2,979 routes came out slower with
+    // more of the network than with less.
+    //
+    // Plain Dijkstra, no straight-line estimate. Measured from the building's
+    // centre, that estimate overshoots whenever the door you're at is nearer
+    // the goal than the centre is — and an estimate that overshoots returns
+    // worse routes (777 of them, measured). Without it: none, at under a
+    // millisecond a route.
+    type Prev = {
+      state: string;
+      crossing: string;
+      meters: number;
+      geometry?: [number, number][];
+      hasSteps?: boolean;
+      openAir?: boolean;
+    };
+    const startState = `${fromId}|`;
+    const buildingOf = new Map<string, string>([[startState, fromId]]);
+    const dist = new Map<string, number>([[startState, 0]]);
     // Bridge metres alongside the minutes: reconstruct() needs the distance
     // to report, and the two stopped being the same number the moment the
     // search started costing in time.
-    const bridgeMeters = new Map<string, number>([[fromId, 0]]);
-    const prev = new Map<
-      string,
-      { id: string; crossing: string; meters: number; geometry?: [number, number][]; hasSteps?: boolean; openAir?: boolean }
-    >();
-    const open = new Set<string>([fromId]);
-    // Straight-line minutes: still admissible, since no real path beats
-    // walking the direct line at full pace.
-    const fScore = new Map<string, number>([
-      [fromId, haversineMeters(start.lat, start.lon, goal.lat, goal.lon) / WALK_METERS_PER_MIN],
-    ]);
+    const bridgeMeters = new Map<string, number>([[startState, 0]]);
+    const prev = new Map<string, Prev>();
+    const open = new Set<string>([startState]);
     const closed = new Set<string>();
+    const onPath = (state: string, buildingId: string) => {
+      for (let s: string | undefined = state; s; s = prev.get(s)?.state) {
+        if (buildingOf.get(s) === buildingId) return true;
+      }
+      return false;
+    };
 
     while (open.size > 0) {
       let current = "";
       let best = Infinity;
-      for (const id of open) {
-        const f = fScore.get(id) ?? Infinity;
+      for (const state of open) {
+        const f = dist.get(state) ?? Infinity;
         if (f < best) {
           best = f;
-          current = id;
+          current = state;
         }
       }
-      if (current === toId) return this.reconstruct(fromId, toId, prev, bridgeMeters.get(toId)!);
+      const currentId = buildingOf.get(current)!;
+      if (currentId === toId) return this.reconstruct(current, prev, buildingOf, bridgeMeters.get(current)!);
       open.delete(current);
       closed.add(current);
 
-      for (const edge of this.adjacency.get(current) ?? []) {
-        if (closed.has(edge.to)) continue;
+      for (const edge of this.adjacency.get(currentId) ?? []) {
         if (options.accessible && edge.hasSteps) continue;
-        if (options.closedEdges?.has([current, edge.to].sort().join("|"))) continue;
+        if (options.closedEdges?.has([currentId, edge.to].sort().join("|"))) continue;
         const b = this.buildings.get(edge.to)!;
         const isEndpoint = edge.to === toId || edge.to === fromId;
         if (when && !isEndpoint && !isOpenAt(b, when)) continue;
+        // A route never passes through the same building twice.
+        if (onPath(current, edge.to)) continue;
+        const door = edge.geometry?.[edge.geometry.length - 1];
+        const next = `${edge.to}|${door ? `${door[0]},${door[1]}` : ""}`;
+        if (closed.has(next)) continue;
         // Crossing `current` costs the walk between the door we arrived by
         // and the door this edge leaves from — the term reconstruct() adds
         // afterwards and the search was blind to. The origin is entered from
         // outside, so it has neither an arrival door nor a transit penalty.
         const arrival = prev.get(current)?.geometry;
         const throughMeters =
-          current === fromId || !arrival || !edge.geometry
+          current === startState || !arrival || !edge.geometry
             ? 0
-            : (indoorLinkMeters(this.indoorLinks, current, arrival[arrival.length - 1], edge.geometry[0]) ??
+            : (indoorLinkMeters(this.indoorLinks, currentId, arrival[arrival.length - 1], edge.geometry[0]) ??
                estimatedIndoorMeters(arrival[arrival.length - 1], edge.geometry[0]));
-        const transit = current === fromId ? 0 : BUILDING_TRANSIT_MIN;
+        const transit = current === startState ? 0 : BUILDING_TRANSIT_MIN;
         const tentative =
           dist.get(current)! + (edge.meters + throughMeters) / WALK_METERS_PER_MIN + transit;
-        if (tentative < (dist.get(edge.to) ?? Infinity)) {
-          dist.set(edge.to, tentative);
-          bridgeMeters.set(edge.to, (bridgeMeters.get(current) ?? 0) + edge.meters);
-          prev.set(edge.to, {
-            id: current,
+        if (tentative < (dist.get(next) ?? Infinity)) {
+          buildingOf.set(next, edge.to);
+          dist.set(next, tentative);
+          bridgeMeters.set(next, (bridgeMeters.get(current) ?? 0) + edge.meters);
+          prev.set(next, {
+            state: current,
             crossing: edge.crossing,
             meters: edge.meters,
             geometry: edge.geometry,
             hasSteps: edge.hasSteps,
             openAir: edge.openAir,
           });
-          fScore.set(edge.to, tentative + haversineMeters(b.lat, b.lon, goal.lat, goal.lon) / WALK_METERS_PER_MIN);
-          open.add(edge.to);
+          open.add(next);
         }
       }
     }
@@ -545,20 +572,19 @@ export class SkywayRouter {
   }
 
   private reconstruct(
-    fromId: string,
-    toId: string,
+    goalState: string,
     prev: Map<
       string,
-      { id: string; crossing: string; meters: number; geometry?: [number, number][]; hasSteps?: boolean; openAir?: boolean }
+      { state: string; crossing: string; meters: number; geometry?: [number, number][]; hasSteps?: boolean; openAir?: boolean }
     >,
+    buildingOf: Map<string, string>,
     totalMeters: number,
   ): Omit<RouteResult, "ignoredClosures"> {
     const steps: RouteStep[] = [];
-    let cursor: string | undefined = toId;
-    while (cursor) {
+    for (let cursor: string | undefined = goalState; cursor; cursor = prev.get(cursor)?.state) {
       const p = prev.get(cursor);
       steps.unshift({
-        building: this.buildings.get(cursor)!,
+        building: this.buildings.get(buildingOf.get(cursor)!)!,
         viaCrossing: p?.crossing,
         legMeters: p?.meters,
         legGeometry: p?.geometry,
@@ -566,7 +592,6 @@ export class SkywayRouter {
         openAir: p?.openAir,
         arrivalMinutes: 0,
       });
-      cursor = cursor === fromId ? undefined : p?.id;
     }
     // Real indoor distance for each through-building — the walk from the
     // door it's entered by to the door it's left by, when we have that
