@@ -1,0 +1,5 @@
+No more skyways that aren't there.
+
+A reader sent screenshots of straight lines cutting across downtown blocks where no skyway runs: from the LaSalle at 10th ramp to Target Plaza, from the Plaza ramp to the Convention Center, and from 11th Street Underground to Orchestra Hall.
+
+Those ramps really are skyway-connected, but nobody has mapped where the connection runs, so SkyMap was drawing a guess. It doesn't anymore. The ramps are still on the map and in search, and directions to one now take you through the skyway to the building you reach it from, without drawing a path we can't vouch for.
