@@ -246,7 +246,8 @@ async function boot() {
       // skyway ends here, and nothing is drawn for the stretch beyond.
       activeRoute = null;
       view.setRoute(null);
-      const far = router.building(from.coord ? fromId : toId);
+      // The ramp, not whichever end has a pin: a business marks its own spot too.
+      const far = router.building(router.building(fromId)?.skywayAccess ? fromId : toId);
       sheet.showMessage("You're already here", `The skyway doesn't go any closer to ${far?.name ?? "this place"}.`);
       return;
     }
