@@ -40,9 +40,11 @@ test("it is a parking ramp, standing on the corner the reader named", () => {
   assert.ok(off <= 120, `Hennepin at 10th sits ${Math.round(off)}m from the corner it is named after`);
 });
 
-test("you can walk out of it -- a findable ramp with no skyway link is worse than none", () => {
-  const edges = data.edges.filter((e) => e.from === "hennepin-at-10th-x" || e.to === "hennepin-at-10th-x");
-  assert.ok(edges.length > 0, "Hennepin at 10th has no skyway link and cannot be routed out of");
+test("you can walk out of it -- through the building its operator names, not a line we drew", () => {
+  const ramp = data.buildings.find((b) => b.id === "hennepin-at-10th-x");
+  assert.deepEqual(ramp.skywayAccess, ["fair-school-for-arts-45680534"]);
+  const edges = data.edges.filter((e) => e.from === ramp.id || e.to === ramp.id);
+  assert.deepEqual(edges, [], "an untraced link draws a straight line where there is no skyway");
 });
 
 // 11th & Marquette was never missing. OSM carries it as "Marquette Parking
@@ -88,10 +90,7 @@ test("Plaza stands on its own parcel, across 12th from the Convention Center", (
   const mcc = data.buildings.find((b) => b.id === "minneapolis-convention-center-42837791");
   const off = Math.min(...mcc.footprint.map(([lon, lat]) => metresFrom(ramp, { lat, lon })));
   assert.ok(off <= 120, `Plaza sits ${Math.round(off)}m from the Convention Center it faces`);
-  assert.ok(
-    data.edges.some((e) => [e.from, e.to].includes(ramp.id) && [e.from, e.to].includes("minneapolis-convention-center-42837791")),
-    "Plaza has no skyway link to the Convention Center",
-  );
+  assert.deepEqual(ramp.skywayAccess, ["minneapolis-convention-center-42837791"], "Plaza has no skyway access to the Convention Center");
 });
 
 test("every curated ramp carries its sources", () => {
@@ -122,8 +121,8 @@ test("every curated ramp is findable, and can be walked out of", () => {
     assert.ok(hits.some((h) => h.buildingId === id), `${entry.name} returns nothing in search`);
     const building = data.buildings.find((b) => b.id === id);
     assert.equal(building?.category, "parking", `${entry.name} is not in the dataset as a ramp`);
-    const linked = data.edges.some((e) => e.from === id || e.to === id);
-    assert.ok(linked, `${entry.name} has no skyway link and cannot be routed out of`);
+    assert.ok(building.skywayAccess?.length > 0, `${entry.name} has no skyway access and cannot be routed out of`);
+    for (const to of building.skywayAccess) assert.ok(data.buildings.some((b) => b.id === to), `${entry.name}'s access ${to} is not in the dataset`);
   }
 });
 
@@ -154,10 +153,19 @@ test("a link added to an entry already in the dataset is repaired, not silently 
   // is re-applied to a dataset that already carries the building. The early
   // return used to skip the link pass entirely and still report success.
   const { after } = runOverlayOn((data) => {
-    data.edges = data.edges.filter((e) => e.from !== "hennepin-at-10th-x" && e.to !== "hennepin-at-10th-x");
+    delete data.buildings.find((b) => b.id === "hennepin-at-10th-x").skywayAccess;
   });
-  const links = after.edges.filter((e) => e.from === "hennepin-at-10th-x" || e.to === "hennepin-at-10th-x");
-  assert.equal(links.length, 1, "the ramp's skyway link was not restored");
+  const ramp = after.buildings.find((b) => b.id === "hennepin-at-10th-x");
+  assert.deepEqual(ramp.skywayAccess, ["fair-school-for-arts-45680534"], "the ramp's skyway access was not restored");
+});
+
+test("re-applying the overlay removes an untraced link an earlier run drew", () => {
+  // Datasets written before 1.15 carry the ramp's link as an edge with no
+  // geometry, which the map drew as a straight line across the block.
+  const { after } = runOverlayOn((data) => {
+    data.edges.push({ from: "lasalle-at-10th-x", to: "target-plaza-iii-44684855", crossing: "skyway" });
+  });
+  assert.deepEqual(after.edges.filter((e) => e.from === "lasalle-at-10th-x" || e.to === "lasalle-at-10th-x"), []);
 });
 
 test("two curated ramps within a block of each other both survive", () => {

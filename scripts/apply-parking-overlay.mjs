@@ -43,19 +43,25 @@ let applied = 0;
 const problems = [];
 const retirable = [];
 
-/** Add this entry's skyway links, if they aren't there already. Separate from
- * the building so it runs on every pass, not only the one that inserts it. */
+/** Record the buildings this entry's skyway access is through. Separate from
+ * the building so it runs on every pass, not only the one that inserts it.
+ *
+ * Not an edge: nobody has traced where the link runs, and an edge with no
+ * geometry was drawn centroid to centroid -- a straight line across the map
+ * where there is no skyway. A route to the ramp ends at the access building
+ * instead, the same way a place outside the network does. */
 function applyLinks(id, entry) {
+  data.edges = data.edges.filter((e) => e.geometry || (e.from !== id && e.to !== id));
+  const access = [];
   for (const to of entry.connectsTo ?? []) {
     if (!data.buildings.some((b) => b.id === to)) {
       problems.push(`${id} (${entry.name}): connectsTo ${to}, which is not in the dataset`);
       continue;
     }
-    if (data.edges.some((e) => (e.from === id && e.to === to) || (e.from === to && e.to === id))) continue;
-    // No geometry: nobody has traced this bridge, and routeCoords already
-    // falls back to centroids for a leg without one.
-    data.edges.push({ from: id, to, crossing: "skyway" });
+    access.push(to);
   }
+  const building = data.buildings.find((b) => b.id === id);
+  if (building) building.skywayAccess = access;
 }
 
 // Ramps OSM carries under a name nobody parks by. Renamed in place so the id,
@@ -159,10 +165,10 @@ for (const [id, entry] of Object.entries(overlay.added)) {
     // else -- the city-ordinance DEFAULT_HOURS was deleted for exactly that.
     hoursNote: "No published hours found.",
   });
-  // A building with no edge is unreachable, and the dataset's own invariant
-  // says there is no such thing. A curated ramp therefore has to say what it
-  // connects to -- which is a claim about the world, so it is sourced like
-  // every other claim here rather than inferred from proximity.
+  // A curated ramp has no edge, so without its access building a route could
+  // never reach it. It therefore has to say what it connects to -- which is a
+  // claim about the world, so it is sourced like every other claim here
+  // rather than inferred from proximity.
   applyLinks(id, entry);
   applied++;
 }
