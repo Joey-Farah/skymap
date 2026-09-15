@@ -62,6 +62,13 @@ is kept for history — don't follow it for updates.)
    above" — SkyMap only uses system HTTPS, no custom or linked crypto) and
    hasn't needed re-answering on later builds.
 
+8. **Once it's `READY_FOR_SALE`, point the update banner at it — every
+   release, no exceptions.** Set `latestVersion` in `public/update.json`,
+   push, then deploy: Vercel prod does not auto-deploy from `main`, so
+   `vercel deploy` a preview and `vercel promote` it. Check
+   `https://skymap-alpha.vercel.app/update.json` serves the new version.
+   iOS auto-update takes days; without this, nobody is told. See below.
+
 ## The update gate (added 1.12)
 
 `public/update.json`, deployed with the web app, is the whole control
