@@ -16998,7 +16998,10 @@
    "lon": -93.277499,
    "footprint": [],
    "hours": null,
-   "hoursNote": "No published hours found."
+   "hoursNote": "No published hours found.",
+   "skywayAccess": [
+    "fair-school-for-arts-45680534"
+   ]
   },
   {
    "id": "lasalle-at-10th-x",
@@ -17009,7 +17012,10 @@
    "lon": -93.27539,
    "footprint": [],
    "hours": null,
-   "hoursNote": "No published hours found."
+   "hoursNote": "No published hours found.",
+   "skywayAccess": [
+    "target-plaza-iii-44684855"
+   ]
   },
   {
    "id": "11th-street-underground-x",
@@ -17020,7 +17026,10 @@
    "lon": -93.272329,
    "footprint": [],
    "hours": null,
-   "hoursNote": "No published hours found."
+   "hoursNote": "No published hours found.",
+   "skywayAccess": [
+    "orchestra-hall-43607930"
+   ]
   },
   {
    "id": "plaza-x",
@@ -17031,7 +17040,10 @@
    "lon": -93.27472,
    "footprint": [],
    "hours": null,
-   "hoursNote": "No published hours found."
+   "hoursNote": "No published hours found.",
+   "skywayAccess": [
+    "minneapolis-convention-center-42837791"
+   ]
   }
  ],
  "edges": [
@@ -19966,26 +19978,6 @@
      44.978963
     ]
    ]
-  },
-  {
-   "from": "hennepin-at-10th-x",
-   "to": "fair-school-for-arts-45680534",
-   "crossing": "skyway"
-  },
-  {
-   "from": "lasalle-at-10th-x",
-   "to": "target-plaza-iii-44684855",
-   "crossing": "skyway"
-  },
-  {
-   "from": "11th-street-underground-x",
-   "to": "orchestra-hall-43607930",
-   "crossing": "skyway"
-  },
-  {
-   "from": "plaza-x",
-   "to": "minneapolis-convention-center-42837791",
-   "crossing": "skyway"
   },
   {
    "from": "hennepin-county-government-center-27518018",

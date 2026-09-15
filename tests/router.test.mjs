@@ -787,7 +787,9 @@ test("live dataset's core network is fully connected; smaller real spurs may sta
   // isn't in the data). So: assert the big downtown core is one connected
   // network, and that nothing is a true isolated singleton.
   const liveRouter = new SkywayRouter(live);
-  const reachableCounts = live.buildings.map(
+  // A curated ramp is off the network by design: its link was never traced,
+  // so a route to it ends at its skywayAccess building instead.
+  const reachableCounts = live.buildings.filter((b) => !b.skywayAccess).map(
     (b) => [...liveRouter.reachable(b.id, null, Infinity).keys()].length,
   );
   const coreSize = Math.max(...reachableCounts);

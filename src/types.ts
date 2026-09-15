@@ -24,6 +24,10 @@ export interface Building {
    * isOpenAt in hours.ts for why the two must stay distinguishable. */
   hours: DayHours[] | null;
   hoursNote: string;
+  /** A curated ramp's skyway access, sourced from its operator. Set only on a
+   * building with no traced edge: a route to it ends at the first of these,
+   * because where the link runs between them is unknown. */
+  skywayAccess?: string[];
   /** Landmark photo from Wikimedia Commons, via the building's OSM wikidata tag. */
   image?: { url: string; attribution: string; sourceUrl: string };
 }

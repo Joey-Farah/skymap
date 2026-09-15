@@ -12,6 +12,7 @@ import {
   type Approach,
 } from "./router.ts";
 import { SkymapView, resolveStyle } from "./map.ts";
+import { routeEnd } from "./route-end.ts";
 import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
 import { FeedbackForm } from "./feedback-form.ts";
@@ -187,8 +188,9 @@ async function boot() {
     // the network — so the estimate carries the walk to reach it, the same
     // number the route preview will show once you tap through.
     const origin = currentApproach;
-    if (origin && origin.building.id !== b.id) {
-      const preview = router.route(origin.building.id, b.id, selectedTime());
+    const target = routeEnd(b, poi ?? null).buildingId;
+    if (origin && origin.building.id !== target) {
+      const preview = router.route(origin.building.id, target, selectedTime());
       if (preview) {
         const trip = withApproach(preview, origin);
         const minutes = Math.max(1, Math.round(tripMinutes(trip)));
@@ -237,6 +239,18 @@ async function boot() {
       return;
     }
     if (!toId) return;
+    const from = routeEnd(router.building(fromId)!, comboFrom.poi);
+    const to = routeEnd(router.building(toId)!, comboTo.poi);
+    if (fromId !== toId && from.buildingId === to.buildingId) {
+      // A curated ramp and the building it's reached through: the mapped
+      // skyway ends here, and nothing is drawn for the stretch beyond.
+      activeRoute = null;
+      view.setRoute(null);
+      // The ramp, not whichever end has a pin: a business marks its own spot too.
+      const far = router.building(router.building(fromId)?.skywayAccess ? fromId : toId);
+      sheet.showMessage("You're already here", `The skyway doesn't go any closer to ${far?.name ?? "this place"}.`);
+      return;
+    }
     if (fromId === toId) {
       // Not an invalid pick — the router just has no interior path to draw
       // between two spots in one building. You're already there.
@@ -253,7 +267,7 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const skywayRoute = router.route(fromId, toId, when);
+    const skywayRoute = router.route(from.buildingId, to.buildingId, when);
     // Charge the outdoor walk only when From *is* the live position. Picking
     // that same building by name means you consider yourself already in it.
     const route = skywayRoute && withApproach(skywayRoute, comboFrom.approach);
@@ -267,15 +281,15 @@ async function boot() {
     manualPositionUntil = 0;
     // The route itself is building-to-building (that's the network the
     // skyway graph actually models), but when either end is a specific
-    // business, mark that business's own precise spot rather than its host
+    // business or a curated ramp, mark its own spot rather than the host
     // building's centroid.
     view.setRoute(route, {
-      fromCoord: comboFrom.poi ? [comboFrom.poi.lon, comboFrom.poi.lat] : undefined,
-      toCoord: comboTo.poi ? [comboTo.poi.lon, comboTo.poi.lat] : undefined,
+      fromCoord: from.coord,
+      toCoord: to.coord,
       // A `nearby` place sits outside the network, so the last stretch to
       // its door isn't skyway and mustn't be drawn as though it were.
-      fromNearby: comboFrom.poi?.nearby,
-      toNearby: comboTo.poi?.nearby,
+      fromNearby: from.nearby,
+      toNearby: to.nearby,
     });
     sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() });
     // The URL still describes the route even without a Share button: it
