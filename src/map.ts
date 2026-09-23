@@ -602,11 +602,13 @@ export class SkymapView {
       id: "skyway-pois",
       type: "symbol",
       source: "skyway-pois",
-      minzoom: 14.8,
+      // No minimum zoom: nothing draws here until a chip is switched on, and
+      // once someone has asked to see the parking ramps they expect to see
+      // them zoomed out over all of downtown, not only once they're close.
       filter: ["!=", ["get", "group"], "transit"],
       layout: {
         "icon-image": ["concat", "poi-icon-", ["get", "group"]],
-        "icon-size": ["interpolate", ["linear"], ["zoom"], 14.8, 0.34, 17, 0.55],
+        "icon-size": ["interpolate", ["linear"], ["zoom"], 12, 0.26, 14.8, 0.34, 17, 0.55],
         // Every pin still draws — a place you can't see is worse than a
         // name that clips one. But it no longer ignores placement, so it
         // reserves its space and names get placed around it.
