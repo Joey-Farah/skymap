@@ -170,6 +170,21 @@ takes about four minutes.** It is much faster than it looks like it
 should be, and reasoning from "a build must take longer than that" will
 mislead you every time.
 
+## Xcode Cloud's Xcode is pinned — change it on purpose (2026-09-23)
+
+The Default workflow used to build with "Latest Release". Between 1.14 and
+1.15 that silently rolled from Xcode 26.5 to Xcode 27, so build 71 was
+linked against the iOS 27 SDK — which refuses to launch an app without a
+UIScene manifest. 1.15 would not open on any iOS 27 device. Fixed in 1.16
+(Capacitor 8.5's scene template; `tests/ios-scene-lifecycle.test.mjs`
+guards it).
+
+The workflow is now pinned to **Xcode 27 (27A266a) on macOS Golden Gate
+27**. Moving to a new Xcode is a deliberate step: read that SDK's launch
+requirements, build locally with it, and launch on the newest simulator
+*before* changing the pin. To see which SDK a shipped build used, include
+`buildBundles` on `GET /v1/builds` and read `sdkBuild`.
+
 ## 1.2 — SHIPPED 2026-08-06
 
 Submitted 19:24 UTC, `READY_FOR_SALE` roughly an hour later with build 36.

@@ -41,6 +41,28 @@
 	<string>SkyMap uses your location while you have it open, to show where you are on the skyway map and guide you along routes. It never tracks your location in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>SkyMap uses your location to show where you are on the skyway map and guide you along routes.</string>
+	<!-- Required from the iOS 27 SDK on: without a scene manifest the app
+	     refuses to launch ("UIScene life cycle is required"). 1.15 shipped
+	     without one after Xcode Cloud's "Latest Release" rolled to Xcode 27. -->
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
