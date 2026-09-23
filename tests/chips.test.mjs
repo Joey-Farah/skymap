@@ -30,3 +30,13 @@ test("a building's card has a heading for every group that can be inside it", ()
   const missing = Object.keys(GROUP_LABELS).filter((g) => g !== "transit" && !listed.has(g));
   assert.deepEqual(missing, []);
 });
+
+test("a switched-on chip shows its pins at every zoom", () => {
+  // Joey, testing 1.16: "if I clicked a filter on one of them, they should
+  // appear regardless of how zoomed in I am." The layer used to start at
+  // zoom 14.8, so zoomed out to see all of downtown, Parking showed nothing.
+  const map = readFileSync("src/map.ts", "utf8");
+  const layer = map.slice(map.indexOf('id: "skyway-pois",'), map.indexOf('id: "skyway-pois-transit"'));
+  assert.ok(layer.length > 0, "could not find the skyway-pois layer");
+  assert.doesNotMatch(layer, /^\s*minzoom:/m, "the pin layer has a minimum zoom again");
+});
