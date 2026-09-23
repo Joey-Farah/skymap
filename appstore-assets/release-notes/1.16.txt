@@ -1,1 +1,3 @@
 Fixes SkyMap not opening on iOS 27.
+
+New: tap Parking to see every ramp downtown, and street names are back on the map.
