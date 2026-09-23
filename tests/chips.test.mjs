@@ -12,9 +12,9 @@ test("the chips, in the order they wrap onto two rows", () => {
 });
 
 test("every group that gets a pin can be switched on by some chip", () => {
-  // Transit is the exception on purpose: stops are drawn on a layer of
-  // their own, always on. Anything else missing here would be a group of
-  // pins no one can ever see.
+  // Transit is the exception on purpose: stops have a layer of their own
+  // and no chip, so they stay hidden. Anything else missing here would be
+  // a group of pins no one can ever see.
   const reachable = new Set(Object.values(CHIP_GROUPS).flat());
   const unreachable = Object.keys(GROUP_LABELS).filter((g) => g !== "transit" && !reachable.has(g));
   assert.deepEqual(unreachable, []);
