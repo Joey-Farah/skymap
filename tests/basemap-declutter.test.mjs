@@ -18,7 +18,7 @@ function applied(layers) {
   return layers.flatMap((layer) => {
     const plan = planBasemapLayer(layer);
     if (plan.hide) return [];
-    return [plan.filter ? { ...layer, filter: plan.filter } : layer];
+    return [{ ...layer, ...(plan.filter && { filter: plan.filter }), ...(plan.minzoom && { minzoom: Math.max(plan.minzoom, layer.minzoom ?? 0) }) }];
   });
 }
 
@@ -84,5 +84,36 @@ for (const { name, style, layers } of STYLES) {
       applied(layers).filter((l) => l.type === "symbol" && ["poi", "aerodrome_label"].includes(l["source-layer"])).map((l) => l.id),
       [],
     );
+  });
+}
+
+for (const { name, layers } of STYLES) {
+  const label = (properties) => drawnBy(layers, { sourceLayer: "transportation_name", properties });
+
+  test(`${name}: streets are named`, () => {
+    // The reader who asked for this is learning downtown; the grid's names
+    // are how people give and follow directions here.
+    for (const cls of ["minor", "tertiary", "secondary", "primary"]) {
+      assert.notDeepEqual(label({ class: cls, name: "South 7th Street" }), [], cls);
+    }
+  });
+
+  test(`${name}: no street names on the zoomed-out overview`, () => {
+    // At zoom 14 the whole grid's names pile up across the skyway network.
+    // From 15 (the default view is 15.4) they fit between the pins.
+    assert.deepEqual(drawnBy(layers, { sourceLayer: "transportation_name", zoom: 14.9, properties: { class: "secondary", name: "Marquette Avenue" } }), []);
+    assert.notDeepEqual(drawnBy(layers, { sourceLayer: "transportation_name", zoom: 15, properties: { class: "secondary", name: "Marquette Avenue" } }), []);
+  });
+
+  test(`${name}: footpaths are not named — that would label the skyways themselves`, () => {
+    assert.deepEqual(label({ class: "path", subclass: "footway", indoor: 1, name: "Minneapolis Skyway" }), []);
+    assert.deepEqual(label({ class: "pedestrian", name: "Peavey Plaza" }), []);
+  });
+
+  test(`${name}: no highway shields — only names along the street`, () => {
+    const shields = applied(layers).filter(
+      (l) => l.type === "symbol" && l["source-layer"] === "transportation_name" && l.layout?.["symbol-placement"] !== "line",
+    );
+    assert.deepEqual(shields.map((l) => l.id), []);
   });
 }

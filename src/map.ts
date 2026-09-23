@@ -380,9 +380,16 @@ export class SkymapView {
    * planBasemapLayer for the rules and why each exists. */
   private declutterBasemap() {
     for (const layer of this.map.getStyle().layers ?? []) {
-      const plan = planBasemapLayer(layer);
-      if (plan.hide) this.map.setLayoutProperty(layer.id, "visibility", "none");
-      else if (plan.filter) this.map.setFilter(layer.id, plan.filter);
+      const plan = planBasemapLayer(layer, { dark: prefersDark() });
+      if (plan.hide) {
+        this.map.setLayoutProperty(layer.id, "visibility", "none");
+        continue;
+      }
+      if (plan.filter) this.map.setFilter(layer.id, plan.filter);
+      if (plan.minzoom !== undefined) {
+        this.map.setLayerZoomRange(layer.id, Math.max(plan.minzoom, layer.minzoom ?? 0), layer.maxzoom ?? 24);
+      }
+      for (const [prop, value] of Object.entries(plan.paint ?? {})) this.map.setPaintProperty(layer.id, prop, value);
     }
   }
 
