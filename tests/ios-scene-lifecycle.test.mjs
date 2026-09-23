@@ -28,3 +28,14 @@ test("AppDelegate hands new scenes to SceneDelegate", () => {
   assert.match(delegate, /configurationForConnecting/);
   assert.match(delegate, /delegateClass = SceneDelegate\.self/);
 });
+
+test("Package.resolved pins the Capacitor that Package.swift asks for", () => {
+  // Xcode Cloud resolves from the committed lockfile. A stale one would have kept the
+  // pre-scene Capacitor on CI after the npm upgrade, until it was caught.
+  const wanted = readFileSync("ios/App/CapApp-SPM/Package.swift", "utf8").match(/capacitor-swift-pm\.git", exact: "([^"]+)"/)?.[1];
+  const resolved = JSON.parse(
+    readFileSync("ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved", "utf8"),
+  ).pins.find((p) => p.identity === "capacitor-swift-pm")?.state.version;
+  assert.ok(wanted, "could not read the capacitor-swift-pm pin from Package.swift");
+  assert.equal(resolved, wanted);
+});
