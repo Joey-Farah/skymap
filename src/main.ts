@@ -29,6 +29,7 @@ import {
 } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
+import { CHIP_GROUPS } from "./chips.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
 import { clearRetiredKeys } from "./storage.ts";
 import { UpdatePrompt } from "./update-prompt.ts";
@@ -680,23 +681,6 @@ async function boot() {
   // exist locked in a height sized for an empty row, clipping them once
   // they actually appeared.
   const suggestionsRow = document.getElementById("suggestions-row")!;
-  // Hotels earn a chip: they were searchable but unbrowsable, which for a
-  // visitor is close to not being there.
-  //
-  // Landmarks deliberately have no chip of their own — seven pills wrapped
-  // onto three lines and made the panel taller than the map it describes.
-  // They ride along with Misc. instead. The *group* stays: landmarkNear
-  // picks turn-instruction cues ("past Bill & Marty's") from food, coffee
-  // and landmark POIs, so collapsing it in the data would have the nav
-  // banner citing dentists and banks as the thing to walk past.
-  const CHIP_GROUPS = {
-    coffee: ["coffee"],
-    food: ["food"],
-    hotel: ["hotel"],
-    other: ["other", "landmark"],
-    restroom: ["restroom"],
-    elevator: ["elevator"],
-  } as const;
   const SUGGESTED_GROUPS = Object.keys(CHIP_GROUPS) as (keyof typeof CHIP_GROUPS)[];
   const activeGroups = new Set<string>();
   for (const group of SUGGESTED_GROUPS) {
