@@ -42,6 +42,15 @@ function deltaE(a, b) {
   return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
 }
 
+test("every Parking pin opens a parking ramp", () => {
+  // The inverse of the check above. A pin hosted by a neighbour — which
+  // fetch-osm's landmark path would make for an unreachable OSM ramp — would
+  // light up under Parking and then open, and route to, some other building.
+  const rampIds = new Set(ramps.map((r) => r.id));
+  const strays = data.pois.filter((p) => p.group === "parking" && !rampIds.has(p.buildingId)).map((p) => `${p.name} -> ${p.buildingId}`);
+  assert.deepEqual(strays, []);
+});
+
 test("the parking pin stands out from the skyway lines and the other pins", () => {
   // Blue is the usual parking color, and on this map it is also the color of
   // every skyway (NETWORK in src/map.ts): a blue pin on a blue line all but
