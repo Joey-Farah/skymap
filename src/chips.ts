@@ -14,13 +14,14 @@ import type { PoiGroup } from "./poi.ts";
 // Parking joined as the seventh (a reader asked for the map to "light up
 // with the parking garages"). Seven fit on two rows only with tighter
 // pills — see .suggestion-pill in styles.css — and the order is the row
-// order: Coffee, Food, Hotels, Parking / Misc., Restrooms, Elevators.
+// order: Coffee, Food, Hotels, Parking / Elevators, Restrooms, Misc. —
+// Misc. last, as the catch-all.
 export const CHIP_GROUPS = {
   coffee: ["coffee"],
   food: ["food"],
   hotel: ["hotel"],
   parking: ["parking"],
-  other: ["other", "landmark"],
-  restroom: ["restroom"],
   elevator: ["elevator"],
+  restroom: ["restroom"],
+  other: ["other", "landmark"],
 } as const satisfies Record<string, readonly PoiGroup[]>;
