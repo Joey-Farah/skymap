@@ -8,7 +8,8 @@ test("the chips, in the order they wrap onto two rows", () => {
   // Four on top, three below — at 375pt too, which is why the pills are
   // tighter than they were with six. Parking sits beside Hotels: the two
   // things a visitor arriving downtown is looking for.
-  assert.deepEqual(Object.keys(CHIP_GROUPS), ["coffee", "food", "hotel", "parking", "other", "restroom", "elevator"]);
+  // Misc. is the catch-all, so it comes last (Joey, testing 1.16).
+  assert.deepEqual(Object.keys(CHIP_GROUPS), ["coffee", "food", "hotel", "parking", "elevator", "restroom", "other"]);
 });
 
 test("every group that gets a pin can be switched on by some chip", () => {
