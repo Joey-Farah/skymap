@@ -9,6 +9,8 @@ import { GROUP_COLORS, GROUP_LABELS, groupFor } from "../src/poi.ts";
 // by searching for one by name.
 const data = JSON.parse(readFileSync("public/data/skymap-data.json", "utf8"));
 const ramps = data.buildings.filter((b) => b.category === "parking");
+// Ramps that stay on the map as buildings but get no public Parking pin.
+const unpinned = JSON.parse(readFileSync("data/parking-overlay.json", "utf8")).unpinned ?? {};
 
 test("parking is its own group, whatever kind of record names the ramp", () => {
   for (const kind of ["building", "landmark"]) assert.equal(groupFor(kind, "parking"), "parking", kind);
@@ -20,12 +22,19 @@ test("every ramp has exactly one pin, and it opens the ramp itself", () => {
   // only through a neighbour: each is a building of its own, which search
   // and routing already treat as the destination.
   assert.ok(ramps.length >= 25, `expected the 25 known ramps, found ${ramps.length}`);
-  const missing = [];
+  const wrong = [];
   for (const ramp of ramps) {
+    const want = ramp.id in unpinned ? 0 : 1;
     const pins = data.pois.filter((p) => p.group === "parking" && p.buildingId === ramp.id);
-    if (pins.length !== 1) missing.push(`${ramp.name}: ${pins.length} pins`);
+    if (pins.length !== want) wrong.push(`${ramp.name}: ${pins.length} pins, want ${want}`);
   }
-  assert.deepEqual(missing, []);
+  assert.deepEqual(wrong, []);
+});
+
+test("a residents-only ramp is not offered as public parking", () => {
+  // Joey's call, 2026-09-23: 110 Grant's ramp is for its residents, so a
+  // Parking pin would send a visitor somewhere they can't park.
+  assert.ok("110-grant-apartments-resident-parking-358537233" in unpinned);
 });
 
 // CIE76 color difference: ~2 is a just-noticeable difference, and the
