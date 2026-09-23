@@ -39,8 +39,10 @@ function withoutFootpaths(filter: FilterSpecification | undefined): FilterSpecif
 export function planBasemapLayer(layer: LayerSpecification, { dark = false } = {}): BasemapPlan {
   // The map is top-down, but MapLibre's camera is still a perspective one:
   // tall buildings near the edge of the screen show their walls, leaning
-  // outward as grey bands that read as extra-thick paths.
-  if (layer.type === "fill-extrusion") return { hide: true };
+  // outward as grey bands that read as extra-thick paths. Flattened, not
+  // hidden — Liberty's flat building layer stops at zoom 14 and this one
+  // takes over, so hiding it erased every off-network building.
+  if (layer.type === "fill-extrusion") return { paint: { "fill-extrusion-height": 0, "fill-extrusion-base": 0 } };
 
   const sourceLayer = "source-layer" in layer ? layer["source-layer"] : undefined;
 

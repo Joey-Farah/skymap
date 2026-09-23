@@ -18,7 +18,12 @@ function applied(layers) {
   return layers.flatMap((layer) => {
     const plan = planBasemapLayer(layer);
     if (plan.hide) return [];
-    return [{ ...layer, ...(plan.filter && { filter: plan.filter }), ...(plan.minzoom && { minzoom: Math.max(plan.minzoom, layer.minzoom ?? 0) }) }];
+    return [{
+      ...layer,
+      ...(plan.filter && { filter: plan.filter }),
+      ...(plan.paint && { paint: { ...layer.paint, ...plan.paint } }),
+      ...(plan.minzoom && { minzoom: Math.max(plan.minzoom, layer.minzoom ?? 0) }),
+    }];
   });
 }
 
@@ -68,11 +73,20 @@ for (const { name, style, layers } of STYLES) {
     }
   });
 
-  test(`${name}: no 3D buildings — their walls lean out at the screen edge like thick paths`, () => {
-    assert.deepEqual(
-      applied(layers).filter((l) => l.type === "fill-extrusion").map((l) => l.id),
-      [],
-    );
+  test(`${name}: every building stays on the map at every zoom`, () => {
+    // Liberty draws buildings flat only up to zoom 14 and hands over to its
+    // 3D layer from there — hiding that layer outright erased every
+    // off-network building from the default view.
+    for (const zoom of [13.5, 15.4, 17]) {
+      assert.notDeepEqual(drawnBy(layers, { sourceLayer: "building", type: "Polygon", properties: { render_height: 54 }, zoom }), [], `zoom ${zoom}`);
+    }
+  });
+
+  test(`${name}: no building is raised — 3D walls lean out at the screen edge like thick paths`, () => {
+    for (const l of applied(layers).filter((l) => l.type === "fill-extrusion")) {
+      assert.equal(l.paint["fill-extrusion-height"], 0, l.id);
+      assert.equal(l.paint["fill-extrusion-base"], 0, l.id);
+    }
   });
 
   test(`${name}: neighborhood names stay for orientation`, () => {
