@@ -562,8 +562,10 @@ test("every pin-worthy building is actually marked", () => {
   // reached the feedback form while the Marriott sat right here, routable,
   // with three skyway edges.
   const names = new Set(live.pois.map((p) => p.name));
+  // Deliberately unpinned (a residents-only ramp): curated, with a reason.
+  const unpinned = JSON.parse(readFileSync(join(ROOT, "data/parking-overlay.json"), "utf8")).unpinned ?? {};
   const unmarked = live.buildings
-    .filter((b) => MARKED_BUILDING_CATEGORIES.has(b.category) && !names.has(b.name))
+    .filter((b) => MARKED_BUILDING_CATEGORIES.has(b.category) && !names.has(b.name) && !(b.id in unpinned))
     .map((b) => `${b.category}: ${b.name}`);
   assert.deepEqual(unmarked, [], "these buildings would be invisible under their own chip");
 });

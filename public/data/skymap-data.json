@@ -31034,16 +31034,6 @@
    "buildingId": "517-marquette-garage-156912894"
   },
   {
-   "id": "building-110-grant-apartments-resident-parking-358537233",
-   "name": "110 Grant Apartments Resident Parking",
-   "category": "parking",
-   "kind": "building",
-   "group": "parking",
-   "lat": 44.970705,
-   "lon": -93.279805,
-   "buildingId": "110-grant-apartments-resident-parking-358537233"
-  },
-  {
    "id": "building-loring-parking-ramp-612097599",
    "name": "Loring Parking Ramp",
    "category": "parking",
