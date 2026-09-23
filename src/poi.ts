@@ -14,7 +14,8 @@ export type PoiGroup =
   | "landmark"
   | "hotel"
   | "transit"
-  | "elevator";
+  | "elevator"
+  | "parking";
 
 // Coffee split out from food generally: someone who wants "where can I get
 // a coffee" doesn't want a restaurant list to dig through, and vice versa.
@@ -50,6 +51,10 @@ const LANDMARK_PLACE = /^(park|garden|memorial|monument|sign|ruins|archaeologica
 export function groupFor(kind: string, category: string): PoiGroup {
   if (category === "elevator") return "elevator";
   if (category === "toilets") return "restroom";
+  // A ramp is somewhere you leave the car, not a sight: its own group, so
+  // the Parking chip can light them all up. Asked before the landmark rule
+  // below, which would otherwise claim it as a building category.
+  if (category === "parking") return "parking";
   if (kind === "transit" || TRANSIT.test(category)) return "transit";
   if (LODGING.test(category)) return "hotel";
   // Off-network landmark buildings arrive with kind "landmark" and a
@@ -99,6 +104,7 @@ export const GROUP_LABELS: Record<PoiGroup, string> = {
   hotel: "Hotels",
   transit: "Transit",
   elevator: "Elevators",
+  parking: "Parking",
 };
 
 /**
@@ -131,6 +137,9 @@ export const GROUP_COLORS: Record<PoiGroup, string> = {
   hotel: "#b3306e",
   transit: "#178740",
   elevator: "#475569",
+  // Red, not the usual parking blue: every skyway on this map is blue, and a
+  // blue pin on a blue line all but disappears. See tests/parking-pins.
+  parking: "#dc2626",
 };
 
 interface HostCandidate {
@@ -322,7 +331,7 @@ export function buildingCategory(tags: Record<string, string>): string {
  * is not marked" reached the feedback form while the Marriott sat in the
  * dataset, routable, with three skyway edges.
  */
-export const MARKED_BUILDING_CATEGORIES = new Set(["venue", "government", "hotel", "hospital"]);
+export const MARKED_BUILDING_CATEGORIES = new Set(["venue", "government", "hotel", "hospital", "parking"]);
 
 /** True for the marker that stands for a building rather than a place inside one.
  *

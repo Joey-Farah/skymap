@@ -44,7 +44,10 @@ for (const file of FILES) {
   // A building whose name is already on the map needs nothing — the Sheraton
   // is carried by a POI of its own name. Names, not ids, because that is how
   // dedupePois decides identity.
-  const takenNames = new Set((data.pois ?? []).map((p) => p.name));
+  // Exterior records don't count: a street-side bus stop named for the
+  // Hawthorne Transportation Center is not a pin for the ramp behind it —
+  // the same call fetch-osm.mjs makes for landmarks sharing a stop's name.
+  const takenNames = new Set((data.pois ?? []).filter((p) => !p.exterior).map((p) => p.name));
 
   const added = [];
   for (const b of data.buildings ?? []) {
@@ -53,7 +56,12 @@ for (const file of FILES) {
     // Only the on-network case belongs here. An unreachable building needs a
     // nearest-host search against the skyway graph, which is fetch-osm.mjs's
     // job — and every such building already has its landmark- record.
-    if (!onNetwork.has(b.id)) continue;
+    //
+    // Except ramps. The hand-curated ones (data/parking-overlay.json) have
+    // no traced skyway edge, so they read as off-network, but each is a
+    // building of its own that search and routing already treat as the
+    // destination. Its pin belongs on it, not on a neighbour.
+    if (!onNetwork.has(b.id) && b.category !== "parking") continue;
     data.pois.push(buildingMarker(b, b.id, true));
     takenNames.add(b.name);
     added.push(`${b.category.padEnd(10)} ${b.name}`);

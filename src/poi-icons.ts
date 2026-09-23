@@ -160,6 +160,23 @@ function drawGlyph(ctx: CanvasRenderingContext2D, group: PoiGroup, cx: number, c
       ctx.fill();
       break;
     }
+    case "parking": {
+      // The road-sign "P": a stem and a bowl, in the same stroke as the rest.
+      const top = cy - r * 0.46;
+      const bottom = cy + r * 0.46;
+      const stem = cx - r * 0.24;
+      const bowlMid = cy - r * 0.04;
+      const bowlR = (bowlMid - top) / 2;
+      ctx.lineWidth = r * 0.2;
+      ctx.beginPath();
+      ctx.moveTo(stem, bottom);
+      ctx.lineTo(stem, top);
+      ctx.lineTo(cx + r * 0.06, top);
+      ctx.arc(cx + r * 0.06, top + bowlR, bowlR, -Math.PI / 2, Math.PI / 2);
+      ctx.lineTo(stem, bowlMid);
+      ctx.stroke();
+      break;
+    }
     default: {
       // Any future group: a small circled dot.
       ctx.beginPath();
