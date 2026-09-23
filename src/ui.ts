@@ -623,7 +623,7 @@ export class Sheet {
     // row carried them — moving them to their own group made 16 interior
     // hotels vanish from the card of the building they're in, in the same
     // release whose notes promise hotels are easier to find.
-    const order: PoiGroup[] = ["coffee", "food", "hotel", "other", "restroom", "elevator", "landmark"];
+    const order: PoiGroup[] = ["coffee", "food", "hotel", "parking", "other", "restroom", "elevator", "landmark"];
     for (const group of order) {
       const members = interior.filter((p) => p.group === group);
       if (members.length === 0) continue;
