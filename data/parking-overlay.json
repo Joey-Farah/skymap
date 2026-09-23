@@ -122,5 +122,14 @@
       "checkedOn": "2026-09-12",
       "note": "Never missing, only misnamed: OSM calls it Marquette Parking Ramp and nobody parks by that name. Hennepin County parcel 2702924130039 at 1111 Marquette Ave -- owner City of Mpls, taxpayer ABM Parking Services -- contains this OSM structure, and its four traced skyway links match the Minnesota Orchestra's note that the ramp has skyway-level access. The id is OSM's and stays so, because the edges hang off it."
     }
+  },
+  "unpinned": {
+    "_readme": "Ramps that stay on the map as buildings but get no Parking pin: the Parking chip is for places a visitor can park. scripts/mark-buildings.mjs skips these and removes any pin they already have.",
+    "110-grant-apartments-resident-parking-358537233": {
+      "name": "110 Grant Apartments Resident Parking",
+      "reason": "Residents only; a public Parking pin would send a visitor somewhere they can't park.",
+      "decidedBy": "Joey",
+      "checkedOn": "2026-09-23"
+    }
   }
 }

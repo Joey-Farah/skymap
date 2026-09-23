@@ -30862,6 +30862,246 @@
    "openingHours": "Mo-Th 10:30-14:45; Fr 10:30-14:30",
    "hoursSource": "https://mspmag.com/eat-and-drink/foodie/hidden-gems-sushi-takatsu/",
    "hoursCheckedOn": "2026-08-23"
+  },
+  {
+   "id": "building-4th-street-ramp-c-27346543",
+   "name": "4th Street Ramp C",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.983014,
+   "lon": -93.274222,
+   "buildingId": "4th-street-ramp-c-27346543"
+  },
+  {
+   "id": "building-park-and-shop-ramp-27346580",
+   "name": "Park and Shop Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.977063,
+   "lon": -93.274625,
+   "buildingId": "park-and-shop-ramp-27346580"
+  },
+  {
+   "id": "building-marquette-parking-ramp-27346594",
+   "name": "11th & Marquette",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.971567,
+   "lon": -93.273671,
+   "buildingId": "marquette-parking-ramp-27346594"
+  },
+  {
+   "id": "building-midtown-parking-ramp-27346722",
+   "name": "Midtown Parking Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.979816,
+   "lon": -93.270898,
+   "buildingId": "midtown-parking-ramp-27346722"
+  },
+  {
+   "id": "building-hcmc-purple-parking-ramp-27346755",
+   "name": "HCMC Purple Parking Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.97357,
+   "lon": -93.262724,
+   "buildingId": "hcmc-purple-parking-ramp-27346755"
+  },
+  {
+   "id": "building-leamington-municipal-ramp-28490447",
+   "name": "Leamington Municipal Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.972082,
+   "lon": -93.271699,
+   "buildingId": "leamington-municipal-ramp-28490447"
+  },
+  {
+   "id": "building-energy-center-ramp-28490490",
+   "name": "Energy Center Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.973445,
+   "lon": -93.268858,
+   "buildingId": "energy-center-ramp-28490490"
+  },
+  {
+   "id": "building-5th-street-ramp-b-30062750",
+   "name": "5th Street Ramp B",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.981047,
+   "lon": -93.275743,
+   "buildingId": "5th-street-ramp-b-30062750"
+  },
+  {
+   "id": "building-stadium-parking-ramp-40774167",
+   "name": "Stadium Parking Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.975799,
+   "lon": -93.259092,
+   "buildingId": "stadium-parking-ramp-40774167"
+  },
+  {
+   "id": "building-government-center-garage-45452112",
+   "name": "Government Center Garage",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.975655,
+   "lon": -93.264802,
+   "buildingId": "government-center-garage-45452112"
+  },
+  {
+   "id": "building-gateway-municipal-garage-81049104",
+   "name": "Gateway Municipal Garage",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.978567,
+   "lon": -93.262535,
+   "buildingId": "gateway-municipal-garage-81049104"
+  },
+  {
+   "id": "building-riverfront-municipal-parking-ramp-99717608",
+   "name": "Riverfront Municipal Parking Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.977492,
+   "lon": -93.255794,
+   "buildingId": "riverfront-municipal-parking-ramp-99717608"
+  },
+  {
+   "id": "building-parking-lot-e-122795248",
+   "name": "Parking Lot E",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.968543,
+   "lon": -93.260796,
+   "buildingId": "parking-lot-e-122795248"
+  },
+  {
+   "id": "building-jerry-haaf-memorial-garage-126015101",
+   "name": "Jerry Haaf Memorial Garage",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.977501,
+   "lon": -93.263061,
+   "buildingId": "jerry-haaf-memorial-garage-126015101"
+  },
+  {
+   "id": "building-minneapolis-club-parking-ramp-156909960",
+   "name": "Minneapolis Club Parking Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.974831,
+   "lon": -93.269152,
+   "buildingId": "minneapolis-club-parking-ramp-156909960"
+  },
+  {
+   "id": "building-portland-avenue-ramp-156909997",
+   "name": "Portland Avenue Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.979108,
+   "lon": -93.259908,
+   "buildingId": "portland-avenue-ramp-156909997"
+  },
+  {
+   "id": "building-517-marquette-garage-156912894",
+   "name": "517 Marquette Garage",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.977556,
+   "lon": -93.269296,
+   "buildingId": "517-marquette-garage-156912894"
+  },
+  {
+   "id": "building-loring-parking-ramp-612097599",
+   "name": "Loring Parking Ramp",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.970267,
+   "lon": -93.278677,
+   "buildingId": "loring-parking-ramp-612097599"
+  },
+  {
+   "id": "building-7th-street-ramp-a-r2100894",
+   "name": "7th Street Ramp A",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.979198,
+   "lon": -93.27794,
+   "buildingId": "7th-street-ramp-a-r2100894"
+  },
+  {
+   "id": "building-hawthorne-transportation-center-r2100925",
+   "name": "Hawthorne Transportation Center",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.977614,
+   "lon": -93.277962,
+   "buildingId": "hawthorne-transportation-center-r2100925"
+  },
+  {
+   "id": "building-hennepin-at-10th-x",
+   "name": "Hennepin at 10th",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.975828,
+   "lon": -93.277499,
+   "buildingId": "hennepin-at-10th-x"
+  },
+  {
+   "id": "building-lasalle-at-10th-x",
+   "name": "LaSalle at 10th",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.975287,
+   "lon": -93.27539,
+   "buildingId": "lasalle-at-10th-x"
+  },
+  {
+   "id": "building-11th-street-underground-x",
+   "name": "11th Street Underground",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.972496,
+   "lon": -93.272329,
+   "buildingId": "11th-street-underground-x"
+  },
+  {
+   "id": "building-plaza-x",
+   "name": "Plaza",
+   "category": "parking",
+   "kind": "building",
+   "group": "parking",
+   "lat": 44.970669,
+   "lon": -93.27472,
+   "buildingId": "plaza-x"
   }
  ],
  "indoorLinks": [

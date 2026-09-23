@@ -22,6 +22,11 @@ import { buildingMarker, MARKED_BUILDING_CATEGORIES } from "../src/poi.ts";
 // locally. Skipped rather than fatal: without the guard a fresh clone
 // rewrote the dataset and then died on ENOENT, half done.
 const FILES = ["public/data/skymap-data.json", "public/data/skymap-data.osm.json"];
+// Ramps kept as buildings but never pinned under Parking (residents-only
+// and the like). Curated in data/parking-overlay.json with the reason.
+const UNPINNED = new Set(
+  Object.keys(JSON.parse(readFileSync("data/parking-overlay.json", "utf8")).unpinned ?? {}).filter((k) => !k.startsWith("_")),
+);
 const write = process.argv.includes("--write");
 
 for (const file of FILES) {
@@ -44,25 +49,40 @@ for (const file of FILES) {
   // A building whose name is already on the map needs nothing — the Sheraton
   // is carried by a POI of its own name. Names, not ids, because that is how
   // dedupePois decides identity.
-  const takenNames = new Set((data.pois ?? []).map((p) => p.name));
+  // Exterior records don't count: a street-side bus stop named for the
+  // Hawthorne Transportation Center is not a pin for the ramp behind it —
+  // the same call fetch-osm.mjs makes for landmarks sharing a stop's name.
+  const takenNames = new Set((data.pois ?? []).filter((p) => !p.exterior).map((p) => p.name));
+
+  // Take back any pin an unpinned ramp already has, so a decision made
+  // after the marker was written still lands.
+  const before = data.pois.length;
+  data.pois = data.pois.filter((p) => !(p.kind === "building" && UNPINNED.has(p.buildingId)));
+  const removed = before - data.pois.length;
 
   const added = [];
   for (const b of data.buildings ?? []) {
     if (!MARKED_BUILDING_CATEGORIES.has(b.category)) continue;
+    if (UNPINNED.has(b.id)) continue;
     if (takenNames.has(b.name)) continue;
     // Only the on-network case belongs here. An unreachable building needs a
     // nearest-host search against the skyway graph, which is fetch-osm.mjs's
     // job — and every such building already has its landmark- record.
-    if (!onNetwork.has(b.id)) continue;
+    //
+    // Except ramps. The hand-curated ones (data/parking-overlay.json) have
+    // no traced skyway edge, so they read as off-network, but each is a
+    // building of its own that search and routing already treat as the
+    // destination. Its pin belongs on it, not on a neighbour.
+    if (!onNetwork.has(b.id) && b.category !== "parking") continue;
     data.pois.push(buildingMarker(b, b.id, true));
     takenNames.add(b.name);
     added.push(`${b.category.padEnd(10)} ${b.name}`);
   }
 
-  console.log(`${file}: ${added.length} marker(s)`);
+  console.log(`${file}: ${added.length} marker(s) added, ${removed} removed`);
   for (const line of added) console.log(`    ${line}`);
 
-  if (added.length && write) {
+  if ((added.length || removed) && write) {
     // Same indentation fetch-osm.mjs writes with — minifying makes every
     // future data diff unreadable.
     writeFileSync(file, JSON.stringify(data, null, 1) + "\n");

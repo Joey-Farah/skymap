@@ -1112,6 +1112,11 @@ async function main(osm) {
     // needs the nearest-host search below, which is what that search was
     // written for.
     const onNetwork = mainComponent.has(b.id);
+    // A ramp the skyway can't reach never makes it into the dataset, so the
+    // neighbour-hosted landmark below would be a Parking pin that opens and
+    // routes to some other building. Curated ramps get their own pins from
+    // mark-buildings.mjs, which data:refresh runs after the overlay.
+    if (!onNetwork && b.category === "parking") continue;
     // Only the marking case is gated on already having a pin. The
     // off-network landmark path is older than that rule and answers a
     // different question — "can you get near this at all" — so applying the

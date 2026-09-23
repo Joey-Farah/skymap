@@ -1,0 +1,133 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { featureFilter, validateStyleMin } from "@maplibre/maplibre-gl-style-spec";
+import { planBasemapLayer } from "../src/basemap.ts";
+
+// The two OpenFreeMap styles the app loads, captured as fixtures so these
+// rules are checked against the real layer list rather than names we
+// remember. Re-fetch them if the basemap ever changes shape:
+//   curl -s https://tiles.openfreemap.org/styles/liberty > tests/fixtures/basemap/liberty.json
+const STYLES = ["liberty", "dark"].map((name) => {
+  const style = JSON.parse(readFileSync(`tests/fixtures/basemap/${name}.json`, "utf8"));
+  return { name, style, layers: style.layers };
+});
+
+/** The layers of a style as SkyMap leaves them after decluttering. */
+function applied(layers) {
+  return layers.flatMap((layer) => {
+    const plan = planBasemapLayer(layer);
+    if (plan.hide) return [];
+    return [{
+      ...layer,
+      ...(plan.filter && { filter: plan.filter }),
+      ...(plan.paint && { paint: { ...layer.paint, ...plan.paint } }),
+      ...(plan.minzoom && { minzoom: Math.max(plan.minzoom, layer.minzoom ?? 0) }),
+    }];
+  });
+}
+
+const GEOMETRY = { Point: 1, LineString: 2, Polygon: 3 };
+
+/** Ids of the visible layers that would draw this feature at this zoom. */
+function drawnBy(layers, { sourceLayer, type = "LineString", properties, zoom = 16.5 }) {
+  return applied(layers)
+    .filter((l) => l["source-layer"] === sourceLayer)
+    .filter((l) => (l.layout?.visibility ?? "visible") === "visible")
+    .filter((l) => zoom >= (l.minzoom ?? 0) && zoom < (l.maxzoom ?? 24))
+    .filter((l) => featureFilter(l.filter).filter({ zoom }, { type: GEOMETRY[type], properties }))
+    .map((l) => l.id);
+}
+
+// Skyways are OSM footways, mostly tagged indoor, many as bridges. The
+// basemap drew its own copy of them under ours — and of every sidewalk —
+// so wherever the two disagreed the map showed paths nobody routes on.
+const FOOTPATHS = [
+  { class: "path", subclass: "footway", brunnel: "bridge", indoor: 1 },
+  { class: "path", subclass: "footway", indoor: 1 },
+  { class: "path", subclass: "corridor", indoor: 1 },
+  { class: "path", subclass: "steps" },
+  { class: "path", subclass: "footway" },
+  { class: "path", subclass: "footway", brunnel: "tunnel" },
+  { class: "pedestrian" },
+];
+
+for (const { name, style, layers } of STYLES) {
+  test(`${name}: every rewritten filter is one MapLibre accepts`, () => {
+    // map.setFilter rejects an invalid filter with a console error and keeps
+    // the old one, so a malformed rewrite would silently change nothing.
+    const errors = validateStyleMin({ ...style, layers: applied(layers) }).map((e) => e.message);
+    assert.deepEqual(errors, []);
+  });
+
+  test(`${name}: the basemap draws no footpaths — skyways are the only paths on the map`, () => {
+    for (const properties of FOOTPATHS) {
+      assert.deepEqual(drawnBy(layers, { sourceLayer: "transportation", properties }), [], JSON.stringify(properties));
+    }
+  });
+
+  test(`${name}: streets are still drawn`, () => {
+    // Nicollet Mall is class "minor" in the tiles; it must survive this.
+    for (const cls of ["minor", "secondary", "primary"]) {
+      assert.notDeepEqual(drawnBy(layers, { sourceLayer: "transportation", properties: { class: cls } }), [], cls);
+    }
+  });
+
+  test(`${name}: every building stays on the map at every zoom`, () => {
+    // Liberty draws buildings flat only up to zoom 14 and hands over to its
+    // 3D layer from there — hiding that layer outright erased every
+    // off-network building from the default view.
+    for (const zoom of [13.5, 15.4, 17]) {
+      assert.notDeepEqual(drawnBy(layers, { sourceLayer: "building", type: "Polygon", properties: { render_height: 54 }, zoom }), [], `zoom ${zoom}`);
+    }
+  });
+
+  test(`${name}: no building is raised — 3D walls lean out at the screen edge like thick paths`, () => {
+    for (const l of applied(layers).filter((l) => l.type === "fill-extrusion")) {
+      assert.equal(l.paint["fill-extrusion-height"], 0, l.id);
+      assert.equal(l.paint["fill-extrusion-base"], 0, l.id);
+    }
+  });
+
+  test(`${name}: neighborhood names stay for orientation`, () => {
+    assert.ok(applied(layers).some((l) => l.type === "symbol" && l["source-layer"] === "place"));
+  });
+
+  test(`${name}: the basemap's own shop and landmark labels stay hidden`, () => {
+    assert.deepEqual(
+      applied(layers).filter((l) => l.type === "symbol" && ["poi", "aerodrome_label"].includes(l["source-layer"])).map((l) => l.id),
+      [],
+    );
+  });
+}
+
+for (const { name, layers } of STYLES) {
+  const label = (properties) => drawnBy(layers, { sourceLayer: "transportation_name", properties });
+
+  test(`${name}: streets are named`, () => {
+    // The reader who asked for this is learning downtown; the grid's names
+    // are how people give and follow directions here.
+    for (const cls of ["minor", "tertiary", "secondary", "primary"]) {
+      assert.notDeepEqual(label({ class: cls, name: "South 7th Street" }), [], cls);
+    }
+  });
+
+  test(`${name}: no street names on the zoomed-out overview`, () => {
+    // At zoom 14 the whole grid's names pile up across the skyway network.
+    // From 15 (the default view is 15.4) they fit between the pins.
+    assert.deepEqual(drawnBy(layers, { sourceLayer: "transportation_name", zoom: 14.9, properties: { class: "secondary", name: "Marquette Avenue" } }), []);
+    assert.notDeepEqual(drawnBy(layers, { sourceLayer: "transportation_name", zoom: 15, properties: { class: "secondary", name: "Marquette Avenue" } }), []);
+  });
+
+  test(`${name}: footpaths are not named — that would label the skyways themselves`, () => {
+    assert.deepEqual(label({ class: "path", subclass: "footway", indoor: 1, name: "Minneapolis Skyway" }), []);
+    assert.deepEqual(label({ class: "pedestrian", name: "Peavey Plaza" }), []);
+  });
+
+  test(`${name}: no highway shields — only names along the street`, () => {
+    const shields = applied(layers).filter(
+      (l) => l.type === "symbol" && l["source-layer"] === "transportation_name" && l.layout?.["symbol-placement"] !== "line",
+    );
+    assert.deepEqual(shields.map((l) => l.id), []);
+  });
+}

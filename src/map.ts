@@ -15,6 +15,7 @@ import { GROUP_COLORS, isBuildingMarker, labelRank } from "./poi.ts";
 import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
+import { planBasemapLayer } from "./basemap.ts";
 
 // Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look
 // than Positron's grayscale. Dark: OpenFreeMap's own dark counterpart — a
@@ -375,17 +376,20 @@ export class SkymapView {
     }
   }
 
-  /** The stock basemap labels every street and shop it can fit — reasonable
-   * for a general atlas, but SkyMap already owns building/POI labeling at
-   * the zoom levels people actually use, so the base style's own text just
-   * competes with it. "place" (city/neighborhood names) is the one source
-   * layer worth keeping for orientation; it's a stable OpenMapTiles schema
-   * field so this holds even if the style's own layer ids get renamed. */
+  /** Trim the stock basemap down to what a skyway map needs — see
+   * planBasemapLayer for the rules and why each exists. */
   private declutterBasemap() {
     for (const layer of this.map.getStyle().layers ?? []) {
-      if (layer.type !== "symbol") continue;
-      if ("source-layer" in layer && layer["source-layer"] === "place") continue;
-      this.map.setLayoutProperty(layer.id, "visibility", "none");
+      const plan = planBasemapLayer(layer, { dark: prefersDark() });
+      if (plan.hide) {
+        this.map.setLayoutProperty(layer.id, "visibility", "none");
+        continue;
+      }
+      if (plan.filter) this.map.setFilter(layer.id, plan.filter);
+      if (plan.minzoom !== undefined) {
+        this.map.setLayerZoomRange(layer.id, Math.max(plan.minzoom, layer.minzoom ?? 0), layer.maxzoom ?? 24);
+      }
+      for (const [prop, value] of Object.entries(plan.paint ?? {})) this.map.setPaintProperty(layer.id, prop, value);
     }
   }
 
