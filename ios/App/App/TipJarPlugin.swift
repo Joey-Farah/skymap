@@ -27,7 +27,12 @@ public class TipJarPlugin: CAPPlugin, CAPBridgedPlugin {
         if TipJarPlugin.listener == nil {
             TipJarPlugin.listener = Task.detached {
                 for await update in Transaction.updates {
-                    if case .verified(let transaction) = update {
+                    // Unverified ones too: a tip unlocks nothing, so there
+                    // is nothing to withhold, and unfinished they come back.
+                    switch update {
+                    case .verified(let transaction):
+                        await transaction.finish()
+                    case .unverified(let transaction, _):
                         await transaction.finish()
                     }
                 }
@@ -52,11 +57,14 @@ public class TipJarPlugin: CAPPlugin, CAPBridgedPlugin {
     /// Resolves `{ result }`: purchased, cancelled, pending (Ask to Buy), or
     /// failed. Never rejects — every outcome is one the card shows.
     @objc func purchase(_ call: CAPPluginCall) {
-        guard let id = call.getString("id"), let product = products[id] else {
-            call.resolve(["result": "failed"])
-            return
-        }
+        let id = call.getString("id") ?? ""
+        // Capacitor calls this off the main thread; the product list is
+        // written on the main actor, so it is read there too.
         Task { @MainActor in
+            guard let product = self.products[id] else {
+                call.resolve(["result": "failed"])
+                return
+            }
             do {
                 let outcome: Product.PurchaseResult
                 // Scene-based apps should say which scene the payment sheet
@@ -70,8 +78,11 @@ public class TipJarPlugin: CAPPlugin, CAPBridgedPlugin {
                 case .success(.verified(let transaction)):
                     await transaction.finish()
                     call.resolve(["result": "purchased"])
-                case .success(.unverified):
-                    call.resolve(["result": "failed"])
+                case .success(.unverified(let transaction, _)):
+                    await transaction.finish()
+                    // StoreKit couldn't verify it, but the person was
+                    // charged: thank them rather than say they weren't.
+                    call.resolve(["result": "purchased"])
                 case .userCancelled:
                     call.resolve(["result": "cancelled"])
                 case .pending:

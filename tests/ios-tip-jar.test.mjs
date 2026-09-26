@@ -37,3 +37,18 @@ test("the plugin finishes transactions that arrive outside a purchase call", () 
   assert.match(plugin, /Transaction\.updates/);
   assert.match(plugin, /\.finish\(\)/);
 });
+
+test("unverified transactions are finished too, not redelivered forever", () => {
+  // A tip unlocks nothing, so there is nothing to withhold from a transaction
+  // StoreKit couldn't verify — but it was charged, and left unfinished it
+  // comes back on every launch.
+  const plugin = readFileSync("ios/App/App/TipJarPlugin.swift", "utf8");
+  assert.match(plugin, /case \.unverified\(let transaction, _\):\s*\n\s*await transaction\.finish\(\)/);
+  assert.match(plugin, /case \.success\(\.unverified\(let transaction, _\)\):\s*\n\s*await transaction\.finish\(\)/);
+});
+
+test("the product lookup happens on the main actor, where the list is written", () => {
+  const plugin = readFileSync("ios/App/App/TipJarPlugin.swift", "utf8");
+  const purchase = plugin.slice(plugin.indexOf("func purchase("));
+  assert.ok(purchase.indexOf("Task { @MainActor in") < purchase.indexOf("self.products[id]"), "products is read off the main actor");
+});

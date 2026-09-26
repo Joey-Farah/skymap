@@ -58,8 +58,21 @@ export class TipJarCard {
     });
   }
 
-  /** Decides what this platform gets and fills the card with it. */
+  /** Decides what this platform gets and fills the card with it. On iOS,
+   * a launch with no signal (deep in a skyway) finds no products; rather
+   * than leave the tip jar gone for the whole session, it asks again when
+   * the network or the app comes back. */
   async load(native: boolean) {
+    await this.fill(native);
+    if (!native) return;
+    const retry = () => {
+      if (this.mode === "hidden" && document.visibilityState === "visible") void this.fill(true);
+    };
+    window.addEventListener("online", retry);
+    document.addEventListener("visibilitychange", retry);
+  }
+
+  private async fill(native: boolean) {
     const products = native ? await loadProducts() : [];
     const mode = tipJarMode({ native, products });
     this.mode = mode;
@@ -71,6 +84,8 @@ export class TipJarCard {
 
   /** The line for under "You've arrived", or null when it shouldn't show. */
   arrivalTip(arrived: boolean): HTMLElement | null {
+    // Asked on every position fix: only touch storage once there's an arrival.
+    if (!arrived) return null;
     return showArrivalTip({ arrived, mode: this.mode, tipped: hasTipped(localStorage) }) ? this.arrivalLine : null;
   }
 
