@@ -58,6 +58,10 @@ async function boot() {
   // strands you — see mainNetworkBuildings.
   const routableOrigins = mainNetworkBuildings(data);
   const sheet = new Sheet(document.getElementById("sheet")!);
+  // Apple tips in the iOS app, Patreon on the web; see tip-jar.ts. Built
+  // this early because the nav banner asks it about the arrival line.
+  const tipJar = new TipJarCard(showToast);
+  void tipJar.load(Capacitor.isNativePlatform());
   const app = document.getElementById("app")!;
   const routeEditor = document.getElementById("route-editor") as HTMLElement;
   const navBanner = document.getElementById("nav-banner") as HTMLElement;
@@ -331,12 +335,17 @@ async function boot() {
     navInstruction.textContent = info.title;
     // Off the route, the landmark cue is about a step we are no longer sure
     // the walker is on. Saying so beats naming a coffee shop they can't see.
+    const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);
+    const tipLine = tipJar.arrivalTip(arrived);
     if (offRoute) {
       navInstructionSub.textContent = "Can't see you on the route — showing your last known spot";
+    } else if (tipLine) {
+      // Only when it isn't already there: replacing it on every fix would
+      // swallow a tap that lands between two of them.
+      if (navInstructionSub.firstChild !== tipLine) navInstructionSub.replaceChildren(tipLine);
     } else {
       navInstructionSub.replaceChildren(...(info.sub ? [info.sub] : []));
     }
-    const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);
     if (canDismissArrival(arrived, remaining)) scheduleArrivalDismiss();
   }
 
@@ -592,8 +601,6 @@ async function boot() {
   });
   sheet.onReport = (target, hours) => feedbackForm.open(target, hours);
 
-  // Apple tips in the iOS app, Patreon on the web; see tip-jar.ts.
-  void new TipJarCard(showToast).load(Capacitor.isNativePlatform());
 
   let locateMode: LocateMode = "off";
   let compassUnavailable = false; // denied once → cycle degrades to plain on/off

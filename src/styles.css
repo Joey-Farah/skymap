@@ -1360,6 +1360,19 @@ a:focus-visible {
   margin-top: 2px;
 }
 
+/* The tip line under "You've arrived": a quiet text link, not a button
+   that competes with the arrival itself. */
+.arrival-tip {
+  border: 0;
+  background: none;
+  padding: 2px 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+}
+
 #nav-instruction-sub:empty {
   display: none;
 }

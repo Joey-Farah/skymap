@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { tipJarMode, tipOptions, tipOutcome, PATREON_URL, TIP_IDS } from "../src/tip-jar.ts";
+import { tipJarMode, tipOptions, tipOutcome, showArrivalTip, hasTipped, markTipped, PATREON_URL, TIP_IDS } from "../src/tip-jar.ts";
 
 // The iOS app may only take tips through Apple (an external payment link is
 // rejectable outside the US storefront, and SkyMap sells worldwide). The web
@@ -64,4 +64,39 @@ test("Ask to Buy explains the wait", () => {
 
 test("a failure says so and leaves the card open to try again", () => {
   assert.deepEqual(tipOutcome("failed"), { close: false, toast: "That didn't go through. You haven't been charged." });
+});
+
+function memoryStore() {
+  const mem = new Map();
+  return { getItem: (k) => mem.get(k) ?? null, setItem: (k, v) => mem.set(k, v), removeItem: (k) => mem.delete(k) };
+}
+
+test("arriving shows the tip line to someone who hasn't tipped", () => {
+  assert.equal(showArrivalTip({ arrived: true, mode: "iap", tipped: false }), true);
+  assert.equal(showArrivalTip({ arrived: true, mode: "patreon", tipped: false }), true);
+});
+
+test("the tip line waits for arrival", () => {
+  assert.equal(showArrivalTip({ arrived: false, mode: "iap", tipped: false }), false);
+});
+
+test("once someone has tipped, the line never shows again", () => {
+  assert.equal(showArrivalTip({ arrived: true, mode: "iap", tipped: true }), false);
+});
+
+test("no tip jar on this platform means no tip line", () => {
+  assert.equal(showArrivalTip({ arrived: true, mode: "hidden", tipped: false }), false);
+});
+
+test("a tip is remembered across launches", () => {
+  const store = memoryStore();
+  assert.equal(hasTipped(store), false);
+  markTipped(store);
+  assert.equal(hasTipped(store), true);
+});
+
+test("storage that throws (private mode) reads as not tipped and doesn't break a purchase", () => {
+  const broken = { getItem() { throw new Error("denied"); }, setItem() { throw new Error("denied"); }, removeItem() {} };
+  assert.equal(hasTipped(broken), false);
+  assert.doesNotThrow(() => markTipped(broken));
 });

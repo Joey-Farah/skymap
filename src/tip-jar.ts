@@ -1,3 +1,5 @@
+import type { KeyValueStore } from "./storage.ts";
+
 /** The tip jar's decisions, kept free of the DOM and of StoreKit so they can
  * be tested. The dialog in tip-jar-card.ts only renders what these say. */
 
@@ -68,4 +70,35 @@ export function tipOutcome(result: PurchaseResult): { close: boolean; toast: str
     case "failed":
       return { close: false, toast: "That didn't go through. You haven't been charged." };
   }
+}
+
+const TIPPED_KEY = "skymap.tipped";
+
+/** Whether this person has tipped, or followed the Patreon link, before. */
+export function hasTipped(store: KeyValueStore): boolean {
+  try {
+    return store.getItem(TIPPED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+/** Remembered so the arrival line stops asking. Storage that refuses
+ * (private browsing) just means it keeps asking; the tip itself is safe. */
+export function markTipped(store: KeyValueStore): void {
+  try {
+    store.setItem(TIPPED_KEY, "1");
+  } catch {
+    // Nothing to do: see above.
+  }
+}
+
+/**
+ * The "Stayed warm? ♥ Leave a tip" line under "You've arrived". Shown on
+ * every arrival until the person tips, then never again: the banner is
+ * up for about ten seconds, so once would be easy to miss, and asking
+ * again after a tip would be rude.
+ */
+export function showArrivalTip(env: { arrived: boolean; mode: TipJarMode; tipped: boolean }): boolean {
+  return env.arrived && env.mode !== "hidden" && !env.tipped;
 }

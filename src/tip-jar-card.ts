@@ -5,10 +5,14 @@ import { registerPlugin } from "@capacitor/core";
 import {
   PATREON_URL,
   TIP_IDS,
+  hasTipped,
+  markTipped,
+  showArrivalTip,
   tipJarMode,
   tipOptions,
   tipOutcome,
   type PurchaseResult,
+  type TipJarMode,
   type TipOption,
   type TipProduct,
 } from "./tip-jar.ts";
@@ -40,6 +44,10 @@ export class TipJarCard {
   private returnFocusTo: HTMLElement | null = null;
 
   private busy = false;
+  private mode: TipJarMode = "hidden";
+  /** Built once and reused: the banner is refreshed on every position fix,
+   * and a line rebuilt mid-tap would swallow the tap. */
+  private arrivalLine = arrivalTipButton(() => this.open());
 
   constructor(private toast: (text: string) => void) {
     this.link.addEventListener("click", () => this.open());
@@ -54,10 +62,16 @@ export class TipJarCard {
   async load(native: boolean) {
     const products = native ? await loadProducts() : [];
     const mode = tipJarMode({ native, products });
+    this.mode = mode;
     this.link.hidden = mode === "hidden";
     this.options.replaceChildren();
-    if (mode === "patreon") this.options.append(patreonLink());
+    if (mode === "patreon") this.options.append(patreonLink(() => markTipped(localStorage)));
     if (mode === "iap") this.options.append(...tipOptions(products).map((o) => this.tipButton(o)));
+  }
+
+  /** The line for under "You've arrived", or null when it shouldn't show. */
+  arrivalTip(arrived: boolean): HTMLElement | null {
+    return showArrivalTip({ arrived, mode: this.mode, tipped: hasTipped(localStorage) }) ? this.arrivalLine : null;
   }
 
   private tipButton(option: TipOption): HTMLButtonElement {
@@ -80,6 +94,7 @@ export class TipJarCard {
     this.setBusy(true);
     const { result } = await TipJar.purchase({ id }).catch(() => ({ result: "failed" as const }));
     this.setBusy(false);
+    if (result === "purchased" || result === "pending") markTipped(localStorage);
     const outcome = tipOutcome(result);
     if (outcome.close) this.close();
     if (outcome.toast) this.toast(outcome.toast);
@@ -105,12 +120,24 @@ export class TipJarCard {
   }
 }
 
-function patreonLink(): HTMLAnchorElement {
+function arrivalTipButton(open: () => void): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "arrival-tip";
+  button.textContent = "Stayed warm? ♥ Leave a tip";
+  button.addEventListener("click", open);
+  return button;
+}
+
+function patreonLink(onOpen: () => void): HTMLAnchorElement {
   const a = document.createElement("a");
   a.className = "tipjar-option";
   a.href = PATREON_URL;
   a.target = "_blank";
   a.rel = "noopener";
   a.textContent = "Support on Patreon ↗";
+  // Following the link is as close to "tipped" as the web can know; it
+  // stops the arrival line from asking again.
+  a.addEventListener("click", onOpen);
   return a;
 }
