@@ -1289,6 +1289,12 @@ a:focus-visible {
   flex-shrink: 0;
 }
 
+/* With the tip jar showing, it takes the push to the right and Feedback
+   sits beside it. */
+.tipjar-link:not([hidden]) + .feedback-link {
+  margin-left: 0;
+}
+
 /* Screen 4: the floating From/To editor, Apple's top placement. */
 .route-editor {
   top: calc(env(safe-area-inset-top, 0px) + 10px);
@@ -1352,6 +1358,19 @@ a:focus-visible {
      contrast in both themes. */
   color: var(--ink-600);
   margin-top: 2px;
+}
+
+/* The tip line under "You've arrived": a quiet text link, not a button
+   that competes with the arrival itself. */
+.arrival-tip {
+  border: 0;
+  background: none;
+  padding: 2px 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
 }
 
 #nav-instruction-sub:empty {
@@ -1460,7 +1479,8 @@ a:focus-visible {
 }
 
 .feedback-backdrop[hidden],
-.feedback-form[hidden] {
+.feedback-form[hidden],
+.tipjar-link[hidden] {
   display: none;
 }
 
@@ -1569,6 +1589,46 @@ a:focus-visible {
 .feedback-actions button.ghost {
   background: rgba(20, 33, 61, 0.06);
   color: var(--ink-600);
+}
+
+.tipjar-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* One style for the Patreon link and Apple's tip buttons: the same
+   accent pill as the dialogs' primary action. */
+.tipjar-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease);
+}
+
+.tipjar-option:active {
+  transform: scale(0.97);
+}
+
+.tipjar-option:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+.tipjar-note {
+  font-size: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
