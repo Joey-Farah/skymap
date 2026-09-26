@@ -89,6 +89,21 @@
         </div>
       </div>
 
+      <!-- Tip jar. Same dialog chrome as Feedback. What's inside depends on
+           the platform (see tip-jar.ts): Apple tips in the iOS app, which
+           may not link out to a payment page; Patreon on the web. -->
+      <div class="feedback-backdrop" id="tipjar-backdrop" hidden></div>
+      <div class="panel feedback-form tipjar" id="tipjar" role="dialog" aria-modal="true"
+           aria-labelledby="tipjar-title" hidden>
+        <h2 id="tipjar-title">Tip jar</h2>
+        <p class="feedback-sub">SkyMap is free, with no ads and no tracking. If it's saved you a cold walk, a tip keeps it going.</p>
+        <div class="tipjar-options" id="tipjar-options"></div>
+        <p class="feedback-sub tipjar-note">All features stay free either way.</p>
+        <div class="feedback-actions">
+          <button id="tipjar-close" class="ghost" type="button">Close</button>
+        </div>
+      </div>
+
       <!-- Screen 5: turn-by-turn instruction banner -->
       <div class="panel nav-banner" id="nav-banner" hidden>
         <div id="nav-instruction"></div>
@@ -152,6 +167,8 @@
               <!-- A real button: an <a> with no href isn't focusable, has no
                    link role, and ignores Enter — which silently put Feedback
                    out of reach of keyboard and VoiceOver users. -->
+              <!-- Hidden until tip-jar.ts decides this platform has one to offer. -->
+              <button id="tipjar-link" class="feedback-link tipjar-link" type="button" hidden>♥ Tip jar</button>
               <button id="feedback-link" class="feedback-link" type="button">Feedback</button>
             </div>
           </div>
