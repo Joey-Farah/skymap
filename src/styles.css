@@ -383,6 +383,9 @@ a:focus-visible {
   left: 50%;
   transform: translateX(-50%);
   bottom: calc(env(safe-area-inset-bottom, 0px) + 16px + var(--sheet-clearance, 80px));
+  /* Without this, left: 50% leaves only the right half of the screen to
+     lay out in, and every message wrapped at 50vw. */
+  width: max-content;
   max-width: min(86vw, 420px);
   padding: 10px 16px;
   border-radius: 999px;
