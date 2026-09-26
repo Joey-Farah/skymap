@@ -22,3 +22,50 @@ export function tipJarMode(env: { native: boolean; products: TipProduct[] }): Ti
   if (!env.native) return "patreon";
   return env.products.length > 0 ? "iap" : "hidden";
 }
+
+/** The tips, cheapest first. The ids are the App Store Connect product ids;
+ * the names are ours, so they read the same in every territory. */
+const TIPS = [
+  { id: "app.skymap.ios.tip.small", label: "☕ Small tip" },
+  { id: "app.skymap.ios.tip.medium", label: "🥐 Medium tip" },
+  { id: "app.skymap.ios.tip.large", label: "🍽 Large tip" },
+] as const;
+
+export const TIP_IDS: string[] = TIPS.map((t) => t.id);
+
+export interface TipOption {
+  id: string;
+  label: string;
+  price: string;
+}
+
+/** Our names with StoreKit's prices, in our order. A product we have no name
+ * for is dropped rather than shown as a bare id. */
+export function tipOptions(products: TipProduct[]): TipOption[] {
+  return TIPS.flatMap((tip) => {
+    const product = products.find((p) => p.id === tip.id);
+    return product ? [{ id: tip.id, label: tip.label, price: product.displayPrice }] : [];
+  });
+}
+
+export type PurchaseResult = "purchased" | "cancelled" | "pending" | "failed";
+
+/**
+ * What the card does after a purchase attempt. Cancelling is silent: the
+ * person just changed their mind, and the card stays put. A failure stays
+ * open too, so trying again is one tap.
+ */
+export function tipOutcome(result: PurchaseResult): { close: boolean; toast: string | null } {
+  switch (result) {
+    case "purchased":
+      return { close: true, toast: "Thank you ♥ That means a lot." };
+    case "pending":
+      // Ask to Buy: a parent approves later, and the plugin finishes the
+      // transaction when it lands.
+      return { close: true, toast: "Waiting for approval. Thank you ♥" };
+    case "cancelled":
+      return { close: false, toast: null };
+    case "failed":
+      return { close: false, toast: "That didn't go through. You haven't been charged." };
+  }
+}

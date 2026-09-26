@@ -17,7 +17,6 @@ import { BuildingCombo, Sheet } from "./ui.ts";
 import { encodeRouteState, parseRouteState } from "./share.ts";
 import { FeedbackForm } from "./feedback-form.ts";
 import { TipJarCard } from "./tip-jar-card.ts";
-import { tipJarMode } from "./tip-jar.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
 import { locateTransition, type LocateMode } from "./locate-mode.ts";
@@ -593,9 +592,8 @@ async function boot() {
   });
   sheet.onReport = (target, hours) => feedbackForm.open(target, hours);
 
-  // Apple's products arrive with the native plugin; until then the iOS app
-  // has none, and tipJarMode keeps its tip jar hidden.
-  new TipJarCard().show(tipJarMode({ native: Capacitor.isNativePlatform(), products: [] }));
+  // Apple tips in the iOS app, Patreon on the web; see tip-jar.ts.
+  void new TipJarCard(showToast).load(Capacitor.isNativePlatform());
 
   let locateMode: LocateMode = "off";
   let compassUnavailable = false; // denied once → cycle degrades to plain on/off
