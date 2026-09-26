@@ -69,6 +69,12 @@ is kept for history — don't follow it for updates.)
    `https://skymap-alpha.vercel.app/update.json` serves the new version.
    iOS auto-update takes days; without this, nobody is told. See below.
 
+   **Open the next train in the same commit** (bump `MARKETING_VERSION`,
+   add its release-notes stub). Xcode Cloud builds every push to `main`,
+   and Apple rejects uploads to a version that's already live — so a
+   banner-only push fails at "Preparing build for App Store Connect".
+   Builds 69 and 76 both did.
+
 ## The update gate (added 1.12)
 
 `public/update.json`, deployed with the web app, is the whole control
