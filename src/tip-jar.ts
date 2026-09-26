@@ -94,7 +94,7 @@ export function markTipped(store: KeyValueStore): void {
 }
 
 /**
- * The "Stayed warm? ♥ Leave a tip" line under "You've arrived". Shown on
+ * The "Enjoying SkyMap? ♥ Leave a tip" line under "You've arrived". Shown on
  * every arrival until the person tips, then never again: the banner is
  * up for about ten seconds, so once would be easy to miss, and asking
  * again after a tip would be rude.

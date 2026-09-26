@@ -124,7 +124,7 @@ function arrivalTipButton(open: () => void): HTMLButtonElement {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "arrival-tip";
-  button.textContent = "Stayed warm? ♥ Leave a tip";
+  button.textContent = "Enjoying SkyMap? ♥ Leave a tip";
   button.addEventListener("click", open);
   return button;
 }
