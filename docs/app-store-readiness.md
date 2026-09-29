@@ -17,7 +17,7 @@ everything it listed as future work is now done.)
 | App icon + launch screen | ✅ SkyMap's own mark at required sizes |
 | Full-bleed layout in WKWebView | ✅ `contentInset: never`, locked viewport scale, fixed-position body — the early cropping/scrolling bugs are fixed |
 | Privacy policy page | ✅ `public/privacy.html` → live at `https://skymap-alpha.vercel.app/privacy.html` after the next production promote |
-| Feedback email | ✅ real monitored inbox (`joeyefarah+skymap@gmail.com`) |
+| Feedback email | ✅ real monitored inbox (`joey@joeyfarah.dev`) |
 
 ## The one hard blocker: Apple Developer Program
 
