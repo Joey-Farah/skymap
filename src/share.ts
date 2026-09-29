@@ -19,11 +19,10 @@ export function encodeRouteState(state: { fromId: string; toId: string; when: Da
   return `?${params.toString()}`;
 }
 
-/** A real, monitored inbox — hello@skymap.app looked more official but the
- * domain isn't ours, so tester mail would have bounced or gone to a
- * stranger. Gmail's +tag makes these filterable without a new account;
- * swap for a custom-domain address if/when one actually exists. */
-const FEEDBACK_EMAIL = "joeyefarah+skymap@gmail.com";
+/** A real, monitored inbox on Joey's own domain (hello@skymap.app looked
+ * more official, but that domain isn't ours, so mail would have bounced or
+ * gone to a stranger). */
+const FEEDBACK_EMAIL = "joey@joeyfarah.dev";
 
 /** Git short hash baked in by vite.config.ts; "dev" under the test runner
  * (which imports this module without Vite's define step). Stamped into
