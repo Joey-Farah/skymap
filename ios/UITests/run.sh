@@ -7,7 +7,12 @@ set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$HERE/../.."
 OUT="${TMPDIR:-/tmp}/skymap-uitests"
-SIM_ID="${SIM_ID:-$(xcrun simctl list devices available | grep -m1 -E 'iPhone' | grep -oE '[0-9A-F-]{36}')}"
+# A booted iPhone if there is one, else the newest-listed iPhone.
+pick_sim() {
+  list="$(xcrun simctl list devices available | grep -E 'iPhone' || true)"
+  { echo "$list" | grep Booted; echo "$list" | tail -r; } | grep -m1 -oE '[0-9A-F-]{36}' || true
+}
+SIM_ID="${SIM_ID:-$(pick_sim)}"
 [ -n "$SIM_ID" ] || { echo "no iPhone simulator found"; exit 1; }
 
 cd "$ROOT"

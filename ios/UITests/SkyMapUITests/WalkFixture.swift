@@ -2,27 +2,28 @@
 import CoreLocation
 
 enum WalkFixture {
-  static let from = "Target Center"
-  static let to = "IDS Center"
-  static let buildings: [String] = ["Target Center", "Mayo Clinic Square", "Minneapolis Marriott City Center", "The Royal Sonesta Minneapolis Downtown", "IDS Center"]
+  static let from = "Target Plaza"
+  static let to = "LaSalle Plaza"
+  static let buildings: [String] = ["Target Plaza", "Target Plaza III", "Opus Hall", "LaSalle Apartments", "LaSalle Plaza"]
   /// Metres along the drawn line where each building begins.
-  static let stepStarts: [Double] = [0.0, 46.3, 193.5, 314.5, 446.7]
+  static let stepStarts: [Double] = [0.0, 21.0, 141.3, 297.3, 340.8]
   static let waypoints: [CLLocationCoordinate2D] = [
-    CLLocationCoordinate2D(latitude: 44.979437, longitude: -93.275261),
-    CLLocationCoordinate2D(latitude: 44.979437, longitude: -93.275261),
-    CLLocationCoordinate2D(latitude: 44.97915, longitude: -93.274834),
-    CLLocationCoordinate2D(latitude: 44.979054, longitude: -93.274708),
-    CLLocationCoordinate2D(latitude: 44.978902, longitude: -93.274708),
-    CLLocationCoordinate2D(latitude: 44.978553, longitude: -93.274281),
-    CLLocationCoordinate2D(latitude: 44.978351, longitude: -93.274009),
-    CLLocationCoordinate2D(latitude: 44.978141, longitude: -93.273706),
-    CLLocationCoordinate2D(latitude: 44.977422, longitude: -93.273094),
-    CLLocationCoordinate2D(latitude: 44.977244, longitude: -93.273339),
-    CLLocationCoordinate2D(latitude: 44.977136, longitude: -93.273439),
-    CLLocationCoordinate2D(latitude: 44.976887, longitude: -93.273634),
-    CLLocationCoordinate2D(latitude: 44.97661, longitude: -93.272956),
-    CLLocationCoordinate2D(latitude: 44.976577, longitude: -93.272982),
-    CLLocationCoordinate2D(latitude: 44.976465, longitude: -93.272775),
-    CLLocationCoordinate2D(latitude: 44.976465, longitude: -93.272775),
+    CLLocationCoordinate2D(latitude: 44.974094, longitude: -93.275189),
+    CLLocationCoordinate2D(latitude: 44.974094, longitude: -93.275189),
+    CLLocationCoordinate2D(latitude: 44.974264, longitude: -93.275073),
+    CLLocationCoordinate2D(latitude: 44.974325, longitude: -93.275021),
+    CLLocationCoordinate2D(latitude: 44.974677, longitude: -93.275845),
+    CLLocationCoordinate2D(latitude: 44.974926, longitude: -93.275631),
+    CLLocationCoordinate2D(latitude: 44.974956, longitude: -93.275664),
+    CLLocationCoordinate2D(latitude: 44.975085, longitude: -93.275893),
+    CLLocationCoordinate2D(latitude: 44.975102, longitude: -93.275923),
+    CLLocationCoordinate2D(latitude: 44.97523, longitude: -93.276218),
+    CLLocationCoordinate2D(latitude: 44.975402, longitude: -93.276612),
+    CLLocationCoordinate2D(latitude: 44.97544, longitude: -93.276454),
+    CLLocationCoordinate2D(latitude: 44.975456, longitude: -93.276429),
+    CLLocationCoordinate2D(latitude: 44.975848, longitude: -93.276103),
+    CLLocationCoordinate2D(latitude: 44.975774, longitude: -93.275936),
+    CLLocationCoordinate2D(latitude: 44.975992, longitude: -93.275759),
+    CLLocationCoordinate2D(latitude: 44.975992, longitude: -93.275759),
   ]
 }

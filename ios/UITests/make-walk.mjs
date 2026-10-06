@@ -1,7 +1,10 @@
 // Writes SkyMapUITests/WalkFixture.swift: a route's drawn line as GPS
 // waypoints, plus where each building starts along it, computed by the app's
 // own router and routeLine. Re-run after a data refresh changes the network:
-//   node ios/UITests/make-walk.mjs "Target Center" "IDS Center"
+//   node ios/UITests/make-walk.mjs "Target Plaza" "LaSalle Plaza"
+// The test runs at whatever time it is, and the app routes by building
+// hours, so the route must come out the same at every hour of the week;
+// this refuses to write a fixture for one that doesn't.
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,9 +19,18 @@ const from = data.buildings.find((b) => b.name === fromName);
 const to = data.buildings.find((b) => b.name === toName);
 if (!from || !to) throw new Error(`unknown building: ${!from ? fromName : toName}`);
 
-// Hours-blind, so the fixture doesn't depend on when it was generated; the
-// test walks at midday, when every building on this route is open.
-const route = new SkywayRouter(data).route(from.id, to.id, null);
+const router = new SkywayRouter(data);
+const route = router.route(from.id, to.id, null);
+const ids = (r) => r?.steps.map((x) => x.building.id).join(">");
+for (let day = 0; day < 7; day++) {
+  for (let hour = 0; hour < 24; hour++) {
+    const when = new Date(2026, 9, 4 + day, hour, 30); // Sun Oct 4 2026 onward
+    const r = router.route(from.id, to.id, when);
+    if (ids(r) !== ids(route) || r.ignoredClosures) {
+      throw new Error(`route changes with building hours (${when.toString().slice(0, 21)}); pick buildings open all week`);
+    }
+  }
+}
 const s = route.steps;
 // The same endpoints map.ts draws for a building-to-building route.
 const fromCoord = buildingExitPoint(from, s[1].legGeometry?.[0] ?? [s[1].building.lon, s[1].building.lat]);
