@@ -1,0 +1,25 @@
+# Generates SkyMapUITests.xcodeproj (run `xcodegen` here). Kept apart from
+# App.xcodeproj on purpose: these tests drive the installed app by bundle id,
+# so the release project and Xcode Cloud never see them. See README.md.
+name: SkyMapUITests
+options:
+  deploymentTarget:
+    iOS: "17.0"
+targets:
+  SkyMapUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [SkyMapUITests]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: app.skymap.ios.uitests
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_VERSION: "5.0"
+schemes:
+  SkyMapUITests:
+    build:
+      targets:
+        SkyMapUITests: [test]
+    test:
+      targets: [SkyMapUITests]
