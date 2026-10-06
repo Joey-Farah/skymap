@@ -173,10 +173,23 @@ test("the banner moves on when the walker reaches the building on the drawn line
   // 0.75 min transit penalty, spread over distance, flipped the banner to
   // "Head into Marriott" 11 m into Target Center -> IDS.
   const starts = [0, 120, 300];
-  assert.equal(stepIndexFromAlong(starts, 0), 0);
-  assert.equal(stepIndexFromAlong(starts, 119), 0, "1 m short of the door is still the first building");
-  assert.equal(stepIndexFromAlong(starts, 120), 1);
-  assert.equal(stepIndexFromAlong(starts, 450), 2, "past the last door is the destination");
-  assert.equal(stepIndexFromAlong(starts, -5), 0);
-  assert.equal(stepIndexFromAlong([0], 50), 0);
+  const line = 310;
+  const at = (along) => stepIndexFromAlong(starts, line, line - along);
+  assert.equal(at(0), 0);
+  assert.equal(at(119), 0, "1 m short of the door is still the first building");
+  assert.equal(at(120), 1);
+  assert.equal(at(310), 2, "the end of the line is the destination");
+  assert.equal(at(-5), 0);
+  assert.equal(stepIndexFromAlong([0], 50, 0), 0);
+});
+
+test("arrival waits until the walker is near the end, not just through the door", () => {
+  // The destination's door can sit ~100 m before its pin (a shop deep in
+  // IDS). "You've arrived" and the tip prompt there would be early; ending
+  // the trip already waits for ARRIVAL_METERS, so arrival does too.
+  const starts = [0, 120, 200];
+  const line = 320;
+  assert.equal(stepIndexFromAlong(starts, line, 110), 1, "through the door, 110 m to go: still heading in");
+  assert.equal(stepIndexFromAlong(starts, line, 25), 2, "within 30 m: arrived");
+  assert.equal(stepIndexFromAlong([0, 300], 310, 10), 1, "a door within 30 m of the end arrives at the door");
 });

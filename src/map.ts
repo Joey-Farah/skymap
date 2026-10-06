@@ -904,7 +904,7 @@ export class SkymapView {
    * the walker on, so the banner changes building at the building's door. */
   stepIndexAt(remainingMeters: number): number | null {
     if (this.activeStepStarts.length === 0) return null;
-    return stepIndexFromAlong(this.activeStepStarts, this.activeLineMeters - remainingMeters);
+    return stepIndexFromAlong(this.activeStepStarts, this.activeLineMeters, remainingMeters);
   }
 
   /** Dim the stretch of route already behind a walker. `null` clears it,

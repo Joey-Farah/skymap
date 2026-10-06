@@ -135,12 +135,18 @@ export function shouldRotate(
  * It can't go backwards on its own, because the remaining figure it's fed
  * is already settled, so it needs no clamp.
  */
-export function stepIndexFromAlong(stepStarts: number[], alongMeters: number): number {
+export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, remainingMeters: number): number {
+  const alongMeters = lineMeters - remainingMeters;
+  const last = stepStarts.length - 1;
   let index = 0;
-  for (let i = 1; i < stepStarts.length; i++) {
+  for (let i = 1; i <= last; i++) {
     if (stepStarts[i] <= alongMeters + 1e-9) index = i;
     else break;
   }
+  // Through the destination's door isn't arrived: the door can sit ~100 m
+  // before the pin. Arrival waits for the same ARRIVAL_METERS that ending
+  // the trip does, and until then the banner keeps saying "Head into" it.
+  if (index === last && last > 0 && remainingMeters > ARRIVAL_METERS) index = last - 1;
   return index;
 }
 
