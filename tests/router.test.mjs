@@ -1012,3 +1012,34 @@ test("a second crossing into a building is used when its door is nearer the way 
   const r = new SkywayRouter(mini).route("a", "c", null);
   assert.equal(r.steps[1].viaCrossing, "east", `crossed into B by the ${r.steps[1].viaCrossing} bridge`);
 });
+
+test("a building is judged by its hours when the walker reaches it, not at departure", () => {
+  // A -> B -> C is the short way; A -> D -> C the long one. B closes at 6pm
+  // and is ~5 minutes' walk from A, so leaving at 5:57pm it is open as you
+  // set off and locked by the time you reach it. 733 Building -> Murray's at
+  // 5:52pm walked into exactly this, with a clean "Arrive 6:02pm".
+  const allDay = Array(7).fill([0, 1440]);
+  const shutsAt6 = Array(7).fill([0, 18 * 60]);
+  const net = {
+    meta: { name: "t", source: "t", disclaimer: "t", generated: "t" },
+    buildings: [
+      { id: "a", name: "A", address: "", category: "office", lat: 0, lon: 0, footprint: [], hours: allDay },
+      { id: "b", name: "B", address: "", category: "office", lat: 0.0035, lon: 0, footprint: [], hours: shutsAt6 },
+      { id: "d", name: "D", address: "", category: "office", lat: 0.0035, lon: 0.002, footprint: [], hours: allDay },
+      { id: "c", name: "C", address: "", category: "office", lat: 0.007, lon: 0, footprint: [], hours: allDay },
+    ],
+    edges: [
+      { from: "a", to: "b", crossing: "x", geometry: [[0, 0], [0, 0.0035]] },
+      { from: "b", to: "c", crossing: "x", geometry: [[0, 0.0035], [0, 0.007]] },
+      { from: "a", to: "d", crossing: "x", geometry: [[0, 0], [0.002, 0.0035]] },
+      { from: "d", to: "c", crossing: "x", geometry: [[0.002, 0.0035], [0, 0.007]] },
+    ],
+  };
+  const r = new SkywayRouter(net);
+  const at = (h, m) => new Date(2026, 6, 14, h, m); // Tuesday
+  assert.deepEqual(r.route("a", "c", at(17, 0)).steps.map((s) => s.building.id), ["a", "b", "c"]);
+  const late = r.route("a", "c", at(17, 57));
+  assert.deepEqual(late.steps.map((s) => s.building.id), ["a", "d", "c"], "detours around B");
+  assert.equal(late.ignoredClosures, false);
+  assert.ok(!r.reachable("a", at(17, 57), 60).has("b"), "reachable() agrees: B is shut on arrival");
+});

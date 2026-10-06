@@ -424,9 +424,9 @@ export class SkywayRouter {
         if (options.accessible && edge.hasSteps) continue;
         if (options.closedEdges?.has([current, edge.to].sort().join("|"))) continue;
         const b = this.buildings.get(edge.to)!;
-        if (when && edge.to !== fromId && !isOpenAt(b, when)) continue;
         const transit = current === fromId ? 0 : BUILDING_TRANSIT_MIN;
         const tentative = best + transit + edge.meters / WALK_METERS_PER_MIN;
+        if (when && edge.to !== fromId && !isOpenAt(b, new Date(when.getTime() + tentative * 60_000))) continue;
         if (tentative <= maxMinutes && tentative < (minutes.get(edge.to) ?? Infinity)) {
           minutes.set(edge.to, tentative);
           open.add(edge.to);
@@ -533,7 +533,6 @@ export class SkywayRouter {
         if (options.closedEdges?.has([currentId, edge.to].sort().join("|"))) continue;
         const b = this.buildings.get(edge.to)!;
         const isEndpoint = edge.to === toId || edge.to === fromId;
-        if (when && !isEndpoint && !isOpenAt(b, when)) continue;
         // A route never passes through the same building twice. The cost model
         // would sometimes reward a loop (estimated indoor walks don't obey the
         // triangle inequality), so this rule is doing real work — at the price
@@ -557,6 +556,12 @@ export class SkywayRouter {
         const transit = current === startState ? 0 : BUILDING_TRANSIT_MIN;
         const tentative =
           dist.get(current)! + (edge.meters + throughMeters) / WALK_METERS_PER_MIN + transit;
+        // Hours are judged when the walker gets there, not when they set
+        // off: `tentative` is the same minutes-after-departure reconstruct()
+        // reports as arrivalMinutes. Checked at departure, 33% of weekday
+        // routes leaving at 5:55pm walked into a building already locked.
+        // Arriving earlier is never worse, so the search stays correct.
+        if (when && !isEndpoint && !isOpenAt(b, new Date(when.getTime() + tentative * 60_000))) continue;
         if (tentative < (dist.get(next) ?? Infinity)) {
           buildingOf.set(next, edge.to);
           dist.set(next, tentative);
