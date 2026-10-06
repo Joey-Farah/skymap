@@ -1,5 +1,6 @@
 import { Capacitor } from "@capacitor/core";
 import { Geolocation } from "@capacitor/geolocation";
+import { geolocationErrorCode } from "./geolocation-errors.ts";
 
 /** Two permission prompts, one of them cryptic.
  *
@@ -51,14 +52,12 @@ export function installNativeGeolocation(): void {
       },
     }) as GeolocationPosition;
 
-  // MapLibre's GeolocateControl branches on code === 1 to show its
-  // "permission denied" state rather than a transient error, so a denial
-  // has to keep that code rather than collapsing to a generic failure.
+  // A denial has to keep code 1 rather than collapse to a generic
+  // failure — see geolocationErrorCode.
   const toError = (e: unknown): GeolocationPositionError => {
     const message = e instanceof Error ? e.message : String(e);
-    const denied = /denied|permission|authoriz/i.test(message);
     return {
-      code: denied ? 1 : 2,
+      code: geolocationErrorCode(message),
       message,
       PERMISSION_DENIED: 1,
       POSITION_UNAVAILABLE: 2,
