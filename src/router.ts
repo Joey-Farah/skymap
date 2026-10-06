@@ -560,7 +560,12 @@ export class SkywayRouter {
         // off: `tentative` is the same minutes-after-departure reconstruct()
         // reports as arrivalMinutes. Checked at departure, 33% of weekday
         // routes leaving at 5:55pm walked into a building already locked.
-        // Arriving earlier is never worse, so the search stays correct.
+        // Arriving earlier is never worse at closing time, which is what
+        // this exists for. At opening time it can be: an early arrival that
+        // claims a door can make a building further on not open yet, where
+        // a later arrival at that door would have found it open. That needs
+        // the same door reached two ways within minutes of an opening, and
+        // costs at worst a longer route or the "no fully open route" badge.
         if (when && !isEndpoint && !isOpenAt(b, new Date(when.getTime() + tentative * 60_000))) continue;
         if (tentative < (dist.get(next) ?? Infinity)) {
           buildingOf.set(next, edge.to);
