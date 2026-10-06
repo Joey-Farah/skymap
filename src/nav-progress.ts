@@ -116,40 +116,37 @@ export function shouldRotate(
 }
 
 /**
- * Which building the walker is currently in, derived from how far along the
- * route they are rather than which centroid is nearest.
+ * Which building the walker is in, from how far along the drawn line they
+ * are and where each building starts on it (routeLine's stepStarts).
  *
- * routeStepIndex answers the nearest-centroid question, which is the wrong
- * question here. Downtown footprints are large and their centroids sit close
- * together: walking 33 South Sixth to the Marriott at City Center, the
- * Marriott's centroid is 44 m from City Center's and 19 m *inside* City
- * Center's own footprint, so from 60 m into a 239 m walk the destination is
- * the nearest building and the banner reads "You've arrived" with two thirds
- * of the trip left. Across the network that misfires on 2.5% of routes.
+ * Not the nearest centroid (routeStepIndex): downtown footprints are large
+ * and their centroids sit close together. Walking 33 South Sixth to the
+ * Marriott at City Center, the Marriott's centroid is 19 m *inside* City
+ * Center's footprint, so from 60 m into a 239 m walk the banner read "You've
+ * arrived" with two thirds of the trip left (2.5% of routes misfired).
  *
- * Progress has no such artifact: a step is reached when the distance walked
- * reaches the point in the trip where it was due. It also can't go backwards
- * on its own, because the remaining figure it's fed is already settled — so
- * this needs no clamp, and the clamp was what latched the wrong answer in
- * place for the rest of the walk.
+ * Not minutes either. The previous version turned metres walked into
+ * minutes, but a route's minutes include a 0.75 min transit penalty per
+ * building that isn't distance, so the banner switched a median 34 m early
+ * (Target Center -> IDS said "Head into Marriott" 11 m in). Metres on the
+ * line the tracker measures you on change building at the building's door.
+ * The arrival clock still runs on minutes — see settleArrival.
+ *
+ * It can't go backwards on its own, because the remaining figure it's fed
+ * is already settled, so it needs no clamp.
  */
-export function stepIndexFromProgress(
-  route: { totalMinutes: number; steps: { arrivalMinutes: number }[] },
-  totalMeters: number,
-  remainingMeters: number,
-): number {
-  const last = route.steps.length - 1;
-  if (last <= 0) return 0;
-  if (totalMeters <= 0) return last;
-  const walkedFraction = Math.min(1, Math.max(0, 1 - remainingMeters / totalMeters));
-  // Distance is what's measured; minutes are how the route describes itself.
-  // Pace is constant across the trip, so the two are interchangeable here.
-  const walkedMinutes = route.totalMinutes * walkedFraction;
+export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, remainingMeters: number): number {
+  const alongMeters = lineMeters - remainingMeters;
+  const last = stepStarts.length - 1;
   let index = 0;
   for (let i = 1; i <= last; i++) {
-    if (route.steps[i].arrivalMinutes <= walkedMinutes + 1e-9) index = i;
+    if (stepStarts[i] <= alongMeters + 1e-9) index = i;
     else break;
   }
+  // Through the destination's door isn't arrived: the door can sit ~100 m
+  // before the pin. Arrival waits for the same ARRIVAL_METERS that ending
+  // the trip does, and until then the banner keeps saying "Head into" it.
+  if (index === last && last > 0 && remainingMeters > ARRIVAL_METERS) index = last - 1;
   return index;
 }
 

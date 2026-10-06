@@ -14,6 +14,7 @@ import {
   polylineMeters,
   remainingRouteMeters,
   routeStepIndex,
+  skywayDeparture,
   sliceAlong,
   tripMinutes,
   walkedPrefix,
@@ -771,6 +772,20 @@ test("feedbackUrl builds a general (not per-target) mailto", () => {
   assert.doesNotMatch(url, /Ref%3A/, "feedback isn't tied to a building/POI id");
 });
 
+test("the mail fallback carries what the user already typed", () => {
+  // A failed send is most often no signal in a skyway. Mail queues offline,
+  // so the draft must hold the message itself, not the blank template.
+  const typed = { message: "Gaviidae closes at 7 on Fridays", email: "me@example.com" };
+  const issue = decodeURIComponent(reportIssueUrl({ name: "Gaviidae", id: "g-1" }, "9am–6pm", typed));
+  assert.match(issue, /Gaviidae closes at 7 on Fridays/);
+  assert.match(issue, /me@example\.com/);
+  assert.match(issue, /Ref: g-1/);
+  assert.doesNotMatch(issue, /What's wrong\?/, "the prompt is replaced, not prepended");
+  const general = decodeURIComponent(feedbackUrl(typed));
+  assert.match(general, /Gaviidae closes at 7 on Fridays/);
+  assert.doesNotMatch(general, /What's working/);
+});
+
 test("live POIs reference real buildings", () => {
   assert.ok(live.pois.length > 50, `expected a real business set, got ${live.pois.length}`);
   const ids = new Set(live.buildings.map((b) => b.id));
@@ -1011,4 +1026,45 @@ test("a second crossing into a building is used when its door is nearer the way 
   };
   const r = new SkywayRouter(mini).route("a", "c", null);
   assert.equal(r.steps[1].viaCrossing, "east", `crossed into B by the ${r.steps[1].viaCrossing} bridge`);
+});
+
+test("a building is judged by its hours when the walker reaches it, not at departure", () => {
+  // A -> B -> C is the short way; A -> D -> C the long one. B closes at 6pm
+  // and is ~5 minutes' walk from A, so leaving at 5:57pm it is open as you
+  // set off and locked by the time you reach it. 733 Building -> Murray's at
+  // 5:52pm walked into exactly this, with a clean "Arrive 6:02pm".
+  const allDay = Array(7).fill([0, 1440]);
+  const shutsAt6 = Array(7).fill([0, 18 * 60]);
+  const net = {
+    meta: { name: "t", source: "t", disclaimer: "t", generated: "t" },
+    buildings: [
+      { id: "a", name: "A", address: "", category: "office", lat: 0, lon: 0, footprint: [], hours: allDay },
+      { id: "b", name: "B", address: "", category: "office", lat: 0.0035, lon: 0, footprint: [], hours: shutsAt6 },
+      { id: "d", name: "D", address: "", category: "office", lat: 0.0035, lon: 0.002, footprint: [], hours: allDay },
+      { id: "c", name: "C", address: "", category: "office", lat: 0.007, lon: 0, footprint: [], hours: allDay },
+    ],
+    edges: [
+      { from: "a", to: "b", crossing: "x", geometry: [[0, 0], [0, 0.0035]] },
+      { from: "b", to: "c", crossing: "x", geometry: [[0, 0.0035], [0, 0.007]] },
+      { from: "a", to: "d", crossing: "x", geometry: [[0, 0], [0.002, 0.0035]] },
+      { from: "d", to: "c", crossing: "x", geometry: [[0.002, 0.0035], [0, 0.007]] },
+    ],
+  };
+  const r = new SkywayRouter(net);
+  const at = (h, m) => new Date(2026, 6, 14, h, m); // Tuesday
+  assert.deepEqual(r.route("a", "c", at(17, 0)).steps.map((s) => s.building.id), ["a", "b", "c"]);
+  const late = r.route("a", "c", at(17, 57));
+  assert.deepEqual(late.steps.map((s) => s.building.id), ["a", "d", "c"], "detours around B");
+  assert.equal(late.ignoredClosures, false);
+  assert.ok(!r.reachable("a", at(17, 57), 60).has("b"), "reachable() agrees: B is shut on arrival");
+});
+
+test("the skyway walk starts once the outdoor approach is done", () => {
+  const when = new Date(2026, 6, 14, 17, 57);
+  const b = data.buildings[0];
+  const outside = { building: b, straightMeters: 300, meters: 390, minutes: 5 };
+  assert.equal(skywayDeparture(when, outside).getTime(), when.getTime() + 5 * 60_000);
+  assert.equal(skywayDeparture(when, null).getTime(), when.getTime());
+  const atDoor = { building: b, straightMeters: 5, meters: 6, minutes: 0.1 };
+  assert.equal(skywayDeparture(when, atDoor).getTime(), when.getTime(), "an approach withApproach doesn't charge isn't added");
 });

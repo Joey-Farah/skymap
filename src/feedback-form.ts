@@ -146,7 +146,10 @@ export class FeedbackForm {
   }
 
   private handOffToMail() {
-    const url = this.target ? reportIssueUrl(this.target, this.hours) : feedbackUrl();
+    // Opened straight into Mail (no endpoint) there's nothing typed yet, and
+    // the template's prompt beats an empty draft.
+    const typed = this.message.value.trim() ? { message: this.message.value, email: this.email.value } : undefined;
+    const url = this.target ? reportIssueUrl(this.target, this.hours, typed) : feedbackUrl(typed);
     window.location.href = url;
   }
 }

@@ -104,8 +104,23 @@ export function routeCoords(
   toCoord: [number, number],
   indoorLinks?: IndoorLink[],
 ): [number, number][] {
+  return routeLine(route, fromCoord, toCoord, indoorLinks).coords;
+}
+
+/** routeCoords, plus where each step begins in metres along that line —
+ * the point its bridge lands, so step 0 starts at 0. The tracker measures
+ * the walker on this same line, which makes it the ruler for "which
+ * building are you in"; the router's minutes include a per-building
+ * transit penalty that isn't distance, and moved the banner on early. */
+export function routeLine(
+  route: Pick<RouteResult, "steps">,
+  fromCoord: [number, number],
+  toCoord: [number, number],
+  indoorLinks?: IndoorLink[],
+): { coords: [number, number][]; stepStarts: number[] } {
   const steps = route.steps;
   const coordinates: [number, number][] = [fromCoord];
+  const startIndex: number[] = [0];
   const firstLeg = steps[1]?.legGeometry;
   if (firstLeg && steps[0]) {
     coordinates.push(
@@ -116,6 +131,7 @@ export function routeCoords(
     const s = steps[i];
     if (s.legGeometry) coordinates.push(...s.legGeometry);
     else coordinates.push([s.building.lon, s.building.lat]);
+    startIndex.push(coordinates.length - 1);
 
     const next = steps[i + 1];
     if (next?.legGeometry && s.legGeometry) {
@@ -141,5 +157,10 @@ export function routeCoords(
     );
   }
   coordinates.push(toCoord);
-  return coordinates;
+  const along = [0];
+  for (let i = 1; i < coordinates.length; i++) {
+    const [a, b] = [coordinates[i - 1], coordinates[i]];
+    along.push(along[i - 1] + haversineMeters(a[1], a[0], b[1], b[0]));
+  }
+  return { coords: coordinates, stepStarts: startIndex.slice(0, Math.max(1, steps.length)).map((i) => along[i]) };
 }

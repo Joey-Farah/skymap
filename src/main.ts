@@ -8,6 +8,7 @@ import {
   routeStepIndex,
   tripMeters,
   tripMinutes,
+  skywayDeparture,
   withApproach,
   type Approach,
 } from "./router.ts";
@@ -26,7 +27,6 @@ import {
   hasArrived,
   settleRemaining,
   shouldRotate,
-  stepIndexFromProgress,
 } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
@@ -196,7 +196,7 @@ async function boot() {
     const origin = currentApproach;
     const target = routeEnd(b, poi ?? null).buildingId;
     if (origin && origin.building.id !== target) {
-      const preview = router.route(origin.building.id, target, selectedTime());
+      const preview = router.route(origin.building.id, target, skywayDeparture(selectedTime(), origin));
       if (preview) {
         const trip = withApproach(preview, origin);
         const minutes = Math.max(1, Math.round(tripMinutes(trip)));
@@ -273,7 +273,7 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const skywayRoute = router.route(from.buildingId, to.buildingId, when);
+    const skywayRoute = router.route(from.buildingId, to.buildingId, skywayDeparture(when, comboFrom.approach));
     // Charge the outdoor walk only when From *is* the live position. Picking
     // that same building by name means you consider yourself already in it.
     const route = skywayRoute && withApproach(skywayRoute, comboFrom.approach);
@@ -323,13 +323,11 @@ async function boot() {
       walkedHighWater = walkedHighWater == null ? settledRemaining : Math.min(walkedHighWater, settledRemaining);
     }
     const remaining = raw == null ? null : settledRemaining;
-    // Which building you're in comes from progress along the route, not from
-    // whichever centroid is nearest — see stepIndexFromProgress. The caller's
-    // index is only a fallback for before there's any fix to measure with.
-    const stepIndex =
-      activeRoute && remaining != null
-        ? stepIndexFromProgress(activeRoute, activeRoute.totalMeters, remaining)
-        : fallbackStep;
+    // Which building you're in comes from where you are on the drawn line,
+    // not from whichever centroid is nearest — see stepIndexFromAlong. The
+    // caller's index is only a fallback for before there's any fix to
+    // measure with.
+    const stepIndex = (activeRoute && remaining != null ? view.stepIndexAt(remaining) : null) ?? fallbackStep;
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;

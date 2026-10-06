@@ -424,9 +424,9 @@ export class SkywayRouter {
         if (options.accessible && edge.hasSteps) continue;
         if (options.closedEdges?.has([current, edge.to].sort().join("|"))) continue;
         const b = this.buildings.get(edge.to)!;
-        if (when && edge.to !== fromId && !isOpenAt(b, when)) continue;
         const transit = current === fromId ? 0 : BUILDING_TRANSIT_MIN;
         const tentative = best + transit + edge.meters / WALK_METERS_PER_MIN;
+        if (when && edge.to !== fromId && !isOpenAt(b, new Date(when.getTime() + tentative * 60_000))) continue;
         if (tentative <= maxMinutes && tentative < (minutes.get(edge.to) ?? Infinity)) {
           minutes.set(edge.to, tentative);
           open.add(edge.to);
@@ -533,7 +533,6 @@ export class SkywayRouter {
         if (options.closedEdges?.has([currentId, edge.to].sort().join("|"))) continue;
         const b = this.buildings.get(edge.to)!;
         const isEndpoint = edge.to === toId || edge.to === fromId;
-        if (when && !isEndpoint && !isOpenAt(b, when)) continue;
         // A route never passes through the same building twice. The cost model
         // would sometimes reward a loop (estimated indoor walks don't obey the
         // triangle inequality), so this rule is doing real work — at the price
@@ -557,6 +556,17 @@ export class SkywayRouter {
         const transit = current === startState ? 0 : BUILDING_TRANSIT_MIN;
         const tentative =
           dist.get(current)! + (edge.meters + throughMeters) / WALK_METERS_PER_MIN + transit;
+        // Hours are judged when the walker gets there, not when they set
+        // off: `tentative` is the same minutes-after-departure reconstruct()
+        // reports as arrivalMinutes. Checked at departure, 33% of weekday
+        // routes leaving at 5:55pm walked into a building already locked.
+        // Arriving earlier is never worse at closing time, which is what
+        // this exists for. At opening time it can be: an early arrival that
+        // claims a door can make a building further on not open yet, where
+        // a later arrival at that door would have found it open. That needs
+        // the same door reached two ways within minutes of an opening, and
+        // costs at worst a longer route or the "no fully open route" badge.
+        if (when && !isEndpoint && !isOpenAt(b, new Date(when.getTime() + tentative * 60_000))) continue;
         if (tentative < (dist.get(next) ?? Infinity)) {
           buildingOf.set(next, edge.to);
           dist.set(next, tentative);
@@ -652,8 +662,12 @@ export class SkywayRouter {
  * alongside it for the one thing it's needed for: the total a person plans
  * by, via tripMinutes/tripMeters.
  */
+function chargesApproach(approach: Approach | null): approach is Approach {
+  return !!approach && approach.straightMeters > AT_BUILDING_METERS;
+}
+
 export function withApproach(route: RouteResult, approach: Approach | null): RouteResult {
-  if (!approach || approach.straightMeters <= AT_BUILDING_METERS) return route;
+  if (!chargesApproach(approach)) return route;
   return {
     ...route,
     approach: {
@@ -662,6 +676,14 @@ export function withApproach(route: RouteResult, approach: Approach | null): Rou
       buildingName: approach.building.name,
     },
   };
+}
+
+/** When the skyway walk itself begins: after the outdoor approach, if
+ * withApproach charges one. Hours along the route are judged from here —
+ * step arrivals don't include the street walk, so routing from `when`
+ * checked every building that many minutes early. */
+export function skywayDeparture(when: Date, approach: Approach | null): Date {
+  return chargesApproach(approach) ? new Date(when.getTime() + approach.minutes * 60_000) : when;
 }
 
 /** Door-to-door minutes: the outdoor approach plus the skyway walk. */

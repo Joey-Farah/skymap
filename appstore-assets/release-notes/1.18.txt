@@ -1,0 +1,1 @@
+Routes now avoid buildings that will have closed by the time you reach them, and warn you if your destination will be closed when you arrive. Directions also switch to the next building right as you walk in.
