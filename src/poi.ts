@@ -437,7 +437,9 @@ export function buildingMarker(
   };
 }
 
-export function landmarkNear<T extends { name: string; buildingId: string; group: PoiGroup; kind?: string }>(
+export function landmarkNear<
+  T extends { name: string; buildingId: string; group: PoiGroup; kind?: string; nearby?: boolean; exterior?: boolean },
+>(
   pois: T[],
   buildingId: string,
 ): T | null {
@@ -452,7 +454,12 @@ export function landmarkNear<T extends { name: string; buildingId: string; group
     // pin under its category's chip. It is never a cue: it names the building
     // the walker is already standing in, which turned a turn in the Emery
     // into "past Emery, Autograph Collection."
-    .filter((p) => p.buildingId === buildingId && CUE_GROUPS.has(p.group) && !isBuildingMarker(p))
+    // `nearby` and `exterior` places are hosted by the building but stand
+    // outside it — Butler Square said "past Last Call", 89 m away.
+    .filter(
+      (p) =>
+        p.buildingId === buildingId && CUE_GROUPS.has(p.group) && !isBuildingMarker(p) && !p.nearby && !p.exterior,
+    )
     .sort((a, b) => a.name.localeCompare(b.name));
   return candidates[0] ?? null;
 }

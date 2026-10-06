@@ -394,3 +394,16 @@ test("genuinely different names still both survive", () => {
   );
   assert.equal(kept.length, 2);
 });
+
+test("a cue is something you walk past inside the building, not out on the street", () => {
+  // `nearby` and `exterior` places are hosted by a building for search and
+  // pins, but they sit outside it: Butler Square said "past Last Call", 89 m
+  // away, and 53 of the 115 buildings with a cue got one like that.
+  const pois = [
+    { name: "Bob Dylan Mural", buildingId: "b", group: "landmark", exterior: true },
+    { name: "Last Call", buildingId: "b", group: "food", nearby: true },
+    { name: "Zeke's", buildingId: "b", group: "coffee" },
+  ];
+  assert.equal(landmarkNear(pois, "b").name, "Zeke's");
+  assert.equal(landmarkNear(pois.slice(0, 2), "b"), null, "nothing inside is better than something outside");
+});
