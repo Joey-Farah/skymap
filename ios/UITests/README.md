@@ -11,9 +11,11 @@ app by bundle id, so `App.xcodeproj` and Xcode Cloud never see them.
 `project.yml` generates `SkyMapUITests.xcodeproj` (needs `brew install xcodegen`).
 
 `WalkFixture.swift` is generated from the shipped data by `make-walk.mjs`;
-re-run it if a data refresh changes the route:
+re-run it if a data refresh changes the route. It only accepts routes whose
+buildings keep the same path at every hour of the week, since the test runs
+at whatever time it is:
 
-    node ios/UITests/make-walk.mjs "Target Center" "IDS Center"
+    node ios/UITests/make-walk.mjs "Target Plaza" "LaSalle Plaza"
 
 Xcode 27 has no Simulator.app; to watch a run, open Device Hub
 (`/Applications/Xcode.app/Contents/Applications/DeviceHub.app`).
