@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   closingSoonWarnings,
+  destinationClosedWarning,
   isClosingSoon,
   isOpenAt,
   skywayAccessLabel,
@@ -139,4 +140,28 @@ test("unknown hours produce no status badge at all", () => {
   // Not "Closed", not "Open" — the card simply says nothing about it,
   // which is the whole point of keeping unknown distinct from closed.
   assert.equal(statusAt({ hours: null }, monday1pm), null);
+});
+
+// --- destination shut on arrival -----------------------------------------
+// The router never refuses a destination for its hours: you chose it, and
+// may be meeting someone at its door. But the walk must say so up front.
+
+test("warns when the destination will have closed by the time you arrive", () => {
+  const murrays = { id: "m", name: "Murray's", hours: Array(7).fill([660, 1080]) }; // 11am-6pm
+  const start = { id: "s", name: "733", hours: null };
+  const route = { steps: [{ building: start, arrivalMinutes: 0 }, { building: murrays, arrivalMinutes: 10 }] };
+  const at = (h, m) => new Date(2026, 6, 14, h, m);
+  assert.equal(destinationClosedWarning(route, at(17, 52)), "Murray's closes at 6pm, before you'd arrive");
+  assert.equal(destinationClosedWarning(route, at(17, 40)), null, "arrives 5:50pm, still open");
+  assert.equal(destinationClosedWarning(route, at(10, 0)), "Murray's opens at 11am, after you'd arrive");
+});
+
+test("a destination closed all day, or with unknown hours, is handled honestly", () => {
+  const shutSunday = Array(7).fill([540, 1020]);
+  shutSunday[0] = null;
+  const shop = { id: "x", name: "Shop", hours: shutSunday };
+  const route = { steps: [{ building: { id: "s", name: "S", hours: null }, arrivalMinutes: 0 }, { building: shop, arrivalMinutes: 5 }] };
+  assert.equal(destinationClosedWarning(route, new Date(2026, 6, 12, 12, 0)), "Shop is closed when you'd arrive");
+  const unknown = { steps: [route.steps[0], { building: { id: "u", name: "U", hours: null }, arrivalMinutes: 5 }] };
+  assert.equal(destinationClosedWarning(unknown, new Date(2026, 6, 12, 3, 0)), null, "unknown hours assert nothing");
 });

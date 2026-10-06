@@ -54,6 +54,7 @@ function resultIconUrl(group: PoiGroup): string {
 }
 import {
   closingSoonWarnings,
+  destinationClosedWarning,
   formatMinute,
   formatWeeklyHours,
   skywayAccessLabel,
@@ -815,6 +816,8 @@ export class Sheet {
     this.content.innerHTML = "";
     this.clearRouteProgress();
 
+    const destinationClosed = destinationClosedWarning(route, when);
+    if (destinationClosed) this.content.append(el("span", `⚠ ${destinationClosed}`, "badge warn"));
     if (route.ignoredClosures) {
       this.content.append(
         el("span", "⚠ No fully open route at this time — showing the path ignoring closures", "badge warn"),

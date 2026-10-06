@@ -174,6 +174,27 @@ export function closingSoonWarnings(
   return warnings;
 }
 
+/**
+ * Why the destination will be shut when the walker gets there, or null.
+ *
+ * The router never refuses a destination for its hours — you chose it, and
+ * may be meeting someone at its door — so this is the only place a closed
+ * destination surfaces. Unknown hours assert nothing, as in isOpenAt.
+ */
+export function destinationClosedWarning(route: Pick<RouteResult, "steps">, when: Date): string | null {
+  const last = route.steps[route.steps.length - 1];
+  if (!last || route.steps.length < 2) return null;
+  const arrival = new Date(when.getTime() + last.arrivalMinutes * 60_000);
+  if (isOpenAt(last.building, arrival)) return null;
+  const name = last.building.name;
+  const h = last.building.hours?.[arrival.getDay()];
+  if (!h) return `${name} is closed when you'd arrive`;
+  const arrivalMin = arrival.getHours() * 60 + arrival.getMinutes();
+  return arrivalMin < h[0]
+    ? `${name} opens at ${formatMinute(h[0])}, after you'd arrive`
+    : `${name} closes at ${formatMinute(h[1])}, before you'd arrive`;
+}
+
 /** Human description of a weekly-hours status at `when`, e.g. "Open until
  * 10pm" — the logic `statusAt` uses for buildings, but not tied to one,
  * so a POI's own (separately parsed) hours can get the same treatment. */
