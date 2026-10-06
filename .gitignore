@@ -10,3 +10,4 @@ public/data/skymap-data.osm.json
 *.MP4
 *.mov
 *.MOV
+ios/UITests/SkyMapUITests.xcodeproj/
