@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
-    "@capacitor/geolocation": "^8.2.0",
+    "@capacitor/geolocation": "^8.2.3",
     "@capacitor/ios": "^8.5.2",
     "maplibre-gl": "^5.24.0"
   },
