@@ -771,6 +771,20 @@ test("feedbackUrl builds a general (not per-target) mailto", () => {
   assert.doesNotMatch(url, /Ref%3A/, "feedback isn't tied to a building/POI id");
 });
 
+test("the mail fallback carries what the user already typed", () => {
+  // A failed send is most often no signal in a skyway. Mail queues offline,
+  // so the draft must hold the message itself, not the blank template.
+  const typed = { message: "Gaviidae closes at 7 on Fridays", email: "me@example.com" };
+  const issue = decodeURIComponent(reportIssueUrl({ name: "Gaviidae", id: "g-1" }, "9am–6pm", typed));
+  assert.match(issue, /Gaviidae closes at 7 on Fridays/);
+  assert.match(issue, /me@example\.com/);
+  assert.match(issue, /Ref: g-1/);
+  assert.doesNotMatch(issue, /What's wrong\?/, "the prompt is replaced, not prepended");
+  const general = decodeURIComponent(feedbackUrl(typed));
+  assert.match(general, /Gaviidae closes at 7 on Fridays/);
+  assert.doesNotMatch(general, /What's working/);
+});
+
 test("live POIs reference real buildings", () => {
   assert.ok(live.pois.length > 50, `expected a real business set, got ${live.pois.length}`);
   const ids = new Set(live.buildings.map((b) => b.id));

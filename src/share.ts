@@ -30,6 +30,18 @@ const FEEDBACK_EMAIL = "joey@joeyfarah.dev";
  * web (SW-updated) and native (archive-frozen) builds can drift. */
 const BUILD = typeof __BUILD_HASH__ === "undefined" ? "dev" : __BUILD_HASH__;
 
+/** What the in-app feedback form already holds, for when sending it failed
+ * and Mail has to carry it instead — Mail queues offline; the form can't. */
+export interface TypedFeedback {
+  message: string;
+  email?: string;
+}
+
+function typedBody(typed: TypedFeedback): string {
+  const email = typed.email?.trim();
+  return `${typed.message.trim()}\n${email ? `\nReply to: ${email}\n` : ""}`;
+}
+
 /**
  * Data in this app comes entirely from OpenStreetMap, which can go stale —
  * a known weakness of every skyway map built this way. This is the cheap
@@ -37,24 +49,24 @@ const BUILD = typeof __BUILD_HASH__ === "undefined" ? "dev" : __BUILD_HASH__;
  * `hours`, when given, turns the report into a pre-filled verification
  * question — every curious tester becomes a data checker for free.
  */
-export function reportIssueUrl(target: { name: string; id: string }, hours?: string): string {
+export function reportIssueUrl(target: { name: string; id: string }, hours?: string, typed?: TypedFeedback): string {
   // mailto: doesn't reliably decode "+" as a space the way form encoding
   // does, so encode manually rather than reach for URLSearchParams.
   const subject = encodeURIComponent(`SkyMap issue: ${target.name}`);
   const hoursLine = hours ? `Are these hours right? ${hours}\n` : "";
-  const body = encodeURIComponent(
-    `What's wrong? (closed, wrong hours, wrong location, doesn't exist, other)\n${hoursLine}\n\n—\nRef: ${target.id} · build ${BUILD}`,
-  );
+  const prompt = typed
+    ? typedBody(typed)
+    : `What's wrong? (closed, wrong hours, wrong location, doesn't exist, other)\n${hoursLine}\n`;
+  const body = encodeURIComponent(`${prompt}\n—\nRef: ${target.id} · build ${BUILD}`);
   return `mailto:${encodeURIComponent(FEEDBACK_EMAIL)}?subject=${subject}&body=${body}`;
 }
 
 /** General product feedback/ideas — distinct from reportIssueUrl, which is
  * always tied to a specific building or business's data. */
-export function feedbackUrl(): string {
+export function feedbackUrl(typed?: TypedFeedback): string {
   const subject = encodeURIComponent("SkyMap feedback");
-  const body = encodeURIComponent(
-    `What's working, what's not, what would make this better?\n\n\n—\nbuild ${BUILD}`,
-  );
+  const prompt = typed ? typedBody(typed) : "What's working, what's not, what would make this better?\n\n";
+  const body = encodeURIComponent(`${prompt}\n—\nbuild ${BUILD}`);
   return `mailto:${encodeURIComponent(FEEDBACK_EMAIL)}?subject=${subject}&body=${body}`;
 }
 
