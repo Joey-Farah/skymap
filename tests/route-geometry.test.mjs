@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { routeCoords } from "../src/route-geometry.ts";
+import { routeCoords, routeLine } from "../src/route-geometry.ts";
+import { polylineMeters } from "../src/router.ts";
 
 /**
  * 733 Building exactly as the shipped dataset has it — the destination of
@@ -143,4 +144,26 @@ test("a door with no corridor still gets a straight line to the pin", () => {
     LINKS.map((l) => ({ ...l, buildingId: "somewhere-else" })));
   assert.deepEqual(coords[coords.length - 2], DOOR);
   assert.deepEqual(coords[coords.length - 1], PIN);
+});
+
+test("routeLine marks where each building starts, in metres along the drawn line", () => {
+  const b = (id, lon, lat) => ({ building: { id, name: id, lon, lat }, arrivalMinutes: 0 });
+  const route = {
+    steps: [
+      b("a", 0, 0),
+      { ...b("b", 0, 0.002), legGeometry: [[0, 0.0005], [0, 0.0015]] },
+      { ...b("c", 0, 0.004), legGeometry: [[0.0005, 0.002], [0.0005, 0.0035]] },
+    ],
+  };
+  const from = [0, 0];
+  const to = [0, 0.004];
+  const { coords, stepStarts } = routeLine(route, from, to);
+  assert.deepEqual(coords, routeCoords(route, from, to), "same line routeCoords draws");
+  assert.equal(stepStarts.length, 3);
+  assert.equal(stepStarts[0], 0);
+  // B starts where its bridge lands; C where its bridge lands.
+  assert.ok(Math.abs(stepStarts[1] - polylineMeters([[0, 0], [0, 0.0005], [0, 0.0015]])) < 0.01);
+  assert.ok(
+    Math.abs(stepStarts[2] - polylineMeters([[0, 0], [0, 0.0005], [0, 0.0015], [0.0005, 0.002], [0.0005, 0.0035]])) < 0.01,
+  );
 });

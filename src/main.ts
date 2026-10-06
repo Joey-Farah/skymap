@@ -26,7 +26,6 @@ import {
   hasArrived,
   settleRemaining,
   shouldRotate,
-  stepIndexFromProgress,
 } from "./nav-progress.ts";
 import { installNativeGeolocation } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
@@ -323,13 +322,11 @@ async function boot() {
       walkedHighWater = walkedHighWater == null ? settledRemaining : Math.min(walkedHighWater, settledRemaining);
     }
     const remaining = raw == null ? null : settledRemaining;
-    // Which building you're in comes from progress along the route, not from
-    // whichever centroid is nearest — see stepIndexFromProgress. The caller's
-    // index is only a fallback for before there's any fix to measure with.
-    const stepIndex =
-      activeRoute && remaining != null
-        ? stepIndexFromProgress(activeRoute, activeRoute.totalMeters, remaining)
-        : fallbackStep;
+    // Which building you're in comes from where you are on the drawn line,
+    // not from whichever centroid is nearest — see stepIndexFromAlong. The
+    // caller's index is only a fallback for before there's any fix to
+    // measure with.
+    const stepIndex = (activeRoute && remaining != null ? view.stepIndexAt(remaining) : null) ?? fallbackStep;
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;

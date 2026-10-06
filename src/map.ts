@@ -9,7 +9,8 @@ import {
   walkedPrefix,
 } from "./router.ts";
 import { RouteTracker, type Placement } from "./route-position.ts";
-import { routeCoords } from "./route-geometry.ts";
+import { routeLine } from "./route-geometry.ts";
+import { stepIndexFromAlong } from "./nav-progress.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS, isBuildingMarker, labelRank } from "./poi.ts";
 import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
@@ -236,6 +237,10 @@ export class SkymapView {
   /** The active route's own drawn polyline — what remainingMeters projects
    * a live GPS fix onto. Empty when there's no active route. */
   private activeRouteCoords: [number, number][] = [];
+  /** Where each step begins along activeRouteCoords, in metres, and the
+   * line's whole length — see routeLine and stepIndexAt. */
+  private activeStepStarts: number[] = [];
+  private activeLineMeters = 0;
   /** Live only while a route is being walked — it carries the trip's
    * accumulated belief about where the walker is, so it is created with the
    * route and dropped with it. */
@@ -726,6 +731,7 @@ export class SkymapView {
       this.applyLabelSuppression();
       if (!route || route.steps.length < 2) {
         this.activeRouteCoords = [];
+        this.activeStepStarts = [];
         this.tracker = null;
         routeSrc?.setData(lineFC([]));
         this.setWalkedProgress(null);
@@ -756,8 +762,10 @@ export class SkymapView {
       // the pins, except at an endpoint that's outside the network.
       const lineFrom = poiCoords?.fromNearby ? buildingExitPoint(first, fromTowards) : fromCoord;
       const lineTo = poiCoords?.toNearby ? buildingExitPoint(last, toTowards) : toCoord;
-      const coords = routeCoords(route, lineFrom, lineTo, this.data.indoorLinks);
+      const { coords, stepStarts } = routeLine(route, lineFrom, lineTo, this.data.indoorLinks);
       this.activeRouteCoords = coords;
+      this.activeStepStarts = stepStarts;
+      this.activeLineMeters = polylineMeters(coords);
       // A fresh trip starts at the beginning of the line, which is where
       // the walker asked to start from — see RouteTracker's seeding note.
       this.tracker = new RouteTracker(coords, Date.now());
@@ -889,6 +897,14 @@ export class SkymapView {
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord, true));
     this.map.getContainer().classList.remove("walker-snapped");
+  }
+
+  /** Which step the walker is on, given metres left on the drawn line, or
+   * null with no route drawn. Measured on the same line the tracker places
+   * the walker on, so the banner changes building at the building's door. */
+  stepIndexAt(remainingMeters: number): number | null {
+    if (this.activeStepStarts.length === 0) return null;
+    return stepIndexFromAlong(this.activeStepStarts, this.activeLineMeters - remainingMeters);
   }
 
   /** Dim the stretch of route already behind a walker. `null` clears it,

@@ -1,37 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DETOUR_METERS, canDismissArrival, hasArrived, highlightedStep, settleArrival, settleRemaining, shouldRotate, stepIndexFromProgress } from "../src/nav-progress.ts";
-
-test("which building you're heading into follows progress, not the nearest centroid", () => {
-  // routeStepIndex picks the nearest building centroid. Downtown blocks are
-  // big and centroids sit close together: walking 33 South Sixth -> Marriott
-  // City Center, the Marriott's centroid is nearer than City Center's from
-  // 60m into a 239m walk, so the banner flipped to "You've arrived" with two
-  // thirds of the trip left — and a forward-only clamp then latched it there
-  // for good. Progress along the route has no such artifact.
-  const route = {
-    totalMinutes: 12,
-    steps: [
-      { arrivalMinutes: 0 },
-      { arrivalMinutes: 4 },
-      { arrivalMinutes: 8 },
-      { arrivalMinutes: 12 },
-    ],
-  };
-  const total = 600;
-  assert.equal(stepIndexFromProgress(route, total, 600), 0, "at the start");
-  assert.equal(stepIndexFromProgress(route, total, 400), 1, "a third walked");
-  assert.equal(stepIndexFromProgress(route, total, 200), 2, "two thirds walked");
-  assert.equal(stepIndexFromProgress(route, total, 0), 3, "arrived");
-
-  // Never claims arrival early: the last step needs the walk actually done.
-  assert.ok(stepIndexFromProgress(route, total, 60) < 3, "60m still to walk is not arrival");
-
-  // Degenerate inputs must not throw or point past the end.
-  assert.equal(stepIndexFromProgress(route, 0, 0), 3, "zero-length route is arrived");
-  assert.equal(stepIndexFromProgress({ totalMinutes: 0, steps: [{ arrivalMinutes: 0 }] }, 100, 50), 0);
-});
+import { DETOUR_METERS, canDismissArrival, hasArrived, highlightedStep, settleArrival, settleRemaining, shouldRotate, stepIndexFromAlong } from "../src/nav-progress.ts";
 
 test("the compass only turns the map when it's worth cancelling an animation", () => {
   // MapLibre's setBearing routes through jumpTo, which calls stop() and
@@ -195,4 +165,18 @@ test("the detour threshold clears the drift it exists to absorb", () => {
   assert.ok(DETOUR_METERS > 60, `threshold ${DETOUR_METERS} sits inside the drift band`);
   assert.ok(DETOUR_METERS < 100, "and must stay under a downtown block");
   assert.equal(settleRemaining(200, 245), 200, "a 45m indoor wander is still drift");
+});
+
+test("the banner moves on when the walker reaches the building on the drawn line", () => {
+  // Steps start where their bridge lands, measured along the same line the
+  // tracker measures you on. Minutes were the wrong ruler: each building's
+  // 0.75 min transit penalty, spread over distance, flipped the banner to
+  // "Head into Marriott" 11 m into Target Center -> IDS.
+  const starts = [0, 120, 300];
+  assert.equal(stepIndexFromAlong(starts, 0), 0);
+  assert.equal(stepIndexFromAlong(starts, 119), 0, "1 m short of the door is still the first building");
+  assert.equal(stepIndexFromAlong(starts, 120), 1);
+  assert.equal(stepIndexFromAlong(starts, 450), 2, "past the last door is the destination");
+  assert.equal(stepIndexFromAlong(starts, -5), 0);
+  assert.equal(stepIndexFromAlong([0], 50), 0);
 });
