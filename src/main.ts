@@ -8,6 +8,7 @@ import {
   routeStepIndex,
   tripMeters,
   tripMinutes,
+  skywayDeparture,
   withApproach,
   type Approach,
 } from "./router.ts";
@@ -195,7 +196,7 @@ async function boot() {
     const origin = currentApproach;
     const target = routeEnd(b, poi ?? null).buildingId;
     if (origin && origin.building.id !== target) {
-      const preview = router.route(origin.building.id, target, selectedTime());
+      const preview = router.route(origin.building.id, target, skywayDeparture(selectedTime(), origin));
       if (preview) {
         const trip = withApproach(preview, origin);
         const minutes = Math.max(1, Math.round(tripMinutes(trip)));
@@ -272,7 +273,7 @@ async function boot() {
       return;
     }
     const when = selectedTime();
-    const skywayRoute = router.route(from.buildingId, to.buildingId, when);
+    const skywayRoute = router.route(from.buildingId, to.buildingId, skywayDeparture(when, comboFrom.approach));
     // Charge the outdoor walk only when From *is* the live position. Picking
     // that same building by name means you consider yourself already in it.
     const route = skywayRoute && withApproach(skywayRoute, comboFrom.approach);

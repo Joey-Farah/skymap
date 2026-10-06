@@ -154,8 +154,10 @@ export function closingSoonWarnings(
   thresholdMin = 30,
 ): ClosureWarning[] {
   const warnings: ClosureWarning[] = [];
+  // Step arrivals start at the skyway; the street walk to it comes first.
+  const approachMin = route.approach?.minutes ?? 0;
   for (const step of route.steps) {
-    const arrival = new Date(when.getTime() + step.arrivalMinutes * 60_000);
+    const arrival = new Date(when.getTime() + (approachMin + step.arrivalMinutes) * 60_000);
     if (step.building.hours === null) continue; // no published hours to close
     const h = step.building.hours[arrival.getDay()];
     if (!h) continue;
@@ -181,10 +183,10 @@ export function closingSoonWarnings(
  * may be meeting someone at its door — so this is the only place a closed
  * destination surfaces. Unknown hours assert nothing, as in isOpenAt.
  */
-export function destinationClosedWarning(route: Pick<RouteResult, "steps">, when: Date): string | null {
+export function destinationClosedWarning(route: Pick<RouteResult, "steps" | "approach">, when: Date): string | null {
   const last = route.steps[route.steps.length - 1];
   if (!last || route.steps.length < 2) return null;
-  const arrival = new Date(when.getTime() + last.arrivalMinutes * 60_000);
+  const arrival = new Date(when.getTime() + ((route.approach?.minutes ?? 0) + last.arrivalMinutes) * 60_000);
   if (isOpenAt(last.building, arrival)) return null;
   const name = last.building.name;
   const h = last.building.hours?.[arrival.getDay()];

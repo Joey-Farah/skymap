@@ -14,6 +14,7 @@ import {
   polylineMeters,
   remainingRouteMeters,
   routeStepIndex,
+  skywayDeparture,
   sliceAlong,
   tripMinutes,
   walkedPrefix,
@@ -1056,4 +1057,14 @@ test("a building is judged by its hours when the walker reaches it, not at depar
   assert.deepEqual(late.steps.map((s) => s.building.id), ["a", "d", "c"], "detours around B");
   assert.equal(late.ignoredClosures, false);
   assert.ok(!r.reachable("a", at(17, 57), 60).has("b"), "reachable() agrees: B is shut on arrival");
+});
+
+test("the skyway walk starts once the outdoor approach is done", () => {
+  const when = new Date(2026, 6, 14, 17, 57);
+  const b = data.buildings[0];
+  const outside = { building: b, straightMeters: 300, meters: 390, minutes: 5 };
+  assert.equal(skywayDeparture(when, outside).getTime(), when.getTime() + 5 * 60_000);
+  assert.equal(skywayDeparture(when, null).getTime(), when.getTime());
+  const atDoor = { building: b, straightMeters: 5, meters: 6, minutes: 0.1 };
+  assert.equal(skywayDeparture(when, atDoor).getTime(), when.getTime(), "an approach withApproach doesn't charge isn't added");
 });

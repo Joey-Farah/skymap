@@ -165,3 +165,19 @@ test("a destination closed all day, or with unknown hours, is handled honestly",
   const unknown = { steps: [route.steps[0], { building: { id: "u", name: "U", hours: null }, arrivalMinutes: 5 }] };
   assert.equal(destinationClosedWarning(unknown, new Date(2026, 6, 12, 3, 0)), null, "unknown hours assert nothing");
 });
+
+test("hours are judged after the outdoor walk to the skyway, not before it", () => {
+  // Starting outdoors, the skyway walk begins when you reach the network.
+  // Step arrivals are measured from there, so warnings must add the
+  // approach — otherwise a 5 min street walk makes every check 5 min early.
+  const shop = { id: "x", name: "Shop", hours: Array(7).fill([540, 1080]) }; // 9am-6pm
+  const route = {
+    approach: { meters: 390, minutes: 5, buildingName: "S" },
+    steps: [{ building: { id: "s", name: "S", hours: null }, arrivalMinutes: 0 }, { building: shop, arrivalMinutes: 2 }],
+  };
+  const at = new Date(2026, 6, 14, 17, 55); // skyway at 6:00, Shop at 6:02
+  assert.equal(destinationClosedWarning(route, at), "Shop closes at 6pm, before you'd arrive");
+  const through = { ...route, steps: [...route.steps, { building: { id: "z", name: "Z", hours: null }, arrivalMinutes: 3 }] };
+  const soon = closingSoonWarnings(through, new Date(2026, 6, 14, 17, 45));
+  assert.equal(soon[0]?.minutesLeft, 8, "5 min outside + 2 min in = arrives 5:52, closes in 8");
+});

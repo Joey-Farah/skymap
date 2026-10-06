@@ -657,8 +657,12 @@ export class SkywayRouter {
  * alongside it for the one thing it's needed for: the total a person plans
  * by, via tripMinutes/tripMeters.
  */
+function chargesApproach(approach: Approach | null): approach is Approach {
+  return !!approach && approach.straightMeters > AT_BUILDING_METERS;
+}
+
 export function withApproach(route: RouteResult, approach: Approach | null): RouteResult {
-  if (!approach || approach.straightMeters <= AT_BUILDING_METERS) return route;
+  if (!chargesApproach(approach)) return route;
   return {
     ...route,
     approach: {
@@ -667,6 +671,14 @@ export function withApproach(route: RouteResult, approach: Approach | null): Rou
       buildingName: approach.building.name,
     },
   };
+}
+
+/** When the skyway walk itself begins: after the outdoor approach, if
+ * withApproach charges one. Hours along the route are judged from here —
+ * step arrivals don't include the street walk, so routing from `when`
+ * checked every building that many minutes early. */
+export function skywayDeparture(when: Date, approach: Approach | null): Date {
+  return chargesApproach(approach) ? new Date(when.getTime() + approach.minutes * 60_000) : when;
 }
 
 /** Door-to-door minutes: the outdoor approach plus the skyway walk. */
