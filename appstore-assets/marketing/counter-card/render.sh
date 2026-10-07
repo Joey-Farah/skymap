@@ -9,3 +9,5 @@ CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 "$CHROME" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
   --window-size=460,480 --screenshot=preview.png "file://$PWD/card.html" 2>/dev/null
 echo "card.pdf preview.png"
+
+node "$(dirname "$0")/make-print.mjs"   # card-print.pdf: font-free version for print shops
