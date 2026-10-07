@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SkyMap counter card</title>
+<!--
+  SkyMap counter card (business offer: docs/business-offer.md): left at skyway businesses for their CUSTOMERS to
+  pick up. Front sells the benefit and shows the app; back is the action.
+  Print-ready, US standard 3.5in x 2in. Each side is 3.75in x 2.25in:
+  0.125in bleed on every edge. Keep text inside the dashed safe area.
+  Run `sh render.sh` and upload card.pdf (page 1 front, page 2 back).
+
+  Assets:
+  - qr-branded.svg: from make-qr.py, decodes to the App Store listing.
+  - app-store-badge.svg: Apple's official black badge, unmodified.
+    Apple rules: >= 10 mm tall in print, clear space >= 1/4 its height,
+    subordinate to the main message, black badge preferred.
+  - screen-route.png: real app screenshot (IDS Center to Hennepin County Government Center, dark mode, location at the start), shown as-is (no device frame).
+-->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#14213d; --deep:#0b1530; --muted:#58627a; --amber:#f59e0b; --paper:#ffffff; }
+  @page { size: 3.75in 2.25in; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #d9dde2; padding: 0.1in 0; font-family: Inter, system-ui, sans-serif; color: var(--navy); }
+  .side {
+    width: 3.75in; height: 2.25in; background: var(--paper);
+    position: relative; overflow: hidden; page-break-after: always;
+    margin: 0 auto 0.3in;
+  }
+  @media print { body { background: none; padding: 0; } .side { margin: 0; } .guides { display: none; } }
+  .safe { position: absolute; inset: 0.25in; }
+  .guides { position: absolute; inset: 0.125in; outline: 1px solid rgba(255,0,0,.35); z-index: 5; }
+  .guides::after { content:""; position:absolute; inset:0.125in; outline:1px dashed rgba(0,0,255,.3); }
+
+  /* Front: the hook */
+  .front { background: radial-gradient(120% 140% at 0% 0%, #1e3a8a 0%, var(--navy) 45%, var(--deep) 100%); color: #fff; }
+  /* The column is as wide as its widest line (the headline), so the rule and the centred tags line up under it. */
+  .front .safe { right: auto; width: fit-content; max-width: 2.1in; display: flex; flex-direction: column; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 0.07in; }
+  .brand img { width: 0.3in; height: 0.3in; display: block; }
+  .word { font-size: 10.5pt; font-weight: 800; letter-spacing: -0.01em; line-height: 1; }
+  .sub { font-size: 4.8pt; letter-spacing: .1em; text-transform: uppercase; color: #9fb0d4; margin-top: 1.5pt; }
+  .head { font-size: 20pt; white-space: nowrap; font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
+  .copy { width: fit-content; } /* as wide as the headline, so the rule can match it */
+  .rule { width: 100%; height: 0.03in; background: var(--amber); border-radius: 1in; margin: 4pt 0 3pt; }
+  .body { font-size: 10pt; color: #c9d3ea; line-height: 1.25; }
+  .tags { font-size: 8pt; font-weight: 600; color: var(--amber); text-align: center; position: relative; top: 0.05in; }
+  .screen {
+    position: absolute; left: 2.36in; top: 0.32in; width: 1.12in;
+    border-radius: 0.11in; overflow: hidden;
+    /* A crisp ring only: Chrome's PDF output flattens a blurred shadow
+       into a solid dark rectangle behind the screen. */
+    box-shadow: 0 0 0 1.5px rgba(255,255,255,.22);
+  }
+  .screen img { width: 100%; display: block; }
+
+  /* Back: the action */
+  .back .safe { bottom: 0.36in; display: flex; align-items: center; justify-content: center; gap: 0.24in; }
+  .frame { flex: none; background: var(--navy); border-radius: 0.1in; padding: 0.06in 0.06in 0; width: 1.22in; }
+  .frame .qr { background: #fff; border-radius: 0.06in; padding: 0.04in; }
+  .frame .qr img { width: 100%; display: block; }
+  .frame .cta { color: #fff; font-size: 6pt; font-weight: 800; letter-spacing: .06em; text-align: center; padding: 3.5pt 0 4.5pt; white-space: nowrap; }
+  .frame .cta span { color: var(--amber); }
+  .act h2 { font-size: 11.5pt; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
+  .act p { font-size: 6.8pt; color: var(--muted); margin-top: 3pt; line-height: 1.4; }
+  .badge { height: 0.42in; display: block; margin-top: 0.11in; }   /* 10.7 mm */
+  .legal { position: absolute; left: 0.25in; right: 0.25in; bottom: 0.26in; font-size: 3.6pt; text-align: center; color: #8a93a6; line-height: 1.3; }
+</style>
+</head>
+<body>
+
+<section class="side front">
+  <div class="guides"></div>
+  <div class="screen"><img src="screen-route.png" alt="SkyMap showing an 11 minute walk from IDS Center to the Hennepin County Government Center"></div>
+  <div class="safe">
+    <div class="brand">
+      <img src="icon.svg" alt="">
+      <div>
+        <div class="word">SkyMap</div>
+        <div class="sub">Minneapolis Skyway</div>
+      </div>
+    </div>
+    <div class="copy">
+      <div class="head">The skyway<br>in your pocket.</div>
+      <div class="rule"></div>
+      <div class="body">Restaurants and shops,<br>up&#8209;to&#8209;date building hours,<br>and turn&#8209;by&#8209;turn directions.</div>
+    </div>
+    <div class="tags">Free · No account · No ads</div>
+  </div>
+</section>
+
+<section class="side back">
+  <div class="guides"></div>
+  <div class="safe">
+    <div class="frame">
+      <div class="qr"><img src="qr-branded.svg" alt="QR code to SkyMap on the App Store"></div>
+      <div class="cta">SCAN <span>→</span> GET SKYMAP</div>
+    </div>
+    <div class="act">
+      <h2>SkyMap<br>for iPhone</h2>
+      <p>Open your camera and<br>point it at the code.</p>
+      <img class="badge" src="app-store-badge.svg" alt="Download on the App Store">
+    </div>
+  </div>
+  <div class="legal">Apple, the Apple logo, iPhone and App Store are trademarks of Apple Inc., registered in the U.S. and other countries.</div>
+</section>
+</body>
+</html>
