@@ -328,7 +328,7 @@ export class SkymapView {
       this.registerPoiIcons();
       this.addLayers();
       this.collapseAttribution();
-      geolocate.trigger(); // prompts for permission once, then tracks continuously
+      this.startTracking(); // prompts for permission once, then tracks continuously
     });
 
     // The basemap follows the phone's appearance after launch too. Chosen
@@ -1095,15 +1095,40 @@ export class SkymapView {
       ACTIVE_ERROR: ["BACKGROUND_ERROR", "maplibregl-ctrl-geolocate-active-error", "maplibregl-ctrl-geolocate-background-error"],
     };
     const next = twin[control._watchState ?? ""];
-    if (!next) return;
+    if (!next) {
+      // Not tracking yet: the lock it would take later is the one to refuse.
+      if (!control._watchState || control._watchState === "OFF") this.releaseWhenTracking = true;
+      return;
+    }
     control._watchState = next[0];
     control._geolocateButton?.classList.replace(next[1], next[2]);
     control.fire(new maplibregl.Event("trackuserlocationend"));
     control.fire(new maplibregl.Event("userlocationlostfocus"));
   }
 
+  /** A view that took the camera before tracking began, still to be let go
+   * of once it does. */
+  private releaseWhenTracking = false;
+
+  /**
+   * Start following you as soon as the locate control can. It can't until
+   * MapLibre has asked the phone about permission — an async check that can
+   * finish after the map has — and until then trigger() refuses, so a single
+   * call at style load left nothing tracking you at all (review of QA 026).
+   */
+  private startTracking(deadline = Date.now() + 60_000) {
+    if (!this.geolocate.trigger()) {
+      if (Date.now() < deadline) setTimeout(() => this.startTracking(deadline), 100);
+      return;
+    }
+    // A card or a link's route opened first; its camera stays its own.
+    if (this.releaseWhenTracking) this.releaseCameraLock();
+    this.releaseWhenTracking = false;
+  }
+
   /** Follow the walker again — what GO means for the camera. */
   lockCameraOnWalker() {
+    this.releaseWhenTracking = false;
     const state = (this.geolocate as unknown as { _watchState?: string })._watchState;
     if (state === "BACKGROUND") this.geolocate.trigger(); // back to ACTIVE_LOCK, camera to you
     else if (state === "BACKGROUND_ERROR") this.refindWalker();
