@@ -187,6 +187,7 @@ async function boot() {
     activeRoute = null;
     destination = null;
     view.setRoute(null);
+    view.forgetCameraHold(); // nothing on screen is holding it now
     // Mode first: the idle sheet's new height re-pads the camera, and read
     // as a mid-trip resize it recentred on the walker as the trip ended.
     setMode("idle");

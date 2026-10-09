@@ -354,6 +354,15 @@ export class SkymapView {
     // Signal back: whatever the basemap is behind on — the appearance, or
     // the streets themselves after an offline launch — it catches up.
     addEventListener("online", () => void this.syncBasemap());
+    // A connection that only stalled never says it's back — the phone was
+    // never offline. While the stand-in is up, try again now and then, and
+    // on coming back to the app.
+    setInterval(() => {
+      if (!this.basemapReal) void this.syncBasemap();
+    }, 30_000);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) void this.syncBasemap();
+    });
 
     // One handler decides what a tap meant, in priority order. Previously
     // each layer had its own listener and re-derived the ordering by
@@ -468,9 +477,17 @@ export class SkymapView {
     const style = await fetchStyle(dark);
     // Asked for something else meanwhile (that request carries on), or
     // another sync got here first.
-    if (dark !== this.wantDark || current() || !style) return;
+    if (dark !== this.wantDark || current()) return;
+    if (style) return this.swapStyle(style, dark, true);
+    // No signal: a blank stand-in still takes the new shade, or the map sat
+    // bright under dark sheets all evening (QA 049); real streets don't
+    // give way to it.
+    if (!this.basemapReal && dark !== this.styleDark) this.swapStyle(fallbackStyle(dark), dark, false);
+  }
+
+  private swapStyle(style: maplibregl.StyleSpecification, dark: boolean, real: boolean) {
     this.styleDark = dark;
-    this.basemapReal = true;
+    this.basemapReal = real;
     this.map.setStyle(style, { diff: false });
     this.map.once("style.load", () => {
       this.declutterBasemap();
@@ -1177,6 +1194,12 @@ export class SkymapView {
     }
     // A card or a link's route opened first; its camera stays its own.
     if (this.releaseWhenTracking) this.releaseCameraLock();
+    this.releaseWhenTracking = false;
+  }
+
+  /** Whatever took the camera before tracking began has closed: when
+   * tracking starts, it follows you after all. */
+  forgetCameraHold() {
     this.releaseWhenTracking = false;
   }
 

@@ -314,3 +314,18 @@ test("a link's route keeps the camera when tracking starts after it", async (t) 
   assert.equal((await tracking(page)).watches, 1, "tracking is on");
   assert.deepEqual(after.map((n) => n.toFixed(5)), before.map((n) => n.toFixed(5)), "the preview's camera stayed put");
 });
+
+test("a card closed before tracking began doesn't keep the camera from following you", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual", permissionQueryMs: 4000 });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => {
+    const s = window.__skymap;
+    s.modes.showPlace(s.router.building("ids-center-1385236413"));
+    s.modes.enterIdle();
+  });
+  await page.waitForTimeout(4500);
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006, 12));
+  await page.waitForTimeout(800);
+  assert.equal((await tracking(page)).watchState, "ACTIVE_LOCK");
+});
