@@ -155,3 +155,28 @@ test("allowing location in Settings after a denial brings it back without a rela
   await page.waitForTimeout(300);
   assert.deepEqual(await button(), { disabled: false, watches: 1 });
 });
+
+test("a location toast never covers the locate button or swallows its taps (QA 045)", async (t) => {
+  // The longest toast is the one that says to tap that very button again.
+  const { browser, context, page } = await launch({ geolocation: "manual", viewport: { width: 375, height: 667 } });
+  t.after(() => browser.close());
+  await context.addInitScript(() => {
+    if (window.DeviceOrientationEvent) window.DeviceOrientationEvent.requestPermission = async () => "denied";
+  });
+  await openApp(page);
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006));
+  await page.waitForFunction(() => window.__skymap.view.geolocate._watchState === "ACTIVE_LOCK");
+  await tapLocate(page); // asks for heading-up; motion access is refused
+  await page.waitForFunction(() => !document.getElementById("toast").hidden);
+  const m = await page.evaluate(() => {
+    const t = document.getElementById("toast").getBoundingClientRect();
+    const b = document.querySelector("button.maplibregl-ctrl-geolocate");
+    const r = b.getBoundingClientRect();
+    const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    const overlap = t.left < r.right && r.left < t.right && t.top < r.bottom && r.top < t.bottom;
+    return { text: document.getElementById("toast").textContent, overlap, hitsButton: b.contains(hit) };
+  });
+  assert.match(m.text, /tap again/);
+  assert.equal(m.overlap, false, "the toast sits on top of the button it tells you to tap");
+  assert.equal(m.hitsButton, true);
+});
