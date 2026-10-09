@@ -35,6 +35,7 @@ import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { CHIP_GROUPS } from "./chips.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
 import { clearRetiredKeys } from "./storage.ts";
+import { forgetTrip, rememberTrip, tripToResume } from "./trip-resume.ts";
 import { UpdatePrompt } from "./update-prompt.ts";
 
 /**
@@ -82,6 +83,7 @@ async function boot() {
     app.classList.remove(`mode-${mode}`);
     mode = m;
     app.classList.add(`mode-${mode}`);
+    if (m !== "preview") resumePending = false; // left the resumed trip's preview
     routeEditor.hidden = m !== "preview";
     navBanner.hidden = m !== "nav";
     searchBarTop.hidden = m === "preview" || m === "nav";
@@ -89,6 +91,11 @@ async function boot() {
   }
   /** Set once the map exists — see below. */
   let updateCameraPadding: (() => void) | null = null;
+  /** Reopened mid-trip (see trip-resume.ts): the first fix starts the trip
+   * again from there, unless a From was picked or the preview left first. */
+  let resumePending = false;
+  /** When the trip under way was last written down for a reload. */
+  let tripRememberedAt = 0;
 
 
   const style = await resolveStyle();
@@ -186,6 +193,7 @@ async function boot() {
     }
     activeRoute = null;
     destination = null;
+    forgetTrip(localStorage); // however it ended, it's over
     view.setRoute(null);
     view.forgetCameraHold(); // nothing on screen is holding it now
     // Mode first: the idle sheet's new height re-pads the camera, and read
@@ -452,6 +460,11 @@ async function boot() {
     if (!activeRoute) return;
     view.finishRouteDraw();
     setMode("nav");
+    // Written down in case iOS reloads the page mid-walk, and the address
+    // cleared: it names the trip's start, and a reload read it as a link to
+    // plan the whole walk again from there (QA 051).
+    rememberCurrentTrip();
+    clearRouteUrl();
     // A trip that can't see you never moves: with location switched off at
     // the locate button, the banner sat on its first step for the whole walk
     // (the 2026-10-08 user report). GO turns it back on. Not after a denial:
@@ -465,6 +478,12 @@ async function boot() {
     walkedHighWater = null;
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
+  }
+
+  function rememberCurrentTrip() {
+    if (!comboTo.value) return;
+    rememberTrip(localStorage, { toId: comboTo.value, poiId: comboTo.poi?.id });
+    tripRememberedAt = Date.now();
   }
 
   function applyNavProgress(fallbackStep: number, raw: number | null = null, offRoute = false) {
@@ -669,6 +688,8 @@ async function boot() {
       // to MapLibre's raw dot — which indoors sits a floor below, out in
       // the street, and was the whole of the reported bug.
       const placed = view.trackPosition(lat, lon, Date.now());
+      // Still walking: the trip stays worth resuming (see trip-resume.ts).
+      if (Date.now() - tripRememberedAt > 15_000) rememberCurrentTrip();
       applyNavProgress(routeStepIndex(activeRoute, lat, lon), placed?.remainingMeters ?? null, !!placed?.offRoute);
       view.setWalkerPosition(placed?.coord ?? null, !!placed?.offRoute);
       // Off-route, the position is the last one we believed rather than a
@@ -679,7 +700,12 @@ async function boot() {
     currentApproach = approach;
     comboFrom.setCurrentLocation(approach);
     comboTo.setCurrentLocation(approach); // only ever "Current Location" via swap
-    if (movedBuilding) followCurrentLocation();
+    if (resumePending && approach && mode === "preview" && !comboFrom.value) {
+      // The first fix after a reload mid-trip: the trip goes on from here.
+      resumePending = false;
+      comboFrom.selectCurrentLocation({ silent: true });
+      enterNav();
+    } else if (movedBuilding) followCurrentLocation();
     // Same-name chains rank closest-first from where you actually are;
     // the To field prefers the chosen origin as its anchor when one's set.
     comboFrom.setSearchAnchor({ lat, lon });
@@ -960,7 +986,22 @@ async function boot() {
   const initial = parseRouteState(location.search);
   const initialFrom = initial.fromId ? router.building(initial.fromId) : undefined;
   const initialTo = initial.toId ? router.building(initial.toId) : undefined;
-  if (initialFrom && initialTo) {
+  // First, a trip iOS interrupted by reloading the page: back to it, from
+  // wherever the walker has got to — known at the first fix.
+  const resume = tripToResume(localStorage);
+  const resumeTo = resume ? router.building(resume.toId) : undefined;
+  if (resume && resumeTo) {
+    destination = { b: resumeTo, poi: data.pois?.find((p) => p.id === resume.poiId) };
+    clearRouteUrl();
+    setMode("preview");
+    resumePending = true;
+    comboTo.select(destination.b, destination.poi, { silent: true });
+    // Asks for a start until the fix comes, without opening the keyboard.
+    computePreview({ refresh: true });
+    // A fix much later than this is someone reading the preview, not
+    // waiting to be carried on.
+    setTimeout(() => (resumePending = false), 60_000);
+  } else if (initialFrom && initialTo) {
     // A shared link opens straight into the route preview (screen 4).
     destination = { b: initialTo };
     setMode("preview");
