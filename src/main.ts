@@ -3,6 +3,7 @@ import { Capacitor } from "@capacitor/core";
 import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import {
   SkywayRouter,
+  chargesApproach,
   mainNetworkBuildings,
   nearestApproach,
   routeStepIndex,
@@ -186,29 +187,51 @@ async function boot() {
     destination = { b, poi };
     view.setRoute(null);
     view.focusBuilding(b);
+    renderPlaceCard();
+    setMode("card");
+  }
+
+  /** The card for `destination`. The Directions button quotes the walk from
+   * the start Directions will actually use: a From still picked by name
+   * (QA 016), else where you are. The "From you" row only ever means you.
+   * Called again, in place, when location comes or goes under an open card,
+   * so it never quotes a walk from a position the app no longer has
+   * (QA 011). */
+  function renderPlaceCard() {
+    if (!destination) return;
+    const { b, poi } = destination;
+    const named = comboFrom.value && !comboFrom.isCurrentLocation ? router.building(comboFrom.value) : null;
+    // Through routeEnd, as the preview routes it: a curated parking ramp is
+    // reached through its building, and routed from raw it had no route.
+    const originId = (named && routeEnd(named, comboFrom.poi).buildingId) ?? currentApproach?.building.id ?? null;
+    // Picking a building by name means you consider yourself in it: no walk.
+    const approach = named ? null : currentApproach;
     let directionsLabel: string | undefined;
     // The same preview drives the button label and the card's "From you"
     // row — one route computation, two readings of it. Stays null when
     // there's no live location, and the row is omitted rather than guessed.
     let walk: { minutes: number; meters: number } | null = null;
-    // Quoted from where you actually are, which now includes being outside
-    // the network — so the estimate carries the walk to reach it, the same
-    // number the route preview will show once you tap through.
-    const origin = currentApproach;
     const target = routeEnd(b, poi ?? null).buildingId;
-    if (origin && origin.building.id !== target) {
-      const preview = router.route(origin.building.id, target, skywayDeparture(selectedTime(), origin));
+    let trip: { minutes: number; meters: number } | null = null;
+    if (originId && originId !== target) {
+      const preview = router.route(originId, target, skywayDeparture(selectedTime(), approach));
       if (preview) {
-        const trip = withApproach(preview, origin);
-        const minutes = Math.max(1, Math.round(tripMinutes(trip)));
-        directionsLabel = `Directions · ${minutes} min`;
-        walk = { minutes, meters: tripMeters(trip) };
+        const withWalk = withApproach(preview, approach);
+        trip = { minutes: tripMinutes(withWalk), meters: tripMeters(withWalk) };
       }
+    } else if (originId && chargesApproach(approach)) {
+      // You're outside the building you want: the whole trip is the walk to
+      // it, not "you're already here" (QA 013).
+      trip = { minutes: approach.minutes, meters: approach.meters };
+    }
+    if (trip) {
+      const minutes = Math.max(1, Math.round(trip.minutes));
+      directionsLabel = `Directions · ${minutes} min`;
+      if (!named) walk = { minutes, meters: trip.meters };
     }
     const actions = { onDirections: () => enterPreview(), directionsLabel };
     if (poi) sheet.showPoi(poi, b, selectedTime(), actions, walk);
     else sheet.showBuilding(b, selectedTime(), actions, poisByBuilding.get(b.id) ?? []);
-    setMode("card");
   }
 
   /** Screen 4: From/To editor slides in at the top, route draws, GO waits.
@@ -280,6 +303,18 @@ async function boot() {
       view.setRoute(null);
       const building = router.building(fromId);
       const toPoi = comboTo.poi;
+      const walkIn = comboFrom.approach;
+      if (chargesApproach(walkIn)) {
+        // Unless you're outside it: Current Location reaches up to 400m, so
+        // its building can be the one you asked for while you stand a few
+        // blocks away (QA 013). Nothing in the skyway to draw — say the walk.
+        const mins = Math.max(1, Math.round(walkIn.minutes));
+        sheet.showMessage(
+          `${mins} min walk`,
+          `${toPoi?.name ?? building?.name ?? "It"} is about ${mins} min away on foot, outside the skyway.`,
+        );
+        return;
+      }
       sheet.showMessage(
         "You're already here",
         toPoi
@@ -301,7 +336,7 @@ async function boot() {
     }
     if (opts.refresh && activeRoute && sameRoute(activeRoute, route)) {
       activeRoute = route;
-      sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() }, { keepLayout: true });
+      sheet.refresh(() => sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() }));
       return;
     }
     activeRoute = route;
@@ -445,8 +480,15 @@ async function boot() {
     const to = comboTo.value ? router.building(comboTo.value) : null;
     const fromPoi = comboFrom.poi;
     const toPoi = comboTo.poi;
-    if (to) comboFrom.select(to, toPoi ?? undefined, { silent: true });
-    if (from) comboTo.select(from, fromPoi ?? undefined, { silent: true });
+    // "Current Location" crosses over as itself, not as whichever building
+    // it resolved to: re-selected by name, the walk outside was dropped and
+    // swapping twice made the same trip 4 minutes shorter (QA 040).
+    const fromHere = comboFrom.isCurrentLocation;
+    const toHere = comboTo.isCurrentLocation;
+    if (toHere) comboFrom.selectCurrentLocation({ silent: true });
+    else if (to) comboFrom.select(to, toPoi ?? undefined, { silent: true });
+    if (fromHere) comboTo.selectCurrentLocation({ silent: true });
+    else if (from) comboTo.select(from, fromPoi ?? undefined, { silent: true });
     computePreview();
   });
 
@@ -521,7 +563,6 @@ async function boot() {
     // exactly when someone outdoors wanted it — but only from a building
     // that goes somewhere.
     const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS, selectedTime());
-    currentApproach = approach;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       // The walker stays on the skyway. A fix is evidence, not a position:
       // it moves them as far along the route as walking allows and no
@@ -535,7 +576,11 @@ async function boot() {
       // live reading, so the grey walked prefix stops growing with it.
       view.setWalkedProgress(placed && !placed.offRoute ? walkedHighWater : null);
     }
+    const movedBuilding = (approach?.building.id ?? null) !== (currentApproach?.building.id ?? null);
+    currentApproach = approach;
     comboFrom.setCurrentLocation(approach);
+    comboTo.setCurrentLocation(approach); // only ever "Current Location" via swap
+    if (movedBuilding) followCurrentLocation();
     // Same-name chains rank closest-first from where you actually are;
     // the To field prefers the chosen origin as its anchor when one's set.
     comboFrom.setSearchAnchor({ lat, lon });
@@ -557,7 +602,21 @@ async function boot() {
   function forgetPosition() {
     currentApproach = null;
     comboFrom.setCurrentLocation(null);
+    comboTo.setCurrentLocation(null);
     comboFrom.setSearchAnchor(null);
+    followCurrentLocation();
+  }
+
+  /** Where you are changed buildings, or stopped being known: whatever on
+   * screen was measured from it is measured again now — a place card's walk
+   * time (QA 011), or a preview that starts from Current Location, which
+   * otherwise kept its old route under a label naming the new building until
+   * the minute refresh (QA 010). */
+  function followCurrentLocation() {
+    if (mode === "card") sheet.refresh(renderPlaceCard);
+    else if (mode === "preview" && (comboFrom.isCurrentLocation || comboTo.isCurrentLocation)) {
+      computePreview({ refresh: true });
+    }
   }
 
   // --- Heading-up tracking: Apple-Maps locate cycle -----------------------

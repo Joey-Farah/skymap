@@ -676,7 +676,7 @@ export class SkywayRouter {
  * alongside it for the one thing it's needed for: the total a person plans
  * by, via tripMinutes/tripMeters.
  */
-function chargesApproach(approach: Approach | null): approach is Approach {
+export function chargesApproach(approach: Approach | null): approach is Approach {
   return !!approach && approach.straightMeters > AT_BUILDING_METERS;
 }
 
