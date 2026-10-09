@@ -28,7 +28,10 @@ export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 
  *   to macOS even headless — it has opened a real Mail window on the
  *   developer's machine. Never make this POST fail in a test.
  * - Clicks on mailto:/tel:/sms: links and window.open() to them are swallowed
- *   and recorded in window.__blockedExternal instead.
+ *   and recorded in window.__blockedExternal instead. A script assigning
+ *   location.href = "mailto:…" can't be intercepted from a page — that is
+ *   exactly the feedback form's fallback, which is why the POST stub above
+ *   must always answer 200.
  * - The clock is America/Chicago, the only place the app is used.
  *
  * @param {object} o
@@ -41,7 +44,10 @@ export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 
  * @param {string} [o.clockAt] ISO time to start the page clock at (time then flows)
  * @param {{width:number,height:number}} [o.viewport] default 390x844
  * @param {"light"|"dark"} [o.colorScheme]
- * @param {boolean} [o.offline]
+ * @param {boolean} [o.offline] no network beyond the dev server: everything
+ *   else (map tiles, fonts, styles) fails. Browser-level offline would cut
+ *   off the dev server too, and the app could never load. Toggle mid-session
+ *   with setOffline(context, on).
  */
 export async function launch(o = {}) {
   // System Chrome, not a Playwright-managed build: this repo pins
@@ -59,8 +65,8 @@ export async function launch(o = {}) {
     locale: "en-US",
     permissions: geo ? ["geolocation"] : [],
     geolocation: geo ?? undefined,
-    offline: !!o.offline,
   });
+  await setOffline(context, !!o.offline);
   const feedbackPosts = [];
   await context.route("**/api/feedback**", async (route) => {
     feedbackPosts.push(route.request().postData());
@@ -140,6 +146,16 @@ export async function launch(o = {}) {
     await page.clock.resume();
   }
   return { browser, context, page, feedbackPosts, pageErrors };
+}
+
+/** Cut (or restore) every request that isn't to the dev server. */
+export async function setOffline(context, on) {
+  if (context.__offlineRoute) await context.unroute("**/*", context.__offlineRoute);
+  context.__offlineRoute = null;
+  if (!on) return;
+  context.__offlineRoute = (route) =>
+    route.request().url().startsWith(BASE) ? route.fallback() : route.abort("internetdisconnected");
+  await context.route("**/*", context.__offlineRoute);
 }
 
 /** Load the app (optionally at a path like "/?from=a&to=b") and wait until
