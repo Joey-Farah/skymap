@@ -930,6 +930,18 @@ export class SkymapView {
     );
   }
 
+  /** Ends the route-draw animation now, with the whole line drawn. GO can
+   * come before the drawing finishes, and the animation went on writing its
+   * moving head into the walker layer every frame — over the tracked dot —
+   * and then cleared it, leaving MapLibre's raw dot (QA 005). */
+  finishRouteDraw() {
+    if (!this.routeAnim) return;
+    cancelAnimationFrame(this.routeAnim);
+    this.routeAnim = 0;
+    (this.map.getSource("skyway-route") as maplibregl.GeoJSONSource | undefined)?.setData(lineFC(this.activeRouteCoords));
+    this.setWalkerPosition(this.walkerAt);
+  }
+
   /** The route-draw animation's moving head — same layer, but it isn't a
    * position, so it stays route-coloured and never hides MapLibre's dot. */
   private setWalkerHead(coord: [number, number] | null) {

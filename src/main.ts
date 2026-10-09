@@ -376,6 +376,7 @@ async function boot() {
     // long enough for a building on it to close (QA 035).
     computePreview({ refresh: true });
     if (!activeRoute) return;
+    view.finishRouteDraw();
     setMode("nav");
     // A trip that can't see you never moves: with location switched off at
     // the locate button, the banner sat on its first step for the whole walk
