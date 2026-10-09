@@ -78,3 +78,20 @@ test("mid-trip, tapping locate after GPS drops keeps the trip tracking (QA 038)"
   const later = await page.evaluate(() => window.__skymap.view.tracker?.along ?? null);
   assert.ok(later > before, `the dot should move on once fixes return (${before} -> ${later})`);
 });
+
+test("GO turns location back on if it was switched off (user report, 2026-10-08)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page, `/?from=${FROM}&to=${TO}`);
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006, 12));
+  await page.waitForTimeout(500);
+  // Outside a trip the cycle is lock -> heading -> off.
+  for (let i = 0; i < 3 && (await tracking(page)).watchState !== "OFF"; i++) await tapLocate(page);
+  assert.equal((await tracking(page)).watchState, "OFF");
+
+  await page.evaluate(() => window.__skymap.modes.enterNav());
+  await page.waitForTimeout(300);
+  const after = await tracking(page);
+  assert.notEqual(after.watchState, "OFF", "a trip that can't see you never moves");
+  assert.equal(after.watches, 1);
+});

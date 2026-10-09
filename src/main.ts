@@ -308,6 +308,11 @@ async function boot() {
   function enterNav() {
     if (!activeRoute) return;
     setMode("nav");
+    // A trip that can't see you never moves: with location switched off at
+    // the locate button, the banner sat on its first step for the whole walk
+    // (the 2026-10-08 user report). GO turns it back on. Not after a denial:
+    // MapLibre disables the button then, and only the OS can change that.
+    if (watchState() === "OFF" && !locateButton?.disabled) view.geolocate.trigger();
     manualPositionUntil = 0;
     settledRemaining = null; // a new trip starts with nothing to hold against
     walkedHighWater = null;
