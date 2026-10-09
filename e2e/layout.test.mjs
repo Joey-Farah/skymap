@@ -129,3 +129,15 @@ test("the place card's ✕ has a full-size tap target (QA 023)", async (t) => {
   });
   assert.deepEqual(r.hits, [true, true], `a ${r.size}pt circle with no margin for a fingertip`);
 });
+
+test("the map credit starts folded into its ⓘ", async (t) => {
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.waitForTimeout(2500);
+  const a = await page.evaluate(() => {
+    const el = document.querySelector(".maplibregl-ctrl-attrib");
+    return { open: el.hasAttribute("open"), shown: el.classList.contains("maplibregl-compact-show"), compact: el.classList.contains("maplibregl-compact") };
+  });
+  assert.deepEqual(a, { open: false, shown: false, compact: true });
+});

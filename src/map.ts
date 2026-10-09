@@ -305,6 +305,7 @@ export class SkymapView {
       attributionControl: false,
     });
     this.map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left");
+    this.collapseAttributionOnceShown();
     // Pinch-to-zoom and two-finger-drag-to-tilt are on by default with no
     // button needed. MapLibre draws its own blue "you are here" dot +
     // accuracy ring; the control itself stays off-screen (see
@@ -340,7 +341,6 @@ export class SkymapView {
       this.declutterBasemap();
       this.registerPoiIcons();
       this.addLayers();
-      this.collapseAttribution();
       this.startTracking(); // prompts for permission once, then tracks continuously
     });
 
@@ -504,13 +504,28 @@ export class SkymapView {
   /** MapLibre's compact attribution starts fully expanded (the required
    * OpenFreeMap/OSM credit as a full text strip) and only collapses to the
    * small "i" icon once the user drags the map — so on a fresh launch it
-   * just sits there as a persistent banner. Collapse it immediately; the
-   * credit is still one tap away via the icon, same as it would be after
-   * a drag. */
-  private collapseAttribution() {
+   * just sits there as a persistent banner. Collapse it as soon as it
+   * shows; the credit is still one tap away via the icon, same as it would
+   * be after a drag.
+   *
+   * "As soon as it shows" is MapLibre's call, not a map event: it expands
+   * the strip the first time a source's credit arrives, which can be after
+   * the style has loaded, so collapsing at style load found nothing to
+   * collapse and the strip opened a moment later. */
+  private collapseAttributionOnceShown() {
     const attrib = this.map.getContainer().querySelector(".maplibregl-ctrl-attrib");
-    attrib?.removeAttribute("open");
-    attrib?.classList.remove("maplibregl-compact-show");
+    if (!attrib) return;
+    const collapse = () => {
+      if (!attrib.classList.contains("maplibregl-compact")) return false;
+      attrib.removeAttribute("open");
+      attrib.classList.remove("maplibregl-compact-show");
+      return true;
+    };
+    if (collapse()) return;
+    const watch = new MutationObserver(() => {
+      if (collapse()) watch.disconnect();
+    });
+    watch.observe(attrib, { attributes: true, attributeFilter: ["class"] });
   }
 
   private addLayers() {
