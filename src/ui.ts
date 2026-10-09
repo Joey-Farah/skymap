@@ -812,7 +812,11 @@ export class Sheet {
     when: Date,
     pois: Poi[],
     actions: { onGo: () => void },
+    // Refreshing the same route as time passes: leave the sheet expanded or
+    // not, and where it was scrolled, as the reader had it.
+    opts: { keepLayout?: boolean } = {},
   ) {
+    const scrollTop = this.root.scrollTop;
     this.routePois = pois;
     this.content.innerHTML = "";
     this.clearRouteProgress();
@@ -867,6 +871,11 @@ export class Sheet {
 
     this.content.append(this.buildStepsList(route, when, pois));
     this.activeRoute = route;
+    if (opts.keepLayout && this.mode === "preview") {
+      this.applyMode();
+      this.root.scrollTop = scrollTop;
+      return;
+    }
     this.show("preview", false);
   }
 

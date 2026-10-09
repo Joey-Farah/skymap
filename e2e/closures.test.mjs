@@ -73,3 +73,45 @@ test("the closing warning that decides the trip is the one shown (QA 050)", asyn
   assert.ok(warnings.some((b) => b.includes("Hennepin County Government Center")), warnings.join(" | "));
   assert.ok(!warnings.some((b) => b.startsWith("⚠ Target Center")), "not the building you're leaving");
 });
+
+test("a preview left open past closing time is redone, and GO starts the route for now (QA 035)", async (t) => {
+  const { browser, page } = await launch({ clockAt: "2026-10-14T17:50:00-05:00" });
+  t.after(() => browser.close());
+  await openApp(page, "/?from=medical-arts-building-92905817&to=essex-building-461224211");
+  assert.equal((await readPreview(page)).mode, "preview");
+
+  await page.clock.fastForward("15:00"); // 6:05pm: Young-Quinlan has shut
+  await page.waitForTimeout(500);
+  const later = await readPreview(page);
+  const now = await page.evaluate(() => new Date().getHours() * 60 + new Date().getMinutes());
+  assert.ok(clockMinutes(later.arrive) >= now, `the preview still says "${later.arrive}"`);
+
+  await page.click(".go-btn");
+  await page.waitForTimeout(500);
+  const nav = await page.evaluate(() => ({
+    mode: window.__skymap.modes.current,
+    // The middle of the route: the origin is where you are, and the
+    // destination is never refused for its hours.
+    closedOnTheWay: [...document.querySelectorAll(".nav-bar ~ ul.steps li")]
+      .map((l) => l.textContent)
+      .slice(1, -1)
+      .filter((x) => x.includes("(closed)")),
+  }));
+  assert.equal(nav.mode, "nav");
+  assert.deepEqual(nav.closedOnTheWay, [], "GO walked into a building that had shut since the preview");
+});
+
+test("the minute refresh leaves an expanded preview as the reader had it", async (t) => {
+  const { browser, page } = await launch({ clockAt: "2026-10-14T12:00:00-05:00" });
+  t.after(() => browser.close());
+  await openApp(page, "/?from=medical-arts-building-92905817&to=essex-building-461224211");
+  const height = () => page.evaluate(() => document.getElementById("sheet").style.maxHeight);
+  const peek = await height();
+  await page.click("#sheet .sheet-handle"); // drag-up's tap equivalent
+  await page.waitForTimeout(400);
+  const open = await height();
+  assert.notEqual(open, peek, "setup: the sheet should have expanded");
+  await page.clock.fastForward("01:05");
+  await page.waitForTimeout(400);
+  assert.equal(await height(), open);
+});
