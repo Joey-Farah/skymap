@@ -725,6 +725,9 @@ export class SkymapView {
       /** Redraw without reframing: a route refreshed under someone who may
        * have panned the map since it was first shown. */
       keepCamera?: boolean;
+      /** Screen y the overview must stay below — the bottom of whatever
+       * covers the top of the map (the From/To panel). */
+      clearTop?: number;
     },
   ) {
     const apply = () => {
@@ -788,12 +791,18 @@ export class SkymapView {
       const lons = [...coords.map((c) => c[0]), fromCoord[0], toCoord[0]];
       const lats = [...coords.map((c) => c[1]), fromCoord[1], toCoord[1]];
       if (!poiCoords?.keepCamera) {
+        // An overview, not a follow: let go of the camera first, or the next
+        // GPS fix flies it straight back to you (QA 021).
+        this.releaseCameraLock();
         this.map.fitBounds(
           [
             [Math.min(...lons), Math.min(...lats)],
             [Math.max(...lons), Math.max(...lats)],
           ],
-          { padding: { top: 80, bottom: 260, left: 60, right: 60 }, maxZoom: 16 },
+          // The top clears the From/To panel as drawn, not a fixed 80px: on a
+          // 375pt phone the panel reaches 142px and hid the route's start
+          // (QA 022).
+          { padding: { top: Math.max(80, (poiCoords?.clearTop ?? 0) + 24), bottom: 260, left: 60, right: 60 }, maxZoom: 16 },
         );
       }
 
@@ -994,7 +1003,48 @@ export class SkymapView {
     return this.tracker?.moveTo(lat, lon) ?? null;
   }
 
+  /**
+   * Stop following the walker, exactly as a user's pan does. MapLibre only
+   * lets go of its lock on a pan that doesn't zoom, and every overview the
+   * app draws zooms — so the route preview and the place card's fly-to kept
+   * the lock, and the next GPS fix flew the camera back to you (QA 021).
+   */
+  releaseCameraLock() {
+    const control = this.geolocate as unknown as {
+      _watchState?: string;
+      _geolocateButton?: HTMLButtonElement;
+      fire(e: unknown): void;
+    };
+    if (control._watchState !== "ACTIVE_LOCK") return;
+    control._watchState = "BACKGROUND";
+    control._geolocateButton?.classList.replace("maplibregl-ctrl-geolocate-active", "maplibregl-ctrl-geolocate-background");
+    control.fire(new maplibregl.Event("trackuserlocationend"));
+    control.fire(new maplibregl.Event("userlocationlostfocus"));
+  }
+
+  /** Follow the walker again — what GO means for the camera. */
+  lockCameraOnWalker() {
+    const state = (this.geolocate as unknown as { _watchState?: string })._watchState;
+    if (state === "BACKGROUND") this.geolocate.trigger(); // back to ACTIVE_LOCK, camera to you
+    else if (state === "BACKGROUND_ERROR") this.refindWalker();
+  }
+
+  /** Keep the camera's idea of "the middle of the screen" inside the map you
+   * can actually see — between the banner and the sheet mid-trip, so
+   * following centres your dot there and not behind the step list (QA 044).
+   * null puts it back to the whole screen. */
+  setCameraPadding(clear: { top: number; bottom: number } | null) {
+    const padding = clear ? { top: clear.top, bottom: clear.bottom, left: 0, right: 0 } : { top: 0, bottom: 0, left: 0, right: 0 };
+    const now = this.map.getPadding();
+    if (now.top === padding.top && now.bottom === padding.bottom) return;
+    // At once, not eased: the follow animation's own camera move cancels
+    // an eased padding change before it lands. Marked as ours, not a pan,
+    // so the locate control keeps its lock through it.
+    this.map.setPadding(padding, { geolocateSource: true });
+  }
+
   focusBuilding(b: Building) {
+    this.releaseCameraLock(); // a look at a place, not a follow — see above
     // Recenter without fighting the zoom level someone's already chosen —
     // a flat zoom:16 meant tapping a place while zoomed in further always
     // zoomed back OUT to 16, even though nothing about picking a place

@@ -517,7 +517,11 @@ export class Sheet {
 
   private setClearance(px: number) {
     document.documentElement.style.setProperty("--sheet-clearance", `${px}px`);
+    this.onClearance?.(px);
   }
+  /** How much of the bottom of the screen the sheet covers, each time it
+   * changes — the camera keeps clear of it mid-trip. */
+  onClearance: ((px: number) => void) | null = null;
 
   showIdle() {
     this.mode = "idle";
