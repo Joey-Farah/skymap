@@ -201,7 +201,9 @@ async function boot() {
     if (!destination) return;
     const { b, poi } = destination;
     const named = comboFrom.value && !comboFrom.isCurrentLocation ? router.building(comboFrom.value) : null;
-    const originId = named?.id ?? currentApproach?.building.id ?? null;
+    // Through routeEnd, as the preview routes it: a curated parking ramp is
+    // reached through its building, and routed from raw it had no route.
+    const originId = (named && routeEnd(named, comboFrom.poi).buildingId) ?? currentApproach?.building.id ?? null;
     // Picking a building by name means you consider yourself in it: no walk.
     const approach = named ? null : currentApproach;
     let directionsLabel: string | undefined;
@@ -561,7 +563,6 @@ async function boot() {
     // exactly when someone outdoors wanted it — but only from a building
     // that goes somewhere.
     const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS, selectedTime());
-    currentApproach = approach;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       // The walker stays on the skyway. A fix is evidence, not a position:
       // it moves them as far along the route as walking allows and no
@@ -575,11 +576,11 @@ async function boot() {
       // live reading, so the grey walked prefix stops growing with it.
       view.setWalkedProgress(placed && !placed.offRoute ? walkedHighWater : null);
     }
-    const cardOutOfDate = mode === "card" && (approach?.building.id ?? null) !== (currentApproach?.building.id ?? null);
+    const movedBuilding = (approach?.building.id ?? null) !== (currentApproach?.building.id ?? null);
     currentApproach = approach;
     comboFrom.setCurrentLocation(approach);
     comboTo.setCurrentLocation(approach); // only ever "Current Location" via swap
-    if (cardOutOfDate) sheet.refresh(renderPlaceCard);
+    if (movedBuilding) followCurrentLocation();
     // Same-name chains rank closest-first from where you actually are;
     // the To field prefers the chosen origin as its anchor when one's set.
     comboFrom.setSearchAnchor({ lat, lon });
@@ -603,7 +604,19 @@ async function boot() {
     comboFrom.setCurrentLocation(null);
     comboTo.setCurrentLocation(null);
     comboFrom.setSearchAnchor(null);
+    followCurrentLocation();
+  }
+
+  /** Where you are changed buildings, or stopped being known: whatever on
+   * screen was measured from it is measured again now — a place card's walk
+   * time (QA 011), or a preview that starts from Current Location, which
+   * otherwise kept its old route under a label naming the new building until
+   * the minute refresh (QA 010). */
+  function followCurrentLocation() {
     if (mode === "card") sheet.refresh(renderPlaceCard);
+    else if (mode === "preview" && (comboFrom.isCurrentLocation || comboTo.isCurrentLocation)) {
+      computePreview({ refresh: true });
+    }
   }
 
   // --- Heading-up tracking: Apple-Maps locate cycle -----------------------

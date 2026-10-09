@@ -121,6 +121,10 @@ export class BuildingCombo {
 
     this.input.addEventListener("input", () => {
       this.selectedId = null;
+      // Typing means choosing something else: it isn't "Current Location"
+      // any more, so the next fix mustn't write its label back over the
+      // text (it did, about once a second on iOS).
+      this.pickedCurrentLocation = false;
       this.render(this.input.value);
     });
     this.input.addEventListener("focus", () => this.render(this.input.value));
@@ -147,7 +151,9 @@ export class BuildingCombo {
     this.currentApproach = approach;
     // A "Current Location" pick follows the fix, building and walk together
     // (see `value`), so its label has to follow too.
-    if (this.pickedCurrentLocation) this.input.value = currentLocationLabel(approach);
+    if (this.pickedCurrentLocation && document.activeElement !== this.input) {
+      this.input.value = currentLocationLabel(approach);
+    }
     // Focused counts as open: with no recents and no fix yet, the focused
     // list rendered empty and hid itself, and the fix that then arrived was
     // never offered (QA 012).

@@ -146,3 +146,90 @@ test("a fix that lands after Directions asked for a start offers Current Locatio
   });
   assert.match(row ?? "", /Current Location/);
 });
+
+/** A preview from Current Location at Six Quebec to Target Center. */
+async function previewFromHere(page) {
+  await openApp(page);
+  await page.evaluate(([lat, lon]) => window.__testGeo.fix(lat, lon), SIX_QUEBEC);
+  await page.waitForTimeout(300);
+  await page.evaluate(() => {
+    const s = window.__skymap;
+    s.modes.showPlace(s.router.building("target-center-23125943"));
+    s.modes.enterPreview();
+  });
+  await page.waitForTimeout(400);
+}
+
+test("a GPS fix never rewrites what you're typing in From (review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual", clockAt: NOON });
+  t.after(() => browser.close());
+  await previewFromHere(page);
+  await page.click("#input-from");
+  await page.fill("#input-from", "");
+  await page.type("#input-from", "IDS");
+  await page.evaluate(([lat, lon]) => window.__testGeo.fix(lat, lon), SIX_QUEBEC);
+  await page.waitForTimeout(300);
+  assert.equal(await page.inputValue("#input-from"), "IDS");
+});
+
+test("when your building changes, a Current Location preview is redone at once (review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual", clockAt: NOON });
+  t.after(() => browser.close());
+  await previewFromHere(page);
+  await page.evaluate(() => window.__testGeo.fix(44.9745, -93.265)); // a few blocks on
+  await page.waitForTimeout(600);
+  const r = await page.evaluate(() => ({
+    from: document.getElementById("input-from").value,
+    walkTo: document.getElementById("sheet").innerText.match(/walk outside to (.+?) first/)?.[1] ?? null,
+    firstStep: document.querySelector("#sheet ul.steps li")?.innerText.split(" — ")[0].replace(" (closed)", "").trim() ?? null,
+  }));
+  assert.equal(r.from, `Current Location · ${r.firstStep}`);
+  assert.equal(r.walkTo, r.firstStep);
+});
+
+test("when location goes under a Current Location preview, the route goes and focus stays put (review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual", clockAt: NOON });
+  t.after(() => browser.close());
+  await previewFromHere(page);
+  await page.evaluate(() => window.__testGeo.error(1));
+  await page.waitForTimeout(300);
+  await page.clock.fastForward("01:05"); // and a minute's refresh on top
+  await page.waitForTimeout(300);
+  const r = await page.evaluate(() => ({
+    focused: document.activeElement?.id ?? null,
+    route: window.__skymap.view.activeRouteCoords.length,
+    sheet: document.getElementById("sheet").innerText,
+  }));
+  assert.notEqual(r.focused, "input-from");
+  assert.equal(r.route, 0, "the old route is no longer drawn");
+  assert.match(r.sheet, /Choose a starting point/);
+});
+
+test("a place card picks up a walk time when the first fix arrives (QA 011, review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual", clockAt: NOON });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => window.__skymap.modes.showPlace(window.__skymap.router.building("target-center-23125943")));
+  assert.equal(await directionsButton(page), "Directions");
+  await page.evaluate(([lat, lon]) => window.__testGeo.fix(lat, lon), SIX_QUEBEC);
+  await page.waitForTimeout(300);
+  assert.ok(minutesIn(await directionsButton(page)) > 0, await directionsButton(page));
+});
+
+test("a card's walk time from a parking ramp picked by name matches the route (QA 016, review)", async (t) => {
+  const { browser, page } = await launch({ clockAt: NOON });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => window.__skymap.modes.showPlace(window.__skymap.router.building("wells-fargo-center-41763762")));
+  await page.click("#sheet .actions button.primary");
+  await page.waitForTimeout(300);
+  await pick(page, "#input-from", "LaSalle at 10th");
+  await page.click("#editor-close");
+  await page.waitForTimeout(300);
+  const button = await directionsButton(page);
+  await page.click("#sheet .actions button.primary");
+  await page.waitForTimeout(400);
+  const summary = await page.evaluate(() => document.querySelector("#sheet .route-summary .big")?.textContent ?? "");
+  assert.ok(minutesIn(summary) > 0, "setup: the ramp routes");
+  assert.equal(minutesIn(button), minutesIn(summary), `card "${button}", preview "${summary}"`);
+});
