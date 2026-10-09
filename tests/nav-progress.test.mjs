@@ -193,3 +193,31 @@ test("arrival waits until the walker is near the end, not just through the door"
   assert.equal(stepIndexFromAlong(starts, line, 25), 2, "within 30 m: arrived");
   assert.equal(stepIndexFromAlong([0, 300], 310, 10), 1, "a door within 30 m of the end arrives at the door");
 });
+
+test("reaching the end of a line whose last door is its end counts as arrived (QA 004)", () => {
+  // The last bridge lands on the line's final point, so the destination's
+  // door *is* the end. The tracker's projection stops a fraction of a
+  // millimetre short of an endpoint, and a 1e-9 m tolerance left a perfect
+  // walk one step short of "You've arrived" for good.
+  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 0.0003), 2);
+  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 1.3), 2, "the most it has been seen to fall short");
+  // Standing 2 m from that door is at it: GPS can't tell the difference,
+  // and the projection's own shortfall comes on top (QA 004's repro).
+  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 3.3), 2, "2 m short, plus the shortfall");
+  // But not from the last bridge, 12 m out (review).
+  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 12), 1);
+  // A door well before the end still waits for the walker to get close.
+  assert.equal(stepIndexFromAlong([0, 100, 150], 200, 45), 1);
+  assert.equal(stepIndexFromAlong([0, 100, 150], 200, 20), 2);
+});
+
+test("a forward jump that the elapsed time explains isn't slowed down (QA 032)", () => {
+  // Phone in a pocket, screen locked: no fixes for 7 minutes, then one at
+  // the destination door. Slew-limited to 75 m a fix, the banner replayed
+  // every building already walked past, one per second.
+  assert.equal(settleRemaining(800, 100, 7 * 60_000), 100);
+  // One second later, the same jump is still a drifting fix onto a later
+  // leg, and is eased in as before.
+  assert.equal(settleRemaining(400, 150, 1000), 400 - DETOUR_METERS);
+  assert.equal(settleRemaining(400, 150), 400 - DETOUR_METERS, "no elapsed time given: as before");
+});

@@ -8,7 +8,7 @@ import { launch, startTrip, walkRoute } from "./harness.mjs";
 const FROM = "target-plaza-45452119";
 const TO = "lasalle-plaza-461227727";
 
-test("a perfect walk names each building in turn", async (t) => {
+test("a perfect walk names each building in turn and ends in arrival (QA 004)", async (t) => {
   const { browser, page, pageErrors } = await launch();
   t.after(() => browser.close());
 
@@ -17,5 +17,6 @@ test("a perfect walk names each building in turn", async (t) => {
 
   const banners = samples.map((s) => s.banner).filter((b, i, all) => b && b !== all[i - 1]);
   assert.ok(banners.length >= 3, `the banner should move through the route: ${banners.join(" → ")}`);
+  assert.match(banners.at(-1), /arrived/i);
   assert.deepEqual(pageErrors, []);
 });

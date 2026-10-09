@@ -1,3 +1,5 @@
+import { MAX_WALK_SPEED } from "./route-position.ts";
+
 /**
  * Keeps the arrival time from walking backwards.
  *
@@ -64,7 +66,7 @@ export function settleArrival(settled: number | null, raw: number): number {
  * @param settled the last value shown to the walker, or null to start a trip
  * @param raw     metres remaining as just measured
  */
-export function settleRemaining(settled: number | null, raw: number): number {
+export function settleRemaining(settled: number | null, raw: number, elapsedMs = 0): number {
   if (settled === null) return raw;
   if (raw <= settled) {
     // Forward jumps need policing too. A route that doubles back near
@@ -74,8 +76,15 @@ export function settleRemaining(settled: number | null, raw: number): number {
     // deadlock (every later fix is measured against the stale value), so
     // it's slew-limited instead: a real jump converges over a few fixes,
     // a spurious one is corrected before it ever reaches the screen.
+    //
+    // Unless enough time has passed to walk it. With the screen locked in a
+    // pocket, no fixes arrive for minutes and the first one back is at the
+    // door: eased in 75 m a fix, the banner replayed every building already
+    // passed, one a second (QA 032). The tracker feeding this only moves the
+    // dot at walking pace, so a jump that pace explains is real.
     const jump = settled - raw;
-    return jump > DETOUR_METERS ? settled - DETOUR_METERS : raw;
+    const walkable = (MAX_WALK_SPEED * elapsedMs) / 1000;
+    return jump > Math.max(DETOUR_METERS, walkable) ? settled - DETOUR_METERS : raw;
   }
   return raw - settled > DETOUR_METERS ? raw : settled;
 }
@@ -135,6 +144,15 @@ export function shouldRotate(
  * It can't go backwards on its own, because the remaining figure it's fed
  * is already settled, so it needs no clamp.
  */
+/** How close to a destination door at the very end of the line counts as
+ * through it. The tracker's projection stops short of a line's endpoint by
+ * up to about a metre, and such a door — three routes in four — then never
+ * counted as passed: a perfect walk never said "You've arrived" (QA 004).
+ * Standing a couple of metres from the door is at it, as far as GPS can
+ * tell, so that plus the shortfall. Much more would announce arrival from
+ * the last bridge. Doors along the way still switch exactly at the door. */
+const DOOR_TOLERANCE_METERS = 4;
+
 export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, remainingMeters: number): number {
   const alongMeters = lineMeters - remainingMeters;
   const last = stepStarts.length - 1;
@@ -142,6 +160,11 @@ export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, rem
   for (let i = 1; i <= last; i++) {
     if (stepStarts[i] <= alongMeters + 1e-9) index = i;
     else break;
+  }
+  // A destination door that is the end of the line counts once the walker
+  // is within DOOR_TOLERANCE_METERS of it — see there.
+  if (last > 0 && lineMeters - stepStarts[last] <= DOOR_TOLERANCE_METERS && remainingMeters <= DOOR_TOLERANCE_METERS) {
+    index = last;
   }
   // Through the destination's door isn't arrived: the door can sit ~100 m
   // before the pin. Arrival waits for the same ARRIVAL_METERS that ending

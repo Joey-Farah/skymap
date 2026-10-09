@@ -85,7 +85,11 @@ async function boot() {
     routeEditor.hidden = m !== "preview";
     navBanner.hidden = m !== "nav";
     searchBarTop.hidden = m === "preview" || m === "nav";
+    updateCameraPadding?.();
   }
+  /** Set once the map exists — see below. */
+  let updateCameraPadding: (() => void) | null = null;
+
 
   const style = await resolveStyle();
   const view = new SkymapView(
@@ -97,6 +101,24 @@ async function boot() {
     (lat, lon) => onPosition(lat, lon),
     (lat, lon) => onRouteTap(lat, lon),
   );
+
+  // Mid-trip the camera centres your dot in the map you can see, between
+  // the banner and the sheet, and follows the sheet as it's dragged. Other
+  // screens leave the camera alone: re-padding shifts the whole map, and
+  // nothing there follows you. Wired here, once the map exists: the sheet
+  // and the banner both report sizes before it does.
+  let sheetClearance = 0;
+  updateCameraPadding = () => {
+    if (mode !== "nav") return view.setCameraPadding(null);
+    view.setCameraPadding({ top: navBanner.getBoundingClientRect().bottom, bottom: sheetClearance });
+  };
+  sheet.onClearance = (px) => {
+    sheetClearance = px;
+    updateCameraPadding?.();
+  };
+  // The banner is measured as it is shown, before its instruction is
+  // filled in; it grows a line or two after that.
+  new ResizeObserver(() => updateCameraPadding?.()).observe(navBanner);
   const poisByBuilding = new Map<string, Poi[]>();
   for (const p of data.pois ?? []) {
     // A building's own marker is hosted by the building it names, so without
@@ -160,8 +182,10 @@ async function boot() {
     activeRoute = null;
     destination = null;
     view.setRoute(null);
-    sheet.showIdle();
+    // Mode first: the idle sheet's new height re-pads the camera, and read
+    // as a mid-trip resize it recentred on the walker as the trip ended.
     setMode("idle");
+    sheet.showIdle();
     // Back to a blank slate, not the last thing that was searched for —
     // matches the map itself resetting to no pin, no route.
     //
@@ -347,6 +371,7 @@ async function boot() {
     // building's centroid.
     view.setRoute(route, {
       keepCamera: !!opts.refresh,
+      clearTop: routeEditor.getBoundingClientRect().bottom,
       fromCoord: from.coord,
       toCoord: to.coord,
       // A `nearby` place sits outside the network, so the last stretch to
@@ -376,14 +401,18 @@ async function boot() {
     // long enough for a building on it to close (QA 035).
     computePreview({ refresh: true });
     if (!activeRoute) return;
+    view.finishRouteDraw();
     setMode("nav");
     // A trip that can't see you never moves: with location switched off at
     // the locate button, the banner sat on its first step for the whole walk
     // (the 2026-10-08 user report). GO turns it back on. Not after a denial:
     // MapLibre disables the button then, and only the OS can change that.
     if (watchState() === "OFF" && !locateButton?.disabled) view.geolocate.trigger();
+    // And the camera follows you again, wherever the preview left it.
+    else view.lockCameraOnWalker();
     manualPositionUntil = 0;
     settledRemaining = null; // a new trip starts with nothing to hold against
+    settledAt = null;
     walkedHighWater = null;
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
@@ -392,7 +421,11 @@ async function boot() {
   function applyNavProgress(fallbackStep: number, raw: number | null = null, offRoute = false) {
     // Held to non-increasing across the trip, so indoor GPS drift can't walk
     // the arrival time backwards — see nav-progress.ts.
-    if (raw != null) settledRemaining = settleRemaining(settledRemaining, raw);
+    if (raw != null) {
+      const now = Date.now();
+      settledRemaining = settleRemaining(settledRemaining, raw, settledAt == null ? 0 : now - settledAt);
+      settledAt = now;
+    }
     if (settledRemaining != null) {
       walkedHighWater = walkedHighWater == null ? settledRemaining : Math.min(walkedHighWater, settledRemaining);
     }
@@ -533,6 +566,8 @@ async function boot() {
   let manualPositionUntil = 0;
   /** Smoothed metres-to-go for the trip in progress; null between trips. */
   let settledRemaining: number | null = null;
+  /** When settledRemaining last took a reading — see settleRemaining. */
+  let settledAt: number | null = null;
   /** Closest to the destination this trip has ever got. The dimmed line is
    * drawn from this rather than from the live figure: skyways run parallel
    * a block apart, so a drifting fix can project onto a neighbouring leg
