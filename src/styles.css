@@ -570,12 +570,22 @@ a:focus-visible {
   border: 0;
   background: rgba(20, 33, 61, 0.06);
   border-radius: 50%;
+  /* A 26pt circle, but a 44pt target: a near miss landed on the drag
+     handle underneath and expanded the card instead of closing it
+     (QA 023). The hit area is the pseudo-element below. */
+  overflow: visible;
   font-size: 16px;
   color: var(--ink-600);
   cursor: pointer;
   line-height: 1;
   display: grid;
   place-items: center;
+}
+.sheet-close::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1660,9 +1670,14 @@ a:focus-visible {
 /* The banner sits where the old Save My Ramp prompt did: above the sheet,
    below the search bar, out of the map's way. It is a courtesy, so it is
    the smallest thing on screen that can still be read and dismissed. */
+/* Under the search bar (73px tall, from 10px down), not above the sheet:
+   a fixed bottom offset, copied from the old Save My Ramp prompt, ignored
+   the sheet's height and sat on every place card's name and ✕ (QA 001),
+   and the row above the sheet belongs to the locate button. It steps aside
+   on the route editor's and the trip's screens, which own the top. */
 .update-banner {
-  top: auto;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 66px);
+  top: calc(env(safe-area-inset-top, 0px) + 81px);
+  bottom: auto;
   left: 10px;
   right: 10px;
   max-width: 420px;
@@ -1677,7 +1692,9 @@ a:focus-visible {
   z-index: 12;
 }
 
-.update-banner[hidden] {
+.update-banner[hidden],
+.mode-preview .update-banner,
+.mode-nav .update-banner {
   display: none;
 }
 
