@@ -8,6 +8,7 @@ import {
   skywayAccessLabel,
   statusAt,
   statusFromHours,
+  stepArrival,
   weeklyHoursRows,
 } from "../src/hours.ts";
 
@@ -108,9 +109,10 @@ test("a 24-hour building never triggers a closing-soon warning", () => {
 });
 
 test("a real late close still warns", () => {
+  const start = { id: "start", name: "Start", hours: null };
   const b = { id: "tower", name: "Some Tower", hours: Array(7).fill([390, 1320]) }; // 06:30-22:00
-  const w = closingSoonWarnings({ steps: [{ building: b, arrivalMinutes: 5 }], totalMinutes: 5, totalMeters: 100 },
-    new Date(2026, 7, 6, 21, 40));
+  const steps = [{ building: start, arrivalMinutes: 0 }, { building: b, arrivalMinutes: 5 }];
+  const w = closingSoonWarnings({ steps, totalMinutes: 5, totalMeters: 100 }, new Date(2026, 7, 6, 21, 40));
   assert.equal(w.length, 1);
   assert.match(w[0].label, /closes at 10pm/);
 });
@@ -180,4 +182,28 @@ test("hours are judged after the outdoor walk to the skyway, not before it", () 
   const through = { ...route, steps: [...route.steps, { building: { id: "z", name: "Z", hours: null }, arrivalMinutes: 3 }] };
   const soon = closingSoonWarnings(through, new Date(2026, 6, 14, 17, 45));
   assert.equal(soon[0]?.minutesLeft, 8, "5 min outside + 2 min in = arrives 5:52, closes in 8");
+});
+
+test("closing warnings come tightest first, and skip the building you start in (QA 050)", () => {
+  const hours = (close) => Array(7).fill([360, close]);
+  const steps = [
+    { building: { id: "a", name: "Start Hall", hours: hours(1200) }, arrivalMinutes: 0 }, // 8pm: you're in it
+    { building: { id: "b", name: "Middle", hours: hours(1200) }, arrivalMinutes: 5 },
+    { building: { id: "c", name: "Destination", hours: hours(1182) }, arrivalMinutes: 15 }, // 7:42pm
+  ];
+  const w = closingSoonWarnings({ steps, totalMinutes: 15, totalMeters: 900 }, new Date(2026, 9, 7, 19, 25));
+  assert.deepEqual(w.map((x) => x.building.id), ["c", "b"]);
+  // Starting from the street, you do walk into the first building.
+  const fromStreet = closingSoonWarnings(
+    { steps, totalMinutes: 15, totalMeters: 900, approach: { minutes: 3, meters: 200, buildingName: "Start Hall" } },
+    new Date(2026, 9, 7, 19, 35), // in at 7:38pm, 22 min before it shuts
+  );
+  assert.ok(fromStreet.some((x) => x.building.id === "a"));
+});
+
+test("every step's arrival counts the street walk first (QA 006)", () => {
+  const route = { approach: { minutes: 4, meters: 300, buildingName: "X" } };
+  const t = stepArrival(route, { arrivalMinutes: 6 }, new Date(2026, 9, 14, 5, 56));
+  assert.equal(t.getHours() * 60 + t.getMinutes(), 6 * 60 + 6);
+  assert.equal(stepArrival({}, { arrivalMinutes: 6 }, new Date(2026, 9, 14, 5, 56)).getMinutes(), 2);
 });

@@ -469,12 +469,13 @@ test("arriving at a through-building doesn't count the walk through it yet", () 
 });
 
 test("closingSoonWarnings flags buildings closing near arrival", () => {
-  // Mon–Fri 6:30am–10pm everywhere in the fixture: at 9:45pm Tuesday,
-  // everything on the route closes within 30 minutes.
-  const TUE_945PM = new Date(2026, 6, 14, 21, 45);
-  const r = router.route("ids-center", "us-bank-stadium", TUE_945PM);
-  const warnings = closingSoonWarnings(r, TUE_945PM, 30);
-  assert.ok(warnings.length > 0, "late-night route should warn");
+  // Most of the fixture's buildings shut at 6:30pm: leaving at 6pm Tuesday,
+  // the ones further along the route close within 30 minutes of arrival.
+  // (The building you leave from isn't warned about — you're in it.)
+  const TUE_6PM = new Date(2026, 6, 14, 18, 0);
+  const r = router.route("ids-center", "us-bank-stadium", TUE_6PM);
+  const warnings = closingSoonWarnings(r, TUE_6PM, 30);
+  assert.ok(warnings.length > 0, "an early-evening route should warn");
   for (const w of warnings) {
     assert.ok(w.minutesLeft > 0 && w.minutesLeft <= 30);
     assert.match(w.label, /closes/i);
