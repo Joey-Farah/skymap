@@ -65,7 +65,13 @@ export async function resolveStyle(dark = prefersDark()): Promise<string | mapli
   const url = dark ? DARK_STYLE_URL : LIGHT_STYLE_URL;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-    if (res.ok) return url;
+    // The document itself, not its URL: handed the URL, MapLibre fetched it
+    // a second time, and a connection that dropped in between left a blank
+    // map for the whole session with nothing to retry it (QA 046).
+    if (res.ok) {
+      const style = (await res.json()) as maplibregl.StyleSpecification;
+      if (style?.version === 8 && Array.isArray(style.layers)) return style;
+    }
   } catch {
     // fall through
   }
@@ -312,7 +318,11 @@ export class SkymapView {
     // usable on a plain background instead of dying.
     this.map.on("error", (e) => console.warn("Map resource error:", e.error?.message));
 
-    this.map.on("load", () => {
+    // On the style, not on "load": MapLibre's "load" also waits for the
+    // basemap's sprite and tile metadata, so on a stalled connection the
+    // skyways — drawn from data already on the phone — never appeared at
+    // all (QA 026). Everything here needs only the style.
+    this.map.once("style.load", () => {
       this.ready = true;
       this.declutterBasemap();
       this.registerPoiIcons();
@@ -886,7 +896,7 @@ export class SkymapView {
       this.routeAnim = requestAnimationFrame(frame);
     };
     if (this.ready) apply();
-    else this.map.once("load", apply);
+    else this.map.once("style.load", apply);
   }
 
   /** Corrected position: MapLibre's own blue dot is driven by the
@@ -1159,7 +1169,7 @@ export class SkymapView {
       );
     };
     if (this.ready) apply();
-    else this.map.once("load", apply);
+    else this.map.once("style.load", apply);
   }
 
 }
