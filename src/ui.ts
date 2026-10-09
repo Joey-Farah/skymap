@@ -67,6 +67,13 @@ import {
 import { parseOpeningHours } from "./opening-hours.ts";
 import { shouldExpand } from "./sheet-snap.ts";
 
+/** Names the building the GPS fix snapped to: indoors, drift can cross a
+ * street, and a plain "Current Location" hides a wrong snap until the
+ * route's first step looks inexplicably wrong. */
+function currentLocationLabel(approach: Approach | null): string {
+  return approach ? `Current Location · ${approach.building.name}` : "Current Location";
+}
+
 /** Searchable building picker attached to an existing .combo element. */
 export class BuildingCombo {
   private input: HTMLInputElement;
@@ -138,7 +145,18 @@ export class BuildingCombo {
    */
   setCurrentLocation(approach: Approach | null) {
     this.currentApproach = approach;
-    if (!this.list.hidden) this.render(this.input.value);
+    // A "Current Location" pick follows the fix, building and walk together
+    // (see `value`), so its label has to follow too.
+    if (this.pickedCurrentLocation) this.input.value = currentLocationLabel(approach);
+    // Focused counts as open: with no recents and no fix yet, the focused
+    // list rendered empty and hid itself, and the fix that then arrived was
+    // never offered (QA 012).
+    if (!this.list.hidden || document.activeElement === this.input) this.render(this.input.value);
+  }
+
+  /** Whether this field holds "Current Location" rather than a named place. */
+  get isCurrentLocation(): boolean {
+    return this.pickedCurrentLocation;
   }
 
   /** The approach behind a "Current Location" selection, so the caller can
@@ -161,7 +179,12 @@ export class BuildingCombo {
     if (!this.list.hidden) this.render(this.input.value);
   }
 
+  /** The selected building. For "Current Location" it is whichever building
+   * the latest fix resolves to — read from the same approach the `approach`
+   * getter returns, so the walk outside and the building it leads to can
+   * never come from two different fixes (QA 010). */
   get value(): string | null {
+    if (this.pickedCurrentLocation) return this.currentApproach?.building.id ?? null;
     return this.selectedId;
   }
 
@@ -216,10 +239,7 @@ export class BuildingCombo {
     this.selectedId = b.id;
     this.pickedCurrentLocation = true;
     this.selectedPoi = null;
-    // Name the building the GPS fix snapped to: indoors, drift can cross a
-    // street, and a plain "Current Location" hides a wrong snap until the
-    // route's first step looks inexplicably wrong.
-    this.input.value = `Current Location · ${b.name}`;
+    this.input.value = currentLocationLabel(this.currentApproach);
     this.hide();
     if (opts.silent) return;
     this.onSelect?.(b);
@@ -564,7 +584,27 @@ export class Sheet {
     this.navStepsListEl = null;
   }
 
+  /** Re-render what's open in place — same expansion, same scroll, no
+   * entrance animation — when its content changed under the reader rather
+   * than because they asked for something new: a minute passing on a route
+   * preview, location coming or going under a place card. */
+  refresh(render: () => void) {
+    const scrollTop = this.root.scrollTop;
+    this.keepLayout = true;
+    try {
+      render();
+    } finally {
+      this.keepLayout = false;
+    }
+    this.root.scrollTop = scrollTop;
+  }
+  private keepLayout = false;
+
   private show(mode: DrawerMode, expanded: boolean) {
+    if (this.keepLayout && this.mode === mode) {
+      this.applyMode(); // re-measures for the new content, keeps `expanded`
+      return;
+    }
     this.mode = mode;
     this.applyMode();
     if (mode === "card" || mode === "preview" || mode === "nav") this.setExpanded(expanded);
@@ -813,11 +853,7 @@ export class Sheet {
     when: Date,
     pois: Poi[],
     actions: { onGo: () => void },
-    // Refreshing the same route as time passes: leave the sheet expanded or
-    // not, and where it was scrolled, as the reader had it.
-    opts: { keepLayout?: boolean } = {},
   ) {
-    const scrollTop = this.root.scrollTop;
     this.routePois = pois;
     this.content.innerHTML = "";
     this.clearRouteProgress();
@@ -874,11 +910,6 @@ export class Sheet {
 
     this.content.append(this.buildStepsList(route, when, pois));
     this.activeRoute = route;
-    if (opts.keepLayout && this.mode === "preview") {
-      this.applyMode();
-      this.root.scrollTop = scrollTop;
-      return;
-    }
     this.show("preview", false);
   }
 
