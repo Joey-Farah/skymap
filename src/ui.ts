@@ -104,6 +104,10 @@ export class BuildingCombo {
    * a building, not the building itself — callers that want to show that
    * business's own card (hours, website) rather than just its host use it. */
   onSelect: ((b: Building, poi?: Poi) => void) | null = null;
+  /** The field went back to what it held after an edit was abandoned
+   * (revertOnBlur). What it holds may have been acted on meanwhile — a
+   * refresh during the edit saw no selection — so the owner looks again. */
+  onRevert: (() => void) | null = null;
   /** Fires only for a deliberate, named choice — not the current-location
    * shortcut — so callers can persist it as a recent without also
    * recording "wherever I happened to be standing" as a place name. poi
@@ -159,6 +163,7 @@ export class BuildingCombo {
         this.pickedCurrentLocation = before.picked;
         this.input.value = before.picked ? currentLocationLabel(this.currentApproach) : before.text;
         this.hide();
+        this.onRevert?.();
       });
     }
     this.input.addEventListener("keydown", (e) => this.onKey(e));

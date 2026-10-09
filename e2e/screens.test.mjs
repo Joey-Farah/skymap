@@ -41,17 +41,43 @@ test("after Swap, closing directions returns to the new destination's card (QA 0
   assert.doesNotMatch(preview.sheet, /already here/i);
 });
 
-test("Swap with an empty To doesn't put one place in both fields (QA 018)", async (t) => {
+test("Swap with one side empty doesn't put one place in both fields (QA 018)", async (t) => {
+  // No location: Directions leaves From empty, To set. Swapping makes To
+  // the empty side — the case that left both fields reading one place.
   const page = await noLocation(t);
-  await openApp(page, TARGET_TO_IDS);
-  await page.click("#input-to");
-  await page.fill("#input-to", "");
-  await page.evaluate(() => document.getElementById("input-to").blur());
+  await openApp(page);
+  await page.evaluate(() => {
+    const s = window.__skymap;
+    s.modes.showPlace(s.router.building("ids-center-1385236413"));
+    s.modes.enterPreview();
+  });
+  await page.waitForTimeout(300);
+  assert.equal((await read(page)).from, "", "setup: From is empty");
   await page.click("#btn-swap");
   await page.waitForTimeout(400);
   const r = await read(page);
-  assert.notEqual(r.from, r.to, `both fields read "${r.from}"`);
-  assert.doesNotMatch(r.sheet, /already here/i);
+  assert.equal(r.from, "IDS Center");
+  assert.equal(r.to, "");
+  assert.doesNotMatch(r.sheet, /already here|starting point/i, "and the sheet asks for what's missing");
+  assert.match(r.sheet, /destination/i);
+});
+
+test("an abandoned edit puts the route back along with the text (review of QA 017)", async (t) => {
+  const page = await noLocation(t);
+  await openApp(page, TARGET_TO_IDS);
+  await page.click("#input-from");
+  await page.fill("#input-from", "");
+  await page.type("#input-from", "Wells");
+  // A minute's refresh lands mid-edit and finds no start...
+  await page.clock.fastForward("01:05");
+  await page.waitForTimeout(300);
+  // ...then the edit is abandoned.
+  await page.evaluate(() => document.getElementById("input-from").blur());
+  await page.waitForTimeout(300);
+  const r = await read(page);
+  assert.equal(r.from, "Target Center");
+  assert.ok(r.route > 0, "the route is drawn again");
+  assert.doesNotMatch(r.sheet, /Choose a starting point/);
 });
 
 test("retyping From and leaving without a pick keeps From and the route in step (QA 017)", async (t) => {

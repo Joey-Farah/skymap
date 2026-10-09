@@ -324,7 +324,16 @@ async function boot() {
       if (!opts.refresh) (document.getElementById("input-from") as HTMLInputElement).focus();
       return;
     }
-    if (!toId) return;
+    if (!toId) {
+      // Nothing to route to — a swap with an empty From leaves To empty. Say
+      // so, rather than leave a "Choose a starting point" that's no longer
+      // true on screen.
+      activeRoute = null;
+      view.setRoute(null);
+      clearRouteUrl();
+      sheet.showMessage("Choose a destination", "Pick where you're going above.");
+      return;
+    }
     const from = routeEnd(router.building(fromId)!, comboFrom.poi);
     const to = routeEnd(router.building(toId)!, comboTo.poi);
     if (fromId !== toId && from.buildingId === to.buildingId) {
@@ -533,6 +542,9 @@ async function boot() {
     comboTo.setSearchAnchor({ lat: b.lat, lon: b.lon });
     computePreview();
   };
+  // An abandoned edit puts the field back; the preview follows it back too.
+  comboFrom.onRevert = () => computePreview({ refresh: true });
+  comboTo.onRevert = () => computePreview({ refresh: true });
   comboTo.onSelect = (b, poi) => {
     destination = { b, poi };
     computePreview();
@@ -953,6 +965,8 @@ async function boot() {
     if (initialTo) {
       showPlace(initialTo);
       if (initial.fromId) showToast("That link's starting point isn't on the map any more.");
+    } else if (initialFrom && initial.toId) {
+      showToast("That link's destination isn't on the map any more.");
     } else if (initial.fromId || initial.toId) {
       showToast("Couldn't open that link — its places aren't on the map any more.");
     }
