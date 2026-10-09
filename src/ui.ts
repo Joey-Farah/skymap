@@ -104,6 +104,10 @@ export class BuildingCombo {
    * a building, not the building itself — callers that want to show that
    * business's own card (hours, website) rather than just its host use it. */
   onSelect: ((b: Building, poi?: Poi) => void) | null = null;
+  /** The field went back to what it held after an edit was abandoned
+   * (revertOnBlur). What it holds may have been acted on meanwhile — a
+   * refresh during the edit saw no selection — so the owner looks again. */
+  onRevert: (() => void) | null = null;
   /** Fires only for a deliberate, named choice — not the current-location
    * shortcut — so callers can persist it as a recent without also
    * recording "wherever I happened to be standing" as a place name. poi
@@ -111,7 +115,17 @@ export class BuildingCombo {
    * chosen, not just its host building. */
   onRecentWorthy: ((b: Building, poi?: Poi) => void) | null = null;
 
-  constructor(root: HTMLElement, buildings: Building[], pois: Poi[] = [], opts: { currentLocation?: boolean } = {}) {
+  /** The field's text as of its last completed choice (or clear). */
+  private chosenText = "";
+  /** What the field held when typing started, for revertOnBlur. */
+  private beforeEdit: { selectedId: string | null; poi: Poi | null; picked: boolean; text: string } | null = null;
+
+  constructor(
+    root: HTMLElement,
+    buildings: Building[],
+    pois: Poi[] = [],
+    opts: { currentLocation?: boolean; revertOnBlur?: boolean } = {},
+  ) {
     this.input = root.querySelector("input")!;
     this.list = root.querySelector(".combo-list")!;
     this.buildingsById = new Map(buildings.map((b) => [b.id, b]));
@@ -120,6 +134,14 @@ export class BuildingCombo {
     this.showCurrentLocation = opts.currentLocation ?? false;
 
     this.input.addEventListener("input", () => {
+      // The input event comes after the text has already changed, so the
+      // label is taken from when the current choice was made.
+      this.beforeEdit ??= {
+        selectedId: this.selectedId,
+        poi: this.selectedPoi,
+        picked: this.pickedCurrentLocation,
+        text: this.chosenText,
+      };
       this.selectedId = null;
       // Typing means choosing something else: it isn't "Current Location"
       // any more, so the next fix mustn't write its label back over the
@@ -128,6 +150,22 @@ export class BuildingCombo {
       this.render(this.input.value);
     });
     this.input.addEventListener("focus", () => this.render(this.input.value));
+    // A route field that's typed in and then left without a pick goes back
+    // to what it held. Otherwise it showed the new text over the old route,
+    // and GO started the old route under the new name (QA 017).
+    if (opts.revertOnBlur) {
+      this.input.addEventListener("blur", () => {
+        const before = this.beforeEdit;
+        this.beforeEdit = null;
+        if (!before || this.selectedId || this.pickedCurrentLocation) return;
+        this.selectedId = before.selectedId;
+        this.selectedPoi = before.poi;
+        this.pickedCurrentLocation = before.picked;
+        this.input.value = before.picked ? currentLocationLabel(this.currentApproach) : before.text;
+        this.hide();
+        this.onRevert?.();
+      });
+    }
     this.input.addEventListener("keydown", (e) => this.onKey(e));
     document.addEventListener("click", (e) => {
       if (root.contains(e.target as Node)) return;
@@ -214,9 +252,11 @@ export class BuildingCombo {
    * immediately re-collapse the very form you just wanted to keep open. */
   select(b: Building, poi?: Poi, opts: { silent?: boolean } = {}) {
     this.selectedId = b.id;
+    this.beforeEdit = null;
     this.pickedCurrentLocation = false;
     this.selectedPoi = poi ?? null;
     this.input.value = poi?.name ?? b.name;
+    this.chosenText = this.input.value;
     this.hide();
     if (opts.silent) return;
     this.onSelect?.(b, poi);
@@ -227,8 +267,10 @@ export class BuildingCombo {
     const b = this.buildingsById.get(entry.buildingId);
     if (!b) return;
     this.selectedId = entry.buildingId;
+    this.beforeEdit = null;
     this.pickedCurrentLocation = false;
     this.input.value = entry.label;
+    this.chosenText = this.input.value;
     this.hide();
     const poi = entry.poiId ? this.poisById.get(entry.poiId) : undefined;
     this.selectedPoi = poi ?? null;
@@ -243,9 +285,11 @@ export class BuildingCombo {
     const b = this.currentApproach?.building;
     if (!b) return;
     this.selectedId = b.id;
+    this.beforeEdit = null;
     this.pickedCurrentLocation = true;
     this.selectedPoi = null;
     this.input.value = currentLocationLabel(this.currentApproach);
+    this.chosenText = this.input.value;
     this.hide();
     if (opts.silent) return;
     this.onSelect?.(b);
@@ -265,7 +309,7 @@ export class BuildingCombo {
             // A recent POI shows and reselects as that exact business, not
             // the building it happens to live in — same shape a live search
             // result for it would have.
-            if (poi) return { label: poi.name, sublabel: b.name, buildingId: b.id, poiId: poi.id, icon: poi.group ?? "building" };
+            if (poi) return { label: poi.name, sublabel: b.name, buildingId: b.id, poiId: poi.id, icon: poi.group ?? "building", nearby: poi.nearby };
             return { label: b.name, sublabel: b.address, buildingId: b.id, icon: "building" };
           })
           .filter((e): e is ComboEntry => e !== null);
@@ -319,7 +363,9 @@ export class BuildingCombo {
       name.textContent = entry.label;
       const sub = document.createElement("span");
       sub.className = "addr";
-      sub.textContent = entry.poiId ? `in ${entry.sublabel}` : entry.sublabel;
+      // A place just outside is reached through its building, not in it —
+      // the same wording as its card (QA 043).
+      sub.textContent = entry.poiId ? `${entry.nearby ? "via" : "in"} ${entry.sublabel}` : entry.sublabel;
       text.append(name, sub);
       li.append(icon, text);
       li.addEventListener("mousedown", (e) => {
@@ -364,12 +410,14 @@ export class BuildingCombo {
    * closed. Distinct from select(): this is "never mind," not a choice. */
   clear() {
     this.selectedId = null;
+    this.beforeEdit = null;
     this.selectedPoi = null;
     // Without this the `approach` getter goes on reporting a live outdoor
     // walk for a field that no longer has anything selected, so a cleared
     // From could still charge the next trip someone else's approach.
     this.pickedCurrentLocation = false;
     this.input.value = "";
+    this.chosenText = "";
     this.hide();
   }
 }

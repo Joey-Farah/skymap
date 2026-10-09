@@ -134,8 +134,11 @@ async function boot() {
 
   const comboFrom = new BuildingCombo(document.getElementById("combo-from")!, data.buildings, data.pois, {
     currentLocation: true,
+    revertOnBlur: true,
   });
-  const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings, data.pois);
+  const comboTo = new BuildingCombo(document.getElementById("combo-to")!, data.buildings, data.pois, {
+    revertOnBlur: true,
+  });
   // The drawer's search field (screen 2) — picks a destination, whose place
   // card then owns the Directions step. Separate from the preview editor's
   // To field so each screen keeps its own text state, Apple-style.
@@ -206,13 +209,26 @@ async function boot() {
   /** Screen 3: pin + place card. The Directions pill pre-computes the walk
    * time from the live location when there is one — Apple shows the
    * commitment cost on the button itself. */
-  function showPlace(b: Building, poi?: Poi) {
+  function showPlace(b: Building, poi?: Poi, opts: { fromSearch?: boolean } = {}) {
     activeRoute = null;
     destination = { b, poi };
+    // The search bar keeps only what was searched for this card. Reached
+    // any other way — a map tap after a search — the old query stayed over
+    // the new card (QA 042). Cleared, not renamed: a named bar takes the
+    // next query typed into it as more of the same name.
+    if (!opts.fromSearch) comboSearch.clear();
+    // And the address no longer describes a route (QA 020).
+    clearRouteUrl();
     view.setRoute(null);
     view.focusBuilding(b);
     renderPlaceCard();
     setMode("card");
+  }
+
+  /** The address stops describing a route. Left in place, a reload or a
+   * share brought back a route that was no longer on screen (QA 020). */
+  function clearRouteUrl() {
+    if (location.search) history.replaceState(null, "", location.pathname);
   }
 
   /** The card for `destination`. The Directions button quotes the walk from
@@ -301,13 +317,23 @@ async function boot() {
       // than leave it drawn (and startable by GO).
       activeRoute = null;
       view.setRoute(null);
+      clearRouteUrl();
       sheet.showMessage("Choose a starting point", "Pick where you're starting from above.");
       // Only when asked: a refresh is the app's own doing, and taking focus
       // on it opened the list again every minute.
       if (!opts.refresh) (document.getElementById("input-from") as HTMLInputElement).focus();
       return;
     }
-    if (!toId) return;
+    if (!toId) {
+      // Nothing to route to — a swap with an empty From leaves To empty. Say
+      // so, rather than leave a "Choose a starting point" that's no longer
+      // true on screen.
+      activeRoute = null;
+      view.setRoute(null);
+      clearRouteUrl();
+      sheet.showMessage("Choose a destination", "Pick where you're going above.");
+      return;
+    }
     const from = routeEnd(router.building(fromId)!, comboFrom.poi);
     const to = routeEnd(router.building(toId)!, comboTo.poi);
     if (fromId !== toId && from.buildingId === to.buildingId) {
@@ -315,6 +341,7 @@ async function boot() {
       // skyway ends here, and nothing is drawn for the stretch beyond.
       activeRoute = null;
       view.setRoute(null);
+      clearRouteUrl();
       // The ramp, not whichever end has a pin: a business marks its own spot too.
       const far = router.building(router.building(fromId)?.skywayAccess ? fromId : toId);
       sheet.showMessage("You're already here", `The skyway doesn't go any closer to ${far?.name ?? "this place"}.`);
@@ -325,6 +352,7 @@ async function boot() {
       // between two spots in one building. You're already there.
       activeRoute = null;
       view.setRoute(null);
+      clearRouteUrl();
       const building = router.building(fromId);
       const toPoi = comboTo.poi;
       const walkIn = comboFrom.approach;
@@ -336,6 +364,16 @@ async function boot() {
         sheet.showMessage(
           `${mins} min walk`,
           `${toPoi?.name ?? building?.name ?? "It"} is about ${mins} min away on foot, outside the skyway.`,
+        );
+        return;
+      }
+      // A place just outside is reached through the building, not in it —
+      // worded as its own card words it (QA 043).
+      const outside = toPoi?.nearby ? toPoi : comboFrom.poi?.nearby ? comboFrom.poi : null;
+      if (outside) {
+        sheet.showMessage(
+          "Just outside",
+          `${outside.name} is just outside ${building?.name ?? "this building"}, its skyway access — no skyway route to draw.`,
         );
         return;
       }
@@ -355,6 +393,7 @@ async function boot() {
     if (!route) {
       activeRoute = null;
       view.setRoute(null);
+      clearRouteUrl();
       sheet.showMessage("No route found", "No skyway connection between these places.");
       return;
     }
@@ -497,12 +536,15 @@ async function boot() {
     else enterIdle();
   });
 
-  comboSearch.onSelect = (b, poi) => showPlace(b, poi);
+  comboSearch.onSelect = (b, poi) => showPlace(b, poi, { fromSearch: true });
   comboFrom.onSelect = (b) => {
     // Destination searches measure "closest" from the chosen origin.
     comboTo.setSearchAnchor({ lat: b.lat, lon: b.lon });
     computePreview();
   };
+  // An abandoned edit puts the field back; the preview follows it back too.
+  comboFrom.onRevert = () => computePreview({ refresh: true });
+  comboTo.onRevert = () => computePreview({ refresh: true });
   comboTo.onSelect = (b, poi) => {
     destination = { b, poi };
     computePreview();
@@ -518,20 +560,32 @@ async function boot() {
     // swapping twice made the same trip 4 minutes shorter (QA 040).
     const fromHere = comboFrom.isCurrentLocation;
     const toHere = comboTo.isCurrentLocation;
+    // An empty side swaps as empty: leaving the field alone put one place
+    // in both and answered "You're already here" (QA 018).
     if (toHere) comboFrom.selectCurrentLocation({ silent: true });
     else if (to) comboFrom.select(to, toPoi ?? undefined, { silent: true });
+    else comboFrom.clear();
     if (fromHere) comboTo.selectCurrentLocation({ silent: true });
     else if (from) comboTo.select(from, fromPoi ?? undefined, { silent: true });
+    else comboTo.clear();
+    // Where the trip now goes, as comboTo.onSelect records it. Left behind,
+    // closing directions reopened the old destination's card, and its
+    // Directions routed from it to itself (QA 014).
+    const newTo = comboTo.value ? router.building(comboTo.value) : null;
+    destination = newTo ? { b: newTo, poi: comboTo.poi ?? undefined } : null;
     computePreview();
   });
 
   function onBuildingTap(b: Building) {
-    if (mode === "nav") return; // navigating: the map is for walking, not browsing
+    // Navigating, the map is for walking; previewing, it's for reading the
+    // route. A tap on a building along it threw the route away, and the
+    // card's ✕ then went to an empty map (QA 041).
+    if (mode === "nav" || mode === "preview") return;
     showPlace(b);
   }
 
   function onPoiTap(p: Poi) {
-    if (mode === "nav") return;
+    if (mode === "nav" || mode === "preview") return; // see onBuildingTap
     const host = router.building(p.buildingId);
     if (!host) return;
     // The marker stands for its building, so tapping it opens the building's
@@ -905,6 +959,17 @@ async function boot() {
     computePreview();
   } else {
     enterIdle();
+    // A link that only partly resolves — an id renamed by a data refresh —
+    // opens what it can and says what it couldn't, rather than a blank map
+    // that drops a perfectly good destination (QA 019).
+    if (initialTo) {
+      showPlace(initialTo);
+      if (initial.fromId) showToast("That link's starting point isn't on the map any more.");
+    } else if (initialFrom && initial.toId) {
+      showToast("That link's destination isn't on the map any more.");
+    } else if (initial.fromId || initial.toId) {
+      showToast("Couldn't open that link — its places aren't on the map any more.");
+    }
   }
 
   // Keep "open until…" / "closing soon" styling fresh as the clock moves.
