@@ -36,7 +36,8 @@ export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 
  *   a fix with permission granted (default: Six Quebec); null = permission
  *   denied; "manual" = granted, with fixes and errors fed by the test through
  *   window.__testGeo.fix(lat, lon, accuracy) / .error(code) / .watches, and
- *   .permission ("granted" | "denied" | "prompt") for what a re-check reports
+ *   .permission ("granted" | "denied" | "prompt") for what a re-check reports,
+ *   and .lastOptions, the PositionOptions of the latest watch
  * @param {string} [o.clockAt] ISO time to start the page clock at (time then flows)
  * @param {{width:number,height:number}} [o.viewport] default 390x844
  * @param {"light"|"dark"} [o.colorScheme]
@@ -99,9 +100,10 @@ export async function launch(o = {}) {
       const mkErr = (code) => ({ code, message: `test error ${code}`, PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 });
       const fake = {
         getCurrentPosition() {},
-        watchPosition(ok, err) {
+        watchPosition(ok, err, options) {
           const id = nextId++;
           watches.set(id, { ok, err });
+          window.__testGeo.lastOptions = options ?? null;
           return id;
         },
         clearWatch(id) {
@@ -115,6 +117,8 @@ export async function launch(o = {}) {
       if (q) navigator.permissions.query = (d) => (d?.name === "geolocation" ? Promise.resolve({ state: window.__testGeo.permission, onchange: null }) : q(d));
       window.__testGeo = {
         permission: "granted",
+        /** What the app asked for on its latest watch. */
+        lastOptions: null,
         get watches() {
           return watches.size;
         },

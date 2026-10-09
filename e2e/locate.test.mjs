@@ -154,6 +154,12 @@ test("allowing location in Settings after a denial brings it back without a rela
   await comeBack();
   await page.waitForTimeout(300);
   assert.deepEqual(await button(), { disabled: false, watches: 1 });
+  // And at full strength. MapLibre's denial path never releases its watch
+  // count, so it treats the restart as a second watch and asks for 3 km
+  // accuracy with a zero timeout — which on iOS times out at once, forever.
+  const options = await page.evaluate(() => window.__testGeo.lastOptions);
+  assert.equal(options?.enableHighAccuracy, true);
+  assert.ok(options?.timeout > 0, `timeout ${options?.timeout}`);
 
   // The obvious next move — tapping "find me" before the first fix lands —
   // must not cancel the search that just restarted.

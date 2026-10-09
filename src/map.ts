@@ -17,6 +17,7 @@ import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
 import { planBasemapLayer } from "./basemap.ts";
+import { POSITION_OPTIONS } from "./native-geolocation.ts";
 
 // Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look
 // than Positron's grayscale. Dark: OpenFreeMap's own dark counterpart — a
@@ -280,7 +281,7 @@ export class SkymapView {
       // maximumAge lets the first fix paint a recent cached position
       // instantly (watchPosition then refines it); timeout surfaces an
       // error instead of spinning forever.
-      positionOptions: { enableHighAccuracy: true, maximumAge: 120000, timeout: 15000 },
+      positionOptions: POSITION_OPTIONS,
     });
     // Bottom-right, above the attribution mark — the one map control that
     // earns its screen space: re-centering on yourself after panning away

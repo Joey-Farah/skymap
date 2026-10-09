@@ -28,7 +28,7 @@ import {
   settleRemaining,
   shouldRotate,
 } from "./nav-progress.ts";
-import { installNativeGeolocation, locationPermission } from "./native-geolocation.ts";
+import { installGeolocation, locationPermission } from "./native-geolocation.ts";
 import { locationOffMessage } from "./geolocation-errors.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { CHIP_GROUPS } from "./chips.ts";
@@ -48,7 +48,7 @@ async function boot() {
   console.log("[skymap-build-marker] " + new Date().toISOString());
   // Before anything can touch navigator.geolocation — MapLibre's
   // GeolocateControl captures it when the map is constructed below.
-  installNativeGeolocation();
+  installGeolocation();
   const res = await fetch("./data/skymap-data.json");
   if (!res.ok) throw new Error(`Could not load skyway data (${res.status})`);
   const data: SkymapData = await res.json();

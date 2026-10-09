@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { nativeGeolocationShim } from "../src/native-geolocation.ts";
+import { POSITION_OPTIONS, nativeGeolocationShim, withPositionOptions } from "../src/native-geolocation.ts";
 
 /** Stands in for @capacitor/geolocation: records watches, and lets the test
  * deliver positions and errors to them. */
@@ -12,10 +12,12 @@ function fakePlugin() {
     watches,
     started: 0,
     cleared: [],
+    callbacks: [],
     async watchPosition(_options, cb) {
       this.started++;
       const id = `native-${next++}`;
       watches.set(id, cb);
+      this.callbacks.push(cb);
       return id;
     },
     async clearWatch({ id }) {
@@ -71,18 +73,51 @@ test("other errors leave the native watch alone", async () => {
   assert.equal(plugin.started, 1);
 });
 
+const TIMEOUT = [null, { message: "Could not obtain location in time. Try with a higher timeout." }];
+
 test("clearWatch stops whichever native watch is current", async () => {
   const plugin = fakePlugin();
   const geo = nativeGeolocationShim(plugin);
-  const id = geo.watchPosition(() => {}, () => {}, {});
+  const id = geo.watchPosition(() => {}, () => {}, { timeout: 15000 });
   await tick();
-  plugin.deliver([null, { message: "Could not obtain location in time. Try with a higher timeout." }]);
+  plugin.deliver(TIMEOUT);
   await tick();
   await tick();
   geo.clearWatch(id);
   await tick();
   await tick();
   assert.equal(plugin.watches.size, 0, "no native watch outlives the web one");
-  // A late timeout from the cleared watch must not resurrect it.
+  // Late timeouts from either native watch, after the web one is cleared,
+  // must not bring it back.
+  for (const cb of plugin.callbacks) cb(...TIMEOUT);
+  await tick();
+  await tick();
   assert.equal(plugin.started, 2);
+  assert.equal(plugin.watches.size, 0);
+});
+
+test("a zero timeout is never restarted, so it can't spin", async () => {
+  const plugin = fakePlugin();
+  const geo = nativeGeolocationShim(plugin);
+  geo.watchPosition(() => {}, () => {}, { timeout: 0 });
+  await tick();
+  plugin.deliver(TIMEOUT);
+  await tick();
+  await tick();
+  assert.equal(plugin.started, 1);
+});
+
+test("every request carries the app's own position options (review of QA 027)", () => {
+  // MapLibre asks a "second" watch for 3 km accuracy and a zero timeout.
+  const seen = [];
+  const geo = withPositionOptions({
+    watchPosition: (_s, _e, o) => (seen.push(o), 1),
+    getCurrentPosition: (_s, _e, o) => seen.push(o),
+    clearWatch: () => {},
+  });
+  geo.watchPosition(() => {}, () => {}, { maximumAge: 600000, timeout: 0 });
+  geo.getCurrentPosition(() => {}, () => {}, { enableHighAccuracy: false });
+  assert.deepEqual(seen, [POSITION_OPTIONS, POSITION_OPTIONS]);
+  assert.equal(POSITION_OPTIONS.enableHighAccuracy, true);
+  assert.ok(POSITION_OPTIONS.timeout > 0);
 });
