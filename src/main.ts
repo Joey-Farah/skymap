@@ -182,8 +182,10 @@ async function boot() {
     activeRoute = null;
     destination = null;
     view.setRoute(null);
-    sheet.showIdle();
+    // Mode first: the idle sheet's new height re-pads the camera, and read
+    // as a mid-trip resize it recentred on the walker as the trip ended.
     setMode("idle");
+    sheet.showIdle();
     // Back to a blank slate, not the last thing that was searched for —
     // matches the map itself resetting to no pin, no route.
     //

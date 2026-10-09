@@ -64,10 +64,79 @@ test("the route overview stays put when the next GPS fix arrives (QA 021)", asyn
   await page.evaluate(() => window.__testGeo.fix(44.97688, -93.27007));
   await page.waitForTimeout(1500);
   assert.deepEqual(await camera(), framed, "the fix flew the camera back to you");
-  // GO hands the camera back to following you.
+  // GO hands the camera back to following you — and actually moves it back.
   await page.evaluate(() => window.__skymap.modes.enterNav());
-  await page.waitForTimeout(300);
-  assert.equal(await page.evaluate(() => window.__skymap.view.geolocate._watchState), "ACTIVE_LOCK");
+  await page.waitForTimeout(800);
+  const r = await page.evaluate(() => {
+    const v = window.__skymap.view;
+    const c = v.geolocate._lastKnownPosition.coords;
+    const p = v.map.project([c.longitude, c.latitude]);
+    return {
+      state: v.geolocate._watchState,
+      y: Math.round(p.y),
+      top: Math.round(document.getElementById("nav-banner").getBoundingClientRect().bottom),
+      bottom: Math.round(document.getElementById("sheet").getBoundingClientRect().top),
+    };
+  });
+  assert.equal(r.state, "ACTIVE_LOCK");
+  assert.ok(r.y > r.top && r.y < r.bottom, `after GO you're at y=${r.y}, the clear map is ${r.top}..${r.bottom}`);
+});
+
+test("a place card opened after losing the fix holds when the fix returns (review of QA 021)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006));
+  await page.waitForFunction(() => window.__skymap.view.geolocate._watchState === "ACTIVE_LOCK");
+  await page.evaluate(() => window.__testGeo.error(2)); // 15 s without a fix, indoors
+  await page.evaluate((id) => {
+    const s = window.__skymap;
+    s.modes.showPlace(s.router.building(id));
+  }, SHERATON);
+  await page.waitForTimeout(2000);
+  const camera = () => page.evaluate(() => {
+    const m = window.__skymap.view.map;
+    return [m.getCenter().lng.toFixed(5), m.getCenter().lat.toFixed(5)];
+  });
+  const shown = await camera();
+  await page.evaluate(() => window.__testGeo.fix(44.97688, -93.27007));
+  await page.waitForTimeout(1500);
+  assert.deepEqual(await camera(), shown);
+});
+
+test("in landscape the route preview still frames the route (review of QA 022)", async (t) => {
+  const { browser, page } = await launch({ viewport: { width: 844, height: 390 } });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate((id) => {
+    const s = window.__skymap;
+    s.modes.showPlace(s.router.building(id));
+    s.modes.enterPreview();
+  }, SHERATON);
+  await page.waitForTimeout(2500);
+  const r = await page.evaluate(() => {
+    const v = window.__skymap.view;
+    const pts = v.activeRouteCoords.map((c) => v.map.project(c));
+    const on = pts.filter((p) => p.x >= 0 && p.x <= innerWidth && p.y >= 0 && p.y <= innerHeight).length;
+    return { on, of: pts.length };
+  });
+  assert.equal(r.on, r.of, `${r.of - r.on} of ${r.of} route points off screen`);
+});
+
+test("ending a trip doesn't jolt the map (review of QA 044)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page, `/?from=${RAND_TOWER}&to=${SHERATON}`);
+  await page.evaluate(() => window.__skymap.modes.enterNav());
+  const line = await activeLine(page);
+  await page.evaluate(([lon, lat]) => window.__testGeo.fix(lat, lon, 10), line.coords[2]);
+  await page.waitForTimeout(1500);
+  const where = (c) => page.evaluate((c) => window.__skymap.view.map.project(c), c);
+  const before = await where(line.coords[2]);
+  await page.evaluate(() => window.__skymap.modes.enterIdle()); // End
+  await page.waitForTimeout(100);
+  const after = await where(line.coords[2]);
+  assert.ok(Math.abs(after.y - before.y) < 5, `the map moved ${Math.round(after.y - before.y)}px`);
 });
 
 test("mid-trip, the camera keeps your dot in the map you can see (QA 044)", async (t) => {

@@ -206,6 +206,15 @@ function routeMarkerElement(color: string): HTMLDivElement {
  * animation, and the corrected "you are here" dot. `drawing` tells them
  * apart so each can be coloured for what it means — the animation head
  * belongs to the route, the position dot belongs to you. */
+/** Overview padding, scaled down when top and bottom leave too little map
+ * between them — in landscape they outgrew the screen, and MapLibre then
+ * refuses to frame anything at all. */
+function fitPadding(height: number, top: number, bottom: number) {
+  const room = Math.max(0, height - 120);
+  const scale = top + bottom > room ? room / (top + bottom) : 1;
+  return { top: top * scale, bottom: bottom * scale, left: 60, right: 60 };
+}
+
 function pointFC(coord: [number, number] | null, drawing = false, stale = false): FC {
   if (!coord) return { type: "FeatureCollection", features: [] };
   return {
@@ -237,6 +246,8 @@ export class SkymapView {
    * life of the dataset, unlike the two above. */
   private markedBuildingIds: string[] = [];
   private routeAnim = 0;
+  /** finishRouteDraw came before the map loaded — see there. */
+  private skipRouteAnim = false;
   /** The active route's own drawn polyline — what remainingMeters projects
    * a live GPS fix onto. Empty when there's no active route. */
   private activeRouteCoords: [number, number][] = [];
@@ -802,11 +813,12 @@ export class SkymapView {
           // The top clears the From/To panel as drawn, not a fixed 80px: on a
           // 375pt phone the panel reaches 142px and hid the route's start
           // (QA 022).
-          { padding: { top: Math.max(80, (poiCoords?.clearTop ?? 0) + 24), bottom: 260, left: 60, right: 60 }, maxZoom: 16 },
+          { padding: fitPadding(this.map.getContainer().clientHeight, Math.max(80, (poiCoords?.clearTop ?? 0) + 24), 260), maxZoom: 16 },
         );
       }
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (this.skipRouteAnim || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        this.skipRouteAnim = false;
         routeSrc?.setData(lineFC(coords));
         this.setWalkerPosition(null); // a fresh route starts uncorrected
         return;
@@ -944,6 +956,12 @@ export class SkymapView {
    * moving head into the walker layer every frame — over the tracked dot —
    * and then cleared it, leaving MapLibre's raw dot (QA 005). */
   finishRouteDraw() {
+    // Opened from a link, GO can come before the map has even loaded, with
+    // the route's drawing still waiting on it: have it skip the animation.
+    if (!this.ready) {
+      this.skipRouteAnim = true;
+      return;
+    }
     if (!this.routeAnim) return;
     cancelAnimationFrame(this.routeAnim);
     this.routeAnim = 0;
@@ -1015,9 +1033,19 @@ export class SkymapView {
       _geolocateButton?: HTMLButtonElement;
       fire(e: unknown): void;
     };
-    if (control._watchState !== "ACTIVE_LOCK") return;
-    control._watchState = "BACKGROUND";
-    control._geolocateButton?.classList.replace("maplibregl-ctrl-geolocate-active", "maplibregl-ctrl-geolocate-background");
+    // Every state that will follow the next fix has a background twin that
+    // won't: searching and lost-fix too, not only locked — a card opened
+    // before the first fix, or after 15 s without one (routine indoors),
+    // still flew back to you when a fix arrived (review of QA 021).
+    const twin: Record<string, [string, string, string]> = {
+      ACTIVE_LOCK: ["BACKGROUND", "maplibregl-ctrl-geolocate-active", "maplibregl-ctrl-geolocate-background"],
+      WAITING_ACTIVE: ["BACKGROUND", "maplibregl-ctrl-geolocate-active", "maplibregl-ctrl-geolocate-background"],
+      ACTIVE_ERROR: ["BACKGROUND_ERROR", "maplibregl-ctrl-geolocate-active-error", "maplibregl-ctrl-geolocate-background-error"],
+    };
+    const next = twin[control._watchState ?? ""];
+    if (!next) return;
+    control._watchState = next[0];
+    control._geolocateButton?.classList.replace(next[1], next[2]);
     control.fire(new maplibregl.Event("trackuserlocationend"));
     control.fire(new maplibregl.Event("userlocationlostfocus"));
   }
@@ -1037,10 +1065,25 @@ export class SkymapView {
     const padding = clear ? { top: clear.top, bottom: clear.bottom, left: 0, right: 0 } : { top: 0, bottom: 0, left: 0, right: 0 };
     const now = this.map.getPadding();
     if (now.top === padding.top && now.bottom === padding.bottom) return;
-    // At once, not eased: the follow animation's own camera move cancels
-    // an eased padding change before it lands. Marked as ours, not a pan,
-    // so the locate control keeps its lock through it.
-    this.map.setPadding(padding, { geolocateSource: true });
+    // One jump, not eased: any camera move cancels another in flight, so
+    // an eased padding change and a follow kept cancelling each other. The
+    // jump says where the centre goes too:
+    // - mid-trip and following, onto the walker — it carries the follow,
+    //   which GO's own recentre would otherwise lose to this very jump
+    //   (review of QA 021);
+    // - otherwise, onto whatever already sits at the new centre point, so
+    //   re-padding moves nothing on screen. Ending a trip jumped the map
+    //   220px; now the next fix's own animated follow moves it instead.
+    const control = this.geolocate as unknown as { _watchState?: string; _lastKnownPosition?: GeolocationPosition };
+    const known = control._lastKnownPosition?.coords;
+    const walker = this.walkerAt ?? (known ? ([known.longitude, known.latitude] as [number, number]) : null);
+    const { width, height } = this.map.getContainer().getBoundingClientRect();
+    const center =
+      clear && control._watchState === "ACTIVE_LOCK" && walker
+        ? walker
+        : this.map.unproject([width / 2, padding.top + (height - padding.top - padding.bottom) / 2]);
+    // Marked as ours, not a pan, so the locate control keeps its lock.
+    this.map.jumpTo({ padding, center }, { geolocateSource: true });
   }
 
   focusBuilding(b: Building) {
