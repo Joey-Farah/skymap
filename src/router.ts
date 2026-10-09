@@ -575,7 +575,9 @@ export class SkywayRouter {
         // claims a door can make a building further on not open yet, where
         // a later arrival at that door would have found it open. That needs
         // the same door reached two ways within minutes of an opening, and
-        // costs at worst a longer route or the "no fully open route" badge.
+        // costs at worst a longer route or, since closed buildings are never
+        // routed through (QA 029), "No open skyway route right now" for the
+        // minutes around that opening.
         if (when && !isEndpoint && !isOpenAt(b, new Date(when.getTime() + tentative * 60_000))) continue;
         if (tentative < (dist.get(next) ?? Infinity)) {
           buildingOf.set(next, edge.to);
