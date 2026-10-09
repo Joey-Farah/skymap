@@ -137,6 +137,17 @@ export function nextOccurrence(day: number, minuteOfDay: number, from = new Date
   return d;
 }
 
+/**
+ * When the walker reaches `step`, setting off at `when`: the street walk to
+ * the skyway first, if the trip has one, then the skyway walk to that step.
+ * The one clock the step list and both closing warnings read. Worked out in
+ * each place separately, they disagreed about whether a building would be
+ * open — the list left out the street walk (QA 006).
+ */
+export function stepArrival(route: Pick<RouteResult, "approach">, step: { arrivalMinutes: number }, when: Date): Date {
+  return new Date(when.getTime() + ((route.approach?.minutes ?? 0) + step.arrivalMinutes) * 60_000);
+}
+
 export interface ClosureWarning {
   building: Building;
   /** Minutes between the walker's arrival and the building closing. */
@@ -146,7 +157,12 @@ export interface ClosureWarning {
 
 /**
  * Buildings along the route that close within `thresholdMin` minutes of the
- * walker reaching them, given a departure at `when`.
+ * walker reaching them, given a departure at `when` — tightest first.
+ *
+ * The preview shows only the first two, so the order decides what anyone
+ * sees: in route order, the destination locking 2 minutes after arrival hid
+ * behind the building you were standing in, 20 minutes from closing
+ * (QA 050). That building is left out when the trip starts inside it.
  */
 export function closingSoonWarnings(
   route: RouteResult,
@@ -154,16 +170,15 @@ export function closingSoonWarnings(
   thresholdMin = 30,
 ): ClosureWarning[] {
   const warnings: ClosureWarning[] = [];
-  // Step arrivals start at the skyway; the street walk to it comes first.
-  const approachMin = route.approach?.minutes ?? 0;
-  for (const step of route.steps) {
-    const arrival = new Date(when.getTime() + (approachMin + step.arrivalMinutes) * 60_000);
-    if (step.building.hours === null) continue; // no published hours to close
+  route.steps.forEach((step, i) => {
+    if (i === 0 && !route.approach) return; // you're in it, and leaving now
+    const arrival = stepArrival(route, step, when);
+    if (step.building.hours === null) return; // no published hours to close
     const h = step.building.hours[arrival.getDay()];
-    if (!h) continue;
+    if (!h) return;
     const arrivalMin = arrival.getHours() * 60 + arrival.getMinutes();
-    if (arrivalMin < h[0] || arrivalMin >= h[1]) continue; // not open on arrival
-    if (isAllDay(h)) continue; // never closes, so never closes soon after you arrive
+    if (arrivalMin < h[0] || arrivalMin >= h[1]) return; // not open on arrival
+    if (isAllDay(h)) return; // never closes, so never closes soon after you arrive
     const minutesLeft = h[1] - arrivalMin;
     if (minutesLeft <= thresholdMin) {
       warnings.push({
@@ -172,8 +187,8 @@ export function closingSoonWarnings(
         label: `${step.building.name} closes at ${formatMinute(h[1])} — ${minutesLeft} min after you'd arrive`,
       });
     }
-  }
-  return warnings;
+  });
+  return warnings.sort((a, b) => a.minutesLeft - b.minutesLeft);
 }
 
 /**
@@ -186,7 +201,7 @@ export function closingSoonWarnings(
 export function destinationClosedWarning(route: Pick<RouteResult, "steps" | "approach">, when: Date): string | null {
   const last = route.steps[route.steps.length - 1];
   if (!last || route.steps.length < 2) return null;
-  const arrival = new Date(when.getTime() + ((route.approach?.minutes ?? 0) + last.arrivalMinutes) * 60_000);
+  const arrival = stepArrival(route, last, when);
   if (isOpenAt(last.building, arrival)) return null;
   const name = last.building.name;
   const h = last.building.hours?.[arrival.getDay()];
@@ -195,6 +210,19 @@ export function destinationClosedWarning(route: Pick<RouteResult, "steps" | "app
   return arrivalMin < h[0]
     ? `${name} opens at ${formatMinute(h[0])}, after you'd arrive`
     : `${name} closes at ${formatMinute(h[1])}, before you'd arrive`;
+}
+
+/**
+ * Why the building a street walk leads to will be locked when the walker
+ * reaches it, or null. nearestApproach prefers an open way in, but with
+ * none in range it falls back to the nearest — and that has to be said,
+ * not left to a "(closed)" in a collapsed step list (QA 009).
+ */
+export function approachClosedWarning(route: Pick<RouteResult, "steps" | "approach">, when: Date): string | null {
+  const first = route.steps[0];
+  if (!route.approach || !first) return null;
+  if (isOpenAt(first.building, stepArrival(route, first, when))) return null;
+  return `${first.building.name} is closed when you'd get there`;
 }
 
 /** Human description of a weekly-hours status at `when`, e.g. "Open until

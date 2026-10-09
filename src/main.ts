@@ -236,13 +236,28 @@ async function boot() {
     computePreview();
   }
 
-  function computePreview() {
+  /** Draws the route From/To describe, for now.
+   *
+   * `refresh` is the same question asked again later: a preview is a
+   * statement about now, and left open it went on promising "Arrive 5:52pm"
+   * at 6:05, through a building that had shut at 6 — and GO started that
+   * stale route (QA 035). On a refresh, a route that hasn't changed only has
+   * its times and warnings brought up to date, without redrawing the line or
+   * moving the camera under someone reading it. */
+  function computePreview(opts: { refresh?: boolean } = {}) {
     if (mode !== "preview") return;
     const fromId = comboFrom.value;
     const toId = comboTo.value;
     if (!fromId) {
+      // Nothing to route from — including when the start was Current
+      // Location and location has since gone. Clear the old route rather
+      // than leave it drawn (and startable by GO).
+      activeRoute = null;
+      view.setRoute(null);
       sheet.showMessage("Choose a starting point", "Pick where you're starting from above.");
-      (document.getElementById("input-from") as HTMLInputElement).focus();
+      // Only when asked: a refresh is the app's own doing, and taking focus
+      // on it opened the list again every minute.
+      if (!opts.refresh) (document.getElementById("input-from") as HTMLInputElement).focus();
       return;
     }
     if (!toId) return;
@@ -284,6 +299,11 @@ async function boot() {
       sheet.showMessage("No route found", "No skyway connection between these places.");
       return;
     }
+    if (opts.refresh && activeRoute && sameRoute(activeRoute, route)) {
+      activeRoute = route;
+      sheet.showRoutePreview(route, when, data.pois ?? [], { onGo: () => enterNav() }, { keepLayout: true });
+      return;
+    }
     activeRoute = route;
     manualPositionUntil = 0;
     // The route itself is building-to-building (that's the network the
@@ -291,6 +311,7 @@ async function boot() {
     // business or a curated ramp, mark its own spot rather than the host
     // building's centroid.
     view.setRoute(route, {
+      keepCamera: !!opts.refresh,
       fromCoord: from.coord,
       toCoord: to.coord,
       // A `nearby` place sits outside the network, so the last stretch to
@@ -305,8 +326,20 @@ async function boot() {
     history.replaceState(null, "", encodeRouteState({ fromId, toId, when: null }));
   }
 
+  /** Same buildings in the same order, with closures judged the same way. */
+  function sameRoute(a: RouteResult, b: RouteResult): boolean {
+    return (
+      a.steps.length === b.steps.length &&
+      !!a.ignoredClosures === !!b.ignoredClosures &&
+      a.steps.every((s, i) => s.building.id === b.steps[i].building.id)
+    );
+  }
+
   /** Screen 5: GO pressed — banner up top, slim bar below, live tracking on. */
   function enterNav() {
+    // GO means "this route, now" — and the preview may have been on screen
+    // long enough for a building on it to close (QA 035).
+    computePreview({ refresh: true });
     if (!activeRoute) return;
     setMode("nav");
     // A trip that can't see you never moves: with location switched off at
@@ -487,7 +520,7 @@ async function boot() {
     // the network, so a tight budget here would withhold the From row
     // exactly when someone outdoors wanted it — but only from a building
     // that goes somewhere.
-    const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS);
+    const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS, selectedTime());
     currentApproach = approach;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       // The walker stays on the skyway. A fix is evidence, not a position:
@@ -781,7 +814,10 @@ async function boot() {
   }
 
   // Keep "open until…" / "closing soon" styling fresh as the clock moves.
-  setInterval(() => view.setTime(selectedTime()), 60_000);
+  setInterval(() => {
+    view.setTime(selectedTime());
+    computePreview({ refresh: true }); // only acts while a preview is up
+  }, 60_000);
   view.setTime(selectedTime());
 
   // State outlives the features that wrote it — a native update swaps the

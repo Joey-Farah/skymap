@@ -53,8 +53,10 @@ function resultIconUrl(group: PoiGroup): string {
   return url;
 }
 import {
+  approachClosedWarning,
   closingSoonWarnings,
   destinationClosedWarning,
+  stepArrival,
   formatMinute,
   formatWeeklyHours,
   skywayAccessLabel,
@@ -811,11 +813,17 @@ export class Sheet {
     when: Date,
     pois: Poi[],
     actions: { onGo: () => void },
+    // Refreshing the same route as time passes: leave the sheet expanded or
+    // not, and where it was scrolled, as the reader had it.
+    opts: { keepLayout?: boolean } = {},
   ) {
+    const scrollTop = this.root.scrollTop;
     this.routePois = pois;
     this.content.innerHTML = "";
     this.clearRouteProgress();
 
+    const approachClosed = approachClosedWarning(route, when);
+    if (approachClosed) this.content.append(el("span", `⚠ ${approachClosed}`, "badge warn"));
     const destinationClosed = destinationClosedWarning(route, when);
     if (destinationClosed) this.content.append(el("span", `⚠ ${destinationClosed}`, "badge warn"));
     if (route.ignoredClosures) {
@@ -846,7 +854,10 @@ export class Sheet {
       );
     }
     const totalMin = Math.max(1, Math.round(tripMinutes(route)));
-    const eta = new Date(when.getTime() + totalMin * 60_000);
+    // From the exact trip time, as the warnings are; only "N min" is
+    // rounded. Rounding first put "Arrive 5:59pm" beside "closes at 6pm,
+    // before you'd arrive" (QA 036).
+    const eta = new Date(when.getTime() + tripMinutes(route) * 60_000);
     const summary = document.createElement("div");
     summary.className = "route-summary";
     summary.append(
@@ -863,6 +874,11 @@ export class Sheet {
 
     this.content.append(this.buildStepsList(route, when, pois));
     this.activeRoute = route;
+    if (opts.keepLayout && this.mode === "preview") {
+      this.applyMode();
+      this.root.scrollTop = scrollTop;
+      return;
+    }
     this.show("preview", false);
   }
 
@@ -872,11 +888,9 @@ export class Sheet {
     route.steps.forEach((step) => {
       const li = document.createElement("li");
       // Against the time you actually reach this step, not the time you set
-      // off: on a 20-minute route the last buildings were being judged by
-      // the clock at the first. closingSoonWarnings() directly above already
-      // works off arrivalMinutes, so the two halves of the same card
-      // disagreed about whether a building would be open.
-      const arriveAt = new Date(when.getTime() + step.arrivalMinutes * 60_000);
+      // off — and by the same clock as the warnings above it, street walk
+      // included (see stepArrival).
+      const arriveAt = stepArrival(route, step, when);
       const closedHere = !isOpenLabelOk(step.building, arriveAt);
       const landmark = landmarkNear(pois, step.building.id);
       li.append(el("span", step.building.name + (closedHere ? " (closed)" : "")));

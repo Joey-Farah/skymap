@@ -469,12 +469,13 @@ test("arriving at a through-building doesn't count the walk through it yet", () 
 });
 
 test("closingSoonWarnings flags buildings closing near arrival", () => {
-  // Mon–Fri 6:30am–10pm everywhere in the fixture: at 9:45pm Tuesday,
-  // everything on the route closes within 30 minutes.
-  const TUE_945PM = new Date(2026, 6, 14, 21, 45);
-  const r = router.route("ids-center", "us-bank-stadium", TUE_945PM);
-  const warnings = closingSoonWarnings(r, TUE_945PM, 30);
-  assert.ok(warnings.length > 0, "late-night route should warn");
+  // Most of the fixture's buildings shut at 6:30pm: leaving at 6pm Tuesday,
+  // the ones further along the route close within 30 minutes of arrival.
+  // (The building you leave from isn't warned about — you're in it.)
+  const TUE_6PM = new Date(2026, 6, 14, 18, 0);
+  const r = router.route("ids-center", "us-bank-stadium", TUE_6PM);
+  const warnings = closingSoonWarnings(r, TUE_6PM, 30);
+  assert.ok(warnings.length > 0, "an early-evening route should warn");
   for (const w of warnings) {
     assert.ok(w.minutesLeft > 0 && w.minutesLeft <= 30);
     assert.match(w.label, /closes/i);
@@ -1067,4 +1068,26 @@ test("the skyway walk starts once the outdoor approach is done", () => {
   assert.equal(skywayDeparture(when, null).getTime(), when.getTime());
   const atDoor = { building: b, straightMeters: 5, meters: 6, minutes: 0.1 };
   assert.equal(skywayDeparture(when, atDoor).getTime(), when.getTime(), "an approach withApproach doesn't charge isn't added");
+});
+
+test("from the street, the skyway is joined through a building that's open when you get there (QA 009)", () => {
+  const block = (id, west, hours) => ({
+    id, name: id, lat: 44.9705, lon: west + 0.0005, hours,
+    footprint: [[west, 44.97], [west + 0.001, 44.97], [west + 0.001, 44.971], [west, 44.971]],
+  });
+  const shut = block("shut-hall", -93.27, Array(7).fill([360, 1080])); // 6am-6pm
+  const open = block("open-hall", -93.266, null); // unknown hours count as open
+  const both = [shut, open];
+  const EVENING = new Date(2026, 9, 14, 19, 30);
+  const NOON = new Date(2026, 9, 14, 12, 0);
+  // ~80m from Shut Hall, ~160m from Open Hall.
+  assert.equal(nearestApproach(44.9705, -93.268, both, 400, EVENING)?.building.id, "open-hall");
+  assert.equal(nearestApproach(44.9705, -93.268, both, 400, NOON)?.building.id, "shut-hall");
+  // Already inside a building that has shut for the night: that's where you
+  // are, and walking out to another one would be the wrong advice.
+  assert.equal(nearestApproach(44.9705, -93.2695, both, 400, EVENING)?.building.id, "shut-hall");
+  // Indoor GPS drifting ~8m outside the walls counts as inside too.
+  assert.equal(nearestApproach(44.9705, -93.2689, both, 400, EVENING)?.building.id, "shut-hall");
+  // Nothing open in range: still the nearest, and the preview says so.
+  assert.equal(nearestApproach(44.9705, -93.268, [shut], 400, EVENING)?.building.id, "shut-hall");
 });

@@ -722,6 +722,9 @@ export class SkymapView {
       toCoord?: [number, number];
       fromNearby?: boolean;
       toNearby?: boolean;
+      /** Redraw without reframing: a route refreshed under someone who may
+       * have panned the map since it was first shown. */
+      keepCamera?: boolean;
     },
   ) {
     const apply = () => {
@@ -784,13 +787,15 @@ export class SkymapView {
       this.applyLabelSuppression();
       const lons = [...coords.map((c) => c[0]), fromCoord[0], toCoord[0]];
       const lats = [...coords.map((c) => c[1]), fromCoord[1], toCoord[1]];
-      this.map.fitBounds(
-        [
-          [Math.min(...lons), Math.min(...lats)],
-          [Math.max(...lons), Math.max(...lats)],
-        ],
-        { padding: { top: 80, bottom: 260, left: 60, right: 60 }, maxZoom: 16 },
-      );
+      if (!poiCoords?.keepCamera) {
+        this.map.fitBounds(
+          [
+            [Math.min(...lons), Math.min(...lats)],
+            [Math.max(...lons), Math.max(...lats)],
+          ],
+          { padding: { top: 80, bottom: 260, left: 60, right: 60 }, maxZoom: 16 },
+        );
+      }
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         routeSrc?.setData(lineFC(coords));
