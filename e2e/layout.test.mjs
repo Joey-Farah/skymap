@@ -90,6 +90,28 @@ test("the update banner never covers a place card (QA 001)", async (t) => {
   assert.ok(!overlaps(r.banner, r.search), "the banner sits on the search bar");
 });
 
+test("search results show above the update banner", async (t) => {
+  const { browser, context, page } = await launch();
+  t.after(() => browser.close());
+  await context.route("**/update.json**", (r) =>
+    r.fulfill({ status: 200, contentType: "application/json", body: '{"latestVersion":"99.0"}' }),
+  );
+  await openApp(page);
+  await page.waitForSelector("#update-banner:not([hidden])");
+  await page.click("#input-search");
+  await page.keyboard.type("coffee");
+  await page.waitForSelector("#combo-search .combo-list li");
+  await page.waitForTimeout(300);
+  // Whatever is under the banner's middle is a result, not the banner.
+  const hit = await page.evaluate(() => {
+    const b = document.getElementById("update-banner").getBoundingClientRect();
+    const el = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+    return { inResults: !!el?.closest("#combo-search .combo-list"), onBanner: !!el?.closest("#update-banner") };
+  });
+  assert.equal(hit.onBanner, false, "the banner sat on the results");
+  assert.equal(hit.inResults, true);
+});
+
 test("the place card's ✕ has a full-size tap target (QA 023)", async (t) => {
   const { browser, page } = await launch();
   t.after(() => browser.close());

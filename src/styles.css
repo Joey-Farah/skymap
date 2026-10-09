@@ -1689,7 +1689,9 @@ a:focus-visible {
   display: flex;
   align-items: center;
   gap: 10px;
-  z-index: 12;
+  /* Under the search bar (11): its results drop down over this spot, and
+     the banner sat on the first one. */
+  z-index: 10;
 }
 
 .update-banner[hidden],
