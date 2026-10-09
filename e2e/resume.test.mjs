@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { launch, openApp, activeLine } from "./harness.mjs";
+import { launch, openApp, activeLine, walkRoute } from "./harness.mjs";
 
 const SIX_QUEBEC = [44.97687, -93.27006];
 const CARIBOU = "poi-2600380079"; // Caribou Coffee, reached through Target Plaza
@@ -82,4 +82,37 @@ test("a shared link opened mid-trip opens that link, not the old trip", async (t
   assert.equal(r.mode, "preview");
   assert.equal(r.from, "Target Center");
   assert.equal(r.to, "IDS Center");
+});
+
+test("reloaded just after arriving, the finished trip doesn't start again", async (t) => {
+  // Arrive, lock the phone before "You've arrived" clears itself, and iOS
+  // reloads the app while you're back at your desk.
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await halfwayToCaribou(page);
+  const walk = await walkRoute(page, { drift: 0 });
+  assert.ok(walk.some((w) => w.banner === "You've arrived"), "arrived");
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForFunction(() => window.__skymap?.view?.map?.isStyleLoaded?.(), null, { timeout: 45_000 });
+  await page.waitForTimeout(800);
+  await page.evaluate(([lat, lon]) => window.__testGeo.fix(lat, lon, 10), SIX_QUEBEC);
+  await page.waitForTimeout(1000);
+  assert.notEqual((await state(page)).mode, "nav");
+});
+
+test("a resumed trip that's left without starting isn't offered again", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await halfwayToCaribou(page);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForFunction(() => window.__skymap?.view?.map?.isStyleLoaded?.(), null, { timeout: 45_000 });
+  await page.waitForTimeout(800);
+  assert.equal((await state(page)).mode, "preview", "offered, waiting for a fix");
+  await page.click("#editor-close"); // not now
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForFunction(() => window.__skymap?.view?.map?.isStyleLoaded?.(), null, { timeout: 45_000 });
+  await page.waitForTimeout(800);
+  await page.evaluate(([lat, lon]) => window.__testGeo.fix(lat, lon, 10), SIX_QUEBEC);
+  await page.waitForTimeout(1000);
+  assert.equal((await state(page)).mode, "idle");
 });

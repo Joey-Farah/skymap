@@ -35,7 +35,7 @@ import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { CHIP_GROUPS } from "./chips.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
 import { clearRetiredKeys } from "./storage.ts";
-import { forgetTrip, rememberTrip, tripToResume } from "./trip-resume.ts";
+import { forgetTrip, rememberTrip, takeTripToResume } from "./trip-resume.ts";
 import { UpdatePrompt } from "./update-prompt.ts";
 
 /**
@@ -94,8 +94,10 @@ async function boot() {
   /** Reopened mid-trip (see trip-resume.ts): the first fix starts the trip
    * again from there, unless a From was picked or the preview left first. */
   let resumePending = false;
-  /** When the trip under way was last written down for a reload. */
+  /** When the trip under way was last written down for a reload, and
+   * whether it still should be: not once it has arrived. */
   let tripRememberedAt = 0;
+  let rememberingTrip = false;
 
 
   const style = await resolveStyle();
@@ -463,6 +465,7 @@ async function boot() {
     // Written down in case iOS reloads the page mid-walk, and the address
     // cleared: it names the trip's start, and a reload read it as a link to
     // plan the whole walk again from there (QA 051).
+    rememberingTrip = true;
     rememberCurrentTrip();
     clearRouteUrl();
     // A trip that can't see you never moves: with location switched off at
@@ -481,7 +484,7 @@ async function boot() {
   }
 
   function rememberCurrentTrip() {
-    if (!comboTo.value) return;
+    if (!rememberingTrip || !comboTo.value) return;
     rememberTrip(localStorage, { toId: comboTo.value, poiId: comboTo.poi?.id });
     tripRememberedAt = Date.now();
   }
@@ -509,6 +512,12 @@ async function boot() {
     // Off the route, the landmark cue is about a step we are no longer sure
     // the walker is on. Saying so beats naming a coffee shop they can't see.
     const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);
+    if (arrived && rememberingTrip) {
+      // Arrived is over, though the trip stays on screen a beat longer: a
+      // reload now must not set off for where you already are.
+      rememberingTrip = false;
+      forgetTrip(localStorage);
+    }
     const tipLine = tipJar.arrivalTip(arrived);
     if (offRoute) {
       navInstructionSub.textContent = "Can't see you on the route — showing your last known spot";
@@ -992,7 +1001,7 @@ async function boot() {
   // there is someone opening it.
   const linked = !!(initial.fromId || initial.toId);
   if (linked) forgetTrip(localStorage);
-  const resume = linked ? null : tripToResume(localStorage);
+  const resume = linked ? null : takeTripToResume(localStorage);
   const resumeTo = resume ? router.building(resume.toId) : undefined;
   if (resume && resumeTo) {
     destination = { b: resumeTo, poi: data.pois?.find((p) => p.id === resume.poiId) };

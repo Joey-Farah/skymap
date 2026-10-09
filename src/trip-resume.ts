@@ -42,8 +42,10 @@ export function forgetTrip(store: KeyValueStore): void {
   }
 }
 
-/** The trip to pick back up at launch, or null — forgetting one too old. */
-export function tripToResume(store: KeyValueStore, now = Date.now()): TripToResume | null {
+/** The trip to pick back up at launch, or null. Taken, not read: it is
+ * offered back once, and only starting it (GO) remembers it again — a
+ * resumed preview left unstarted didn't keep coming back. */
+export function takeTripToResume(store: KeyValueStore, now = Date.now()): TripToResume | null {
   let saved: unknown;
   try {
     saved = JSON.parse(store.getItem(KEY) ?? "null");
@@ -56,9 +58,7 @@ export function tripToResume(store: KeyValueStore, now = Date.now()): TripToResu
     typeof s.toId === "string" &&
     typeof s.savedAt === "number" &&
     (s.poiId === undefined || typeof s.poiId === "string");
-  if (!valid || now - (s.savedAt as number) > RESUME_WITHIN_MS) {
-    forgetTrip(store);
-    return null;
-  }
+  forgetTrip(store);
+  if (!valid || now - (s.savedAt as number) > RESUME_WITHIN_MS) return null;
   return { toId: s.toId as string, ...(s.poiId ? { poiId: s.poiId as string } : {}) };
 }
