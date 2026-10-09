@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { geolocationErrorCode } from "../src/geolocation-errors.ts";
+import { geolocationErrorCode, locationOffMessage } from "../src/geolocation-errors.ts";
 
 test("a native location error keeps the web API's permission-denied code when it means 'off'", () => {
   // MapLibre's GeolocateControl branches on code 1 to show "location is
@@ -13,4 +13,11 @@ test("a native location error keeps the web API's permission-denied code when it
   assert.equal(geolocationErrorCode("Location services are not enabled."), 1);
   assert.equal(geolocationErrorCode("There was an error trying to obtain the location."), 2);
   assert.equal(geolocationErrorCode("Could not obtain location in time. Try with a higher timeout."), 2);
+});
+
+test("'location is off' points to where it can actually be turned on (QA 028)", () => {
+  // The iOS app has no browser settings; its switch is in iOS Settings.
+  assert.match(locationOffMessage(true), /Settings/);
+  assert.doesNotMatch(locationOffMessage(true), /browser/);
+  assert.match(locationOffMessage(false), /browser settings/);
 });

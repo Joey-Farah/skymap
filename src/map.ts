@@ -17,6 +17,7 @@ import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
 import { planBasemapLayer } from "./basemap.ts";
+import { POSITION_OPTIONS } from "./native-geolocation.ts";
 
 // Liberty: colored roads/parks/water, much closer to Apple/Google Maps' look
 // than Positron's grayscale. Dark: OpenFreeMap's own dark counterpart — a
@@ -229,6 +230,8 @@ export class SkymapView {
   private ready = false;
   /** Buildings whose label a dot is covering — see applyLabelSuppression. */
   private walkerLabelIds: string[] = [];
+  /** Where the walker dot is drawn, for redrawing it stale. */
+  private walkerAt: [number, number] | null = null;
   private routeEndBuildingIds: string[] = [];
   /** Buildings whose name is already drawn by their own pin. Constant for the
    * life of the dataset, unlike the two above. */
@@ -278,7 +281,7 @@ export class SkymapView {
       // maximumAge lets the first fix paint a recent cached position
       // instantly (watchPosition then refines it); timeout surfaces an
       // error instead of spinning forever.
-      positionOptions: { enableHighAccuracy: true, maximumAge: 120000, timeout: 15000 },
+      positionOptions: POSITION_OPTIONS,
     });
     // Bottom-right, above the attribution mark — the one map control that
     // earns its screen space: re-centering on yourself after panning away
@@ -831,11 +834,42 @@ export class SkymapView {
    * we've decided is wrong, and two dots disagreeing by half a block is
    * worse than one dot that's occasionally unsure. */
   setWalkerPosition(coord: [number, number] | null, stale = false) {
+    this.walkerAt = coord;
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord, false, stale));
     this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
     this.walkerLabelIds = coord ? this.labelUnder(coord) : [];
     this.applyLabelSuppression();
+  }
+
+  /**
+   * "Find me" after losing the fix, mid-trip. From BACKGROUND_ERROR (panned
+   * away, then lost the fix) MapLibre's own tap would turn tracking off, and
+   * intercepting it did nothing: the map stayed put and the next fix still
+   * didn't recentre. This does what MapLibre's tap does from plain
+   * BACKGROUND — back to the walker, locked on — except the lock waits on
+   * the next fix, which takes ACTIVE_ERROR to ACTIVE_LOCK.
+   */
+  refindWalker() {
+    const control = this.geolocate as unknown as { _watchState?: string; _geolocateButton?: HTMLButtonElement };
+    if (control._watchState === "BACKGROUND_ERROR") {
+      control._watchState = "ACTIVE_ERROR";
+      control._geolocateButton?.classList.replace(
+        "maplibregl-ctrl-geolocate-background-error",
+        "maplibregl-ctrl-geolocate-active-error",
+      );
+    }
+    // geolocateSource: ours, not a user pan, so the control keeps its lock.
+    if (this.walkerAt) this.map.easeTo({ center: this.walkerAt }, { geolocateSource: true });
+  }
+
+  /** Keep the walker where it is, drawn as stale: the fix behind it is no
+   * longer live. The next setWalkerPosition draws it live again. Returns
+   * whether there was a walker to keep. */
+  markWalkerStale(): boolean {
+    if (!this.walkerAt) return false;
+    this.setWalkerPosition(this.walkerAt, true);
+    return true;
   }
 
   /**

@@ -28,18 +28,26 @@ export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 
  *   to macOS even headless — it has opened a real Mail window on the
  *   developer's machine. Never make this POST fail in a test.
  * - Clicks on mailto:/tel:/sms: links and window.open() to them are swallowed
- *   and recorded in window.__blockedExternal instead.
+ *   and recorded in window.__blockedExternal instead. A script assigning
+ *   location.href = "mailto:…" can't be intercepted from a page — that is
+ *   exactly the feedback form's fallback, which is why the POST stub above
+ *   must always answer 200.
  * - The clock is America/Chicago, the only place the app is used.
  *
  * @param {object} o
  * @param {{latitude:number, longitude:number, accuracy?:number}|null|"manual"} [o.geolocation]
  *   a fix with permission granted (default: Six Quebec); null = permission
  *   denied; "manual" = granted, with fixes and errors fed by the test through
- *   window.__testGeo.fix(lat, lon, accuracy) / .error(code) / .watches
+ *   window.__testGeo.fix(lat, lon, accuracy) / .error(code) / .watches, and
+ *   .permission ("granted" | "denied" | "prompt") for what a re-check reports,
+ *   and .lastOptions, the PositionOptions of the latest watch
  * @param {string} [o.clockAt] ISO time to start the page clock at (time then flows)
  * @param {{width:number,height:number}} [o.viewport] default 390x844
  * @param {"light"|"dark"} [o.colorScheme]
- * @param {boolean} [o.offline]
+ * @param {boolean} [o.offline] no network beyond the dev server: everything
+ *   else (map tiles, fonts, styles) fails. Browser-level offline would cut
+ *   off the dev server too, and the app could never load. Toggle mid-session
+ *   with setOffline(context, on).
  */
 export async function launch(o = {}) {
   // System Chrome, not a Playwright-managed build: this repo pins
@@ -57,8 +65,8 @@ export async function launch(o = {}) {
     locale: "en-US",
     permissions: geo ? ["geolocation"] : [],
     geolocation: geo ?? undefined,
-    offline: !!o.offline,
   });
+  await setOffline(context, !!o.offline);
   const feedbackPosts = [];
   await context.route("**/api/feedback**", async (route) => {
     feedbackPosts.push(route.request().postData());
@@ -98,9 +106,10 @@ export async function launch(o = {}) {
       const mkErr = (code) => ({ code, message: `test error ${code}`, PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 });
       const fake = {
         getCurrentPosition() {},
-        watchPosition(ok, err) {
+        watchPosition(ok, err, options) {
           const id = nextId++;
           watches.set(id, { ok, err });
+          window.__testGeo.lastOptions = options ?? null;
           return id;
         },
         clearWatch(id) {
@@ -108,10 +117,14 @@ export async function launch(o = {}) {
         },
       };
       Object.defineProperty(navigator, "geolocation", { value: fake, configurable: true });
-      // MapLibre checks permissions before enabling its button.
+      // MapLibre checks permissions before enabling its button; the test can
+      // change the answer (window.__testGeo.permission) to model Settings.
       const q = navigator.permissions?.query?.bind(navigator.permissions);
-      if (q) navigator.permissions.query = (d) => (d?.name === "geolocation" ? Promise.resolve({ state: "granted", onchange: null }) : q(d));
+      if (q) navigator.permissions.query = (d) => (d?.name === "geolocation" ? Promise.resolve({ state: window.__testGeo.permission, onchange: null }) : q(d));
       window.__testGeo = {
+        permission: "granted",
+        /** What the app asked for on its latest watch. */
+        lastOptions: null,
         get watches() {
           return watches.size;
         },
@@ -133,6 +146,16 @@ export async function launch(o = {}) {
     await page.clock.resume();
   }
   return { browser, context, page, feedbackPosts, pageErrors };
+}
+
+/** Cut (or restore) every request that isn't to the dev server. */
+export async function setOffline(context, on) {
+  if (context.__offlineRoute) await context.unroute("**/*", context.__offlineRoute);
+  context.__offlineRoute = null;
+  if (!on) return;
+  context.__offlineRoute = (route) =>
+    route.request().url().startsWith(BASE) ? route.fallback() : route.abort("internetdisconnected");
+  await context.route("**/*", context.__offlineRoute);
 }
 
 /** Load the app (optionally at a path like "/?from=a&to=b") and wait until

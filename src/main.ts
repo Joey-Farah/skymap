@@ -20,7 +20,7 @@ import { FeedbackForm } from "./feedback-form.ts";
 import { TipJarCard } from "./tip-jar-card.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
-import { locateTransition, type LocateMode } from "./locate-mode.ts";
+import { locateTransition, tapPosition, type LocateMode } from "./locate-mode.ts";
 import {
   ARRIVAL_LINGER_MS,
   canDismissArrival,
@@ -28,7 +28,8 @@ import {
   settleRemaining,
   shouldRotate,
 } from "./nav-progress.ts";
-import { installNativeGeolocation } from "./native-geolocation.ts";
+import { installGeolocation, locationPermission } from "./native-geolocation.ts";
+import { locationOffMessage } from "./geolocation-errors.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { CHIP_GROUPS } from "./chips.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -47,7 +48,7 @@ async function boot() {
   console.log("[skymap-build-marker] " + new Date().toISOString());
   // Before anything can touch navigator.geolocation — MapLibre's
   // GeolocateControl captures it when the map is constructed below.
-  installNativeGeolocation();
+  installGeolocation();
   const res = await fetch("./data/skymap-data.json");
   if (!res.ok) throw new Error(`Could not load skyway data (${res.status})`);
   const data: SkymapData = await res.json();
@@ -308,6 +309,11 @@ async function boot() {
   function enterNav() {
     if (!activeRoute) return;
     setMode("nav");
+    // A trip that can't see you never moves: with location switched off at
+    // the locate button, the banner sat on its first step for the whole walk
+    // (the 2026-10-08 user report). GO turns it back on. Not after a denial:
+    // MapLibre disables the button then, and only the OS can change that.
+    if (watchState() === "OFF" && !locateButton?.disabled) view.geolocate.trigger();
     manualPositionUntil = 0;
     settledRemaining = null; // a new trip starts with nothing to hold against
     walkedHighWater = null;
@@ -614,7 +620,11 @@ async function boot() {
         // No compass on this device: stay in plain tracking, and stop
         // intercepting future taps so "off" stays reachable.
         compassUnavailable = true;
-        showToast("Heading-up mode needs motion access — tap again to stop tracking.");
+        showToast(
+          mode === "nav"
+            ? "Heading-up mode needs motion access."
+            : "Heading-up mode needs motion access — tap again to stop tracking.",
+        );
         locateMode = "lock";
         locateButton?.classList.remove("heading-on");
         return;
@@ -631,13 +641,15 @@ async function boot() {
     "click",
     (e) => {
       if (!locateButton.contains(e.target as Node)) return;
-      // Advance to heading only from a settled lock: while the control is
-      // still WAITING (spinner) or errored, its own tap-to-cancel must win,
-      // and a denied compass demotes the cycle to plain on/off. locateMode
-      // then resolves through the control's end/focus events.
-      if (locateMode === "lock" && (compassUnavailable || watchState() !== "ACTIVE_LOCK")) return;
-      const tr = locateTransition(locateMode, "tap", { navigating: mode === "nav" });
+      // Read where the tap lands from the control itself, not from
+      // locateMode: that copy misses the first fix locking on, and a stale
+      // "off" let MapLibre's own handler turn tracking off (QA 037). Whether
+      // a tap may stop tracking at all — never mid-trip — is decided in
+      // locate-mode.ts.
+      const position = tapPosition(watchState(), orientationHandler !== null);
+      const tr = locateTransition(position, "tap", { navigating: mode === "nav", compassUnavailable });
       if (tr.intercept) e.stopPropagation();
+      if (tr.intercept && position === "error") view.refindWalker();
       void applyLocate(tr);
     },
     true,
@@ -660,12 +672,48 @@ async function boot() {
       view.setWalkerPosition(null);
       view.setWalkedProgress(null); // same reason: nothing left to keep it honest
       forgetPosition();
-      showToast("Location is off — allow access in your browser settings to route from where you stand.");
-    } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
-      toldAboutTimeout = true;
-      showToast("No GPS fix yet — normal deep indoors. It'll catch you near a window or bridge.");
+      showToast(locationOffMessage(Capacitor.isNativePlatform()));
+    } else {
+      // Lost the fix, or no fix yet. Mid-trip the dot would otherwise stay
+      // solid where it was, looking live while the walker moves on (QA 039):
+      // hold it, greyed, and say so until the next fix redraws it.
+      if (mode === "nav" && activeRoute) {
+        // Only claim a "last known spot" when there is one on screen: at the
+        // start of a trip, before any fix, there isn't.
+        navInstructionSub.textContent = view.markWalkerStale()
+          ? "No GPS signal here — showing your last known spot"
+          : "No GPS signal yet — the directions will follow once it finds you";
+      }
+      // The native bridge reports a lost fix as code 2, not 3 — same advice.
+      if (!toldAboutTimeout) {
+        toldAboutTimeout = true;
+        showToast("No GPS fix yet — normal deep indoors. It'll catch you near a window or bridge.");
+      }
     }
   });
+  // Allowing location in Settings after a denial: MapLibre disabled its
+  // button for good on the denial, and iOS keeps the app running when access
+  // is granted, so without this the app stayed "Location not available"
+  // until force-quit (QA 027). Never prompts — it only notices a change.
+  async function recheckLocationPermission(retry: boolean) {
+    if (document.visibilityState !== "visible" || !locateButton?.disabled) return;
+    const state = await locationPermission();
+    // Two returns in quick succession both get past the check above before
+    // either answer comes back; the second trigger() would turn the first
+    // one's tracking straight off again.
+    if (!locateButton.disabled || watchState() !== "OFF") return;
+    if (state !== "granted") {
+      // The plugin can still be holding the pre-Settings answer just after
+      // the app comes back: look once more, a moment later.
+      if (retry) window.setTimeout(() => void recheckLocationPermission(false), 1500);
+      return;
+    }
+    locateButton.disabled = false;
+    locateButton.title = "Find my location";
+    locateButton.setAttribute("aria-label", "Find my location");
+    view.geolocate.trigger();
+  }
+  document.addEventListener("visibilitychange", () => void recheckLocationPermission(true));
   view.geolocate.on("trackuserlocationend", () => {
     // Fires both for real off AND for pan-to-background; only the former is
     // "end" (lostfocus already covers the background case).

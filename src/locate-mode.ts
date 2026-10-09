@@ -10,7 +10,9 @@
  * own handler (which would otherwise toggle tracking off on second tap).
  */
 
-export type LocateMode = "off" | "lock" | "background" | "heading";
+/** Where in the cycle the button is. "waiting" (searching for a first fix)
+ * and "error" (lost the fix, routine indoors) come only from tapPosition. */
+export type LocateMode = "off" | "lock" | "background" | "heading" | "waiting" | "error";
 export type LocateEvent = "tap" | "focus" | "blur" | "end";
 
 export interface LocateTransition {
@@ -23,6 +25,38 @@ export interface LocateTransition {
 export interface LocateContext {
   /** True while a trip is under way. Shortens the tap cycle — see below. */
   navigating?: boolean;
+  /** Motion access was refused, so there is no heading-up step. */
+  compassUnavailable?: boolean;
+}
+
+/** MapLibre GeolocateControl's `_watchState`: the truth about whether
+ * tracking is on. */
+export type WatchState = "OFF" | "WAITING_ACTIVE" | "ACTIVE_LOCK" | "ACTIVE_ERROR" | "BACKGROUND" | "BACKGROUND_ERROR";
+
+/**
+ * Where in the cycle a tap lands, read from the control itself.
+ *
+ * main.ts used to keep its own copy of this, updated from the control's
+ * focus and end events. MapLibre fires no "focus" when the first fix locks
+ * the map on (WAITING_ACTIVE -> ACTIVE_LOCK), so after the launch-time
+ * trigger the copy said "off" over a locked map, and the next tap — read as
+ * "off -> lock" and passed through to MapLibre — turned tracking off
+ * (QA 037). Heading-up is ours alone, so it's the one thing the caller adds.
+ */
+export function tapPosition(watch: WatchState | string | undefined, headingOn: boolean): LocateMode {
+  switch (watch) {
+    case "ACTIVE_LOCK":
+      return headingOn ? "heading" : "lock";
+    case "BACKGROUND":
+      return "background";
+    case "WAITING_ACTIVE":
+      return "waiting";
+    case "ACTIVE_ERROR":
+    case "BACKGROUND_ERROR":
+      return "error";
+    default:
+      return "off";
+  }
 }
 
 export function locateTransition(
@@ -38,7 +72,12 @@ export function locateTransition(
   });
   switch (event) {
     case "tap":
-      if (mode === "lock") return t("heading", true, true);
+      if (mode === "lock") {
+        if (!ctx.compassUnavailable) return t("heading", true, true);
+        // No compass, so the cycle is plain on/off — except mid-trip, where
+        // "off" is never one tap away (see "heading" below).
+        return ctx.navigating ? t("lock", true) : t("off");
+      }
       if (mode === "heading") {
         // Mid-trip the cycle is lock <-> heading, never off. The control is
         // on screen during navigation so the map can be turned heading-up
@@ -51,6 +90,19 @@ export function locateTransition(
         // handler doesn't stop tracking underneath us.
         if (ctx.navigating) return t("lock", true, false, true);
         return t("off", false, false, true);
+      }
+      if (mode === "waiting" || mode === "error") {
+        // MapLibre's own tap turns tracking off from here. Mid-trip that is
+        // never what the tap means: the dot stopped moving deep indoors, the
+        // walker tapped to get found, and location went off for the rest of
+        // the trip with the banner frozen on one building (QA 038). Outside
+        // a trip, a tap during the first search is "find me" too — someone
+        // who has just allowed location in Settings taps it before the first
+        // fix lands, and cancelled the search they'd just restarted
+        // (QA 027). But once a search has failed, the tap is the only way to
+        // stop one that may never succeed, so there it still turns off.
+        if (ctx.navigating || mode === "waiting") return t("lock", true);
+        return t("off");
       }
       return t("lock"); // off or background: let MapLibre start/re-center
     case "focus":

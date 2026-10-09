@@ -12,3 +12,17 @@
 export function geolocationErrorCode(message: string): 1 | 2 {
   return /denied|permission|authoriz|not enabled|restricted/i.test(message) ? 1 : 2;
 }
+
+/** The plugin's "no fix within the timeout" error. On iOS it ends the watch
+ * for good — see nativeGeolocationShim. */
+export function isNativeTimeout(message: string): boolean {
+  return /in time|timed? ?out/i.test(message);
+}
+
+/** What to say when location is off. The iOS app has no browser settings to
+ * send anyone to — its switch is in iOS Settings (QA 028). */
+export function locationOffMessage(native: boolean): string {
+  return native
+    ? "Location is off — turn it on in Settings › SkyMap › Location to route from where you stand."
+    : "Location is off — allow access in your browser settings to route from where you stand.";
+}

@@ -386,9 +386,14 @@ a:focus-visible {
   /* Without this, left: 50% leaves only the right half of the screen to
      lay out in, and every message wrapped at 50vw. */
   width: max-content;
-  max-width: min(86vw, 420px);
+  /* It shares a row with the locate button, which takes the right-hand
+     56px. Centred, it has to stay 64px clear of both edges, or a two-line
+     message lands on the very button it tells you to tap (QA 045). */
+  max-width: min(calc(100vw - 128px), 420px);
   padding: 10px 16px;
   border-radius: 999px;
+  /* A notice, not a control: taps go through to whatever is underneath. */
+  pointer-events: none;
   /* Fixed navy, not var(--ink-900) — that flips to near-white in dark mode,
      which combined with this pill's hardcoded white text became invisible
      white-on-white. This pill is meant to look the same in both themes. */
