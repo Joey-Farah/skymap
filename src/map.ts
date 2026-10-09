@@ -842,10 +842,34 @@ export class SkymapView {
     this.applyLabelSuppression();
   }
 
+  /**
+   * "Find me" after losing the fix, mid-trip. From BACKGROUND_ERROR (panned
+   * away, then lost the fix) MapLibre's own tap would turn tracking off, and
+   * intercepting it did nothing: the map stayed put and the next fix still
+   * didn't recentre. This does what MapLibre's tap does from plain
+   * BACKGROUND — back to the walker, locked on — except the lock waits on
+   * the next fix, which takes ACTIVE_ERROR to ACTIVE_LOCK.
+   */
+  refindWalker() {
+    const control = this.geolocate as unknown as { _watchState?: string; _geolocateButton?: HTMLButtonElement };
+    if (control._watchState === "BACKGROUND_ERROR") {
+      control._watchState = "ACTIVE_ERROR";
+      control._geolocateButton?.classList.replace(
+        "maplibregl-ctrl-geolocate-background-error",
+        "maplibregl-ctrl-geolocate-active-error",
+      );
+    }
+    // geolocateSource: ours, not a user pan, so the control keeps its lock.
+    if (this.walkerAt) this.map.easeTo({ center: this.walkerAt }, { geolocateSource: true });
+  }
+
   /** Keep the walker where it is, drawn as stale: the fix behind it is no
-   * longer live. The next setWalkerPosition draws it live again. */
-  markWalkerStale() {
-    if (this.walkerAt) this.setWalkerPosition(this.walkerAt, true);
+   * longer live. The next setWalkerPosition draws it live again. Returns
+   * whether there was a walker to keep. */
+  markWalkerStale(): boolean {
+    if (!this.walkerAt) return false;
+    this.setWalkerPosition(this.walkerAt, true);
+    return true;
   }
 
   /**

@@ -105,7 +105,7 @@ test("mid-trip, a lost GPS fix shows the dot as stale until the next fix (QA 039
   const line = await tripWithFixes(page);
   const walker = () =>
     page.evaluate(() => {
-      const f = window.__skymap.view.map.getSource("skyway-walker")?._data?.geojson?.features ?? [];
+      const f = window.__skymap.view.map.getSource("skyway-walker")?.serialize().data?.features ?? [];
       return { dots: f.length, stale: f[0]?.properties?.stale ?? null, sub: document.getElementById("nav-instruction-sub").textContent };
     });
   assert.deepEqual((await walker()).stale, false);
@@ -205,4 +205,40 @@ test("outside a trip, location that can't find you can still be turned off", asy
   assert.equal((await tracking(page)).watchState, "ACTIVE_ERROR");
   await tapLocate(page);
   assert.equal((await tracking(page)).watchState, "OFF");
+});
+
+test("mid-trip, 'find me' after panning away and losing the fix goes back to you (review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  const line = await tripWithFixes(page);
+  await page.evaluate(() => window.__skymap.view.map.panBy([200, 0], { duration: 0 }));
+  await page.waitForTimeout(200);
+  await page.evaluate(() => window.__testGeo.error(2));
+  await page.waitForTimeout(200);
+  assert.equal((await tracking(page)).watchState, "BACKGROUND_ERROR");
+  await tapLocate(page);
+  await page.waitForTimeout(600);
+  const centreToWalker = await page.evaluate(() => {
+    const v = window.__skymap.view;
+    const c = v.map.getCenter();
+    const [lon, lat] = v.walkerAt;
+    return Math.hypot((c.lng - lon) * 78000, (c.lat - lat) * 111000);
+  });
+  assert.ok(centreToWalker < 20, `the map should be back on you (${Math.round(centreToWalker)} m off)`);
+  // And the next fix keeps it there.
+  await page.evaluate(([lon, lat]) => window.__testGeo.fix(lat, lon, 10), line.coords[2]);
+  await page.waitForTimeout(300);
+  assert.equal((await tracking(page)).watchState, "ACTIVE_LOCK");
+});
+
+test("at the start of a trip, no fix yet doesn't claim a 'last known spot' (review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page, `/?from=${FROM}&to=${TO}`);
+  await page.waitForFunction(() => window.__skymap.view.routeAnim === 0);
+  await page.evaluate(() => window.__skymap.modes.enterNav());
+  await page.evaluate(() => window.__testGeo.error(2));
+  await page.waitForTimeout(300);
+  const sub = await page.evaluate(() => document.getElementById("nav-instruction-sub").textContent);
+  assert.doesNotMatch(sub, /last known/i);
 });

@@ -649,6 +649,7 @@ async function boot() {
       const position = tapPosition(watchState(), orientationHandler !== null);
       const tr = locateTransition(position, "tap", { navigating: mode === "nav", compassUnavailable });
       if (tr.intercept) e.stopPropagation();
+      if (tr.intercept && position === "error") view.refindWalker();
       void applyLocate(tr);
     },
     true,
@@ -677,8 +678,11 @@ async function boot() {
       // solid where it was, looking live while the walker moves on (QA 039):
       // hold it, greyed, and say so until the next fix redraws it.
       if (mode === "nav" && activeRoute) {
-        view.markWalkerStale();
-        navInstructionSub.textContent = "No GPS signal here — showing your last known spot";
+        // Only claim a "last known spot" when there is one on screen: at the
+        // start of a trip, before any fix, there isn't.
+        navInstructionSub.textContent = view.markWalkerStale()
+          ? "No GPS signal here — showing your last known spot"
+          : "No GPS signal yet — the directions will follow once it finds you";
       }
       // The native bridge reports a lost fix as code 2, not 3 — same advice.
       if (!toldAboutTimeout) {
