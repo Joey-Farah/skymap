@@ -20,28 +20,79 @@ import type { Building, DayHours, RouteResult } from "./types.ts";
  */
 export function isOpenAt(building: Building, when: Date): boolean {
   if (building.hours === null) return true;
-  const day = when.getDay();
-  const minutes = when.getHours() * 60 + when.getMinutes();
-  const h: DayHours = building.hours[day];
-  return h !== null && minutes >= h[0] && minutes < h[1];
+  return windowAt(building.hours, when) !== null;
 }
 
 /** True when a building is open right now but closes within `thresholdMin`. */
 export function isClosingSoon(building: Building, when: Date, thresholdMin = 20): boolean {
   if (building.hours === null) return false; // nothing known to be ending
-  const day = when.getDay();
-  const minutes = when.getHours() * 60 + when.getMinutes();
-  const h = building.hours[day];
-  if (!h || minutes < h[0] || minutes >= h[1]) return false;
-  if (isAllDay(h)) return false; // a place that never closes is never closing soon
-  return h[1] - minutes <= thresholdMin;
+  const w = windowAt(building.hours, when);
+  if (!w || isAllDay(w)) return false; // a place that never closes is never closing soon
+  return w.close - minuteOf(when) <= thresholdMin;
 }
 
-/** A day encoded as open from midnight to midnight — this codebase's
- * representation of "never closes". parseOpeningHours maps `24/7` to
- * exactly [0, 1440] on every day. */
-export function isAllDay(h: DayHours): boolean {
-  return !!h && h[0] === 0 && h[1] >= 1440;
+/** One stretch of opening, in minutes after some day's midnight. */
+interface OpenWindow {
+  open: number;
+  close: number;
+}
+
+/** A day's windows, in order. See DayHours for the encoding. */
+function windowsOf(h: DayHours): OpenWindow[] {
+  const windows: OpenWindow[] = [];
+  for (let i = 0; h && i + 1 < h.length; i += 2) windows.push({ open: h[i], close: h[i + 1] });
+  return windows;
+}
+
+const minuteOf = (d: Date) => d.getHours() * 60 + d.getMinutes();
+
+/**
+ * The window `when` falls in, in minutes after `when`'s own midnight: one
+ * of today's, or last night's still running past midnight (its open is
+ * then negative). Without the second half, a bar open 4pm–2am read
+ * "Closed · opens 4pm" at 1am, under a table saying 4pm–2am (QA 007).
+ */
+function windowAt(hours: DayHours[], when: Date): OpenWindow | null {
+  const day = when.getDay();
+  const now = minuteOf(when);
+  const today = windowsOf(hours[day]).find((w) => now >= w.open && now < w.close);
+  if (today) return today;
+  const lastNight = windowsOf(hours[(day + 6) % 7]).find((w) => now < w.close - 1440);
+  return lastNight ? { open: lastNight.open - 1440, close: lastNight.close - 1440 } : null;
+}
+
+/** When it next opens after `when` — later today (daysAhead 0) or on a
+ * coming day — or null if it never does. */
+function nextOpening(hours: DayHours[], when: Date): { daysAhead: number; minute: number } | null {
+  const day = when.getDay();
+  const later = windowsOf(hours[day]).find((w) => w.open > minuteOf(when));
+  if (later) return { daysAhead: 0, minute: later.open };
+  for (let i = 1; i <= 7; i++) {
+    const first = windowsOf(hours[(day + i) % 7])[0];
+    if (first) return { daysAhead: i, minute: first.open };
+  }
+  return null;
+}
+
+/** "tomorrow", or the day's short name. */
+function dayAhead(when: Date, daysAhead: number): string {
+  return daysAhead === 1 ? "tomorrow" : DAY_NAMES[(when.getDay() + daysAhead) % 7];
+}
+
+/** Open from midnight to midnight or beyond — this codebase's encoding of
+ * "never closes". parseOpeningHours maps `24/7` to exactly [0, 1440] on
+ * every day. */
+function isAllDay(w: OpenWindow): boolean {
+  return w.open <= 0 && w.close >= 1440;
+}
+
+/** A day as read in a table or a one-line summary: "7am–4pm", or
+ * "6:30–9:30am, 5–10pm" — or null when closed all day. */
+function formatDay(h: DayHours): string | null {
+  const windows = windowsOf(h);
+  if (!windows.length) return null;
+  if (windows.some(isAllDay)) return "Open 24 hours";
+  return windows.map((w) => `${formatMinute(w.open)}–${formatMinute(w.close)}`).join(", ");
 }
 
 export function formatMinute(min: number): string {
@@ -85,8 +136,7 @@ export function formatWeeklyHours(hours: DayHours[]): string {
         g.days.length === 1
           ? DAY_NAMES[g.days[0]]
           : `${DAY_NAMES[g.days[0]]}–${DAY_NAMES[g.days[g.days.length - 1]]}`;
-      const value = g.h ? `${formatMinute(g.h[0])}–${formatMinute(g.h[1])}` : "closed";
-      return `${label} ${value}`;
+      return `${label} ${formatDay(g.h) ?? "closed"}`;
     })
     .join(" · ");
 }
@@ -111,14 +161,14 @@ export function weeklyHoursRows(hours: DayHours[], when: Date): WeeklyHoursRow[]
   // Monday-first: the working week reads as a block rather than being split
   // across the top and bottom of the list.
   return [1, 2, 3, 4, 5, 6, 0].map((d) => {
-    const h = hours[d];
+    const value = formatDay(hours[d]);
     return {
       // Full names here, unlike the abbreviations used inline in sentences
       // elsewhere: in a table each name sits on its own row with room to
       // spare, and "Wednesday" is read without the beat of expanding "Wed".
       day: DAY_NAMES_FULL[d],
-      value: !h ? "Closed" : isAllDay(h) ? "Open 24 hours" : `${formatMinute(h[0])}–${formatMinute(h[1])}`,
-      closed: !h,
+      value: value ?? "Closed",
+      closed: value === null,
       today: d === today,
     };
   });
@@ -174,17 +224,15 @@ export function closingSoonWarnings(
     if (i === 0 && !route.approach) return; // you're in it, and leaving now
     const arrival = stepArrival(route, step, when);
     if (step.building.hours === null) return; // no published hours to close
-    const h = step.building.hours[arrival.getDay()];
-    if (!h) return;
-    const arrivalMin = arrival.getHours() * 60 + arrival.getMinutes();
-    if (arrivalMin < h[0] || arrivalMin >= h[1]) return; // not open on arrival
-    if (isAllDay(h)) return; // never closes, so never closes soon after you arrive
-    const minutesLeft = h[1] - arrivalMin;
+    const w = windowAt(step.building.hours, arrival);
+    if (!w) return; // not open on arrival
+    if (isAllDay(w)) return; // never closes, so never closes soon after you arrive
+    const minutesLeft = w.close - minuteOf(arrival);
     if (minutesLeft <= thresholdMin) {
       warnings.push({
         building: step.building,
         minutesLeft,
-        label: `${step.building.name} closes at ${formatMinute(h[1])} — ${minutesLeft} min after you'd arrive`,
+        label: `${step.building.name} closes at ${formatMinute(w.close)} — ${minutesLeft} min after you'd arrive`,
       });
     }
   });
@@ -204,12 +252,23 @@ export function destinationClosedWarning(route: Pick<RouteResult, "steps" | "app
   const arrival = stepArrival(route, last, when);
   if (isOpenAt(last.building, arrival)) return null;
   const name = last.building.name;
-  const h = last.building.hours?.[arrival.getDay()];
-  if (!h) return `${name} is closed when you'd arrive`;
-  const arrivalMin = arrival.getHours() * 60 + arrival.getMinutes();
-  return arrivalMin < h[0]
-    ? `${name} opens at ${formatMinute(h[0])}, after you'd arrive`
-    : `${name} closes at ${formatMinute(h[1])}, before you'd arrive`;
+  const hours = last.building.hours ?? [];
+  const day = arrival.getDay();
+  const now = minuteOf(arrival);
+  // Whichever is nearer the arrival: the close just missed — today's, or
+  // last night's running past midnight — or the next opening today. Five
+  // minutes after a 2am close, "opens at 4pm" was the wrong news.
+  const closes = [
+    ...windowsOf(hours[(day + 6) % 7] ?? null).map((w) => w.close - 1440).filter((c) => c > 0),
+    ...windowsOf(hours[day] ?? null).map((w) => w.close),
+  ].filter((c) => c <= now);
+  const closed = closes.length ? Math.max(...closes) : null;
+  const opens = windowsOf(hours[day] ?? null).find((w) => w.open > now)?.open ?? null;
+  if (opens !== null && (closed === null || opens - now <= now - closed)) {
+    return `${name} opens at ${formatMinute(opens)}, after you'd arrive`;
+  }
+  if (closed !== null) return `${name} closes at ${formatMinute(closed)}, before you'd arrive`;
+  return `${name} is closed when you'd arrive`;
 }
 
 /**
@@ -229,28 +288,18 @@ export function approachClosedWarning(route: Pick<RouteResult, "steps" | "approa
  * 10pm" — the logic `statusAt` uses for buildings, but not tied to one,
  * so a POI's own (separately parsed) hours can get the same treatment. */
 export function statusFromHours(hours: DayHours[], when: Date): { open: boolean; label: string } {
-  const day = when.getDay();
-  const minutes = when.getHours() * 60 + when.getMinutes();
-  const today = hours[day];
-  if (today && minutes >= today[0] && minutes < today[1]) {
+  const w = windowAt(hours, when);
+  if (w) {
     // 1440 formats as "12am", which at 11:45pm reads as fifteen minutes'
     // notice for somewhere that never shuts — five downtown garages and
     // The Nicollet Diner among them.
-    if (isAllDay(today)) return { open: true, label: "Open 24 hours" };
-    return { open: true, label: `Open until ${formatMinute(today[1])}` };
+    if (isAllDay(w)) return { open: true, label: "Open 24 hours" };
+    return { open: true, label: `Open until ${formatMinute(w.close)}` };
   }
-  if (today && minutes < today[0]) {
-    return { open: false, label: `Closed · opens ${formatMinute(today[0])}` };
-  }
-  // Find the next day with hours.
-  for (let i = 1; i <= 7; i++) {
-    const h = hours[(day + i) % 7];
-    if (h) {
-      const dayLabel = i === 1 ? "tomorrow" : DAY_NAMES[(day + i) % 7];
-      return { open: false, label: `Closed · opens ${dayLabel} ${formatMinute(h[0])}` };
-    }
-  }
-  return { open: false, label: "Closed" };
+  const next = nextOpening(hours, when);
+  if (!next) return { open: false, label: "Closed" };
+  if (next.daysAhead === 0) return { open: false, label: `Closed · opens ${formatMinute(next.minute)}` };
+  return { open: false, label: `Closed · opens ${dayAhead(when, next.daysAhead)} ${formatMinute(next.minute)}` };
 }
 
 /** When you can physically reach a place through the skyway, which is a
@@ -265,24 +314,13 @@ export function statusFromHours(hours: DayHours[], when: Date): { open: boolean;
  * omits the row instead of guessing.
  */
 export function skywayAccessLabel(hours: DayHours[] | undefined, when: Date): string | null {
-  if (!hours || hours.every((h) => !h)) return null;
-  const day = when.getDay();
-  const minutes = when.getHours() * 60 + when.getMinutes();
-  const today = hours[day];
-  if (today && minutes >= today[0] && minutes < today[1]) {
-    return isAllDay(today) ? "Access 24 hours" : `Access until ${formatMinute(today[1])}`;
-  }
-  if (today && minutes < today[0]) {
-    return `Access from ${formatMinute(today[0])}`;
-  }
-  for (let i = 1; i <= 7; i++) {
-    const h = hours[(day + i) % 7];
-    if (h) {
-      const dayLabel = i === 1 ? "tomorrow" : DAY_NAMES[(day + i) % 7];
-      return `Access from ${formatMinute(h[0])} ${dayLabel}`;
-    }
-  }
-  return null;
+  if (!hours) return null;
+  const w = windowAt(hours, when);
+  if (w) return isAllDay(w) ? "Access 24 hours" : `Access until ${formatMinute(w.close)}`;
+  const next = nextOpening(hours, when);
+  if (!next) return null;
+  if (next.daysAhead === 0) return `Access from ${formatMinute(next.minute)}`;
+  return `Access from ${formatMinute(next.minute)} ${dayAhead(when, next.daysAhead)}`;
 }
 
 /** Human description of the building's status at `when`, e.g. "Open until

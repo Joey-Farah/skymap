@@ -67,13 +67,15 @@ test("an earlier 'off' clause is still overridden by a later span", () => {
   assert.equal(h[1], null, "Monday stays closed");
 });
 
-test("an overnight wrap on even one clause discards the whole value", () => {
-  // Fr and Sa/Su close after midnight (close <= open) — a day the model
-  // can't represent. Rather than keep the good Mo-Th data and silently
-  // mark Fri/Sat/Sun "closed" (they're actually open into the small
-  // hours), the whole tag is discarded so the caller falls back to a
-  // less specific but honest source instead of a partial guess.
-  assert.equal(parseOpeningHours("Mo-Th 05:00-23:30; Fr 05:00-01:00; Sa,Su 05:00-00:30; PH off"), null);
+test("a close after midnight runs on into the next morning", () => {
+  // Written as a wrap (close <= open), the way 23 downtown bars are. These
+  // were discarded whole, so every one of them read "Hours unknown".
+  const h = parseOpeningHours("Mo-Th 05:00-23:30; Fr 05:00-01:00; Sa,Su 05:00-00:30; PH off");
+  assert.deepEqual(h[1], [300, 1410]);
+  assert.deepEqual(h[5], [300, 1500], "Friday until 1am");
+  assert.deepEqual(h[0], [300, 1470], "Sunday until 12:30am");
+  assert.deepEqual(parseOpeningHours("Mo-Th 15:00-00:00")[1], [900, 1440], "until midnight");
+  assert.deepEqual(parseOpeningHours("Mo-Su 16:00-26:00")[6], [960, 1560], "the extended-time spelling");
 });
 
 test("comma used as a rule separator (non-standard but seen in real data)", () => {
@@ -88,12 +90,21 @@ test("trailing quoted annotations after a time range are ignored", () => {
   assert.deepEqual(h[1], [1140, 1320]);
 });
 
-test("split hours (a lunch closure) are not collapsed into a false 'open all day'", () => {
-  // "06:00-12:00,13:00-20:00" is closed 12:00-13:00 — a gap the DayHours
-  // model has no way to represent. Unioning to [360, 1200] would wrongly
-  // report the building open during the closure, so this value is
-  // discarded entirely instead.
-  assert.equal(parseOpeningHours("Mo-Fr 06:00-12:00,13:00-20:00"), null);
+test("split hours keep their gap", () => {
+  // Closed 12:00-13:00. Unioning to [360, 1200] would report it open
+  // through the closure; two windows say what the sign says.
+  assert.deepEqual(parseOpeningHours("Mo-Fr 06:00-12:00,13:00-20:00")[1], [360, 720, 780, 1200]);
+});
+
+test("a rule after a comma adds to the days it names (QA 034)", () => {
+  // OUIBar + KTCHN: breakfast and dinner on weekdays. Read as an override,
+  // breakfast vanished and 7:30am said "Closed · opens 5pm".
+  const h = parseOpeningHours("Mo-Fr 06:30-09:30, Mo-Fr 17:00-22:00; Sa-Su 07:00-11:00; Sa 17:00-23:00");
+  assert.deepEqual(h[3], [390, 570, 1020, 1320]);
+  // A semicolon still replaces: by the letter of the syntax Saturday is
+  // dinner only, whatever the mapper meant.
+  assert.deepEqual(h[6], [1020, 1380]);
+  assert.deepEqual(h[0], [420, 660]);
 });
 
 test("a day-scoped 24/7 clause is recognized like the bare whole-value form", () => {
@@ -142,4 +153,29 @@ test("a month-scoped rule is rejected rather than silently applied to every day"
 test("a leading day-spec is still optional for a plain daily range", () => {
   // The fix must not break the ordinary "same every day" form.
   assert.deepEqual(parseOpeningHours("09:00-21:00"), Array(7).fill([540, 1260]));
+});
+
+test("every day in a spaced day list is kept, not just the first (QA 033)", () => {
+  // The News Room. The spaced list matched, but " Su" (with its space)
+  // then failed the day pattern and silently dropped out, so the card read
+  // "Closed" all weekend.
+  const days = parseOpeningHours("Mo-Th, Su 11:00-22:00; Fr, Sa 11:00-23:00");
+  assert.deepEqual(days, [
+    [660, 1320], // Su
+    [660, 1320],
+    [660, 1320],
+    [660, 1320],
+    [660, 1320], // Th
+    [660, 1380], // Fr
+    [660, 1380], // Sa
+  ]);
+});
+
+test("an nth-weekday rule is unknown, not read as every week (QA 008)", () => {
+  // "4th Sunday" is a monthly event; read as weekly, the free meal showed
+  // "Open until 6pm" on three Sundays out of four.
+  assert.equal(parseOpeningHours("Su[4] 17:00-18:00"), null);
+  assert.equal(parseOpeningHours("Sa[3] 15:30-17:00"), null);
+  // A time range with a note after it is still read as before.
+  assert.ok(parseOpeningHours('Mo-Fr 09:00-17:00 "by appointment"'));
 });

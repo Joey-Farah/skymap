@@ -1,5 +1,10 @@
-/** [openMinute, closeMinute] within a day, or null when closed all day. */
-export type DayHours = [number, number] | null;
+/** A day's opening as flat [open, close] pairs, in minutes after that
+ * day's midnight, or null when closed all day. [420, 960] is 7am–4pm;
+ * [390, 570, 1020, 1320] is 6:30–9:30am and 5–10pm. A close past 1440 runs
+ * on into the next morning: [960, 1560] is 4pm–2am. Flat rather than
+ * nested so a one-window day keeps the shape every stored record already
+ * has. Read it through hours.ts, never by index. */
+export type DayHours = number[] | null;
 
 export interface Building {
   id: string;
