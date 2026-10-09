@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildComboEntries, searchEntries } from "../src/combo.ts";
+import { buildComboEntries, foldForSearch, searchEntries } from "../src/combo.ts";
 
 test("a building's own map marker doesn't duplicate it in search", () => {
   // Buildings get a POI so they appear under their category's chip — the
@@ -88,4 +88,14 @@ test("named light-rail stations are searchable, ordinary bus stops are not", () 
   const entries = buildComboEntries(buildings, pois);
   assert.equal(searchEntries(entries, "Government Plaza")[0]?.label, "Government Plaza");
   assert.equal(searchEntries(entries, "7th St & Nicollet").length, 0, "bus stops stay out");
+});
+
+test("periods in abbreviations don't hide a place from search (QA 015)", () => {
+  // "U.S. Bank Stadium" is the official name, typed both ways.
+  const entries = [{ label: "US Bank Stadium", sublabel: "", buildingId: "usbs", icon: "building" }];
+  assert.equal(searchEntries(entries, "U.S. Bank Stadium", null)[0]?.buildingId, "usbs");
+  const dotted = [{ label: "U.S. Bank Plaza", sublabel: "", buildingId: "usbp", icon: "building" }];
+  assert.equal(searchEntries(dotted, "us bank plaza", null)[0]?.buildingId, "usbp");
+  // A full stop at the end of a word isn't an abbreviation, and stays harmless.
+  assert.equal(foldForSearch("St. Paul"), "st paul");
 });

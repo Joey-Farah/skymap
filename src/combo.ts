@@ -97,6 +97,9 @@ export function foldForSearch(text: string): string {
     .replace(/['\u2018\u2019\u02bc\u02bb`\u00b4]/g, "")
     // "11th & Marquette" is said, and typed, as "11th and Marquette".
     .replace(/\s*&\s*/g, " and ")
+    // "U.S. Bank Stadium" is typed with and without its full stops, and
+    // with them kept, the official name found nothing (QA 015).
+    .replace(/\./g, "")
     .toLowerCase();
 }
 
