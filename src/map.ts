@@ -37,10 +37,15 @@ function prefersDark(): boolean {
 export const OSM_ATTRIBUTION =
   '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, ODbL';
 
+const FALLBACK = "skymap:fallback";
+const isFallback = (style: string | maplibregl.StyleSpecification) =>
+  typeof style === "object" && (style.metadata as Record<string, unknown> | undefined)?.[FALLBACK] === true;
+
 /** Minimal style used when the basemap host is unreachable (offline etc.). */
 function fallbackStyle(dark: boolean): maplibregl.StyleSpecification {
   return {
     version: 8,
+    metadata: { [FALLBACK]: true },
     glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
     sources: {},
     layers: [
@@ -62,6 +67,14 @@ const LOCATION = "#0a84ff";
 /** Use the remote basemap when reachable, else the local fallback. Picks
  * light/dark once at load time, matching the OS preference. */
 export async function resolveStyle(dark = prefersDark()): Promise<string | maplibregl.StyleSpecification> {
+  const style = await fetchStyle(dark);
+  if (style) return style;
+  console.warn("Basemap unreachable; using offline fallback style.");
+  return fallbackStyle(dark);
+}
+
+/** The remote basemap's style document, or null when it can't be had. */
+async function fetchStyle(dark: boolean): Promise<maplibregl.StyleSpecification | null> {
   const url = dark ? DARK_STYLE_URL : LIGHT_STYLE_URL;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
@@ -75,8 +88,7 @@ export async function resolveStyle(dark = prefersDark()): Promise<string | mapli
   } catch {
     // fall through
   }
-  console.warn("Basemap unreachable; using offline fallback style.");
-  return fallbackStyle(dark);
+  return null;
 }
 
 type FC = GeoJSON.FeatureCollection;
@@ -248,7 +260,7 @@ export class SkymapView {
   /** Where the walker dot is drawn, for redrawing it stale. */
   private walkerAt: [number, number] | null = null;
   private walkerStale = false;
-  /** The last setWalkedProgress and setPoiGroupFilter, for restyle. */
+  /** The last setWalkedProgress and setPoiGroupFilter, for a basemap swap. */
   private walkedRemaining: number | null = null;
   private poiGroups: string[] = [];
   private routeEndBuildingIds: string[] = [];
@@ -280,6 +292,7 @@ export class SkymapView {
     onRouteTap?: (lat: number, lon: number) => void,
   ) {
     this.data = data;
+    this.basemapReal = !isFallback(style);
     this.map = new maplibregl.Map({
       container,
       style,
@@ -336,8 +349,11 @@ export class SkymapView {
     // dark sheets after sunset — and iOS apps stay suspended for days
     // (QA 049).
     if (typeof matchMedia === "function") {
-      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => void this.restyle(e.matches));
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => this.requestAppearance(e.matches));
     }
+    // Signal back: whatever the basemap is behind on — the appearance, or
+    // the streets themselves after an offline launch — it catches up.
+    addEventListener("online", () => void this.syncBasemap());
 
     // One handler decides what a tap meant, in priority order. Previously
     // each layer had its own listener and re-derived the ordering by
@@ -419,19 +435,42 @@ export class SkymapView {
 
   /** Which basemap is up: the dark one or the light one. */
   styleDark = prefersDark();
+  /** The appearance the phone asks for, which the one up may lag behind. */
+  private wantDark = this.styleDark;
+  /** False while the blank offline stand-in is up instead of the streets. */
+  private basemapReal: boolean;
+  private restyleTimer: ReturnType<typeof setTimeout> | undefined;
+
+  /** The phone's appearance changed. Acted on once it settles, so a flicker
+   * through dark and back doesn't reload the whole map. */
+  private requestAppearance(dark: boolean) {
+    this.wantDark = dark;
+    clearTimeout(this.restyleTimer);
+    this.restyleTimer = setTimeout(() => void this.syncBasemap(), 300);
+  }
 
   /**
-   * Swap the basemap for the other appearance, keeping everything the app
-   * draws on it. A style swap drops every layer and source the app added,
-   * so the swap is a full one, followed by the same setup the first load
-   * did, and then what was on screen is put back: the route, the walker,
-   * the walked stretch, the category filter, the labels hidden under pins.
+   * Bring the basemap in line with the appearance asked for, keeping
+   * everything the app draws on it. A style swap drops every layer and
+   * source the app added, so the swap is a full one, followed by the same
+   * setup the first load did, and then what was on screen is put back: the
+   * route, the walker, the walked stretch, the category filter, the labels
+   * hidden under pins.
+   *
+   * Only ever to the real basemap. With no signal the swap waits: streets
+   * in the wrong shade beat the blank stand-in, which is all an offline
+   * swap could offer.
    */
-  private async restyle(dark: boolean) {
-    if (dark === this.styleDark) return;
+  private async syncBasemap() {
+    const dark = this.wantDark;
+    const current = () => dark === this.styleDark && this.basemapReal;
+    if (current()) return;
+    const style = await fetchStyle(dark);
+    // Asked for something else meanwhile (that request carries on), or
+    // another sync got here first.
+    if (dark !== this.wantDark || current() || !style) return;
     this.styleDark = dark;
-    const style = await resolveStyle(dark);
-    if (dark !== this.styleDark) return; // flipped back while it loaded
+    this.basemapReal = true;
     this.map.setStyle(style, { diff: false });
     this.map.once("style.load", () => {
       this.declutterBasemap();
@@ -1180,7 +1219,7 @@ export class SkymapView {
   setPoiGroupFilter(groups: string[]) {
     this.poiGroups = groups;
     const apply = () => {
-      if (!this.map.getLayer("skyway-pois")) return; // mid-restyle: restyle puts it back
+      if (!this.map.getLayer("skyway-pois")) return; // mid-swap: syncBasemap puts it back
       // Transit renders through its own dedicated layer (different zoom
       // threshold, fixed icon size) — excluded here so it doesn't also
       // paint through this one and double up once both are visible.

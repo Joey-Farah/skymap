@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { launch, BASE } from "./harness.mjs";
+import { launch, BASE, openApp, setOffline } from "./harness.mjs";
 
 /** Load the app without waiting for MapLibre's own "loaded" — the point of
  * these tests is what shows when the basemap never finishes loading. */
@@ -44,4 +44,20 @@ test("the basemap style is downloaded once, so a drop just after can't blank the
   await openWithoutWaiting(page);
   await page.waitForTimeout(4000);
   assert.ok((await skywayLayers(page)) >= 2, `no skyway layers (style fetched ${styleFetches}×)`);
+});
+
+test("opened with no signal, the streets arrive once signal does", async (t) => {
+  const { browser, context, page } = await launch({ offline: true });
+  t.after(() => browser.close());
+  await openApp(page);
+  const streets = () =>
+    page.evaluate(() => window.__skymap.view.map.getStyle().layers.filter((l) => !l.id.startsWith("skyway")).length);
+  assert.ok((await streets()) <= 1, "the blank stand-in is up");
+  await setOffline(context, false);
+  await page.evaluate(() => window.dispatchEvent(new Event("online")));
+  await page.waitForFunction(
+    () => window.__skymap.view.map.getStyle()?.layers?.length > 20 && window.__skymap.view.map.getLayer("skyway-buildings-fill"),
+    null,
+    { timeout: 15_000 },
+  );
 });

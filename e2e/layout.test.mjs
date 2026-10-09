@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { launch, openApp } from "./harness.mjs";
+import { launch, openApp, setOffline } from "./harness.mjs";
 
 test("switching to dark mode restyles the map, keeping what's on it (QA 049)", async (t) => {
   const { browser, page } = await launch({ colorScheme: "light" });
@@ -24,6 +24,46 @@ test("switching to dark mode restyles the map, keeping what's on it (QA 049)", a
   assert.deepEqual(r.layers, [true, true, true]);
   assert.ok(r.route > 1, "the route preview is still drawn");
   assert.equal(r.mode, "preview");
+});
+
+const basemapLayers = (page) =>
+  page.evaluate(() => window.__skymap.view.map.getStyle().layers.filter((l) => !l.id.startsWith("skyway")).length);
+
+test("going dark with no signal keeps the basemap, and catches up when signal returns", async (t) => {
+  const { browser, context, page } = await launch({ colorScheme: "light" });
+  t.after(() => browser.close());
+  await openApp(page);
+  const real = await basemapLayers(page);
+  assert.ok(real > 20, "the street basemap is up");
+  await setOffline(context, true);
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.waitForTimeout(3000);
+  // A blank background in place of the streets is worse than the wrong shade of them.
+  assert.equal(await basemapLayers(page), real, "the streets stayed");
+  assert.ok(await page.evaluate(() => !!window.__skymap.view.map.getLayer("skyway-buildings-fill")));
+  await setOffline(context, false);
+  await page.evaluate(() => window.dispatchEvent(new Event("online")));
+  await page.waitForFunction(() => window.__skymap.view.styleDark === true, null, { timeout: 15_000 });
+  await page.waitForFunction(() => window.__skymap.view.map.getLayer("skyway-buildings-fill"), null, { timeout: 15_000 });
+  assert.ok((await basemapLayers(page)) > 20, "the dark streets are up");
+});
+
+test("a quick dark-light flicker doesn't reload the map", async (t) => {
+  const { browser, page } = await launch({ colorScheme: "light" });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => {
+    const m = window.__skymap.view.map;
+    window.__setStyles = 0;
+    const set = m.setStyle.bind(m);
+    m.setStyle = (...a) => (window.__setStyles++, set(...a));
+  });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.waitForTimeout(50);
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.waitForTimeout(3000);
+  assert.equal(await page.evaluate(() => window.__setStyles), 0);
+  assert.equal(await page.evaluate(() => window.__skymap.view.styleDark), false);
 });
 
 const overlaps = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
