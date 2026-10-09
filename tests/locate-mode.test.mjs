@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { locateTransition } from "../src/locate-mode.ts";
+import { locateTransition, tapPosition } from "../src/locate-mode.ts";
 
 test("tap cycle: off -> lock -> heading -> off", () => {
   let t = locateTransition("off", "tap");
@@ -56,4 +56,39 @@ test("tracking ending while heading is active resets north", () => {
 test("tracking ending from plain lock does not touch bearing", () => {
   const t = locateTransition("lock", "end");
   assert.deepEqual(t, { mode: "off", intercept: false, heading: false, resetBearing: false });
+});
+
+test("a tap reads the cycle from the control's own state (QA 037)", () => {
+  // The launch-time fix locks the map on without a "focus" event; the tap
+  // must still see a locked map, so it goes to heading-up, not off.
+  assert.equal(tapPosition("ACTIVE_LOCK", false), "lock");
+  assert.equal(tapPosition("ACTIVE_LOCK", true), "heading");
+  assert.equal(tapPosition("BACKGROUND", false), "background");
+  assert.equal(tapPosition("WAITING_ACTIVE", false), "waiting");
+  assert.equal(tapPosition("ACTIVE_ERROR", false), "error");
+  assert.equal(tapPosition("BACKGROUND_ERROR", false), "error");
+  assert.equal(tapPosition("OFF", false), "off");
+  assert.equal(tapPosition(undefined, false), "off");
+  assert.equal(locateTransition(tapPosition("ACTIVE_LOCK", false), "tap").mode, "heading");
+});
+
+test("mid-trip, a tap while searching or after losing the fix keeps tracking on (QA 038)", () => {
+  for (const mode of ["waiting", "error"]) {
+    assert.deepEqual(locateTransition(mode, "tap", { navigating: true }), {
+      mode: "lock", intercept: true, heading: false, resetBearing: false,
+    });
+    // Outside a trip, MapLibre's tap-to-cancel still wins.
+    assert.deepEqual(locateTransition(mode, "tap"), {
+      mode: "off", intercept: false, heading: false, resetBearing: false,
+    });
+  }
+});
+
+test("without a compass the cycle is on/off, but never off mid-trip", () => {
+  assert.deepEqual(locateTransition("lock", "tap", { compassUnavailable: true }), {
+    mode: "off", intercept: false, heading: false, resetBearing: false,
+  });
+  assert.deepEqual(locateTransition("lock", "tap", { compassUnavailable: true, navigating: true }), {
+    mode: "lock", intercept: true, heading: false, resetBearing: false,
+  });
 });

@@ -20,7 +20,7 @@ import { FeedbackForm } from "./feedback-form.ts";
 import { TipJarCard } from "./tip-jar-card.ts";
 import { getRecents, recordRecent } from "./recents.ts";
 import { headingFromOrientation } from "./compass.ts";
-import { locateTransition, type LocateMode } from "./locate-mode.ts";
+import { locateTransition, tapPosition, type LocateMode } from "./locate-mode.ts";
 import {
   ARRIVAL_LINGER_MS,
   canDismissArrival,
@@ -614,7 +614,11 @@ async function boot() {
         // No compass on this device: stay in plain tracking, and stop
         // intercepting future taps so "off" stays reachable.
         compassUnavailable = true;
-        showToast("Heading-up mode needs motion access — tap again to stop tracking.");
+        showToast(
+          mode === "nav"
+            ? "Heading-up mode needs motion access."
+            : "Heading-up mode needs motion access — tap again to stop tracking.",
+        );
         locateMode = "lock";
         locateButton?.classList.remove("heading-on");
         return;
@@ -631,12 +635,13 @@ async function boot() {
     "click",
     (e) => {
       if (!locateButton.contains(e.target as Node)) return;
-      // Advance to heading only from a settled lock: while the control is
-      // still WAITING (spinner) or errored, its own tap-to-cancel must win,
-      // and a denied compass demotes the cycle to plain on/off. locateMode
-      // then resolves through the control's end/focus events.
-      if (locateMode === "lock" && (compassUnavailable || watchState() !== "ACTIVE_LOCK")) return;
-      const tr = locateTransition(locateMode, "tap", { navigating: mode === "nav" });
+      // Read where the tap lands from the control itself, not from
+      // locateMode: that copy misses the first fix locking on, and a stale
+      // "off" let MapLibre's own handler turn tracking off (QA 037). Whether
+      // a tap may stop tracking at all — never mid-trip — is decided in
+      // locate-mode.ts.
+      const position = tapPosition(watchState(), orientationHandler !== null);
+      const tr = locateTransition(position, "tap", { navigating: mode === "nav", compassUnavailable });
       if (tr.intercept) e.stopPropagation();
       void applyLocate(tr);
     },

@@ -1,0 +1,80 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+
+import { launch, openApp, activeLine } from "./harness.mjs";
+
+// A trip that stays the same at every hour, through buildings with doors.
+const FROM = "517-marquette-garage-156912894";
+const TO = "state-theatre-156912879";
+
+const tracking = (page) =>
+  page.evaluate(() => ({
+    watchState: window.__skymap.view.geolocate._watchState,
+    watches: window.__testGeo.watches,
+  }));
+
+async function tapLocate(page) {
+  await page.click("button.maplibregl-ctrl-geolocate");
+  await page.waitForTimeout(600);
+}
+
+/** A trip under way with GPS fixes landing on its line. */
+async function tripWithFixes(page) {
+  await openApp(page, `/?from=${FROM}&to=${TO}`);
+  await page.evaluate(() => window.__skymap.modes.enterNav());
+  const line = await activeLine(page);
+  for (let i = 0; i < 3; i++) {
+    await page.evaluate(([lon, lat]) => window.__testGeo.fix(lat, lon, 10), line.coords[1]);
+    await page.waitForTimeout(300);
+  }
+  return line;
+}
+
+test("the first tap after launch keeps tracking on (QA 037)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page);
+  // Tracking starts on its own at load; the first fix locks onto you
+  // without MapLibre announcing a "focus".
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006, 12));
+  await page.waitForTimeout(800);
+  assert.equal((await tracking(page)).watchState, "ACTIVE_LOCK");
+
+  await tapLocate(page);
+  const after = await tracking(page);
+  assert.notEqual(after.watchState, "OFF", "one tap from a locked map is heading-up, not tracking off");
+  assert.equal(after.watches, 1);
+});
+
+test("mid-trip, a tap on the locate button never stops tracking (QA 037)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await tripWithFixes(page);
+  await tapLocate(page);
+  assert.notEqual((await tracking(page)).watchState, "OFF");
+  await tapLocate(page);
+  await tapLocate(page);
+  assert.notEqual((await tracking(page)).watchState, "OFF", "the trip's cycle is lock <-> heading");
+});
+
+test("mid-trip, tapping locate after GPS drops keeps the trip tracking (QA 038)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  const line = await tripWithFixes(page);
+  // Deep indoors: the native bridge reports a lost fix as code 2.
+  await page.evaluate(() => window.__testGeo.error(2));
+  await page.waitForTimeout(300);
+  await tapLocate(page);
+  const after = await tracking(page);
+  assert.notEqual(after.watchState, "OFF", "the 'find me' tap must not turn location off");
+  assert.equal(after.watches, 1);
+
+  // GPS comes back further along: the trip has to pick it up.
+  const before = await page.evaluate(() => window.__skymap.view.tracker?.along ?? null);
+  for (let i = 0; i < 3; i++) {
+    await page.evaluate(([lon, lat]) => window.__testGeo.fix(lat, lon, 10), line.coords[3]);
+    await page.waitForTimeout(300);
+  }
+  const later = await page.evaluate(() => window.__skymap.view.tracker?.along ?? null);
+  assert.ok(later > before, `the dot should move on once fixes return (${before} -> ${later})`);
+});
