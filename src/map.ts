@@ -61,8 +61,7 @@ const LOCATION = "#0a84ff";
 
 /** Use the remote basemap when reachable, else the local fallback. Picks
  * light/dark once at load time, matching the OS preference. */
-export async function resolveStyle(): Promise<string | maplibregl.StyleSpecification> {
-  const dark = prefersDark();
+export async function resolveStyle(dark = prefersDark()): Promise<string | maplibregl.StyleSpecification> {
   const url = dark ? DARK_STYLE_URL : LIGHT_STYLE_URL;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
@@ -242,6 +241,10 @@ export class SkymapView {
   private walkerLabelIds: string[] = [];
   /** Where the walker dot is drawn, for redrawing it stale. */
   private walkerAt: [number, number] | null = null;
+  private walkerStale = false;
+  /** The last setWalkedProgress and setPoiGroupFilter, for restyle. */
+  private walkedRemaining: number | null = null;
+  private poiGroups: string[] = [];
   private routeEndBuildingIds: string[] = [];
   /** Buildings whose name is already drawn by their own pin. Constant for the
    * life of the dataset, unlike the two above. */
@@ -317,6 +320,14 @@ export class SkymapView {
       this.collapseAttribution();
       geolocate.trigger(); // prompts for permission once, then tracks continuously
     });
+
+    // The basemap follows the phone's appearance after launch too. Chosen
+    // once at launch, a map opened in the afternoon stayed bright under
+    // dark sheets after sunset — and iOS apps stay suspended for days
+    // (QA 049).
+    if (typeof matchMedia === "function") {
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => void this.restyle(e.matches));
+    }
 
     // One handler decides what a tap meant, in priority order. Previously
     // each layer had its own listener and re-derived the ordering by
@@ -396,11 +407,39 @@ export class SkymapView {
     }
   }
 
+  /** Which basemap is up: the dark one or the light one. */
+  styleDark = prefersDark();
+
+  /**
+   * Swap the basemap for the other appearance, keeping everything the app
+   * draws on it. A style swap drops every layer and source the app added,
+   * so the swap is a full one, followed by the same setup the first load
+   * did, and then what was on screen is put back: the route, the walker,
+   * the walked stretch, the category filter, the labels hidden under pins.
+   */
+  private async restyle(dark: boolean) {
+    if (dark === this.styleDark) return;
+    this.styleDark = dark;
+    const style = await resolveStyle(dark);
+    if (dark !== this.styleDark) return; // flipped back while it loaded
+    this.map.setStyle(style, { diff: false });
+    this.map.once("style.load", () => {
+      this.declutterBasemap();
+      this.registerPoiIcons();
+      this.addLayers();
+      (this.map.getSource("skyway-route") as maplibregl.GeoJSONSource | undefined)?.setData(lineFC(this.activeRouteCoords));
+      this.setWalkerPosition(this.walkerAt, this.walkerStale);
+      this.setWalkedProgress(this.walkedRemaining);
+      this.setPoiGroupFilter(this.poiGroups);
+      this.applyLabelSuppression();
+    });
+  }
+
   /** Trim the stock basemap down to what a skyway map needs — see
    * planBasemapLayer for the rules and why each exists. */
   private declutterBasemap() {
     for (const layer of this.map.getStyle().layers ?? []) {
-      const plan = planBasemapLayer(layer, { dark: prefersDark() });
+      const plan = planBasemapLayer(layer, { dark: this.styleDark });
       if (plan.hide) {
         this.map.setLayoutProperty(layer.id, "visibility", "none");
         continue;
@@ -862,6 +901,7 @@ export class SkymapView {
    * worse than one dot that's occasionally unsure. */
   setWalkerPosition(coord: [number, number] | null, stale = false) {
     this.walkerAt = coord;
+    this.walkerStale = stale;
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord, false, stale));
     this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
@@ -990,6 +1030,7 @@ export class SkymapView {
    * which a fresh route and the end of navigation both need: a grey stub
    * left over from the last trip reads as a route you've half-finished. */
   setWalkedProgress(remainingMeters: number | null) {
+    this.walkedRemaining = remainingMeters;
     const src = this.map.getSource("skyway-route-done") as maplibregl.GeoJSONSource;
     if (!src) return;
     if (remainingMeters == null || this.activeRouteCoords.length < 2) {
@@ -1102,7 +1143,9 @@ export class SkymapView {
    * …); an empty set shows nothing — opt-in, not opt-out, so the map starts
    * clean rather than saturated with icons. */
   setPoiGroupFilter(groups: string[]) {
+    this.poiGroups = groups;
     const apply = () => {
+      if (!this.map.getLayer("skyway-pois")) return; // mid-restyle: restyle puts it back
       // Transit renders through its own dedicated layer (different zoom
       // threshold, fixed icon size) — excluded here so it doesn't also
       // paint through this one and double up once both are visible.
