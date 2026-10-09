@@ -220,3 +220,28 @@ test("a street start into a building shut on arrival is said out loud (QA 009)",
   // Starting inside it (no street walk), nobody needs telling.
   assert.equal(approachClosedWarning({ ...route, approach: undefined }, new Date(2026, 9, 14, 19, 30)), null);
 });
+
+// --- Past midnight -----------------------------------------------------------
+
+// A close past 1440 runs into the next morning: 16:00-26:00 is 4pm-2am.
+const barNightly = Array(7).fill([960, 1560]);
+const saturday1am = new Date(2026, 9, 10, 1, 0);
+
+test("after midnight, a bar open until 2am is open, not 'opens 4pm' (QA 007)", () => {
+  assert.deepEqual(statusFromHours(barNightly, saturday1am), { open: true, label: "Open until 2am" });
+  assert.deepEqual(statusFromHours(barNightly, new Date(2026, 9, 10, 2, 30)), { open: false, label: "Closed · opens 4pm" });
+});
+
+test("a building's late night counts as open for routing and closing soon", () => {
+  const b = { id: "b", name: "Late", hours: barNightly };
+  assert.equal(isOpenAt(b, saturday1am), true);
+  assert.equal(isOpenAt(b, new Date(2026, 9, 10, 2, 0)), false);
+  assert.equal(isClosingSoon(b, new Date(2026, 9, 10, 1, 45), 20), true);
+  assert.equal(skywayAccessLabel(barNightly, saturday1am), "Access until 2am");
+});
+
+test("only the night before carries over: closed Friday means closed early Saturday", () => {
+  const notFriday = [...barNightly];
+  notFriday[5] = null;
+  assert.equal(statusFromHours(notFriday, saturday1am).open, false);
+});
