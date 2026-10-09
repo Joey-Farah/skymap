@@ -200,7 +200,9 @@ test("reaching the end of a line whose last door is its end counts as arrived (Q
   // millimetre short of an endpoint, and a 1e-9 m tolerance left a perfect
   // walk one step short of "You've arrived" for good.
   assert.equal(stepIndexFromAlong([0, 100, 200], 200, 0.0003), 2);
-  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 12), 2, "within ARRIVAL_METERS of a door at the end");
+  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 1.3), 2, "the most it has been seen to fall short");
+  // But not from the last bridge, 12 m out (review).
+  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 12), 1);
   // A door well before the end still waits for the walker to get close.
   assert.equal(stepIndexFromAlong([0, 100, 150], 200, 45), 1);
   assert.equal(stepIndexFromAlong([0, 100, 150], 200, 20), 2);

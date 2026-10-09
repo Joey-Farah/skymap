@@ -144,6 +144,14 @@ export function shouldRotate(
  * It can't go backwards on its own, because the remaining figure it's fed
  * is already settled, so it needs no clamp.
  */
+/** How close to a destination door at the very end of the line counts as
+ * through it. The tracker's projection stops short of a line's endpoint by
+ * up to about a metre, and such a door — three routes in four — then never
+ * counted as passed: a perfect walk never said "You've arrived" (QA 004).
+ * Anything bigger would announce arrival from the last bridge. Doors along
+ * the way still switch exactly at the door. */
+const DOOR_TOLERANCE_METERS = 2;
+
 export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, remainingMeters: number): number {
   const alongMeters = lineMeters - remainingMeters;
   const last = stepStarts.length - 1;
@@ -152,12 +160,9 @@ export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, rem
     if (stepStarts[i] <= alongMeters + 1e-9) index = i;
     else break;
   }
-  // A destination door at (or within arrival distance of) the end of the
-  // line: arrived when the walker is close enough, without also having to
-  // pass a door that sits on the line's last point. The tracker's projection
-  // stops a hair short of an endpoint, so a perfect walk never got there
-  // (QA 004).
-  if (last > 0 && remainingMeters <= ARRIVAL_METERS && stepStarts[last] >= lineMeters - ARRIVAL_METERS) {
+  // A destination door that is the end of the line counts once the walker
+  // is within DOOR_TOLERANCE_METERS of it — see there.
+  if (last > 0 && lineMeters - stepStarts[last] <= DOOR_TOLERANCE_METERS && remainingMeters <= DOOR_TOLERANCE_METERS) {
     index = last;
   }
   // Through the destination's door isn't arrived: the door can sit ~100 m
