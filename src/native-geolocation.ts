@@ -36,11 +36,26 @@ export function installGeolocation(): void {
   Object.defineProperty(navigator, "geolocation", { value: withPositionOptions(base), configurable: true });
 }
 
-/** `geo`, with POSITION_OPTIONS in place of whatever each caller passes. */
+/** `geo`, with POSITION_OPTIONS in place of whatever each caller passes.
+ *
+ * A timeout is also reported as a lost fix (code 2). The same leaked
+ * MapLibre state that set a second watch's options (see POSITION_OPTIONS)
+ * makes it drop every code-3 error after a re-grant, so the control sat
+ * "searching" and the app never heard the fix was missing. Both codes mean
+ * the same thing here, and the native bridge already reports 2. */
 export function withPositionOptions(geo: Geolocation): Geolocation {
+  const asLostFix = (error?: PositionErrorCallback | null): PositionErrorCallback | undefined =>
+    error
+      ? (e) =>
+          error(
+            e.code === 3
+              ? ({ code: 2, message: e.message, PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 } as GeolocationPositionError)
+              : e,
+          )
+      : undefined;
   return {
-    getCurrentPosition: (success, error) => geo.getCurrentPosition(success, error, POSITION_OPTIONS),
-    watchPosition: (success, error) => geo.watchPosition(success, error, POSITION_OPTIONS),
+    getCurrentPosition: (success, error) => geo.getCurrentPosition(success, asLostFix(error), POSITION_OPTIONS),
+    watchPosition: (success, error) => geo.watchPosition(success, asLostFix(error), POSITION_OPTIONS),
     clearWatch: (id) => geo.clearWatch(id),
   };
 }

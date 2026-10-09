@@ -121,3 +121,18 @@ test("every request carries the app's own position options (review of QA 027)", 
   assert.equal(POSITION_OPTIONS.enableHighAccuracy, true);
   assert.ok(POSITION_OPTIONS.timeout > 0);
 });
+
+test("a GPS timeout reaches MapLibre as a lost fix (review)", () => {
+  // After a deny-then-grant, MapLibre drops every code-3 error.
+  let onError;
+  const geo = withPositionOptions({
+    watchPosition: (_s, e) => ((onError = e), 1),
+    getCurrentPosition: () => {},
+    clearWatch: () => {},
+  });
+  const codes = [];
+  geo.watchPosition(() => {}, (e) => codes.push(e.code));
+  onError({ code: 3, message: "Timeout expired" });
+  onError({ code: 1, message: "denied" });
+  assert.deepEqual(codes, [2, 1]);
+});
