@@ -116,11 +116,12 @@ test("in landscape the route preview still frames the route (review of QA 022)",
   await page.waitForTimeout(2500);
   const r = await page.evaluate(() => {
     const v = window.__skymap.view;
+    const panel = document.getElementById("route-editor").getBoundingClientRect().bottom;
     const pts = v.activeRouteCoords.map((c) => v.map.project(c));
-    const on = pts.filter((p) => p.x >= 0 && p.x <= innerWidth && p.y >= 0 && p.y <= innerHeight).length;
+    const on = pts.filter((p) => p.x >= 0 && p.x <= innerWidth && p.y >= panel && p.y <= innerHeight).length;
     return { on, of: pts.length };
   });
-  assert.equal(r.on, r.of, `${r.of - r.on} of ${r.of} route points off screen`);
+  assert.equal(r.on, r.of, `${r.of - r.on} of ${r.of} route points off screen or under the From/To panel`);
 });
 
 test("ending a trip doesn't jolt the map (review of QA 044)", async (t) => {

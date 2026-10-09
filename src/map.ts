@@ -206,13 +206,14 @@ function routeMarkerElement(color: string): HTMLDivElement {
  * animation, and the corrected "you are here" dot. `drawing` tells them
  * apart so each can be coloured for what it means — the animation head
  * belongs to the route, the position dot belongs to you. */
-/** Overview padding, scaled down when top and bottom leave too little map
- * between them — in landscape they outgrew the screen, and MapLibre then
- * refuses to frame anything at all. */
+/** Overview padding that always leaves some map to frame into — in
+ * landscape top and bottom outgrew the screen, and MapLibre then refused to
+ * frame anything at all. The top is an opaque panel and keeps all it needs;
+ * the bottom gives way first. */
 function fitPadding(height: number, top: number, bottom: number) {
   const room = Math.max(0, height - 120);
-  const scale = top + bottom > room ? room / (top + bottom) : 1;
-  return { top: top * scale, bottom: bottom * scale, left: 60, right: 60 };
+  const keptTop = Math.min(top, room);
+  return { top: keptTop, bottom: Math.min(bottom, Math.max(0, room - keptTop)), left: 60, right: 60 };
 }
 
 function pointFC(coord: [number, number] | null, drawing = false, stale = false): FC {
