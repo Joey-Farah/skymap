@@ -171,7 +171,9 @@ async function boot() {
 
   let activeRoute: RouteResult | null = null;
   /** The place the user picked (screen 3) — what Directions routes to. */
-  let destination: { b: Building; poi?: Poi } | null = null;
+  /** `fromSearch`: the card was opened from the search bar, which still
+   * names it. */
+  let destination: { b: Building; poi?: Poi; fromSearch?: boolean } | null = null;
 
   // --- The mode transitions -----------------------------------------------
 
@@ -185,6 +187,7 @@ async function boot() {
     activeRoute = null;
     destination = null;
     view.setRoute(null);
+    view.forgetCameraHold(); // nothing on screen is holding it now
     // Mode first: the idle sheet's new height re-pads the camera, and read
     // as a mid-trip resize it recentred on the walker as the trip ended.
     setMode("idle");
@@ -211,7 +214,7 @@ async function boot() {
    * commitment cost on the button itself. */
   function showPlace(b: Building, poi?: Poi, opts: { fromSearch?: boolean } = {}) {
     activeRoute = null;
-    destination = { b, poi };
+    destination = { b, poi, fromSearch: opts.fromSearch };
     // The search bar keeps only what was searched for this card. Reached
     // any other way — a map tap after a search — the old query stayed over
     // the new card (QA 042). Cleared, not renamed: a named bar takes the
@@ -532,7 +535,7 @@ async function boot() {
   document.getElementById("editor-close")!.addEventListener("click", () => {
     // Leaving the preview returns to the place card, like closing Apple's
     // directions panel.
-    if (destination) showPlace(destination.b, destination.poi);
+    if (destination) showPlace(destination.b, destination.poi, { fromSearch: destination.fromSearch });
     else enterIdle();
   });
 

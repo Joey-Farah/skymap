@@ -2,7 +2,7 @@
  * configured mail client to tell us something is wrong. */
 
 import { Capacitor } from "@capacitor/core";
-import { buildFeedbackPayload, feedbackProblem, sendFeedback } from "./feedback.ts";
+import { FEEDBACK_TOO_LONG, buildFeedbackPayload, feedbackProblem, sendFeedback } from "./feedback.ts";
 import { feedbackUrl, reportIssueUrl } from "./share.ts";
 
 const BUILD = typeof __BUILD_HASH__ === "undefined" ? "dev" : __BUILD_HASH__;
@@ -46,8 +46,15 @@ export class FeedbackForm {
    * strands anyone navigating by keyboard or switch control. */
   private returnFocusTo: HTMLElement | null = null;
   private sending = false;
+  /** Counts openings of the form. A send's answer acts only on the opening
+   * it came from: a slow send cancelled and then answered closed the next
+   * draft and thanked its writer for something they hadn't sent (QA 003). */
+  private session = 0;
 
-  constructor(private toast: (text: string) => void) {
+  private toast: (text: string) => void;
+
+  constructor(toast: (text: string) => void) {
+    this.toast = toast;
     this.sendBtn.addEventListener("click", () => void this.submit());
     this.cancelBtn.addEventListener("click", () => this.close());
     this.backdrop.addEventListener("click", () => this.close());
@@ -87,12 +94,17 @@ export class FeedbackForm {
     this.message.value = "";
     this.error.hidden = true;
     this.setBusy(false);
+    this.session++; // any send still in flight belongs to the last opening
     this.root.hidden = false;
     this.backdrop.hidden = false;
     this.message.focus();
   }
 
   close() {
+    // A send still in flight belongs to a form that's gone. Left to answer,
+    // one that gave up 15 s later threw its writer into Mail after they had
+    // cancelled.
+    this.session++;
     this.root.hidden = true;
     this.backdrop.hidden = true;
     this.returnFocusTo?.focus();
@@ -130,14 +142,18 @@ export class FeedbackForm {
       // drops the message.
       website: this.honeypot.value,
     };
-    const sent = await sendFeedback(url, payload, (u, init) => fetch(u, init as RequestInit));
+    const session = this.session;
+    const result = await sendFeedback(url, payload, (u, init) => fetch(u, init as RequestInit));
+    if (session !== this.session) return; // the form was closed meanwhile
     this.setBusy(false);
 
-    if (sent) {
+    if (result === "sent") {
       this.close();
       this.toast("Thanks — that's been sent.");
       return;
     }
+    // Mail would only carry the same refusal (QA 002).
+    if (result === "too-long") return this.fail(FEEDBACK_TOO_LONG);
     // Offline, or the endpoint is down. The typed message is still in the
     // box, and mail can carry it — losing it here would be the original bug
     // wearing a different hat.

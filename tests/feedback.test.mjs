@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { feedbackProblem, buildFeedbackPayload, sendFeedback } from "../src/feedback.ts";
+import { FEEDBACK_MAX_CHARS, feedbackProblem, buildFeedbackPayload, sendFeedback } from "../src/feedback.ts";
+import { readFileSync } from "node:fs";
 
 test("an empty message is the one thing worth refusing", () => {
   assert.equal(feedbackProblem({ message: "" }), "Tell us what's up first.");
@@ -50,13 +51,13 @@ test("sendFeedback reports failure instead of throwing", async () => {
   const offline = async () => {
     throw new Error("network down");
   };
-  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, offline), false);
+  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, offline), "failed");
 
   const rejecting = async () => ({ ok: false, status: 500 });
-  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, rejecting), false);
+  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, rejecting), "failed");
 
   const accepting = async () => ({ ok: true, status: 202 });
-  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, accepting), true);
+  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, accepting), "sent");
 });
 
 test("sendFeedback posts JSON to the endpoint it was given", async () => {
@@ -69,4 +70,28 @@ test("sendFeedback posts JSON to the endpoint it was given", async () => {
   assert.equal(seen.init.method, "POST");
   assert.equal(seen.init.headers["Content-Type"], "application/json");
   assert.deepEqual(JSON.parse(seen.init.body), { message: "hi" });
+});
+
+test("a message over the server's limit is refused before sending, and said plainly (QA 002)", async () => {
+  // The server refuses over 4,000 characters; told "couldn't send that just
+  // now" and handed to Mail, the writer retried the same thing forever.
+  const long = { message: "x".repeat(FEEDBACK_MAX_CHARS + 1), email: "a@b.co" };
+  assert.match(feedbackProblem(long), /too long/i);
+  assert.equal(feedbackProblem({ message: "x".repeat(FEEDBACK_MAX_CHARS), email: "a@b.co" }), null);
+  // The same number the server uses.
+  const api = readFileSync("api/feedback.js", "utf8");
+  assert.equal(Number(/MAX_MESSAGE = (\d+)/.exec(api)?.[1]), FEEDBACK_MAX_CHARS);
+  // And if the server still says too long, that is not a reason to try Mail.
+  const tooLong = async () => ({ ok: false, status: 413 });
+  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, tooLong), "too-long");
+});
+
+test("a send that hangs gives up, so the Mail fallback is offered (QA 047)", async () => {
+  // One bar of signal: the request neither succeeds nor fails, and the form
+  // sat on "Sending…" for good.
+  const hanging = (_url, init) =>
+    new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(new Error("aborted"))));
+  const started = Date.now();
+  assert.equal(await sendFeedback("/api/feedback", { message: "x" }, hanging, 50), "failed");
+  assert.ok(Date.now() - started < 2000);
 });

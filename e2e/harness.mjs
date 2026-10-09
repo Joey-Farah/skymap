@@ -41,6 +41,9 @@ export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 
  *   window.__testGeo.fix(lat, lon, accuracy) / .error(code) / .watches, and
  *   .permission ("granted" | "denied" | "prompt") for what a re-check reports,
  *   and .lastOptions, the PositionOptions of the latest watch
+ * @param {number} [o.permissionQueryMs] with "manual": how long the
+ *   permission check takes to answer. MapLibre's locate control isn't set
+ *   up until it does, and on a phone it can take longer than the map does.
  * @param {string} [o.clockAt] ISO time to start the page clock at (time then flows)
  * @param {{width:number,height:number}} [o.viewport] default 390x844
  * @param {"light"|"dark"} [o.colorScheme]
@@ -100,7 +103,7 @@ export async function launch(o = {}) {
     // arrives until the test says so, which is how "granted but no fix yet",
     // a late fix, a lost fix or a mid-trip denial reach MapLibre's own
     // success and error paths.
-    await context.addInitScript(() => {
+    await context.addInitScript((permissionQueryMs) => {
       const watches = new Map();
       let nextId = 1;
       const mkErr = (code) => ({ code, message: `test error ${code}`, PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 });
@@ -120,7 +123,8 @@ export async function launch(o = {}) {
       // MapLibre checks permissions before enabling its button; the test can
       // change the answer (window.__testGeo.permission) to model Settings.
       const q = navigator.permissions?.query?.bind(navigator.permissions);
-      if (q) navigator.permissions.query = (d) => (d?.name === "geolocation" ? Promise.resolve({ state: window.__testGeo.permission, onchange: null }) : q(d));
+      const answer = () => new Promise((resolve) => setTimeout(() => resolve({ state: window.__testGeo.permission, onchange: null }), permissionQueryMs));
+      if (q) navigator.permissions.query = (d) => (d?.name === "geolocation" ? answer() : q(d));
       window.__testGeo = {
         permission: "granted",
         /** What the app asked for on its latest watch. */
@@ -136,7 +140,7 @@ export async function launch(o = {}) {
           for (const w of [...watches.values()]) w.err?.(mkErr(code));
         },
       };
-    });
+    }, o.permissionQueryMs ?? 0);
   }
   const page = await context.newPage();
   const pageErrors = [];

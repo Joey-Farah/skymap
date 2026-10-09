@@ -32,8 +32,18 @@ export interface FeedbackPayload {
  * Message first when both are missing. Two complaints at once reads as a
  * form scolding you rather than telling you what to do next.
  */
+/** The longest message the endpoint accepts (api/feedback.js MAX_MESSAGE;
+ * a test keeps the two equal). Counted the way both sides count it, in
+ * JavaScript string length. */
+export const FEEDBACK_MAX_CHARS = 4000;
+export const FEEDBACK_TOO_LONG = `That's too long to send — please keep it under ${FEEDBACK_MAX_CHARS.toLocaleString("en-US")} characters.`;
+
 export function feedbackProblem(draft: FeedbackDraft): string | null {
   if (!draft.message.trim()) return "Tell us what's up first.";
+  // Caught here, before sending: the server refuses it, and that refusal
+  // read as "couldn't send that just now" and a trip to Mail, every retry
+  // (QA 002).
+  if (draft.message.trim().length > FEEDBACK_MAX_CHARS) return FEEDBACK_TOO_LONG;
   const email = draft.email?.trim();
   if (!email) return "Add your email so we can write back.";
   // Only a shape check — anything stricter starts rejecting valid addresses,
@@ -55,25 +65,41 @@ export function buildFeedbackPayload(draft: FeedbackDraft, build: string): Feedb
 
 type FetchLike = (url: string, init: Record<string, unknown>) => Promise<{ ok: boolean; status: number }>;
 
+/** How long a send may take before it counts as failed. */
+export const FEEDBACK_TIMEOUT_MS = 15_000;
+
 /**
- * Post a report. Returns false rather than throwing on any failure —
- * network, server, anything. The caller's fallback is the old `mailto:`,
- * so an exception escaping here would lose the message outright, which is
- * the exact bug this whole path exists to fix.
+ * Post a report. Never throws: "failed" on any failure — network, server,
+ * a request that never finishes — because the caller's fallback is the old
+ * `mailto:`, and an exception escaping here would lose the message outright,
+ * which is the exact bug this whole path exists to fix.
+ *
+ * "too-long" is the one refusal Mail can't help with: the same text would
+ * be refused again.
+ *
+ * A request that hangs (one bar of signal) gives up after `timeoutMs`;
+ * without it the form sat on "Sending…" for good (QA 047).
  */
 export async function sendFeedback(
   endpoint: string,
   payload: FeedbackPayload,
   fetchImpl: FetchLike,
-): Promise<boolean> {
+  timeoutMs = FEEDBACK_TIMEOUT_MS,
+): Promise<"sent" | "too-long" | "failed"> {
+  const abort = new AbortController();
+  const timer = setTimeout(() => abort.abort(), timeoutMs);
   try {
     const res = await fetchImpl(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
+      signal: abort.signal,
     });
-    return res.ok;
+    if (res.ok) return "sent";
+    return res.status === 413 ? "too-long" : "failed";
   } catch {
-    return false;
+    return "failed";
+  } finally {
+    clearTimeout(timer);
   }
 }

@@ -284,3 +284,48 @@ test("a permission that catches up just after the return is still noticed (revie
   await page.waitForTimeout(2000);
   assert.notEqual((await tracking(page)).watchState, "OFF");
 });
+
+test("tracking starts at launch even when the permission check is slower than the map", async (t) => {
+  // MapLibre's locate control can't start until it has asked the phone
+  // about permission; started on the style alone, it refused and nothing
+  // ever tracked you (review of QA 026).
+  const { browser, page } = await launch({ geolocation: "manual", permissionQueryMs: 1500 });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.waitForTimeout(2000);
+  const now = await tracking(page);
+  assert.equal(now.watches, 1, "a watch is running");
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006, 12));
+  await page.waitForTimeout(800);
+  assert.equal((await tracking(page)).watchState, "ACTIVE_LOCK");
+});
+
+test("a link's route keeps the camera when tracking starts after it", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual", permissionQueryMs: 1500 });
+  t.after(() => browser.close());
+  await openApp(page, `/?from=${FROM}&to=${TO}`);
+  await page.waitForFunction(() => window.__skymap.view.routeAnim === 0);
+  await page.waitForTimeout(2000);
+  const before = await page.evaluate(() => window.__skymap.view.map.getCenter().toArray());
+  // A fix well away from the route: following it would fly the camera off.
+  await page.evaluate(() => window.__testGeo.fix(44.9705, -93.2795, 12));
+  await page.waitForTimeout(1500);
+  const after = await page.evaluate(() => window.__skymap.view.map.getCenter().toArray());
+  assert.equal((await tracking(page)).watches, 1, "tracking is on");
+  assert.deepEqual(after.map((n) => n.toFixed(5)), before.map((n) => n.toFixed(5)), "the preview's camera stayed put");
+});
+
+test("a card closed before tracking began doesn't keep the camera from following you", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual", permissionQueryMs: 4000 });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => {
+    const s = window.__skymap;
+    s.modes.showPlace(s.router.building("ids-center-1385236413"));
+    s.modes.enterIdle();
+  });
+  await page.waitForTimeout(4500);
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006, 12));
+  await page.waitForTimeout(800);
+  assert.equal((await tracking(page)).watchState, "ACTIVE_LOCK");
+});

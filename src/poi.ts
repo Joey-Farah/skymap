@@ -434,6 +434,12 @@ export function buildingMarker(
     lat: building.lat,
     lon: building.lon,
     buildingId: hostId,
+    // Off the network, the landmark is reached through its host, not found
+    // in it. Without this the route to US Bank Stadium drew 260 m of
+    // "skyway" across the plaza to its middle, its card said it was in the
+    // ramp (QA 030), and walking through the ramp was cued "past Aloft
+    // Minneapolis", a block and a half away (QA 031).
+    ...(!onNetwork && hostId !== building.id ? { nearby: true } : {}),
   };
 }
 

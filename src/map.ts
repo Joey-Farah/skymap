@@ -37,10 +37,15 @@ function prefersDark(): boolean {
 export const OSM_ATTRIBUTION =
   '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, ODbL';
 
+const FALLBACK = "skymap:fallback";
+const isFallback = (style: string | maplibregl.StyleSpecification) =>
+  typeof style === "object" && (style.metadata as Record<string, unknown> | undefined)?.[FALLBACK] === true;
+
 /** Minimal style used when the basemap host is unreachable (offline etc.). */
 function fallbackStyle(dark: boolean): maplibregl.StyleSpecification {
   return {
     version: 8,
+    metadata: { [FALLBACK]: true },
     glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
     sources: {},
     layers: [
@@ -61,17 +66,29 @@ const LOCATION = "#0a84ff";
 
 /** Use the remote basemap when reachable, else the local fallback. Picks
  * light/dark once at load time, matching the OS preference. */
-export async function resolveStyle(): Promise<string | maplibregl.StyleSpecification> {
-  const dark = prefersDark();
+export async function resolveStyle(dark = prefersDark()): Promise<string | maplibregl.StyleSpecification> {
+  const style = await fetchStyle(dark);
+  if (style) return style;
+  console.warn("Basemap unreachable; using offline fallback style.");
+  return fallbackStyle(dark);
+}
+
+/** The remote basemap's style document, or null when it can't be had. */
+async function fetchStyle(dark: boolean): Promise<maplibregl.StyleSpecification | null> {
   const url = dark ? DARK_STYLE_URL : LIGHT_STYLE_URL;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-    if (res.ok) return url;
+    // The document itself, not its URL: handed the URL, MapLibre fetched it
+    // a second time, and a connection that dropped in between left a blank
+    // map for the whole session with nothing to retry it (QA 046).
+    if (res.ok) {
+      const style = (await res.json()) as maplibregl.StyleSpecification;
+      if (style?.version === 8 && Array.isArray(style.layers)) return style;
+    }
   } catch {
     // fall through
   }
-  console.warn("Basemap unreachable; using offline fallback style.");
-  return fallbackStyle(dark);
+  return null;
 }
 
 type FC = GeoJSON.FeatureCollection;
@@ -242,6 +259,10 @@ export class SkymapView {
   private walkerLabelIds: string[] = [];
   /** Where the walker dot is drawn, for redrawing it stale. */
   private walkerAt: [number, number] | null = null;
+  private walkerStale = false;
+  /** The last setWalkedProgress and setPoiGroupFilter, for a basemap swap. */
+  private walkedRemaining: number | null = null;
+  private poiGroups: string[] = [];
   private routeEndBuildingIds: string[] = [];
   /** Buildings whose name is already drawn by their own pin. Constant for the
    * life of the dataset, unlike the two above. */
@@ -271,6 +292,7 @@ export class SkymapView {
     onRouteTap?: (lat: number, lon: number) => void,
   ) {
     this.data = data;
+    this.basemapReal = !isFallback(style);
     this.map = new maplibregl.Map({
       container,
       style,
@@ -283,6 +305,7 @@ export class SkymapView {
       attributionControl: false,
     });
     this.map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left");
+    this.collapseAttributionOnceShown();
     // Pinch-to-zoom and two-finger-drag-to-tilt are on by default with no
     // button needed. MapLibre draws its own blue "you are here" dot +
     // accuracy ring; the control itself stays off-screen (see
@@ -309,13 +332,36 @@ export class SkymapView {
     // usable on a plain background instead of dying.
     this.map.on("error", (e) => console.warn("Map resource error:", e.error?.message));
 
-    this.map.on("load", () => {
+    // On the style, not on "load": MapLibre's "load" also waits for the
+    // basemap's sprite and tile metadata, so on a stalled connection the
+    // skyways — drawn from data already on the phone — never appeared at
+    // all (QA 026). Everything here needs only the style.
+    this.map.once("style.load", () => {
       this.ready = true;
       this.declutterBasemap();
       this.registerPoiIcons();
       this.addLayers();
-      this.collapseAttribution();
-      geolocate.trigger(); // prompts for permission once, then tracks continuously
+      this.startTracking(); // prompts for permission once, then tracks continuously
+    });
+
+    // The basemap follows the phone's appearance after launch too. Chosen
+    // once at launch, a map opened in the afternoon stayed bright under
+    // dark sheets after sunset — and iOS apps stay suspended for days
+    // (QA 049).
+    if (typeof matchMedia === "function") {
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => this.requestAppearance(e.matches));
+    }
+    // Signal back: whatever the basemap is behind on — the appearance, or
+    // the streets themselves after an offline launch — it catches up.
+    addEventListener("online", () => void this.syncBasemap());
+    // A connection that only stalled never says it's back — the phone was
+    // never offline. While the stand-in is up, try again now and then, and
+    // on coming back to the app.
+    setInterval(() => {
+      if (!this.basemapReal) void this.syncBasemap();
+    }, 30_000);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) void this.syncBasemap();
     });
 
     // One handler decides what a tap meant, in priority order. Previously
@@ -396,11 +442,70 @@ export class SkymapView {
     }
   }
 
+  /** Which basemap is up: the dark one or the light one. */
+  styleDark = prefersDark();
+  /** The appearance the phone asks for, which the one up may lag behind. */
+  private wantDark = this.styleDark;
+  /** False while the blank offline stand-in is up instead of the streets. */
+  private basemapReal: boolean;
+  private restyleTimer: ReturnType<typeof setTimeout> | undefined;
+
+  /** The phone's appearance changed. Acted on once it settles, so a flicker
+   * through dark and back doesn't reload the whole map. */
+  private requestAppearance(dark: boolean) {
+    this.wantDark = dark;
+    clearTimeout(this.restyleTimer);
+    this.restyleTimer = setTimeout(() => void this.syncBasemap(), 300);
+  }
+
+  /**
+   * Bring the basemap in line with the appearance asked for, keeping
+   * everything the app draws on it. A style swap drops every layer and
+   * source the app added, so the swap is a full one, followed by the same
+   * setup the first load did, and then what was on screen is put back: the
+   * route, the walker, the walked stretch, the category filter, the labels
+   * hidden under pins.
+   *
+   * Only ever to the real basemap. With no signal the swap waits: streets
+   * in the wrong shade beat the blank stand-in, which is all an offline
+   * swap could offer.
+   */
+  private async syncBasemap() {
+    const dark = this.wantDark;
+    const current = () => dark === this.styleDark && this.basemapReal;
+    if (current()) return;
+    const style = await fetchStyle(dark);
+    // Asked for something else meanwhile (that request carries on), or
+    // another sync got here first.
+    if (dark !== this.wantDark || current()) return;
+    if (style) return this.swapStyle(style, dark, true);
+    // No signal: a blank stand-in still takes the new shade, or the map sat
+    // bright under dark sheets all evening (QA 049); real streets don't
+    // give way to it.
+    if (!this.basemapReal && dark !== this.styleDark) this.swapStyle(fallbackStyle(dark), dark, false);
+  }
+
+  private swapStyle(style: maplibregl.StyleSpecification, dark: boolean, real: boolean) {
+    this.styleDark = dark;
+    this.basemapReal = real;
+    this.map.setStyle(style, { diff: false });
+    this.map.once("style.load", () => {
+      this.declutterBasemap();
+      this.registerPoiIcons();
+      this.addLayers();
+      (this.map.getSource("skyway-route") as maplibregl.GeoJSONSource | undefined)?.setData(lineFC(this.activeRouteCoords));
+      this.setWalkerPosition(this.walkerAt, this.walkerStale);
+      this.setWalkedProgress(this.walkedRemaining);
+      this.setPoiGroupFilter(this.poiGroups);
+      this.applyLabelSuppression();
+    });
+  }
+
   /** Trim the stock basemap down to what a skyway map needs — see
    * planBasemapLayer for the rules and why each exists. */
   private declutterBasemap() {
     for (const layer of this.map.getStyle().layers ?? []) {
-      const plan = planBasemapLayer(layer, { dark: prefersDark() });
+      const plan = planBasemapLayer(layer, { dark: this.styleDark });
       if (plan.hide) {
         this.map.setLayoutProperty(layer.id, "visibility", "none");
         continue;
@@ -416,13 +521,28 @@ export class SkymapView {
   /** MapLibre's compact attribution starts fully expanded (the required
    * OpenFreeMap/OSM credit as a full text strip) and only collapses to the
    * small "i" icon once the user drags the map — so on a fresh launch it
-   * just sits there as a persistent banner. Collapse it immediately; the
-   * credit is still one tap away via the icon, same as it would be after
-   * a drag. */
-  private collapseAttribution() {
+   * just sits there as a persistent banner. Collapse it as soon as it
+   * shows; the credit is still one tap away via the icon, same as it would
+   * be after a drag.
+   *
+   * "As soon as it shows" is MapLibre's call, not a map event: it expands
+   * the strip the first time a source's credit arrives, which can be after
+   * the style has loaded, so collapsing at style load found nothing to
+   * collapse and the strip opened a moment later. */
+  private collapseAttributionOnceShown() {
     const attrib = this.map.getContainer().querySelector(".maplibregl-ctrl-attrib");
-    attrib?.removeAttribute("open");
-    attrib?.classList.remove("maplibregl-compact-show");
+    if (!attrib) return;
+    const collapse = () => {
+      if (!attrib.classList.contains("maplibregl-compact")) return false;
+      attrib.removeAttribute("open");
+      attrib.classList.remove("maplibregl-compact-show");
+      return true;
+    };
+    if (collapse()) return;
+    const watch = new MutationObserver(() => {
+      if (collapse()) watch.disconnect();
+    });
+    watch.observe(attrib, { attributes: true, attributeFilter: ["class"] });
   }
 
   private addLayers() {
@@ -847,7 +967,7 @@ export class SkymapView {
       this.routeAnim = requestAnimationFrame(frame);
     };
     if (this.ready) apply();
-    else this.map.once("load", apply);
+    else this.map.once("style.load", apply);
   }
 
   /** Corrected position: MapLibre's own blue dot is driven by the
@@ -862,6 +982,7 @@ export class SkymapView {
    * worse than one dot that's occasionally unsure. */
   setWalkerPosition(coord: [number, number] | null, stale = false) {
     this.walkerAt = coord;
+    this.walkerStale = stale;
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord, false, stale));
     this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
@@ -990,6 +1111,7 @@ export class SkymapView {
    * which a fresh route and the end of navigation both need: a grey stub
    * left over from the last trip reads as a route you've half-finished. */
   setWalkedProgress(remainingMeters: number | null) {
+    this.walkedRemaining = remainingMeters;
     const src = this.map.getSource("skyway-route-done") as maplibregl.GeoJSONSource;
     if (!src) return;
     if (remainingMeters == null || this.activeRouteCoords.length < 2) {
@@ -1044,15 +1166,46 @@ export class SkymapView {
       ACTIVE_ERROR: ["BACKGROUND_ERROR", "maplibregl-ctrl-geolocate-active-error", "maplibregl-ctrl-geolocate-background-error"],
     };
     const next = twin[control._watchState ?? ""];
-    if (!next) return;
+    if (!next) {
+      // Not tracking yet: the lock it would take later is the one to refuse.
+      if (!control._watchState || control._watchState === "OFF") this.releaseWhenTracking = true;
+      return;
+    }
     control._watchState = next[0];
     control._geolocateButton?.classList.replace(next[1], next[2]);
     control.fire(new maplibregl.Event("trackuserlocationend"));
     control.fire(new maplibregl.Event("userlocationlostfocus"));
   }
 
+  /** A view that took the camera before tracking began, still to be let go
+   * of once it does. */
+  private releaseWhenTracking = false;
+
+  /**
+   * Start following you as soon as the locate control can. It can't until
+   * MapLibre has asked the phone about permission — an async check that can
+   * finish after the map has — and until then trigger() refuses, so a single
+   * call at style load left nothing tracking you at all (review of QA 026).
+   */
+  private startTracking(deadline = Date.now() + 60_000) {
+    if (!this.geolocate.trigger()) {
+      if (Date.now() < deadline) setTimeout(() => this.startTracking(deadline), 100);
+      return;
+    }
+    // A card or a link's route opened first; its camera stays its own.
+    if (this.releaseWhenTracking) this.releaseCameraLock();
+    this.releaseWhenTracking = false;
+  }
+
+  /** Whatever took the camera before tracking began has closed: when
+   * tracking starts, it follows you after all. */
+  forgetCameraHold() {
+    this.releaseWhenTracking = false;
+  }
+
   /** Follow the walker again — what GO means for the camera. */
   lockCameraOnWalker() {
+    this.releaseWhenTracking = false;
     const state = (this.geolocate as unknown as { _watchState?: string })._watchState;
     if (state === "BACKGROUND") this.geolocate.trigger(); // back to ACTIVE_LOCK, camera to you
     else if (state === "BACKGROUND_ERROR") this.refindWalker();
@@ -1102,7 +1255,9 @@ export class SkymapView {
    * …); an empty set shows nothing — opt-in, not opt-out, so the map starts
    * clean rather than saturated with icons. */
   setPoiGroupFilter(groups: string[]) {
+    this.poiGroups = groups;
     const apply = () => {
+      if (!this.map.getLayer("skyway-pois")) return; // mid-swap: syncBasemap puts it back
       // Transit renders through its own dedicated layer (different zoom
       // threshold, fixed icon size) — excluded here so it doesn't also
       // paint through this one and double up once both are visible.
@@ -1116,7 +1271,7 @@ export class SkymapView {
       );
     };
     if (this.ready) apply();
-    else this.map.once("load", apply);
+    else this.map.once("style.load", apply);
   }
 
 }
