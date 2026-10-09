@@ -21,6 +21,9 @@ async function tapLocate(page) {
 /** A trip under way with GPS fixes landing on its line. */
 async function tripWithFixes(page) {
   await openApp(page, `/?from=${FROM}&to=${TO}`);
+  // Let the preview finish drawing the route before GO, as a walker reading
+  // it would. (Pressing GO mid-draw is QA 005.)
+  await page.waitForFunction(() => window.__skymap.view.routeAnim === 0);
   await page.evaluate(() => window.__skymap.modes.enterNav());
   const line = await activeLine(page);
   for (let i = 0; i < 3; i++) {
@@ -94,4 +97,29 @@ test("GO turns location back on if it was switched off (user report, 2026-10-08)
   const after = await tracking(page);
   assert.notEqual(after.watchState, "OFF", "a trip that can't see you never moves");
   assert.equal(after.watches, 1);
+});
+
+test("mid-trip, a lost GPS fix shows the dot as stale until the next fix (QA 039)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  const line = await tripWithFixes(page);
+  const walker = () =>
+    page.evaluate(() => {
+      const f = window.__skymap.view.map.getSource("skyway-walker")?._data?.geojson?.features ?? [];
+      return { dots: f.length, stale: f[0]?.properties?.stale ?? null, sub: document.getElementById("nav-instruction-sub").textContent };
+    });
+  assert.deepEqual((await walker()).stale, false);
+
+  await page.evaluate(() => window.__testGeo.error(2));
+  await page.waitForTimeout(300);
+  const lost = await walker();
+  assert.equal(lost.dots, 1, "keep showing where we last saw you");
+  assert.equal(lost.stale, true, "but not as if it were live");
+  assert.match(lost.sub, /last known/i);
+
+  await page.evaluate(([lon, lat]) => window.__testGeo.fix(lat, lon, 10), line.coords[2]);
+  await page.waitForTimeout(300);
+  const back = await walker();
+  assert.equal(back.stale, false);
+  assert.doesNotMatch(back.sub, /last known/i);
 });

@@ -671,9 +671,19 @@ async function boot() {
       view.setWalkedProgress(null); // same reason: nothing left to keep it honest
       forgetPosition();
       showToast("Location is off — allow access in your browser settings to route from where you stand.");
-    } else if (err.code === err.TIMEOUT && !toldAboutTimeout) {
-      toldAboutTimeout = true;
-      showToast("No GPS fix yet — normal deep indoors. It'll catch you near a window or bridge.");
+    } else {
+      // Lost the fix, or no fix yet. Mid-trip the dot would otherwise stay
+      // solid where it was, looking live while the walker moves on (QA 039):
+      // hold it, greyed, and say so until the next fix redraws it.
+      if (mode === "nav" && activeRoute) {
+        view.markWalkerStale();
+        navInstructionSub.textContent = "No GPS signal here — showing your last known spot";
+      }
+      // The native bridge reports a lost fix as code 2, not 3 — same advice.
+      if (!toldAboutTimeout) {
+        toldAboutTimeout = true;
+        showToast("No GPS fix yet — normal deep indoors. It'll catch you near a window or bridge.");
+      }
     }
   });
   view.geolocate.on("trackuserlocationend", () => {

@@ -229,6 +229,8 @@ export class SkymapView {
   private ready = false;
   /** Buildings whose label a dot is covering — see applyLabelSuppression. */
   private walkerLabelIds: string[] = [];
+  /** Where the walker dot is drawn, for redrawing it stale. */
+  private walkerAt: [number, number] | null = null;
   private routeEndBuildingIds: string[] = [];
   /** Buildings whose name is already drawn by their own pin. Constant for the
    * life of the dataset, unlike the two above. */
@@ -831,11 +833,18 @@ export class SkymapView {
    * we've decided is wrong, and two dots disagreeing by half a block is
    * worse than one dot that's occasionally unsure. */
   setWalkerPosition(coord: [number, number] | null, stale = false) {
+    this.walkerAt = coord;
     const walkerSrc = this.map.getSource("skyway-walker") as maplibregl.GeoJSONSource;
     walkerSrc?.setData(pointFC(coord, false, stale));
     this.map.getContainer().classList.toggle("walker-snapped", coord !== null);
     this.walkerLabelIds = coord ? this.labelUnder(coord) : [];
     this.applyLabelSuppression();
+  }
+
+  /** Keep the walker where it is, drawn as stale: the fix behind it is no
+   * longer live. The next setWalkerPosition draws it live again. */
+  markWalkerStale() {
+    if (this.walkerAt) this.setWalkerPosition(this.walkerAt, true);
   }
 
   /**
