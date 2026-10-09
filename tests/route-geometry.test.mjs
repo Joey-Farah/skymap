@@ -41,7 +41,6 @@ const ROUTE = {
   ],
   totalMeters: 160,
   totalMinutes: 3,
-  ignoredClosures: false,
 };
 
 const M_PER_DEG_LAT = 111320;

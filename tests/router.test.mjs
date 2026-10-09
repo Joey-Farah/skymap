@@ -47,26 +47,21 @@ test("every building is reachable from IDS Center (hours-blind)", () => {
 test("weekday route IDS -> US Bank Stadium is open and sensible", () => {
   const r = router.route("ids-center", "us-bank-stadium", TUE_10AM);
   assert.ok(r);
-  assert.equal(r.ignoredClosures, false);
   assert.ok(r.steps.length >= 4, "stadium should be several buildings away");
   assert.ok(r.totalMeters > 800 && r.totalMeters < 4000, `implausible distance ${r.totalMeters}`);
   assert.ok(r.totalMinutes > 5 && r.totalMinutes < 60, `implausible time ${r.totalMinutes}`);
 });
 
-test("routes avoid closed buildings when possible, flag when not", () => {
-  // Sunday morning: offices closed. IDS (hub) and Hilton (hotel) are open,
-  // but every path between them passes through closed office towers.
+test("routes go only through buildings open when you reach them, or not at all (QA 029)", () => {
   const r = router.route("ids-center", "hilton", SUN_11AM);
-  assert.ok(r);
-  for (const step of r.steps.slice(1, -1)) {
-    if (!r.ignoredClosures) {
-      assert.ok(isOpenAt(step.building, SUN_11AM), `${step.building.id} closed on route`);
-    }
+  for (const step of r?.steps.slice(1, -1) ?? []) {
+    assert.ok(isOpenAt(step.building, SUN_11AM), `${step.building.id} closed on route`);
   }
-  // At 3am nothing is open except parking ramps: must fall back and flag it.
-  const late = router.route("ids-center", "hilton", TUE_3AM);
-  assert.ok(late);
-  assert.equal(late.ignoredClosures, true);
+  // At 3am nothing between them is open. A route through locked doors is
+  // no route: it used to be drawn anyway, under a warning, through as many
+  // locked buildings as the shortest path happened to cross.
+  assert.equal(router.route("ids-center", "hilton", TUE_3AM), null);
+  assert.ok(router.route("ids-center", "hilton", null), "the two are connected, just not now");
 });
 
 test("shortest path is actually short (triangle sanity)", () => {
@@ -469,12 +464,14 @@ test("arriving at a through-building doesn't count the walk through it yet", () 
 });
 
 test("closingSoonWarnings flags buildings closing near arrival", () => {
-  // Most of the fixture's buildings shut at 6:30pm: leaving at 6pm Tuesday,
-  // the ones further along the route close within 30 minutes of arrival.
-  // (The building you leave from isn't warned about — you're in it.)
-  const TUE_6PM = new Date(2026, 6, 14, 18, 0);
-  const r = router.route("ids-center", "us-bank-stadium", TUE_6PM);
-  const warnings = closingSoonWarnings(r, TUE_6PM, 30);
+  // Most of the fixture's buildings shut at 6:30pm: leaving at 5:45pm
+  // Tuesday, the ones further along the route close within 30 minutes of
+  // arrival. (The building you leave from isn't warned about — you're in
+  // it.) From 5:50 some building on every path is shut by the time you'd
+  // reach it, so there is no route to warn about.
+  const TUE_545PM = new Date(2026, 6, 14, 17, 45);
+  const r = router.route("ids-center", "us-bank-stadium", TUE_545PM);
+  const warnings = closingSoonWarnings(r, TUE_545PM, 30);
   assert.ok(warnings.length > 0, "an early-evening route should warn");
   for (const w of warnings) {
     assert.ok(w.minutesLeft > 0 && w.minutesLeft <= 30);
@@ -1056,7 +1053,6 @@ test("a building is judged by its hours when the walker reaches it, not at depar
   assert.deepEqual(r.route("a", "c", at(17, 0)).steps.map((s) => s.building.id), ["a", "b", "c"]);
   const late = r.route("a", "c", at(17, 57));
   assert.deepEqual(late.steps.map((s) => s.building.id), ["a", "d", "c"], "detours around B");
-  assert.equal(late.ignoredClosures, false);
   assert.ok(!r.reachable("a", at(17, 57), 60).has("b"), "reachable() agrees: B is shut on arrival");
 });
 

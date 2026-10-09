@@ -453,8 +453,10 @@ export class SkywayRouter {
   /**
    * Shortest path (by minutes). When `when` is set, buildings closed at that time are
    * not traversable (origin and destination are exempt so you can still
-   * route "to the door"). Falls back to hours-blind routing when no open
-   * route exists, flagging the result.
+   * route "to the door"), and when no route avoids them there is no route:
+   * null. A path through locked doors isn't one, however it's labelled —
+   * the old hours-blind fallback crossed as many locked buildings as the
+   * shortest path happened to (QA 029).
    */
   route(
     fromId: string,
@@ -462,13 +464,7 @@ export class SkywayRouter {
     when: Date | null,
     options: { accessible?: boolean; closedEdges?: Set<string> } = {},
   ): RouteResult | null {
-    const strict = this.search(fromId, toId, when, options);
-    if (strict) return { ...strict, ignoredClosures: false };
-    if (when) {
-      const blind = this.search(fromId, toId, null, options);
-      if (blind) return { ...blind, ignoredClosures: true };
-    }
-    return null;
+    return this.search(fromId, toId, when, options);
   }
 
   private search(
@@ -476,7 +472,7 @@ export class SkywayRouter {
     toId: string,
     when: Date | null,
     options: { accessible?: boolean; closedEdges?: Set<string> } = {},
-  ): Omit<RouteResult, "ignoredClosures"> | null {
+  ): RouteResult | null {
     const goal = this.buildings.get(toId);
     const start = this.buildings.get(fromId);
     if (!goal || !start) return null;
@@ -579,7 +575,9 @@ export class SkywayRouter {
         // claims a door can make a building further on not open yet, where
         // a later arrival at that door would have found it open. That needs
         // the same door reached two ways within minutes of an opening, and
-        // costs at worst a longer route or the "no fully open route" badge.
+        // costs at worst a longer route or, since closed buildings are never
+        // routed through (QA 029), "No open skyway route right now" for the
+        // minutes around that opening.
         if (when && !isEndpoint && !isOpenAt(b, new Date(when.getTime() + tentative * 60_000))) continue;
         if (tentative < (dist.get(next) ?? Infinity)) {
           buildingOf.set(next, edge.to);
@@ -608,7 +606,7 @@ export class SkywayRouter {
     >,
     buildingOf: Map<string, string>,
     totalMeters: number,
-  ): Omit<RouteResult, "ignoredClosures"> {
+  ): RouteResult {
     const steps: RouteStep[] = [];
     for (let cursor: string | undefined = goalState; cursor; cursor = prev.get(cursor)?.state) {
       const p = prev.get(cursor);

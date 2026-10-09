@@ -397,7 +397,15 @@ async function boot() {
       activeRoute = null;
       view.setRoute(null);
       clearRouteUrl();
-      sheet.showMessage("No route found", "No skyway connection between these places.");
+      // Connected, but not through open doors right now: say that, not
+      // that the skyway doesn't go there.
+      const closedNow = !skywayRoute && !!router.route(from.buildingId, to.buildingId, null);
+      if (closedNow) {
+        sheet.showMessage(
+          "No open skyway route right now",
+          "Every skyway path between these places goes through a building that's closed now.",
+        );
+      } else sheet.showMessage("No route found", "No skyway connection between these places.");
       return;
     }
     if (opts.refresh && activeRoute && sameRoute(activeRoute, route)) {
@@ -432,7 +440,6 @@ async function boot() {
   function sameRoute(a: RouteResult, b: RouteResult): boolean {
     return (
       a.steps.length === b.steps.length &&
-      !!a.ignoredClosures === !!b.ignoredClosures &&
       a.steps.every((s, i) => s.building.id === b.steps[i].building.id)
     );
   }

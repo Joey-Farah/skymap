@@ -920,18 +920,12 @@ export class Sheet {
     if (approachClosed) this.content.append(el("span", `⚠ ${approachClosed}`, "badge warn"));
     const destinationClosed = destinationClosedWarning(route, when);
     if (destinationClosed) this.content.append(el("span", `⚠ ${destinationClosed}`, "badge warn"));
-    if (route.ignoredClosures) {
-      this.content.append(
-        el("span", "⚠ No fully open route at this time — showing the path ignoring closures", "badge warn"),
-      );
-    } else {
-      const warnings = closingSoonWarnings(route, when);
-      for (const w of warnings.slice(0, 2)) {
-        this.content.append(el("span", `⚠ ${w.label}`, "badge warn"));
-      }
-      if (warnings.length > 2) {
-        this.content.append(el("span", `⚠ ${warnings.length - 2} more buildings closing soon`, "badge warn"));
-      }
+    const warnings = closingSoonWarnings(route, when);
+    for (const w of warnings.slice(0, 2)) {
+      this.content.append(el("span", `⚠ ${w.label}`, "badge warn"));
+    }
+    if (warnings.length > 2) {
+      this.content.append(el("span", `⚠ ${warnings.length - 2} more buildings closing soon`, "badge warn"));
     }
     if (route.steps.some((s) => s.openAir)) {
       this.content.append(el("span", "⚠ May briefly go outside", "badge warn"));

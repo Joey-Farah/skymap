@@ -137,3 +137,19 @@ test("from the street after hours, the way into the skyway is an open building (
   assert.ok(way, "this setup starts from the street");
   assert.doesNotMatch(way, /Butler Square/, `${r.from} — ${way}`);
 });
+
+test("with every way through a locked building, there is no route and it says why (QA 029)", async (t) => {
+  // Wednesday 6:30pm: Thrivent's only neighbour, Sora Apartments, is shut.
+  // The app used to draw the shortest path anyway, through 5 locked buildings.
+  const { browser, page } = await launch({ clockAt: "2026-10-14T18:30:00-05:00", geolocation: null });
+  t.after(() => browser.close());
+  await openApp(page, "/?from=thrivent-corporate-center-27346744&to=cortland-mill-district-62006959");
+  const r = await page.evaluate(() => ({
+    sheet: document.getElementById("sheet").innerText,
+    line: window.__skymap.view.activeRouteCoords.length,
+    go: !!document.querySelector("#sheet button.go, #sheet .go"),
+  }));
+  assert.match(r.sheet, /No open skyway route right now/);
+  assert.equal(r.line, 0, "no line drawn");
+  assert.equal(r.go, false, "nothing to start");
+});
