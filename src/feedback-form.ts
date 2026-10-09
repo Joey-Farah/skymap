@@ -51,7 +51,10 @@ export class FeedbackForm {
    * draft and thanked its writer for something they hadn't sent (QA 003). */
   private session = 0;
 
-  constructor(private toast: (text: string) => void) {
+  private toast: (text: string) => void;
+
+  constructor(toast: (text: string) => void) {
+    this.toast = toast;
     this.sendBtn.addEventListener("click", () => void this.submit());
     this.cancelBtn.addEventListener("click", () => this.close());
     this.backdrop.addEventListener("click", () => this.close());
@@ -98,6 +101,10 @@ export class FeedbackForm {
   }
 
   close() {
+    // A send still in flight belongs to a form that's gone. Left to answer,
+    // one that gave up 15 s later threw its writer into Mail after they had
+    // cancelled.
+    this.session++;
     this.root.hidden = true;
     this.backdrop.hidden = true;
     this.returnFocusTo?.focus();
@@ -137,7 +144,7 @@ export class FeedbackForm {
     };
     const session = this.session;
     const result = await sendFeedback(url, payload, (u, init) => fetch(u, init as RequestInit));
-    if (session !== this.session) return; // the form was closed and reopened meanwhile
+    if (session !== this.session) return; // the form was closed meanwhile
     this.setBusy(false);
 
     if (result === "sent") {
