@@ -240,10 +240,11 @@ export function nearestApproach(
       bestOpen = a;
     }
   }
-  // Inside a building (distance 0) that's where you are, open or not. And
+  // At a building (within AT_BUILDING_METERS, the same allowance the rest
+  // of the app gives indoor GPS) that's where you are, open or not. And
   // with nothing open in range, the nearest is still the honest answer —
   // the preview warns that it's shut (approachClosedWarning).
-  if (!best || best.straightMeters === 0 || !bestOpen) return best;
+  if (!best || best.straightMeters <= AT_BUILDING_METERS || !bestOpen) return best;
   return bestOpen;
 }
 

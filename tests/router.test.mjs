@@ -1086,6 +1086,8 @@ test("from the street, the skyway is joined through a building that's open when 
   // Already inside a building that has shut for the night: that's where you
   // are, and walking out to another one would be the wrong advice.
   assert.equal(nearestApproach(44.9705, -93.2695, both, 400, EVENING)?.building.id, "shut-hall");
+  // Indoor GPS drifting ~8m outside the walls counts as inside too.
+  assert.equal(nearestApproach(44.9705, -93.2689, both, 400, EVENING)?.building.id, "shut-hall");
   // Nothing open in range: still the nearest, and the preview says so.
   assert.equal(nearestApproach(44.9705, -93.268, [shut], 400, EVENING)?.building.id, "shut-hall");
 });

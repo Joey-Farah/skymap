@@ -249,8 +249,15 @@ async function boot() {
     const fromId = comboFrom.value;
     const toId = comboTo.value;
     if (!fromId) {
+      // Nothing to route from — including when the start was Current
+      // Location and location has since gone. Clear the old route rather
+      // than leave it drawn (and startable by GO).
+      activeRoute = null;
+      view.setRoute(null);
       sheet.showMessage("Choose a starting point", "Pick where you're starting from above.");
-      (document.getElementById("input-from") as HTMLInputElement).focus();
+      // Only when asked: a refresh is the app's own doing, and taking focus
+      // on it opened the list again every minute.
+      if (!opts.refresh) (document.getElementById("input-from") as HTMLInputElement).focus();
       return;
     }
     if (!toId) return;
@@ -304,6 +311,7 @@ async function boot() {
     // business or a curated ramp, mark its own spot rather than the host
     // building's centroid.
     view.setRoute(route, {
+      keepCamera: !!opts.refresh,
       fromCoord: from.coord,
       toCoord: to.coord,
       // A `nearby` place sits outside the network, so the last stretch to

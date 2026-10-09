@@ -58,7 +58,8 @@ test("the arrival time agrees with 'closes before you'd arrive' (QA 036)", async
   await page.evaluate(() => window.__skymap.modes.enterPreview());
   const r = await readPreview(page);
   const closedBefore = r.badges.find((b) => /closes at 6pm, before you'd arrive/.test(b));
-  if (closedBefore) assert.ok(clockMinutes(r.arrive) >= 18 * 60, `"${r.arrive}" beside "${closedBefore}"`);
+  assert.ok(closedBefore, `setup: the 6pm closing should be in play (${r.badges.join(" | ")})`);
+  assert.ok(clockMinutes(r.arrive) >= 18 * 60, `"${r.arrive}" beside "${closedBefore}"`);
 });
 
 test("the closing warning that decides the trip is the one shown (QA 050)", async (t) => {
