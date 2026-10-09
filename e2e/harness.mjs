@@ -18,6 +18,8 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const BASE = process.env.E2E_BASE ?? "http://localhost:5180";
 
 /** Six Quebec: central and well connected — the default "you are here". */
+const WEDNESDAY_NOON = "2026-10-14T12:00:00-05:00";
+
 export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 12 };
 
 /**
@@ -44,7 +46,10 @@ export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 
  * @param {number} [o.permissionQueryMs] with "manual": how long the
  *   permission check takes to answer. MapLibre's locate control isn't set
  *   up until it does, and on a phone it can take longer than the map does.
- * @param {string} [o.clockAt] ISO time to start the page clock at (time then flows)
+ * @param {string|null} [o.clockAt] ISO time to start the page clock at (time
+ *   then flows). Default: a Wednesday noon, when the skyway is open — routes
+ *   only go through open buildings, so a test run at 3am would otherwise
+ *   find none. null: the real time.
  * @param {{width:number,height:number}} [o.viewport] default 390x844
  * @param {"light"|"dark"} [o.colorScheme]
  * @param {boolean} [o.offline] no network beyond the dev server: everything
@@ -145,8 +150,9 @@ export async function launch(o = {}) {
   const page = await context.newPage();
   const pageErrors = [];
   page.on("pageerror", (e) => pageErrors.push(e.message));
-  if (o.clockAt) {
-    await page.clock.install({ time: new Date(o.clockAt) });
+  const clockAt = o.clockAt === undefined ? WEDNESDAY_NOON : o.clockAt;
+  if (clockAt) {
+    await page.clock.install({ time: new Date(clockAt) });
     await page.clock.resume();
   }
   return { browser, context, page, feedbackPosts, pageErrors };
