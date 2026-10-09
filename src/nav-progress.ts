@@ -1,3 +1,5 @@
+import { MAX_WALK_SPEED } from "./route-position.ts";
+
 /**
  * Keeps the arrival time from walking backwards.
  *
@@ -64,7 +66,7 @@ export function settleArrival(settled: number | null, raw: number): number {
  * @param settled the last value shown to the walker, or null to start a trip
  * @param raw     metres remaining as just measured
  */
-export function settleRemaining(settled: number | null, raw: number): number {
+export function settleRemaining(settled: number | null, raw: number, elapsedMs = 0): number {
   if (settled === null) return raw;
   if (raw <= settled) {
     // Forward jumps need policing too. A route that doubles back near
@@ -74,8 +76,15 @@ export function settleRemaining(settled: number | null, raw: number): number {
     // deadlock (every later fix is measured against the stale value), so
     // it's slew-limited instead: a real jump converges over a few fixes,
     // a spurious one is corrected before it ever reaches the screen.
+    //
+    // Unless enough time has passed to walk it. With the screen locked in a
+    // pocket, no fixes arrive for minutes and the first one back is at the
+    // door: eased in 75 m a fix, the banner replayed every building already
+    // passed, one a second (QA 032). The tracker feeding this only moves the
+    // dot at walking pace, so a jump that pace explains is real.
     const jump = settled - raw;
-    return jump > DETOUR_METERS ? settled - DETOUR_METERS : raw;
+    const walkable = (MAX_WALK_SPEED * elapsedMs) / 1000;
+    return jump > Math.max(DETOUR_METERS, walkable) ? settled - DETOUR_METERS : raw;
   }
   return raw - settled > DETOUR_METERS ? raw : settled;
 }
@@ -142,6 +151,14 @@ export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, rem
   for (let i = 1; i <= last; i++) {
     if (stepStarts[i] <= alongMeters + 1e-9) index = i;
     else break;
+  }
+  // A destination door at (or within arrival distance of) the end of the
+  // line: arrived when the walker is close enough, without also having to
+  // pass a door that sits on the line's last point. The tracker's projection
+  // stops a hair short of an endpoint, so a perfect walk never got there
+  // (QA 004).
+  if (last > 0 && remainingMeters <= ARRIVAL_METERS && stepStarts[last] >= lineMeters - ARRIVAL_METERS) {
+    index = last;
   }
   // Through the destination's door isn't arrived: the door can sit ~100 m
   // before the pin. Arrival waits for the same ARRIVAL_METERS that ending

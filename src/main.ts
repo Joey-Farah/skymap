@@ -384,6 +384,7 @@ async function boot() {
     if (watchState() === "OFF" && !locateButton?.disabled) view.geolocate.trigger();
     manualPositionUntil = 0;
     settledRemaining = null; // a new trip starts with nothing to hold against
+    settledAt = null;
     walkedHighWater = null;
     sheet.showNavigating(activeRoute, selectedTime(), data.pois ?? [], { onEnd: () => enterIdle() });
     applyNavProgress(0);
@@ -392,7 +393,11 @@ async function boot() {
   function applyNavProgress(fallbackStep: number, raw: number | null = null, offRoute = false) {
     // Held to non-increasing across the trip, so indoor GPS drift can't walk
     // the arrival time backwards — see nav-progress.ts.
-    if (raw != null) settledRemaining = settleRemaining(settledRemaining, raw);
+    if (raw != null) {
+      const now = Date.now();
+      settledRemaining = settleRemaining(settledRemaining, raw, settledAt == null ? 0 : now - settledAt);
+      settledAt = now;
+    }
     if (settledRemaining != null) {
       walkedHighWater = walkedHighWater == null ? settledRemaining : Math.min(walkedHighWater, settledRemaining);
     }
@@ -533,6 +538,8 @@ async function boot() {
   let manualPositionUntil = 0;
   /** Smoothed metres-to-go for the trip in progress; null between trips. */
   let settledRemaining: number | null = null;
+  /** When settledRemaining last took a reading — see settleRemaining. */
+  let settledAt: number | null = null;
   /** Closest to the destination this trip has ever got. The dimmed line is
    * drawn from this rather than from the live figure: skyways run parallel
    * a block apart, so a drifting fix can project onto a neighbouring leg

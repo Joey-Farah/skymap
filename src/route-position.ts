@@ -29,7 +29,7 @@ import { haversineMeters, nearestOnSegment, polylineMeters } from "./router.ts";
  * window this opens is the whole safety margin — too tight and a real
  * corner-cut reads as drift, too loose and a wild fix drags the dot with
  * it. */
-const MAX_WALK_SPEED = 2.2; // m/s
+export const MAX_WALK_SPEED = 2.2; // m/s
 
 /**
  * How far below the furthest point reached a fix may pull the estimate.
