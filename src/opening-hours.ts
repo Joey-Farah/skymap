@@ -87,6 +87,11 @@ const TIME_RANGE = /(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})/g;
  */
 function parseTimeSpan(rest: string): [number, number] | null {
   if (/^24\/7$/.test(rest)) return [0, 1440];
+  // The time has to come first. Anything between the day-spec and it is
+  // syntax this parser doesn't hold — "Su[4] 17:00-18:00" is the 4th Sunday
+  // of the month, and ignoring the [4] showed a monthly free meal as open
+  // every Sunday (QA 008). Text after the time (a quoted note) is fine.
+  if (!/^\d{1,2}:\d{2}/.test(rest)) return null;
   const spans: [number, number][] = [];
   for (const m of rest.matchAll(TIME_RANGE)) {
     const open = Number(m[1]) * 60 + Number(m[2]);

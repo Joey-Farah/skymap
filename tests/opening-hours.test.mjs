@@ -159,3 +159,12 @@ test("every day in a spaced day list is kept, not just the first (QA 033)", () =
     [660, 1380], // Sa
   ]);
 });
+
+test("an nth-weekday rule is unknown, not read as every week (QA 008)", () => {
+  // "4th Sunday" is a monthly event; read as weekly, the free meal showed
+  // "Open until 6pm" on three Sundays out of four.
+  assert.equal(parseOpeningHours("Su[4] 17:00-18:00"), null);
+  assert.equal(parseOpeningHours("Sa[3] 15:30-17:00"), null);
+  // A time range with a note after it is still read as before.
+  assert.ok(parseOpeningHours('Mo-Fr 09:00-17:00 "by appointment"'));
+});
