@@ -161,6 +161,12 @@ test("allowing location in Settings after a denial brings it back without a rela
   assert.equal(options?.enableHighAccuracy, true);
   assert.ok(options?.timeout > 0, `timeout ${options?.timeout}`);
 
+  // Coming back twice in quick succession changes nothing further.
+  await comeBack();
+  await comeBack();
+  await page.waitForTimeout(300);
+  assert.deepEqual(await button(), { disabled: false, watches: 1 });
+
   // The obvious next move — tapping "find me" before the first fix lands —
   // must not cancel the search that just restarted.
   await tapLocate(page);
@@ -241,4 +247,40 @@ test("at the start of a trip, no fix yet doesn't claim a 'last known spot' (revi
   await page.waitForTimeout(300);
   const sub = await page.evaluate(() => document.getElementById("nav-instruction-sub").textContent);
   assert.doesNotMatch(sub, /last known/i);
+});
+
+test("two quick returns to the app after allowing location turn it on once (review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => {
+    window.__testGeo.permission = "denied";
+    window.__testGeo.error(1);
+  });
+  await page.waitForTimeout(300);
+  await page.evaluate(() => {
+    window.__testGeo.permission = "granted";
+    document.dispatchEvent(new Event("visibilitychange"));
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await page.waitForTimeout(400);
+  assert.notEqual((await tracking(page)).watchState, "OFF");
+});
+
+test("a permission that catches up just after the return is still noticed (review)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page);
+  await page.evaluate(() => {
+    window.__testGeo.permission = "denied";
+    window.__testGeo.error(1);
+  });
+  await page.waitForTimeout(300);
+  // Back in the app before the new answer is visible...
+  await page.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+  await page.waitForTimeout(200);
+  // ...and it lands a moment later.
+  await page.evaluate(() => (window.__testGeo.permission = "granted"));
+  await page.waitForTimeout(2000);
+  assert.notEqual((await tracking(page)).watchState, "OFF");
 });

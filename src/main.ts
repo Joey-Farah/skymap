@@ -695,14 +695,25 @@ async function boot() {
   // button for good on the denial, and iOS keeps the app running when access
   // is granted, so without this the app stayed "Location not available"
   // until force-quit (QA 027). Never prompts — it only notices a change.
-  document.addEventListener("visibilitychange", async () => {
+  async function recheckLocationPermission(retry: boolean) {
     if (document.visibilityState !== "visible" || !locateButton?.disabled) return;
-    if ((await locationPermission()) !== "granted") return;
+    const state = await locationPermission();
+    // Two returns in quick succession both get past the check above before
+    // either answer comes back; the second trigger() would turn the first
+    // one's tracking straight off again.
+    if (!locateButton.disabled || watchState() !== "OFF") return;
+    if (state !== "granted") {
+      // The plugin can still be holding the pre-Settings answer just after
+      // the app comes back: look once more, a moment later.
+      if (retry) window.setTimeout(() => void recheckLocationPermission(false), 1500);
+      return;
+    }
     locateButton.disabled = false;
     locateButton.title = "Find my location";
     locateButton.setAttribute("aria-label", "Find my location");
     view.geolocate.trigger();
-  });
+  }
+  document.addEventListener("visibilitychange", () => void recheckLocationPermission(true));
   view.geolocate.on("trackuserlocationend", () => {
     // Fires both for real off AND for pan-to-background; only the former is
     // "end" (lostfocus already covers the background case).
