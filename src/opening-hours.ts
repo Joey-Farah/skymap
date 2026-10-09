@@ -5,20 +5,16 @@ import type { DayHours } from "./types.ts";
  * DayHours[7] model, indexed like Date#getDay() (0 = Sunday).
  *
  * Only the constructs actually seen in the downtown Minneapolis extract
- * are supported: semicolon rules, day ranges/lists, "24/7", "off", PH
- * (public holiday — skipped, not modeled), and comma used non-standardly
- * as a rule separator.
+ * are supported: semicolon rules, comma-joined additional rules, day
+ * ranges/lists, split hours ("08:00-12:00,13:00-17:00"), closes after
+ * midnight (either "20:00-02:00" or "20:00-26:00"), "24/7", "off", and PH
+ * (public holiday — skipped, not modeled).
  *
- * The DayHours model can only express one open/closed window per day, but
- * OSM can express things it can't hold — split hours ("08:00-12:00,
- * 13:00-17:00", a lunch closure) and overnight wraps ("Fr 20:00-02:00").
- * Rather than approximate those into something that fits (e.g. collapsing
- * split hours to their outer span, which would falsely claim "open" during
- * the actual midday closure), any clause the model can't represent marks
- * the WHOLE value unresolved: the entire tag is discarded, not just that
- * day, so a good day never gets kept alongside a guessed one. Returns null
- * when nothing usable was found, so the caller can fall back to another
- * source (a different tag, then the generic schedule).
+ * Anything else — a month scope, an nth weekday — marks the WHOLE value
+ * unresolved: the entire tag is discarded, not just that day, so a good
+ * day never gets kept alongside a guessed one. Returns null when nothing
+ * usable was found, so the caller can fall back to another source (a
+ * different tag, then the generic schedule).
  */
 
 const CHRONO = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] as const;
@@ -79,26 +75,39 @@ function parseDaySpec(clause: string): { days: string[]; rest: string } | null {
 const TIME_RANGE = /(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})/g;
 
 /**
- * A single unambiguous open/close window, or null when the value can't be
- * represented by one: no time range found, every range wraps past
- * midnight (close <= open), or more than one non-wrapping range is present
- * (split hours — collapsing to their outer span would invent an "open"
- * period across the actual gap).
+ * A clause's open windows as flat [open, close] pairs (see DayHours), or
+ * null when no time range leads it. Each range is its own window, so split
+ * hours keep their gap rather than being spanned over it. A close at or
+ * before the open runs past midnight: "20:00-02:00" is 8pm-2am, as
+ * "20:00-26:00" spells the same thing.
  */
-function parseTimeSpan(rest: string): [number, number] | null {
+function parseWindows(rest: string): number[] | null {
   if (/^24\/7$/.test(rest)) return [0, 1440];
   // The time has to come first. Anything between the day-spec and it is
   // syntax this parser doesn't hold — "Su[4] 17:00-18:00" is the 4th Sunday
   // of the month, and ignoring the [4] showed a monthly free meal as open
   // every Sunday (QA 008). Text after the time (a quoted note) is fine.
   if (!/^\d{1,2}:\d{2}/.test(rest)) return null;
-  const spans: [number, number][] = [];
+  const windows: number[] = [];
   for (const m of rest.matchAll(TIME_RANGE)) {
     const open = Number(m[1]) * 60 + Number(m[2]);
     const close = Number(m[3]) * 60 + Number(m[4]);
-    if (close > open) spans.push([open, close]);
+    windows.push(open, close > open ? close : close + 1440);
   }
-  return spans.length === 1 ? spans[0] : null;
+  return windows.length ? merged(windows) : null;
+}
+
+/** Windows in order, with any that overlap or touch joined into one. */
+function merged(windows: number[]): number[] {
+  const pairs: [number, number][] = [];
+  for (let i = 0; i + 1 < windows.length; i += 2) pairs.push([windows[i], windows[i + 1]]);
+  pairs.sort((a, b) => a[0] - b[0]);
+  const out: number[] = [];
+  for (const [open, close] of pairs) {
+    if (out.length && open <= out[out.length - 1]) out[out.length - 1] = Math.max(out[out.length - 1], close);
+    else out.push(open, close);
+  }
+  return out;
 }
 
 export function parseOpeningHours(value: string | undefined | null): DayHours[] | null {
@@ -107,15 +116,19 @@ export function parseOpeningHours(value: string | undefined | null): DayHours[] 
   if (/^off$/i.test(trimmed)) return null;
   if (/^24\/7$/.test(trimmed)) return Array(7).fill([0, 1440]) as DayHours[];
 
-  // Split on ';' (the standard separator), and additionally on a ','
-  // immediately after a completed time range — real-world data sometimes
-  // uses a comma where a semicolon belongs ("Mo-Fr 08:30-17:00, Sa …").
-  const rules = trimmed.split(";").flatMap((r) => r.split(/(?<=\d),\s*(?=[A-Z])/));
+  // ';' starts a rule that replaces the hours of the days it names. A ','
+  // after a completed time range starts an additional rule, which adds to
+  // them: "Mo-Fr 06:30-09:30, Mo-Fr 17:00-22:00" is breakfast and dinner.
+  // Read as a replacement, breakfast vanished (QA 034). On different days
+  // ("Mo-Fr 08:30-17:00, Sa …") the two readings agree.
+  const rules = trimmed.split(";").flatMap((r) =>
+    r.split(/(?<=\d),\s*(?=[A-Z])/).map((clause, i) => ({ clause, adds: i > 0 })),
+  );
 
   const result: (DayHours | undefined)[] = Array(7).fill(undefined);
   let unresolved = false;
   for (const rule of rules) {
-    const clause = rule.trim();
+    const clause = rule.clause.trim();
     if (!clause) continue;
     const spec = parseDaySpec(clause);
     if (!spec) {
@@ -135,12 +148,12 @@ export function parseOpeningHours(value: string | undefined | null): DayHours[] 
       for (const i of dayIndices) result[i] = null;
       continue;
     }
-    const span = parseTimeSpan(rest);
-    if (!span) {
-      unresolved = true; // wraps, split hours, or unparseable: taint the whole value
+    const windows = parseWindows(rest);
+    if (!windows) {
+      unresolved = true; // unparseable: taint the whole value
       continue;
     }
-    for (const i of dayIndices) result[i] = span;
+    for (const i of dayIndices) result[i] = rule.adds && result[i] ? merged([...result[i]!, ...windows]) : windows;
   }
   if (unresolved) return null;
 
