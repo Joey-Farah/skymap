@@ -2,6 +2,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Building, Poi, RouteResult, SkymapData } from "./types.ts";
 import { isClosingSoon, isOpenAt } from "./hours.ts";
+import { bundledGlyphs } from "./bundled-glyphs.ts";
 import {
   buildingExitPoint,
   polylineMeters,
@@ -303,6 +304,8 @@ export class SkymapView {
       // spot, and the two were crowding each other. Own control instead of
       // the constructor's built-in one so the corner can be chosen.
       attributionControl: false,
+      // Our names' font from the app itself — see bundled-glyphs.ts.
+      transformRequest: (url, type) => ({ url: (type === "Glyphs" && bundledGlyphs(url, document.baseURI)) || url }),
     });
     this.map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left");
     this.collapseAttributionOnceShown();
