@@ -407,3 +407,15 @@ test("a cue is something you walk past inside the building, not out on the stree
   assert.equal(landmarkNear(pois, "b").name, "Zeke's");
   assert.equal(landmarkNear(pois.slice(0, 2), "b"), null, "nothing inside is better than something outside");
 });
+
+test("an off-network landmark stands outside the building it's reached through (QA 030, 031)", () => {
+  const stadium = { id: "usbs", name: "US Bank Stadium", category: "venue", lat: 44.9737, lon: -93.2581 };
+  const marker = buildingMarker(stadium, "stadium-ramp", false);
+  // So routes stop at the ramp's door instead of drawing a line across the
+  // plaza, and the card says "Skyway access via" the ramp.
+  assert.equal(marker.nearby, true);
+  // And it is never a "past X" cue for walking through the ramp.
+  assert.equal(landmarkNear([marker], "stadium-ramp"), null);
+  // A building's own marker on the network is not "nearby" anything.
+  assert.ok(!buildingMarker(stadium, "usbs", true).nearby);
+});
