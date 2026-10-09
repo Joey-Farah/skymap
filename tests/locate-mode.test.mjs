@@ -72,15 +72,15 @@ test("a tap reads the cycle from the control's own state (QA 037)", () => {
   assert.equal(locateTransition(tapPosition("ACTIVE_LOCK", false), "tap").mode, "heading");
 });
 
-test("mid-trip, a tap while searching or after losing the fix keeps tracking on (QA 038)", () => {
+test("a tap while searching or after losing the fix keeps tracking on (QA 038, 027)", () => {
+  // The tap means "find me", mid-trip or not; MapLibre's own handler would
+  // cancel the search instead.
   for (const mode of ["waiting", "error"]) {
-    assert.deepEqual(locateTransition(mode, "tap", { navigating: true }), {
-      mode: "lock", intercept: true, heading: false, resetBearing: false,
-    });
-    // Outside a trip, MapLibre's tap-to-cancel still wins.
-    assert.deepEqual(locateTransition(mode, "tap"), {
-      mode: "off", intercept: false, heading: false, resetBearing: false,
-    });
+    for (const navigating of [true, false]) {
+      assert.deepEqual(locateTransition(mode, "tap", { navigating }), {
+        mode: "lock", intercept: true, heading: false, resetBearing: false,
+      });
+    }
   }
 });
 

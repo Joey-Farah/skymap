@@ -92,13 +92,16 @@ export function locateTransition(
         return t("off", false, false, true);
       }
       if (mode === "waiting" || mode === "error") {
-        // MapLibre's own tap turns tracking off from here. Outside a trip
-        // that's a fair "stop searching". Mid-trip it's the opposite of what
-        // the tap means: the dot stopped moving deep indoors, the walker taps
-        // to get found, and location went off for the rest of the trip, with
-        // the banner frozen on one building (QA 038). Intercepted, so
-        // tracking carries on and picks the walker up when the fix returns.
-        return ctx.navigating ? t("lock", true) : t("off");
+        // MapLibre's own tap turns tracking off from here, which is the
+        // opposite of what the tap means: it's "find me". Mid-trip, the dot
+        // stopped moving deep indoors, the walker tapped to get found, and
+        // location went off for the rest of the trip with the banner frozen
+        // on one building (QA 038). On any screen, someone who has just
+        // allowed location in Settings taps it while the first fix is still
+        // coming, and cancelled the search they'd just restarted (QA 027).
+        // Intercepted, so tracking carries on; "off" stays reachable from a
+        // locked map.
+        return t("lock", true);
       }
       return t("lock"); // off or background: let MapLibre start/re-center
     case "focus":

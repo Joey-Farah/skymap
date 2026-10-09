@@ -154,6 +154,14 @@ test("allowing location in Settings after a denial brings it back without a rela
   await comeBack();
   await page.waitForTimeout(300);
   assert.deepEqual(await button(), { disabled: false, watches: 1 });
+
+  // The obvious next move — tapping "find me" before the first fix lands —
+  // must not cancel the search that just restarted.
+  await tapLocate(page);
+  assert.deepEqual(await button(), { disabled: false, watches: 1 });
+  await page.evaluate(() => window.__testGeo.fix(44.97687, -93.27006));
+  await page.waitForTimeout(300);
+  assert.equal((await tracking(page)).watchState, "ACTIVE_LOCK");
 });
 
 test("a location toast never covers the locate button or swallows its taps (QA 045)", async (t) => {
