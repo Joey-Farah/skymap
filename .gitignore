@@ -11,3 +11,6 @@ public/data/skymap-data.osm.json
 *.mov
 *.MOV
 ios/UITests/SkyMapUITests.xcodeproj/
+
+# End-to-end screenshots taken for debugging.
+e2e/.shots/

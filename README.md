@@ -64,6 +64,7 @@ wayfinding.
 npm install
 npm run dev         # Vite dev server
 npm test            # node --test, no browser needed
+npm run e2e         # end-to-end, headless system Chrome against a dev server
 npm run build       # typecheck + bundle + service-worker manifest
 ```
 
