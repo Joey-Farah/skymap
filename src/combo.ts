@@ -9,6 +9,8 @@ export interface ComboEntry {
   poiId?: string;
   /** "building" for a plain building result, else the POI's group (food, shop, …) — drives the result row icon. */
   icon: string;
+  /** A place just outside its building, reached through it, not inside it. */
+  nearby?: boolean;
   /** Own coordinates (the business's spot, or the building centroid) —
    * lets equally-relevant results (chains: four Starbucks, two Grayfox)
    * sort closest-first to wherever the search is anchored. */
@@ -23,7 +25,7 @@ export interface ComboEntry {
 export function buildComboEntries(
   buildings: (Pick<Building, "id" | "name" | "address"> & Partial<Pick<Building, "lat" | "lon" | "category">>)[],
   pois: (Pick<Poi, "id" | "name" | "buildingId" | "exterior" | "group"> &
-    Partial<Pick<Poi, "lat" | "lon" | "category" | "kind">>)[],
+    Partial<Pick<Poi, "lat" | "lon" | "category" | "kind" | "nearby">>)[],
 ): ComboEntry[] {
   const byId = new Map(buildings.map((b) => [b.id, b]));
   const entries: ComboEntry[] = buildings.map((b) => ({
@@ -58,6 +60,7 @@ export function buildComboEntries(
       buildingId: p.buildingId,
       poiId: p.id,
       icon: p.group ?? "building",
+      nearby: p.nearby,
       lat: p.lat ?? host.lat,
       lon: p.lon ?? host.lon,
     });
