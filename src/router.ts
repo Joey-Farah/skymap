@@ -219,19 +219,32 @@ export function nearestApproach(
   lon: number,
   buildings: Building[],
   maxMeters: number,
+  when?: Date,
 ): Approach | null {
-  let best: Building | null = null;
-  let bestDist = maxMeters;
+  const approach = (building: Building, straightMeters: number): Approach => {
+    const meters = straightMeters * STREET_DETOUR_FACTOR;
+    return { building, straightMeters, meters, minutes: meters / WALK_METERS_PER_MIN };
+  };
+  let best: Approach | null = null;
+  let bestOpen: Approach | null = null;
   for (const b of buildings) {
     const d = distanceToFootprint(lat, lon, b);
-    if (d <= bestDist) {
-      bestDist = d;
-      best = b;
+    if (d > maxMeters) continue;
+    const a = approach(b, d);
+    if (!best || d < best.straightMeters) best = a;
+    // With a time, from the street, the way in has to be open when you
+    // reach its door: the nearest one locked at 6pm sent a 7:30pm walker
+    // to Butler Square with Mayo Clinic Square open 40 seconds further on
+    // (QA 009). Unknown hours count as open, as everywhere else.
+    if (when && (!bestOpen || d < bestOpen.straightMeters) && isOpenAt(b, new Date(when.getTime() + a.minutes * 60_000))) {
+      bestOpen = a;
     }
   }
-  if (!best) return null;
-  const meters = bestDist * STREET_DETOUR_FACTOR;
-  return { building: best, straightMeters: bestDist, meters, minutes: meters / WALK_METERS_PER_MIN };
+  // Inside a building (distance 0) that's where you are, open or not. And
+  // with nothing open in range, the nearest is still the honest answer —
+  // the preview warns that it's shut (approachClosedWarning).
+  if (!best || best.straightMeters === 0 || !bestOpen) return best;
+  return bestOpen;
 }
 
 /**

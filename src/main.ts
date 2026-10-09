@@ -512,7 +512,7 @@ async function boot() {
     // the network, so a tight budget here would withhold the From row
     // exactly when someone outdoors wanted it — but only from a building
     // that goes somewhere.
-    const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS);
+    const approach = nearestApproach(lat, lon, routableOrigins, MAX_APPROACH_METERS, selectedTime());
     currentApproach = approach;
     if (activeRoute && mode === "nav" && Date.now() >= manualPositionUntil) {
       // The walker stays on the skyway. A fix is evidence, not a position:

@@ -9,6 +9,7 @@ import {
   statusAt,
   statusFromHours,
   stepArrival,
+  approachClosedWarning,
   weeklyHoursRows,
 } from "../src/hours.ts";
 
@@ -206,4 +207,16 @@ test("every step's arrival counts the street walk first (QA 006)", () => {
   const t = stepArrival(route, { arrivalMinutes: 6 }, new Date(2026, 9, 14, 5, 56));
   assert.equal(t.getHours() * 60 + t.getMinutes(), 6 * 60 + 6);
   assert.equal(stepArrival({}, { arrivalMinutes: 6 }, new Date(2026, 9, 14, 5, 56)).getMinutes(), 2);
+});
+
+test("a street start into a building shut on arrival is said out loud (QA 009)", () => {
+  const b = { id: "b", name: "Butler Square", hours: Array(7).fill([360, 1080]) };
+  const route = {
+    steps: [{ building: b, arrivalMinutes: 0 }, { building: { id: "d", name: "D", hours: null }, arrivalMinutes: 5 }],
+    approach: { minutes: 1, meters: 80, buildingName: "Butler Square" },
+  };
+  assert.match(approachClosedWarning(route, new Date(2026, 9, 14, 19, 30)), /Butler Square is closed when you'd get there/);
+  assert.equal(approachClosedWarning(route, new Date(2026, 9, 14, 12, 0)), null);
+  // Starting inside it (no street walk), nobody needs telling.
+  assert.equal(approachClosedWarning({ ...route, approach: undefined }, new Date(2026, 9, 14, 19, 30)), null);
 });

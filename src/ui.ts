@@ -53,6 +53,7 @@ function resultIconUrl(group: PoiGroup): string {
   return url;
 }
 import {
+  approachClosedWarning,
   closingSoonWarnings,
   destinationClosedWarning,
   stepArrival,
@@ -821,6 +822,8 @@ export class Sheet {
     this.content.innerHTML = "";
     this.clearRouteProgress();
 
+    const approachClosed = approachClosedWarning(route, when);
+    if (approachClosed) this.content.append(el("span", `⚠ ${approachClosed}`, "badge warn"));
     const destinationClosed = destinationClosedWarning(route, when);
     if (destinationClosed) this.content.append(el("span", `⚠ ${destinationClosed}`, "badge warn"));
     if (route.ignoredClosures) {

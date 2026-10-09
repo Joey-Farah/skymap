@@ -115,3 +115,24 @@ test("the minute refresh leaves an expanded preview as the reader had it", async
   await page.waitForTimeout(400);
   assert.equal(await height(), open);
 });
+
+test("from the street after hours, the way into the skyway is an open building (QA 009)", async (t) => {
+  // Outside near Butler Square (locks at 6pm) at 7:30pm on a Wednesday.
+  const spot = { latitude: 44.98, longitude: -93.2738, accuracy: 10 };
+  const { browser, page } = await launch({ clockAt: "2026-10-14T19:30:00-05:00", geolocation: spot });
+  t.after(() => browser.close());
+  await openApp(page);
+  const r = await page.evaluate(async ({ latitude, longitude }) => {
+    const s = window.__skymap;
+    s.onPosition(latitude, longitude);
+    s.modes.showPlace(s.data.buildings.find((b) => b.id === "5th-street-ramp-b-30062750"));
+    s.modes.enterPreview();
+    await new Promise((r) => setTimeout(r, 300));
+    return { from: document.getElementById("input-from").value };
+  }, spot);
+  const preview = await readPreview(page);
+  assert.equal(preview.mode, "preview");
+  const way = preview.badges.find((b) => b.includes("walk outside to"));
+  assert.ok(way, "this setup starts from the street");
+  assert.doesNotMatch(way, /Butler Square/, `${r.from} — ${way}`);
+});

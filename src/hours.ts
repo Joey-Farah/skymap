@@ -212,6 +212,19 @@ export function destinationClosedWarning(route: Pick<RouteResult, "steps" | "app
     : `${name} closes at ${formatMinute(h[1])}, before you'd arrive`;
 }
 
+/**
+ * Why the building a street walk leads to will be locked when the walker
+ * reaches it, or null. nearestApproach prefers an open way in, but with
+ * none in range it falls back to the nearest — and that has to be said,
+ * not left to a "(closed)" in a collapsed step list (QA 009).
+ */
+export function approachClosedWarning(route: Pick<RouteResult, "steps" | "approach">, when: Date): string | null {
+  const first = route.steps[0];
+  if (!route.approach || !first) return null;
+  if (isOpenAt(first.building, stepArrival(route, first, when))) return null;
+  return `${first.building.name} is closed when you'd get there`;
+}
+
 /** Human description of a weekly-hours status at `when`, e.g. "Open until
  * 10pm" — the logic `statusAt` uses for buildings, but not tied to one,
  * so a POI's own (separately parsed) hours can get the same treatment. */
