@@ -245,3 +245,12 @@ test("only the night before carries over: closed Friday means closed early Satur
   notFriday[5] = null;
   assert.equal(statusFromHours(notFriday, saturday1am).open, false);
 });
+
+test("arriving just after a late close says it closed, not when it next opens", () => {
+  // Leave 1:55am Saturday on a 10-minute walk to a bar open until 2am.
+  const bar = { id: "bar", name: "Bar", hours: barNightly };
+  const route = { steps: [{ building: { id: "s", name: "S", hours: null }, arrivalMinutes: 0 }, { building: bar, arrivalMinutes: 10 }] };
+  assert.equal(destinationClosedWarning(route, new Date(2026, 9, 10, 1, 55)), "Bar closes at 2am, before you'd arrive");
+  // Long after closing, when it opens is the useful thing.
+  assert.equal(destinationClosedWarning(route, new Date(2026, 9, 10, 11, 0)), "Bar opens at 4pm, after you'd arrive");
+});

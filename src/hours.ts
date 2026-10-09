@@ -252,13 +252,22 @@ export function destinationClosedWarning(route: Pick<RouteResult, "steps" | "app
   const arrival = stepArrival(route, last, when);
   if (isOpenAt(last.building, arrival)) return null;
   const name = last.building.name;
-  const today = windowsOf(last.building.hours?.[arrival.getDay()] ?? null);
+  const hours = last.building.hours ?? [];
+  const day = arrival.getDay();
   const now = minuteOf(arrival);
-  // Between two windows, the one still to come is the useful thing to say.
-  const opens = today.find((w) => w.open > now);
-  if (opens) return `${name} opens at ${formatMinute(opens.open)}, after you'd arrive`;
-  const closed = today.filter((w) => w.close <= now).pop();
-  if (closed) return `${name} closes at ${formatMinute(closed.close)}, before you'd arrive`;
+  // Whichever is nearer the arrival: the close just missed — today's, or
+  // last night's running past midnight — or the next opening today. Five
+  // minutes after a 2am close, "opens at 4pm" was the wrong news.
+  const closes = [
+    ...windowsOf(hours[(day + 6) % 7] ?? null).map((w) => w.close - 1440).filter((c) => c > 0),
+    ...windowsOf(hours[day] ?? null).map((w) => w.close),
+  ].filter((c) => c <= now);
+  const closed = closes.length ? Math.max(...closes) : null;
+  const opens = windowsOf(hours[day] ?? null).find((w) => w.open > now)?.open ?? null;
+  if (opens !== null && (closed === null || opens - now <= now - closed)) {
+    return `${name} opens at ${formatMinute(opens)}, after you'd arrive`;
+  }
+  if (closed !== null) return `${name} closes at ${formatMinute(closed)}, before you'd arrive`;
   return `${name} is closed when you'd arrive`;
 }
 
