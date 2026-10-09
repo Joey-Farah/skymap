@@ -29,6 +29,7 @@ import {
   shouldRotate,
 } from "./nav-progress.ts";
 import { installNativeGeolocation, locationPermission } from "./native-geolocation.ts";
+import { locationOffMessage } from "./geolocation-errors.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { CHIP_GROUPS } from "./chips.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -670,7 +671,7 @@ async function boot() {
       view.setWalkerPosition(null);
       view.setWalkedProgress(null); // same reason: nothing left to keep it honest
       forgetPosition();
-      showToast("Location is off — allow access in your browser settings to route from where you stand.");
+      showToast(locationOffMessage(Capacitor.isNativePlatform()));
     } else {
       // Lost the fix, or no fix yet. Mid-trip the dot would otherwise stay
       // solid where it was, looking live while the walker moves on (QA 039):

@@ -12,3 +12,11 @@
 export function geolocationErrorCode(message: string): 1 | 2 {
   return /denied|permission|authoriz|not enabled|restricted/i.test(message) ? 1 : 2;
 }
+
+/** What to say when location is off. The iOS app has no browser settings to
+ * send anyone to — its switch is in iOS Settings (QA 028). */
+export function locationOffMessage(native: boolean): string {
+  return native
+    ? "Location is off — turn it on in Settings › SkyMap › Location to route from where you stand."
+    : "Location is off — allow access in your browser settings to route from where you stand.";
+}
