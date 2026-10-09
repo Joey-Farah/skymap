@@ -64,7 +64,9 @@ function parseDaySpec(clause: string): { days: string[]; rest: string } | null {
   const match = LEADING_DAY_SPEC.exec(clause);
   if (match) {
     return {
-      days: match[0].split(",").flatMap(expandDayToken),
+      // Split on the same optional whitespace LEADING_DAY_SPEC allows, or
+      // " Su" fails DAY_TOKEN and drops out silently (QA 033).
+      days: match[0].split(/\s*,\s*/).flatMap(expandDayToken),
       rest: clause.slice(match[0].length).trim(),
     };
   }

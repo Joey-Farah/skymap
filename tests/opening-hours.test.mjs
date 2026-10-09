@@ -143,3 +143,19 @@ test("a leading day-spec is still optional for a plain daily range", () => {
   // The fix must not break the ordinary "same every day" form.
   assert.deepEqual(parseOpeningHours("09:00-21:00"), Array(7).fill([540, 1260]));
 });
+
+test("every day in a spaced day list is kept, not just the first (QA 033)", () => {
+  // The News Room. The spaced list matched, but " Su" (with its space)
+  // then failed the day pattern and silently dropped out, so the card read
+  // "Closed" all weekend.
+  const days = parseOpeningHours("Mo-Th, Su 11:00-22:00; Fr, Sa 11:00-23:00");
+  assert.deepEqual(days, [
+    [660, 1320], // Su
+    [660, 1320],
+    [660, 1320],
+    [660, 1320],
+    [660, 1320], // Th
+    [660, 1380], // Fr
+    [660, 1380], // Sa
+  ]);
+});
