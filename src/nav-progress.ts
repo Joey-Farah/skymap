@@ -148,9 +148,10 @@ export function shouldRotate(
  * through it. The tracker's projection stops short of a line's endpoint by
  * up to about a metre, and such a door — three routes in four — then never
  * counted as passed: a perfect walk never said "You've arrived" (QA 004).
- * Anything bigger would announce arrival from the last bridge. Doors along
- * the way still switch exactly at the door. */
-const DOOR_TOLERANCE_METERS = 2;
+ * Standing a couple of metres from the door is at it, as far as GPS can
+ * tell, so that plus the shortfall. Much more would announce arrival from
+ * the last bridge. Doors along the way still switch exactly at the door. */
+const DOOR_TOLERANCE_METERS = 4;
 
 export function stepIndexFromAlong(stepStarts: number[], lineMeters: number, remainingMeters: number): number {
   const alongMeters = lineMeters - remainingMeters;

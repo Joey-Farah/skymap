@@ -201,6 +201,9 @@ test("reaching the end of a line whose last door is its end counts as arrived (Q
   // walk one step short of "You've arrived" for good.
   assert.equal(stepIndexFromAlong([0, 100, 200], 200, 0.0003), 2);
   assert.equal(stepIndexFromAlong([0, 100, 200], 200, 1.3), 2, "the most it has been seen to fall short");
+  // Standing 2 m from that door is at it: GPS can't tell the difference,
+  // and the projection's own shortfall comes on top (QA 004's repro).
+  assert.equal(stepIndexFromAlong([0, 100, 200], 200, 3.3), 2, "2 m short, plus the shortfall");
   // But not from the last bridge, 12 m out (review).
   assert.equal(stepIndexFromAlong([0, 100, 200], 200, 12), 1);
   // A door well before the end still waits for the walker to get close.
