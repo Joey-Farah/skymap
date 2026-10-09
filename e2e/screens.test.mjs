@@ -130,6 +130,25 @@ test("tapping another building on the map doesn't leave the old search in the ba
   assert.equal(r.search, "", `the bar says "${r.search}" over IDS Center's card`);
 });
 
+test("closing directions keeps the search that found the place", async (t) => {
+  const page = await noLocation(t);
+  await openApp(page);
+  await page.click("#input-search");
+  await page.type("#input-search", "Target Center");
+  await page.waitForTimeout(200);
+  await page.click("#combo-search .combo-list li");
+  await page.waitForTimeout(500);
+  const searched = (await read(page)).search;
+  assert.ok(searched, "the bar names what was searched");
+  await page.click("#sheet .actions button.primary");
+  await page.waitForTimeout(400);
+  await page.click("#editor-close");
+  await page.waitForTimeout(300);
+  const r = await read(page);
+  assert.equal(r.heading, "Target Center");
+  assert.equal(r.search, searched, "back on the searched card, the search is gone");
+});
+
 test("leaving a route preview for a place card drops the old route from the address (QA 020)", async (t) => {
   const page = await noLocation(t);
   await openApp(page, TARGET_TO_IDS);
