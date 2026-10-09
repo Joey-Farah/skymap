@@ -35,7 +35,8 @@ export const SIX_QUEBEC = { latitude: 44.97687, longitude: -93.27006, accuracy: 
  * @param {{latitude:number, longitude:number, accuracy?:number}|null|"manual"} [o.geolocation]
  *   a fix with permission granted (default: Six Quebec); null = permission
  *   denied; "manual" = granted, with fixes and errors fed by the test through
- *   window.__testGeo.fix(lat, lon, accuracy) / .error(code) / .watches
+ *   window.__testGeo.fix(lat, lon, accuracy) / .error(code) / .watches, and
+ *   .permission ("granted" | "denied" | "prompt") for what a re-check reports
  * @param {string} [o.clockAt] ISO time to start the page clock at (time then flows)
  * @param {{width:number,height:number}} [o.viewport] default 390x844
  * @param {"light"|"dark"} [o.colorScheme]
@@ -108,10 +109,12 @@ export async function launch(o = {}) {
         },
       };
       Object.defineProperty(navigator, "geolocation", { value: fake, configurable: true });
-      // MapLibre checks permissions before enabling its button.
+      // MapLibre checks permissions before enabling its button; the test can
+      // change the answer (window.__testGeo.permission) to model Settings.
       const q = navigator.permissions?.query?.bind(navigator.permissions);
-      if (q) navigator.permissions.query = (d) => (d?.name === "geolocation" ? Promise.resolve({ state: "granted", onchange: null }) : q(d));
+      if (q) navigator.permissions.query = (d) => (d?.name === "geolocation" ? Promise.resolve({ state: window.__testGeo.permission, onchange: null }) : q(d));
       window.__testGeo = {
+        permission: "granted",
         get watches() {
           return watches.size;
         },

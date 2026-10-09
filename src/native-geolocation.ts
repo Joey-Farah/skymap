@@ -103,3 +103,21 @@ export function installNativeGeolocation(): void {
   // silently does nothing — it has to be redefined.
   Object.defineProperty(navigator, "geolocation", { value: shim, configurable: true });
 }
+
+/**
+ * Whether location is allowed right now, without ever prompting.
+ *
+ * A denial disables MapLibre's locate control for the life of the page, and
+ * iOS doesn't restart an app when access is later granted in Settings — so
+ * the app asks this again each time it comes back to the foreground.
+ */
+export async function locationPermission(): Promise<"granted" | "denied" | "prompt"> {
+  try {
+    const state = Capacitor.isNativePlatform()
+      ? (await Geolocation.checkPermissions()).location
+      : (await navigator.permissions?.query({ name: "geolocation" }))?.state;
+    return state === "granted" || state === "denied" ? state : "prompt";
+  } catch {
+    return "prompt";
+  }
+}

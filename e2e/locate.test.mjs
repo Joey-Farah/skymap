@@ -123,3 +123,35 @@ test("mid-trip, a lost GPS fix shows the dot as stale until the next fix (QA 039
   assert.equal(back.stale, false);
   assert.doesNotMatch(back.sub, /last known/i);
 });
+
+test("allowing location in Settings after a denial brings it back without a relaunch (QA 027)", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page);
+  const button = () =>
+    page.evaluate(() => ({
+      disabled: document.querySelector("button.maplibregl-ctrl-geolocate").disabled,
+      watches: window.__testGeo.watches,
+    }));
+  const comeBack = () =>
+    page.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+
+  // "Don't Allow".
+  await page.evaluate(() => {
+    window.__testGeo.permission = "denied";
+    window.__testGeo.error(1);
+  });
+  await page.waitForTimeout(300);
+  assert.deepEqual(await button(), { disabled: true, watches: 0 });
+
+  // Back in the app with nothing changed: still off, and no new prompt.
+  await comeBack();
+  await page.waitForTimeout(300);
+  assert.deepEqual(await button(), { disabled: true, watches: 0 });
+
+  // Settings -> SkyMap -> Location -> While Using, then back to the app.
+  await page.evaluate(() => (window.__testGeo.permission = "granted"));
+  await comeBack();
+  await page.waitForTimeout(300);
+  assert.deepEqual(await button(), { disabled: false, watches: 1 });
+});

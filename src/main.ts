@@ -28,7 +28,7 @@ import {
   settleRemaining,
   shouldRotate,
 } from "./nav-progress.ts";
-import { installNativeGeolocation } from "./native-geolocation.ts";
+import { installNativeGeolocation, locationPermission } from "./native-geolocation.ts";
 import { GROUP_COLORS, GROUP_LABELS, isBuildingMarker } from "./poi.ts";
 import { CHIP_GROUPS } from "./chips.ts";
 import { renderPoiIconDataUrl } from "./poi-icons.ts";
@@ -685,6 +685,18 @@ async function boot() {
         showToast("No GPS fix yet — normal deep indoors. It'll catch you near a window or bridge.");
       }
     }
+  });
+  // Allowing location in Settings after a denial: MapLibre disabled its
+  // button for good on the denial, and iOS keeps the app running when access
+  // is granted, so without this the app stayed "Location not available"
+  // until force-quit (QA 027). Never prompts — it only notices a change.
+  document.addEventListener("visibilitychange", async () => {
+    if (document.visibilityState !== "visible" || !locateButton?.disabled) return;
+    if ((await locationPermission()) !== "granted") return;
+    locateButton.disabled = false;
+    locateButton.title = "Find my location";
+    locateButton.setAttribute("aria-label", "Find my location");
+    view.geolocate.trigger();
   });
   view.geolocate.on("trackuserlocationend", () => {
     // Fires both for real off AND for pan-to-background; only the former is
