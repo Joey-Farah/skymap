@@ -194,3 +194,15 @@ test("a location toast never covers the locate button or swallows its taps (QA 0
   assert.equal(m.overlap, false, "the toast sits on top of the button it tells you to tap");
   assert.equal(m.hitsButton, true);
 });
+
+test("outside a trip, location that can't find you can still be turned off", async (t) => {
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await openApp(page);
+  // Deep indoors from the start: the search fails.
+  await page.evaluate(() => window.__testGeo.error(2));
+  await page.waitForTimeout(300);
+  assert.equal((await tracking(page)).watchState, "ACTIVE_ERROR");
+  await tapLocate(page);
+  assert.equal((await tracking(page)).watchState, "OFF");
+});
