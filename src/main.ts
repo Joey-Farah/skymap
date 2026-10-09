@@ -986,9 +986,13 @@ async function boot() {
   const initial = parseRouteState(location.search);
   const initialFrom = initial.fromId ? router.building(initial.fromId) : undefined;
   const initialTo = initial.toId ? router.building(initial.toId) : undefined;
-  // First, a trip iOS interrupted by reloading the page: back to it, from
-  // wherever the walker has got to — known at the first fix.
-  const resume = tripToResume(localStorage);
+  // A trip iOS interrupted by reloading the page: back to it, from wherever
+  // the walker has got to — known at the first fix. Unless the address
+  // holds a link: GO clears it, so a reload never brings one, and a link
+  // there is someone opening it.
+  const linked = !!(initial.fromId || initial.toId);
+  if (linked) forgetTrip(localStorage);
+  const resume = linked ? null : tripToResume(localStorage);
   const resumeTo = resume ? router.building(resume.toId) : undefined;
   if (resume && resumeTo) {
     destination = { b: resumeTo, poi: data.pois?.find((p) => p.id === resume.poiId) };

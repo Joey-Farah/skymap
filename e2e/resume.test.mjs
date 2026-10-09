@@ -70,3 +70,16 @@ test("reloaded after a trip was left for half an hour, the map opens clean", asy
   assert.equal(r.mode, "idle");
   assert.equal(r.url, "", "and no old route in the address to reopen");
 });
+
+test("a shared link opened mid-trip opens that link, not the old trip", async (t) => {
+  // A reload by iOS never carries a link: GO clears the address. So a link
+  // in the address is someone opening one, and it wins.
+  const { browser, page } = await launch({ geolocation: "manual" });
+  t.after(() => browser.close());
+  await halfwayToCaribou(page);
+  await openApp(page, "/?from=target-center-23125943&to=ids-center-1385236413");
+  const r = await state(page);
+  assert.equal(r.mode, "preview");
+  assert.equal(r.from, "Target Center");
+  assert.equal(r.to, "IDS Center");
+});
