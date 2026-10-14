@@ -55,7 +55,7 @@ test("a supporter glows only while a filter it's in is on", async (t) => {
   assert.deepEqual(await glowing(page), [], "turning Coffee off turns the glow off");
 });
 
-test("with the list that ships, empty, nothing glows", async (t) => {
+test("with an empty list, nothing glows", async (t) => {
   const { browser, page } = await launch();
   t.after(() => browser.close());
   await setUp(page, []);
@@ -213,4 +213,88 @@ test("search results come back in the same order with or without supporters", as
   assert.ok(before.length > 3, "a search with several results to compare");
   await page.evaluate((list) => window.__skymap.setSupporters(list), [term(VITALITY), term("poi-x-spyhouse-emery")]);
   assert.deepEqual(await results(), before);
+});
+
+// From the fresh-context review (2026-10-14).
+test("the glow sits under the skyway lines, building names and route, not over them", async (t) => {
+  // Drawn just under the pins, an 80%-opaque pink disc painted over a
+  // building's name and turned the end of the route and the skyway line
+  // pink. The glow belongs above the building fills only; the ring hugs the
+  // pin above the skyway lines but under the names and the route.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  const order = await page.evaluate(() => window.__skymap.view.map.getStyle().layers.map((l) => l.id));
+  const at = (id) => {
+    assert.ok(order.includes(id), `${id} is on the map`);
+    return order.indexOf(id);
+  };
+  assert.ok(at("skyway-buildings-outline") < at("skyway-supporters-glow"), "glow above the building fills");
+  for (const above of ["skyway-bridges-line", "skyway-indoor-line", "skyway-buildings-label", "skyway-route-line", "skyway-pois"]) {
+    assert.ok(at("skyway-supporters-glow") < at(above), `glow under ${above}`);
+  }
+  assert.ok(at("skyway-bridges-line") < at("skyway-supporters-ring"), "ring above the skyway lines");
+  for (const above of ["skyway-buildings-label", "skyway-route-line", "skyway-pois"]) {
+    assert.ok(at("skyway-supporters-ring") < at(above), `ring under ${above}`);
+  }
+});
+
+test("the ring is sized exactly like the pin, so a tilted map can't pull them apart", async (t) => {
+  // Circles shrink with distance on a tilted map faster than pin icons do,
+  // so a circle ring slid off its pin. Drawn as an icon with the pin's own
+  // sizing, it can't; it still never takes part in placement.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  const ring = await page.evaluate(() => {
+    const map = window.__skymap.view.map;
+    const layout = (id, key) => map.getLayoutProperty(id, key);
+    return {
+      type: map.getLayer("skyway-supporters-ring").type,
+      sameSize: JSON.stringify(layout("skyway-supporters-ring", "icon-size")) === JSON.stringify(layout("skyway-pois", "icon-size")),
+      overlap: layout("skyway-supporters-ring", "icon-allow-overlap"),
+      ignore: layout("skyway-supporters-ring", "icon-ignore-placement"),
+    };
+  });
+  assert.deepEqual(ring, { type: "symbol", sameSize: true, overlap: true, ignore: true });
+});
+
+test("closing the explainer puts focus back on the tag", async (t) => {
+  // Close hid itself while it held focus, dropping keyboard and VoiceOver
+  // users at the top of the page.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  await openCard(page, VITALITY);
+  await page.locator(".supporter-tag").click();
+  await page.getByRole("button", { name: "Close supporter info" }).focus();
+  await page.keyboard.press("Enter");
+  await page.waitForTimeout(300);
+  assert.equal(await page.evaluate(() => document.activeElement?.className), "supporter-tag");
+});
+
+test("the tag, Report this and Close are big enough to tap", async (t) => {
+  // Apple's minimum is 44pt. The pill keeps its look; its tappable area
+  // reaches past it.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  await openCard(page, VITALITY);
+  await page.locator(".supporter-tag").click();
+  const sizes = await page.evaluate(() => {
+    // How tall the tappable area is: from the pill's middle, step up and
+    // down until a point no longer lands on it.
+    const reach = (sel) => {
+      const el = document.querySelector(sel);
+      const r = el.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const on = (y) => !!document.elementFromPoint(x, y)?.closest(sel);
+      let top = r.top + r.height / 2, bottom = top;
+      while (on(top - 1)) top--;
+      while (on(bottom + 1)) bottom++;
+      return bottom - top + 1;
+    };
+    return { tag: reach(".supporter-tag"), report: reach(".supporter-report"), close: reach(".supporter-close") };
+  });
+  for (const [name, h] of Object.entries(sizes)) assert.ok(h >= 44, `${name} is only ${h}px tall to tap`);
 });

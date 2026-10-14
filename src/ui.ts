@@ -572,7 +572,12 @@ export class Sheet {
     explain.hidden = true;
     tag.setAttribute("aria-expanded", "false");
     tag.addEventListener("click", () => setOpen(Boolean(explain.hidden)));
-    close.addEventListener("click", () => setOpen(false));
+    // Close hides itself, so focus goes back to the tag rather than
+    // dropping keyboard and VoiceOver users at the top of the page.
+    close.addEventListener("click", () => {
+      setOpen(false);
+      tag.focus();
+    });
     return [tag, explain];
   }
 

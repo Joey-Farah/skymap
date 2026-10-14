@@ -1793,6 +1793,7 @@ a:focus-visible {
 /* SkyMap Supporter tag on a place card, and its explainer. Pink, matching
    the glow behind a supporter's pin (map.ts SUPPORTER_GLOW / _RING). */
 .supporter-tag {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1806,6 +1807,9 @@ a:focus-visible {
   font-size: 12px;
   font-weight: 700;
 }
+/* Apple's 44pt minimum, without making the pills themselves bigger. */
+.supporter-tag::after { content: ""; position: absolute; inset: -11px -4px; }
+.supporter-close::after { content: ""; position: absolute; inset: -9px -4px; }
 .supporter-mark {
   width: 9px;
   height: 9px;
@@ -1827,6 +1831,7 @@ a:focus-visible {
 .supporter-explain p { margin: 0 0 6px; }
 .supporter-explain-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .supporter-report {
+  min-height: 44px;
   padding: 0;
   border: 0;
   background: none;
@@ -1836,6 +1841,7 @@ a:focus-visible {
   text-decoration: underline;
 }
 .supporter-close {
+  position: relative;
   padding: 4px 12px;
   border: 1.5px solid currentColor;
   border-radius: 999px;

@@ -221,3 +221,23 @@ export function renderPoiIcon(group: PoiGroup, color: string, size = 48): ImageD
 export function renderPoiIconDataUrl(group: PoiGroup, color: string, size = 32): string {
   return drawPoiIcon(group, color, size).toDataURL();
 }
+
+/** The thin ring round a SkyMap Supporter's pin, as an icon on the pins'
+ * own 48px grid (with room around it) so the map sizes it exactly as it
+ * sizes the pin, at every zoom and tilt. */
+export function renderSupporterRing(color: string): ImageData {
+  const pin = 48;
+  const size = 66;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const pinEdge = pin / 2 - 1; // drawPoiIcon's circle plus its white stroke
+  const width = 5;
+  ctx.beginPath();
+  ctx.arc(size / 2, size / 2, pinEdge + 4 + width / 2, 0, Math.PI * 2);
+  ctx.lineWidth = width;
+  ctx.strokeStyle = color;
+  ctx.stroke();
+  return ctx.getImageData(0, 0, size, size);
+}

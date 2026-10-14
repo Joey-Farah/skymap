@@ -12,7 +12,7 @@ import {
 import { RouteTracker, type Placement } from "./route-position.ts";
 import { routeLine } from "./route-geometry.ts";
 import { stepIndexFromAlong } from "./nav-progress.ts";
-import { renderPoiIcon } from "./poi-icons.ts";
+import { renderPoiIcon, renderSupporterRing } from "./poi-icons.ts";
 import { GROUP_COLORS, isBuildingMarker, labelRank } from "./poi.ts";
 import { glowingSupporters, type SupporterEntry } from "./supporters.ts";
 import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
@@ -68,8 +68,8 @@ const ROUTE = "#e08a00";
  * readers. */
 const SUPPORTER_GLOW = "#ff3db8";
 const SUPPORTER_RING = "#c4007a";
-/** Pin icon size by zoom: shared by the pins and the supporter glow drawn
- * under them, so the glow can never drift out of step with the pin. */
+/** Pin icon size by zoom: shared by the pins, the supporter ring round them
+ * (the same icon sizing, so it can't drift off its pin) and the glow. */
 const POI_ICON_SIZE: [number, number][] = [[12, 0.26], [14.8, 0.34], [17, 0.55]];
 /** On-screen pin radius at each stop: a 48px icon canvas, halved. */
 const pinRadius = (scale: (r: number) => number): maplibregl.ExpressionSpecification =>
@@ -475,6 +475,7 @@ export class SkymapView {
       if (this.map.hasImage(id)) continue;
       this.map.addImage(id, renderPoiIcon(group as Poi["group"], GROUP_COLORS[group]));
     }
+    if (!this.map.hasImage("supporter-ring")) this.map.addImage("supporter-ring", renderSupporterRing(SUPPORTER_RING));
   }
 
   /** Which basemap is up: the dark one or the light one. */
@@ -775,34 +776,43 @@ export class SkymapView {
     // straight across them — six restaurants in one building read as a
     // pile. One symbol gives the pair a single collision box.
     // A SkyMap Supporter's pin sits in a soft pink glow with a thin ring
-    // round it. Both are circle layers under the pins: circles take no part
-    // in symbol collision, so every pin and name places exactly as it would
-    // without them, and a supporter never wins space from a neighbour.
-    // Hidden until a chip the supporter is in is switched on.
-    this.map.addLayer({
-      id: "skyway-supporters-glow",
-      type: "circle",
-      source: "skyway-supporters",
-      filter: false,
-      paint: {
-        "circle-radius": pinRadius((r) => r * 3),
-        "circle-color": SUPPORTER_GLOW,
-        "circle-opacity": 0.8,
-        "circle-blur": 0.5,
+    // round it, hidden until a chip the supporter is in is on. Neither takes
+    // part in placement (the glow is a circle; the ring an icon that ignores
+    // placement), so every pin and name places exactly as it would without
+    // them. The glow goes just above the building fills, under the skyway
+    // lines, names and route, so it tints the ground and never paints over
+    // them; the ring hugs the pin above the skyway lines, under the names.
+    this.map.addLayer(
+      {
+        id: "skyway-supporters-glow",
+        type: "circle",
+        source: "skyway-supporters",
+        filter: false,
+        paint: {
+          "circle-radius": pinRadius((r) => r * 3),
+          "circle-color": SUPPORTER_GLOW,
+          "circle-opacity": 0.8,
+          "circle-blur": 0.5,
+        },
       },
-    });
-    this.map.addLayer({
-      id: "skyway-supporters-ring",
-      type: "circle",
-      source: "skyway-supporters",
-      filter: false,
-      paint: {
-        "circle-radius": pinRadius((r) => r + 2.5), // just outside the pin's own edge
-        "circle-color": "rgba(0, 0, 0, 0)",
-        "circle-stroke-color": SUPPORTER_RING,
-        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 12, 1.5, 17, 2.5],
+      "skyway-indoor-casing",
+    );
+    this.map.addLayer(
+      {
+        id: "skyway-supporters-ring",
+        type: "symbol",
+        source: "skyway-supporters",
+        filter: false,
+        layout: {
+          "icon-image": "supporter-ring",
+          // The pins' own sizing, so a tilted map can't slide it off its pin.
+          "icon-size": ["interpolate", ["linear"], ["zoom"], ...POI_ICON_SIZE.flat()],
+          "icon-allow-overlap": true,
+          "icon-ignore-placement": true,
+        },
       },
-    });
+      "skyway-buildings-label",
+    );
 
     this.map.addLayer({
       id: "skyway-pois",
