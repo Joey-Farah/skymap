@@ -105,3 +105,17 @@ test("a supporter never moves or hides another pin or name", async (t) => {
   assert.equal((await glowing(page)).length, 2, "both supporters glow");
   assert.deepEqual(await placed(), before);
 });
+
+test("the glow is off while the place is closed, and back when it opens", async (t) => {
+  // Vitality Roasting keeps Mo-Fr 07:00-16:00. At 2am on a Wednesday it's
+  // shut; the minute tick (setTime) brings the glow back once it opens.
+  const { browser, page } = await launch({ clockAt: "2026-10-14T02:00:00-05:00" });
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  await chip(page, /Coffee/);
+  await settle(page);
+  assert.deepEqual(await glowing(page), [], "closed at 2am");
+  await page.evaluate(() => window.__skymap.view.setTime(new Date("2026-10-14T12:00:00-05:00")));
+  await settle(page);
+  assert.deepEqual(await glowing(page), [VITALITY], "open at noon");
+});

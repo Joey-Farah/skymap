@@ -14,7 +14,7 @@ import { routeLine } from "./route-geometry.ts";
 import { stepIndexFromAlong } from "./nav-progress.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS, isBuildingMarker, labelRank } from "./poi.ts";
-import { activeSupporters, type SupporterEntry } from "./supporters.ts";
+import { glowingSupporters, type SupporterEntry } from "./supporters.ts";
 import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
@@ -213,14 +213,15 @@ function poisFC(pois: Poi[]): FC {
   };
 }
 
-/** The supporters whose term covers `when`, at their pins. Its own source,
+/** The supporters glowing at `when` (term covers the day, not known to be
+ * closed), at their pins. Its own source,
  * so the pins' data, and with it their placement and label priority, can't
  * be touched by who has paid. */
 function supportersFC(list: SupporterEntry[], pois: Poi[], when: Date): FC {
   const byId = new Map(pois.map((p) => [p.id, p]));
   return {
     type: "FeatureCollection",
-    features: activeSupporters(list, when).flatMap((s) => {
+    features: glowingSupporters(list, pois, when).flatMap((s) => {
       const p = byId.get(s.id);
       return p
         ? [{ type: "Feature" as const, properties: { id: p.id, group: p.group }, geometry: { type: "Point" as const, coordinates: [p.lon, p.lat] } }]
@@ -902,7 +903,8 @@ export class SkymapView {
     (this.map.getSource("skyway-indoor") as maplibregl.GeoJSONSource)?.setData(
       indoorFC(this.data, when),
     );
-    // A term ends on its last day with no release: this tick is what ends it.
+    // This tick is what ends a term on its last day with no release, and
+    // what turns a supporter's glow off at closing time and on at opening.
     (this.map.getSource("skyway-supporters") as maplibregl.GeoJSONSource)?.setData(this.supportersData());
   }
 

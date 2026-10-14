@@ -10,6 +10,9 @@
  * names the map places.
  */
 
+import { statusFromHours } from "./hours.ts";
+import { parseOpeningHours } from "./opening-hours.ts";
+
 /** One paid term, as written in data/supporters.json. */
 export interface SupporterEntry {
   /** The POI id, e.g. "poi-12862838545". */
@@ -36,6 +39,25 @@ function localDay(when: Date): string {
 export function activeSupporters(list: SupporterEntry[], when: Date): SupporterEntry[] {
   const today = localDay(when);
   return list.filter((s) => s.from <= today && today <= s.until);
+}
+
+/** The supporters whose pins glow at `when`: their term covers the day, and
+ * their place isn't known to be closed. A glow says "go here", and pointing
+ * someone at a shut door wastes their walk. Known means the place's own
+ * published hours, the same ones its card reads from; no hours, or hours we
+ * can't read, leave the glow on. */
+export function glowingSupporters(
+  list: SupporterEntry[],
+  places: { id: string; openingHours?: string }[],
+  when: Date,
+): SupporterEntry[] {
+  const byId = new Map(places.map((p) => [p.id, p]));
+  return activeSupporters(list, when).filter((s) => {
+    const place = byId.get(s.id);
+    if (!place) return false;
+    const hours = parseOpeningHours(place.openingHours);
+    return !hours || statusFromHours(hours, when).open;
+  });
 }
 
 /** Which filters can carry a supporter, and how many at once in each.

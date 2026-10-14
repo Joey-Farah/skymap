@@ -4,7 +4,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { activeSupporters, checkSupporters } from "../src/supporters.ts";
+import { activeSupporters, checkSupporters, glowingSupporters } from "../src/supporters.ts";
 
 // SkyMap Supporters (docs/business-listings-plan.md): a business pays for a
 // fixed term, and its pin glows from the first day of the term to the last.
@@ -113,4 +113,31 @@ test("the build stops on a bad list, and says why", () => {
   assert.ok(failed, "the check passed a list naming a place that isn't on the map");
   assert.equal(failed.status, 1);
   assert.match(failed.stderr, /poi-nope.*not on the map/);
+});
+
+// A glow says "go here", so it's off while the place is known to be closed
+// (Joey, 2026-10-14). Known means the place's own published hours; with no
+// hours we don't know, and the glow stays on.
+test("the glow is off while the place is closed, and on while it's open", () => {
+  const places = [{ id: "c1", name: "Cafe One", group: "coffee", buildingId: "b1", openingHours: "Mo-Fr 07:00-16:00" }];
+  const list = [term("c1", "Cafe One", "2026-01-01", "2026-12-31")];
+  const ids = (when) => glowingSupporters(list, places, when).map((s) => s.id);
+  assert.deepEqual(ids(new Date(2026, 9, 14, 12, 0)), ["c1"], "Wednesday noon, open");
+  assert.deepEqual(ids(new Date(2026, 9, 14, 2, 0)), [], "Wednesday 2am, closed");
+  assert.deepEqual(ids(new Date(2026, 9, 17, 12, 0)), [], "Saturday, closed all day");
+});
+
+test("with no hours, or hours we can't read, the glow stays on", () => {
+  const list = [term("c1", "Cafe One", "2026-01-01", "2026-12-31")];
+  const at2am = new Date(2026, 9, 14, 2, 0);
+  const none = [{ id: "c1", name: "Cafe One", group: "coffee", buildingId: "b1" }];
+  const garbled = [{ ...none[0], openingHours: "ask at the counter" }];
+  assert.deepEqual(glowingSupporters(list, none, at2am).map((s) => s.id), ["c1"]);
+  assert.deepEqual(glowingSupporters(list, garbled, at2am).map((s) => s.id), ["c1"]);
+});
+
+test("a term that hasn't started, or has ended, doesn't glow even while open", () => {
+  const places = [{ id: "c1", name: "Cafe One", group: "coffee", buildingId: "b1", openingHours: "Mo-Su 00:00-24:00" }];
+  const list = [term("c1", "Cafe One", "2027-01-01", "2027-03-31")];
+  assert.deepEqual(glowingSupporters(list, places, new Date(2026, 9, 14, 12)), []);
 });
