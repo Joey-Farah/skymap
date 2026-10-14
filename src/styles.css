@@ -1789,3 +1789,7 @@ a:focus-visible {
   font-family: inherit;
   cursor: pointer;
 }
+
+/* The feedback dialog takes focus when it opens so screen readers land in
+   it; it is a container, not a control, so it draws no focus ring. */
+.feedback-form:focus { outline: none; }
