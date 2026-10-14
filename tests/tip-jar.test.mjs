@@ -33,7 +33,7 @@ test("the three tips pair their names with StoreKit's own prices", () => {
   ];
   assert.deepEqual(tipOptions(products), [
     { id: "app.skymap.ios.tip.small", label: "☕ Buy me a coffee", price: "1,99 €" },
-    { id: "app.skymap.ios.tip.medium", label: "🥐 Coffee and a pastry", price: "4,99 €" },
+    { id: "app.skymap.ios.tip.medium", label: "🍩 Coffee and a donut", price: "4,99 €" },
     { id: "app.skymap.ios.tip.large", label: "🍽 Lunch in the skyway", price: "9,99 €" },
   ]);
 });
