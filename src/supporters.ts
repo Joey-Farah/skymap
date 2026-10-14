@@ -37,3 +37,84 @@ export function activeSupporters(list: SupporterEntry[], when: Date): SupporterE
   const today = localDay(when);
   return list.filter((s) => s.from <= today && today <= s.until);
 }
+
+/** Which filters can carry a supporter, and how many at once in each.
+ * Rare enough that the glow still means something, and part of what a
+ * supporter buys ("one of at most 3"). Raise a cap when businesses are being
+ * turned away; lowering one would mean removing someone who paid. */
+export const SUPPORTER_CAPS: Readonly<Record<string, number>> = { coffee: 3, food: 8 };
+
+type PlaceForCheck = { id: string; name: string; group: string; buildingId: string };
+
+/** A real calendar day written "YYYY-MM-DD". */
+function isDay(s: unknown): s is string {
+  if (typeof s !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const [y, m, d] = s.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
+}
+
+const overlaps = (a: SupporterEntry, b: SupporterEntry) => a.from <= b.until && b.from <= a.until;
+
+/** Everything wrong with a supporter list, as sentences; empty when it can
+ * ship. The build runs this (scripts/check-supporters.mjs), so a list that
+ * names a place that's gone, renamed, ineligible, or over a cap never
+ * reaches a release. */
+export function checkSupporters(list: SupporterEntry[], places: PlaceForCheck[]): string[] {
+  const problems: string[] = [];
+  const byId = new Map(places.map((p) => [p.id, p]));
+  const sound: { s: SupporterEntry; place: PlaceForCheck }[] = [];
+
+  for (const s of list) {
+    const place = byId.get(s.id);
+    let ok = true;
+    if (!place) {
+      problems.push(`${s.id} (${s.name}): not on the map`);
+      continue;
+    }
+    if (!(place.group in SUPPORTER_CAPS)) {
+      problems.push(`${s.id} (${s.name}): is a ${place.group} place; only ${Object.keys(SUPPORTER_CAPS).join(" and ")} can have supporters`);
+      ok = false;
+    }
+    if (place.name !== s.name) {
+      problems.push(`${s.id}: sold as "${s.name}" but the map now calls it "${place.name}"; check it's the same business`);
+      ok = false;
+    }
+    if (!isDay(s.from)) {
+      problems.push(`${s.id}: from "${s.from}" isn't a real day (YYYY-MM-DD)`);
+      ok = false;
+    }
+    if (!isDay(s.until)) {
+      problems.push(`${s.id}: until "${s.until}" isn't a real day (YYYY-MM-DD)`);
+      ok = false;
+    }
+    if (ok && s.until < s.from) {
+      problems.push(`${s.id}: ends before it starts (${s.from} to ${s.until})`);
+      ok = false;
+    }
+    if (ok) sound.push({ s, place });
+  }
+
+  for (const [group, cap] of Object.entries(SUPPORTER_CAPS)) {
+    const inGroup = sound.filter((x) => x.place.group === group).map((x) => x.s);
+    // The most at once is always reached on some term's first day.
+    const starts = [...new Set(inGroup.map((s) => s.from))].sort();
+    for (const day of starts) {
+      const count = inGroup.filter((s) => s.from <= day && day <= s.until).length;
+      if (count > cap) {
+        problems.push(`${group}: ${count} supporters on ${day}; the limit is ${cap}`);
+        break;
+      }
+    }
+  }
+
+  for (let i = 0; i < sound.length; i++) {
+    for (let j = i + 1; j < sound.length; j++) {
+      const a = sound[i], b = sound[j];
+      if (a.place.group === b.place.group && a.place.buildingId === b.place.buildingId && overlaps(a.s, b.s)) {
+        problems.push(`building ${a.place.buildingId}: two ${a.place.group} supporters at once (${a.s.id}, ${b.s.id}); the limit is one per building`);
+      }
+    }
+  }
+  return problems;
+}
