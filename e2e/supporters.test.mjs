@@ -195,3 +195,22 @@ test("Report this opens the feedback form about that place", async (t) => {
   assert.match(await page.locator("#feedback-title").innerText(), /Report an issue/);
   assert.match(await page.locator("#feedback-sub").innerText(), /Vitality Roasting/);
 });
+
+// What paying never buys: a better place in search, or a route. Only the
+// map drawing and the card read the supporter list (tests/supporters.test.mjs
+// checks the imports); these check the behaviour.
+test("search results come back in the same order with or without supporters", async (t) => {
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await openApp(page);
+  const results = async () => {
+    await page.fill("#input-search", "");
+    await page.fill("#input-search", "coffee");
+    await page.waitForSelector("#combo-search .combo-list:not([hidden]) li");
+    return page.$$eval("#combo-search .combo-list li", (lis) => lis.map((li) => li.textContent.trim()));
+  };
+  const before = await results();
+  assert.ok(before.length > 3, "a search with several results to compare");
+  await page.evaluate((list) => window.__skymap.setSupporters(list), [term(VITALITY), term("poi-x-spyhouse-emery")]);
+  assert.deepEqual(await results(), before);
+});

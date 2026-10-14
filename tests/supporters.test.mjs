@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -140,4 +140,15 @@ test("a term that hasn't started, or has ended, doesn't glow even while open", (
   const places = [{ id: "c1", name: "Cafe One", group: "coffee", buildingId: "b1", openingHours: "Mo-Su 00:00-24:00" }];
   const list = [term("c1", "Cafe One", "2027-01-01", "2027-03-31")];
   assert.deepEqual(glowingSupporters(list, places, new Date(2026, 9, 14, 12)), []);
+});
+
+test("only the map drawing and the card read the supporter list", () => {
+  // Search, routing, walk times and the "past X" cues must never know who
+  // has paid. Any new reader of supporters.ts has to be added here on
+  // purpose, with a reason.
+  const readers = readdirSync("src")
+    .filter((f) => f.endsWith(".ts") && f !== "supporters.ts")
+    .filter((f) => /from "\.\/supporters\.ts"/.test(readFileSync(`src/${f}`, "utf8")))
+    .sort();
+  assert.deepEqual(readers, ["main.ts", "map.ts", "ui.ts"]);
 });
