@@ -27,7 +27,7 @@ async function settle(page) {
 
 async function setUp(page, list, view = NEAR_VITALITY) {
   await openApp(page);
-  await page.evaluate((list) => window.__skymap.view.setSupporters(list), list);
+  await page.evaluate((list) => window.__skymap.setSupporters(list), list);
   await page.evaluate((v) => window.__skymap.view.map.jumpTo(v), view);
   await settle(page);
 }
@@ -100,7 +100,7 @@ test("a supporter never moves or hides another pin or name", async (t) => {
     });
   const before = await placed();
   assert.ok(before.pins.length > 20 && before.texts > 20, `a crowded view to test in (${before.pins.length} pins, ${before.texts} labels)`);
-  await page.evaluate((list) => window.__skymap.view.setSupporters(list), [term(KADAI), term("poi-14022958830")]);
+  await page.evaluate((list) => window.__skymap.setSupporters(list), [term(KADAI), term("poi-14022958830")]);
   await settle(page);
   assert.equal((await glowing(page)).length, 2, "both supporters glow");
   assert.deepEqual(await placed(), before);
@@ -118,4 +118,80 @@ test("the glow is off while the place is closed, and back when it opens", async 
   await page.evaluate(() => window.__skymap.view.setTime(new Date("2026-10-14T12:00:00-05:00")));
   await settle(page);
   assert.deepEqual(await glowing(page), [VITALITY], "open at noon");
+});
+
+// The card: a "SkyMap Supporter" tag that explains itself when tapped.
+const SOTA = "poi-13451748978"; // coffee, same building, not a supporter
+
+async function openCard(page, id) {
+  await page.evaluate((id) => {
+    const sk = window.__skymap;
+    const poi = sk.data.pois.find((p) => p.id === id);
+    sk.modes.showPlace(sk.router.building(poi.buildingId), poi);
+  }, id);
+  await page.waitForTimeout(500);
+}
+
+test("a supporter's card says so; a neighbour's doesn't", async (t) => {
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  await openCard(page, VITALITY);
+  assert.equal(await page.locator(".supporter-tag").count(), 1);
+  assert.match(await page.locator(".supporter-tag").innerText(), /SkyMap Supporter/);
+  assert.match(await page.locator(".supporter-tag").getAttribute("aria-label"), /SkyMap Supporter/);
+  await openCard(page, SOTA);
+  assert.equal(await page.locator(".supporter-tag").count(), 0);
+});
+
+test("the tag stays on the card while the place is closed", async (t) => {
+  // The glow is about where to go now; the tag is about who they are.
+  const { browser, page } = await launch({ clockAt: "2026-10-14T02:00:00-05:00" });
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  await openCard(page, VITALITY);
+  assert.equal(await page.locator(".supporter-tag").count(), 1);
+});
+
+test("opening the explainer keeps the whole card in reach, and it closes plainly", async (t) => {
+  // Found on Joey's phone in the prototype: the explainer pushed the open
+  // badge, the access line and Directions below the card's edge, with no
+  // way to scroll to them, and nothing said how to close it again.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  await openCard(page, VITALITY);
+  const tag = page.locator(".supporter-tag");
+  assert.equal(await tag.getAttribute("aria-expanded"), "false");
+  await tag.click();
+  await page.waitForTimeout(400);
+  assert.equal(await tag.getAttribute("aria-expanded"), "true");
+  assert.match(await page.locator(".supporter-explain").innerText(), /pay to help keep SkyMap free/);
+  const cutOff = await page.evaluate(() => {
+    const root = document.getElementById("sheet");
+    const box = root.getBoundingClientRect();
+    const canScroll = getComputedStyle(root).overflowY !== "hidden";
+    return [...document.getElementById("sheet-content").children]
+      .filter((el) => !el.hidden && !el.classList.contains("sheet-collapsible"))
+      .filter((el) => el.getBoundingClientRect().bottom > box.bottom + 1 && !canScroll)
+      .map((el) => el.className || el.tagName);
+  });
+  assert.deepEqual(cutOff, [], "part of the card was pushed out of reach");
+  await page.getByRole("button", { name: "Close supporter info" }).click();
+  await page.waitForTimeout(300);
+  assert.equal(await tag.getAttribute("aria-expanded"), "false");
+  assert.ok(await page.locator(".supporter-explain").isHidden());
+});
+
+test("Report this opens the feedback form about that place", async (t) => {
+  // Apple 2.5.18: a paid placement needs a way to report it.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await setUp(page, [term(VITALITY)]);
+  await openCard(page, VITALITY);
+  await page.locator(".supporter-tag").click();
+  await page.locator(".supporter-explain").getByText("Report this").click();
+  await page.waitForSelector("#feedback-form:not([hidden])");
+  assert.match(await page.locator("#feedback-title").innerText(), /Report an issue/);
+  assert.match(await page.locator("#feedback-sub").innerText(), /Vitality Roasting/);
 });

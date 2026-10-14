@@ -1789,3 +1789,64 @@ a:focus-visible {
   font-family: inherit;
   cursor: pointer;
 }
+
+/* SkyMap Supporter tag on a place card, and its explainer. Pink, matching
+   the glow behind a supporter's pin (map.ts SUPPORTER_GLOW / _RING). */
+.supporter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 6px 0 2px;
+  padding: 3px 9px 3px 7px;
+  border: 1.5px solid #c4007a;
+  border-radius: 999px;
+  background: #ffe6f4;
+  color: #8a0057;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+.supporter-mark {
+  width: 9px;
+  height: 9px;
+  background: #ff3db8;
+  border: 1.5px solid #c4007a;
+  border-radius: 50%;
+  box-shadow: 0 0 5px 2px rgba(255, 61, 184, 0.5);
+}
+.supporter-info { color: #b0006e; font-weight: 400; font-size: 12px; }
+.supporter-explain {
+  margin: 6px 0 8px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: #ffe6f4;
+  color: #4d0031;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.supporter-explain p { margin: 0 0 6px; }
+.supporter-explain-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.supporter-report {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12.5px;
+  text-decoration: underline;
+}
+.supporter-close {
+  padding: 4px 12px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 650;
+}
+@media (prefers-color-scheme: dark) {
+  .supporter-tag { background: #3a0f28; color: #ffb3dc; }
+  .supporter-info { color: #ff8ccb; }
+  .supporter-explain { background: #3a0f28; color: #ffd6ec; }
+}
