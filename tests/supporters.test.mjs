@@ -152,3 +152,20 @@ test("only the map drawing and the card read the supporter list", () => {
     .sort();
   assert.deepEqual(readers, ["main.ts", "map.ts", "ui.ts"]);
 });
+
+test("one per building means the building a place is really in", () => {
+  // A "nearby" place sits outside the skyway; its buildingId is only the
+  // closest skyway building, so it doesn't share that building with the
+  // places inside it. It still counts toward its category's cap.
+  const places = [
+    { id: "in", name: "Inside", group: "coffee", buildingId: "b1" },
+    { id: "out", name: "Across the street", group: "coffee", buildingId: "b1", nearby: true },
+  ];
+  assert.deepEqual(checkSupporters([term("in", "Inside"), term("out", "Across the street")], places), []);
+});
+
+test("SkyMap 1.20 ships with nobody on the list", () => {
+  // The feature goes out switched off. Delete this test in the same commit
+  // that adds the first paying supporter.
+  assert.deepEqual(JSON.parse(readFileSync("data/supporters.json", "utf8")).supporters, []);
+});

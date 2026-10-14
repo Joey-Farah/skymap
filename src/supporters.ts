@@ -66,7 +66,7 @@ export function glowingSupporters(
  * turned away; lowering one would mean removing someone who paid. */
 export const SUPPORTER_CAPS: Readonly<Record<string, number>> = { coffee: 3, food: 8 };
 
-type PlaceForCheck = { id: string; name: string; group: string; buildingId: string };
+type PlaceForCheck = { id: string; name: string; group: string; buildingId: string; nearby?: boolean };
 
 /** A real calendar day written "YYYY-MM-DD". */
 function isDay(s: unknown): s is string {
@@ -133,6 +133,9 @@ export function checkSupporters(list: SupporterEntry[], places: PlaceForCheck[])
   for (let i = 0; i < sound.length; i++) {
     for (let j = i + 1; j < sound.length; j++) {
       const a = sound[i], b = sound[j];
+      // A "nearby" place is outside the skyway: its buildingId is only the
+      // closest skyway building, not one it shares with the places inside.
+      if (a.place.nearby || b.place.nearby) continue;
       if (a.place.group === b.place.group && a.place.buildingId === b.place.buildingId && overlaps(a.s, b.s)) {
         problems.push(`building ${a.place.buildingId}: two ${a.place.group} supporters at once (${a.s.id}, ${b.s.id}); the limit is one per building`);
       }
