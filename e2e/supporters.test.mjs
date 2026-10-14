@@ -79,3 +79,29 @@ test("the glow survives switching between light and dark", async (t) => {
   await settle(page);
   assert.deepEqual(await glowing(page), [VITALITY]);
 });
+
+test("a supporter never moves or hides another pin or name", async (t) => {
+  // The promise in the explainer: pins are placed exactly as they would be
+  // with nobody paying. Checked in a crowded food court, where names
+  // compete hardest for space.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  const FOOD_COURT = { center: [-93.2688, 44.9768], zoom: 16.35 };
+  await setUp(page, [], FOOD_COURT);
+  await chip(page, /Food/);
+  await settle(page);
+  const placed = () =>
+    page.evaluate(() => {
+      const map = window.__skymap.view.map;
+      const pins = map.queryRenderedFeatures({ layers: ["skyway-pois"] }).map((f) => f.properties.id).sort();
+      // Every label MapLibre chose to draw, ours and the basemap's.
+      const texts = Object.values(map.style.placement.placements).filter((p) => p.text).length;
+      return { pins, texts };
+    });
+  const before = await placed();
+  assert.ok(before.pins.length > 20 && before.texts > 20, `a crowded view to test in (${before.pins.length} pins, ${before.texts} labels)`);
+  await page.evaluate((list) => window.__skymap.view.setSupporters(list), [term(KADAI), term("poi-14022958830")]);
+  await settle(page);
+  assert.equal((await glowing(page)).length, 2, "both supporters glow");
+  assert.deepEqual(await placed(), before);
+});
