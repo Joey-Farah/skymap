@@ -9,8 +9,8 @@ ads" (the printed counter cards can't be changed). Joey wanted income from
 the skyway businesses themselves, without anything that feels like an ad to
 the people using the app. The design was argued out over 2026-10-11 to
 10-14, with research on FTC disclosure guidance, App Review 2.5.18 and 3.1.3,
-and what Apple Maps, Google Maps and Waze do. The full record is in
-`docs/business-listings-plan.md` and `docs/business-listings-research.md`.
+and what Apple Maps, Google Maps and Waze do. The planning notes and the
+offer (prices, terms) are kept outside this public repo.
 
 ## Decision
 

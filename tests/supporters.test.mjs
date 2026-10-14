@@ -6,7 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { activeSupporters, checkSupporters, glowingSupporters } from "../src/supporters.ts";
 
-// SkyMap Supporters (docs/business-listings-plan.md): a business pays for a
+// SkyMap Supporters (docs/adr/0002-supporters-highlight-never-rank.md): a business pays for a
 // fixed term, and its pin glows from the first day of the term to the last.
 // The list ships in the app, so a term has to end on the phone's own date,
 // with no release. Dates are the phone's local day, the same clock the

@@ -2,7 +2,7 @@
  * SkyMap Supporters: businesses that pay to help keep SkyMap free, and in
  * return get a glow behind their pin when a filter they're in is on, plus a
  * tag on their card. The decisions behind every rule here are in
- * docs/business-listings-plan.md.
+ * docs/adr/0002-supporters-highlight-never-rank.md.
  *
  * The list ships inside the app (data/supporters.json), so a term starts
  * only with a release but ends on its own: each phone compares its own date

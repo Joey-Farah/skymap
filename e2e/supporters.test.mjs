@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 
 import { launch, openApp } from "./harness.mjs";
 
-// SkyMap Supporters (docs/business-listings-plan.md). The shipped list is
+// SkyMap Supporters (docs/adr/0002-supporters-highlight-never-rank.md). The shipped list is
 // empty, so these tests hand the map a list of their own through the test
 // handle. The places are real map entries used as stand-ins; none of them
 // is a supporter.

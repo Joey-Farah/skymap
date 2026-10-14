@@ -62,7 +62,7 @@ const NETWORK = "#2257c9";
 const NETWORK_DEEP = "#17356e";
 const CLOSED = "#a5adbd";
 const ROUTE = "#e08a00";
-/** A SkyMap Supporter's glow and ring (docs/business-listings-plan.md). Pink,
+/** A SkyMap Supporter's glow and ring (docs/adr/0002-supporters-highlight-never-rank.md). Pink,
  * because gold sat too close to the orange Food pins and the orange route,
  * and lime turned the same yellow as Food pins for red-green colour-blind
  * readers. */
