@@ -14,6 +14,7 @@ import { routeLine } from "./route-geometry.ts";
 import { stepIndexFromAlong } from "./nav-progress.ts";
 import { renderPoiIcon } from "./poi-icons.ts";
 import { GROUP_COLORS, isBuildingMarker, labelRank } from "./poi.ts";
+import { activeSupporters, type SupporterEntry } from "./supporters.ts";
 import { LABEL_HALO, LABEL_INK, LABEL_WARNING } from "./label-colors.ts";
 import { nearestCandidate, TAP_SLOP_PX } from "./tap-target.ts";
 import { haversineMeters, pointInRing } from "./router.ts";
@@ -61,6 +62,18 @@ const NETWORK = "#2257c9";
 const NETWORK_DEEP = "#17356e";
 const CLOSED = "#a5adbd";
 const ROUTE = "#e08a00";
+/** A SkyMap Supporter's glow and ring (docs/business-listings-plan.md). Pink,
+ * because gold sat too close to the orange Food pins and the orange route,
+ * and lime turned the same yellow as Food pins for red-green colour-blind
+ * readers. */
+const SUPPORTER_GLOW = "#ff3db8";
+const SUPPORTER_RING = "#c4007a";
+/** Pin icon size by zoom: shared by the pins and the supporter glow drawn
+ * under them, so the glow can never drift out of step with the pin. */
+const POI_ICON_SIZE: [number, number][] = [[12, 0.26], [14.8, 0.34], [17, 0.55]];
+/** On-screen pin radius at each stop: a 48px icon canvas, halved. */
+const pinRadius = (scale: (r: number) => number): maplibregl.ExpressionSpecification =>
+  ["interpolate", ["linear"], ["zoom"], ...POI_ICON_SIZE.flatMap(([z, size]) => [z, scale((48 * size) / 2)])];
 // The platform-conventional "you are here" blue, kept clear of NETWORK so a
 // position never reads as a piece of the skyway drawn under it.
 const LOCATION = "#0a84ff";
@@ -200,6 +213,22 @@ function poisFC(pois: Poi[]): FC {
   };
 }
 
+/** The supporters whose term covers `when`, at their pins. Its own source,
+ * so the pins' data, and with it their placement and label priority, can't
+ * be touched by who has paid. */
+function supportersFC(list: SupporterEntry[], pois: Poi[], when: Date): FC {
+  const byId = new Map(pois.map((p) => [p.id, p]));
+  return {
+    type: "FeatureCollection",
+    features: activeSupporters(list, when).flatMap((s) => {
+      const p = byId.get(s.id);
+      return p
+        ? [{ type: "Feature" as const, properties: { id: p.id, group: p.group }, geometry: { type: "Point" as const, coordinates: [p.lon, p.lat] } }]
+        : [];
+    }),
+  };
+}
+
 /** Route start/end marker — same visual language as the live-position dot
  * (skyway-walker layer below): filled circle, white ring, soft shadow.
  * Replaces MapLibre's stock teardrop pin, which is a generic map-pin icon
@@ -264,6 +293,8 @@ export class SkymapView {
   /** The last setWalkedProgress and setPoiGroupFilter, for a basemap swap. */
   private walkedRemaining: number | null = null;
   private poiGroups: string[] = [];
+  /** SkyMap Supporters, from data/supporters.json via setSupporters. */
+  private supporters: SupporterEntry[] = [];
   private routeEndBuildingIds: string[] = [];
   /** Buildings whose name is already drawn by their own pin. Constant for the
    * life of the dataset, unlike the two above. */
@@ -566,6 +597,7 @@ export class SkymapView {
     this.map.addSource("skyway-route-done", { type: "geojson", data: lineFC([]) });
     this.map.addSource("skyway-walker", { type: "geojson", data: pointFC(null) });
     this.map.addSource("skyway-pois", { type: "geojson", attribution: osm, data: poisFC(this.data.pois ?? []) });
+    this.map.addSource("skyway-supporters", { type: "geojson", data: this.supportersData() });
     // Seeded once: which buildings have a pin carrying their own name, and so
     // should not also draw a polygon label. See applyLabelSuppression.
     this.markedBuildingIds = (this.data.pois ?? []).filter(isBuildingMarker).map((p) => p.buildingId);
@@ -741,6 +773,36 @@ export class SkymapView {
     // meant a name had no idea the pins were there and was painted
     // straight across them — six restaurants in one building read as a
     // pile. One symbol gives the pair a single collision box.
+    // A SkyMap Supporter's pin sits in a soft pink glow with a thin ring
+    // round it. Both are circle layers under the pins: circles take no part
+    // in symbol collision, so every pin and name places exactly as it would
+    // without them, and a supporter never wins space from a neighbour.
+    // Hidden until a chip the supporter is in is switched on.
+    this.map.addLayer({
+      id: "skyway-supporters-glow",
+      type: "circle",
+      source: "skyway-supporters",
+      filter: false,
+      paint: {
+        "circle-radius": pinRadius((r) => r * 3),
+        "circle-color": SUPPORTER_GLOW,
+        "circle-opacity": 0.8,
+        "circle-blur": 0.5,
+      },
+    });
+    this.map.addLayer({
+      id: "skyway-supporters-ring",
+      type: "circle",
+      source: "skyway-supporters",
+      filter: false,
+      paint: {
+        "circle-radius": pinRadius((r) => r + 2.5), // just outside the pin's own edge
+        "circle-color": "rgba(0, 0, 0, 0)",
+        "circle-stroke-color": SUPPORTER_RING,
+        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 12, 1.5, 17, 2.5],
+      },
+    });
+
     this.map.addLayer({
       id: "skyway-pois",
       type: "symbol",
@@ -751,7 +813,7 @@ export class SkymapView {
       filter: ["!=", ["get", "group"], "transit"],
       layout: {
         "icon-image": ["concat", "poi-icon-", ["get", "group"]],
-        "icon-size": ["interpolate", ["linear"], ["zoom"], 12, 0.26, 14.8, 0.34, 17, 0.55],
+        "icon-size": ["interpolate", ["linear"], ["zoom"], ...POI_ICON_SIZE.flat()],
         // Every pin still draws — a place you can't see is worse than a
         // name that clips one. But it no longer ignores placement, so it
         // reserves its space and names get placed around it.
@@ -840,6 +902,18 @@ export class SkymapView {
     (this.map.getSource("skyway-indoor") as maplibregl.GeoJSONSource)?.setData(
       indoorFC(this.data, when),
     );
+    // A term ends on its last day with no release: this tick is what ends it.
+    (this.map.getSource("skyway-supporters") as maplibregl.GeoJSONSource)?.setData(this.supportersData());
+  }
+
+  /** The SkyMap Supporters list (data/supporters.json). */
+  setSupporters(list: SupporterEntry[]) {
+    this.supporters = list;
+    if (this.ready) (this.map.getSource("skyway-supporters") as maplibregl.GeoJSONSource)?.setData(this.supportersData());
+  }
+
+  private supportersData(): FC {
+    return supportersFC(this.supporters, this.data.pois ?? [], this.when);
   }
 
   /** `fromCoord`/`toCoord` override the marker position when routing to/from
@@ -1268,6 +1342,8 @@ export class SkymapView {
       const filter: maplibregl.FilterSpecification =
         nonTransit.length > 0 ? ["in", ["get", "group"], ["literal", nonTransit]] : false;
       this.map.setFilter("skyway-pois", filter);
+      // A supporter glows only under a chip it's in, like its pin.
+      for (const id of ["skyway-supporters-glow", "skyway-supporters-ring"]) this.map.setFilter(id, filter);
       this.map.setFilter(
         "skyway-pois-transit",
         groups.includes("transit") ? ["==", ["get", "group"], "transit"] : false,
