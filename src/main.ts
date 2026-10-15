@@ -37,6 +37,8 @@ import { renderPoiIconDataUrl } from "./poi-icons.ts";
 import { clearRetiredKeys } from "./storage.ts";
 import { forgetTrip, rememberTrip, takeTripToResume } from "./trip-resume.ts";
 import { UpdatePrompt } from "./update-prompt.ts";
+import supportersFile from "../data/supporters.json";
+import type { SupporterEntry } from "./supporters.ts";
 
 /**
  * How far off the network "Current Location" will still offer to start a
@@ -110,6 +112,14 @@ async function boot() {
     (lat, lon) => onPosition(lat, lon),
     (lat, lon) => onRouteTap(lat, lon),
   );
+
+  // SkyMap Supporters: shipped in the app, empty until the first one pays.
+  // The map draws their glow, the card their tag; both read the same list.
+  function setSupporters(list: SupporterEntry[]) {
+    view.setSupporters(list);
+    sheet.setSupporters(list);
+  }
+  setSupporters(supportersFile.supporters as SupporterEntry[]);
 
   // Mid-trip the camera centres your dot in the map you can see, between
   // the banner and the sheet, and follows the sheet as it's dragged. Other
@@ -1075,7 +1085,7 @@ async function boot() {
 
   // Test/debug handle (drives E2E camera positioning).
   (window as unknown as Record<string, unknown>).__skymap = {
-    view, router, data, sheet, onPosition, onRouteTap,
+    view, router, data, sheet, onPosition, onRouteTap, setSupporters,
     modes: { get current() { return mode; }, enterIdle, showPlace, enterPreview, enterNav },
   };
 }

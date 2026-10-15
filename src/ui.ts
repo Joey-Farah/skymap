@@ -66,6 +66,7 @@ import {
 } from "./hours.ts";
 import { parseOpeningHours } from "./opening-hours.ts";
 import { shouldExpand } from "./sheet-snap.ts";
+import { activeSupporters, type SupporterEntry } from "./supporters.ts";
 
 /** Names the building the GPS fix snapped to: indoors, drift can cross a
  * street, and a plain "Current Location" hides a wrong snap until the
@@ -529,6 +530,57 @@ export class Sheet {
     window.addEventListener("resize", () => this.applyMode());
   }
 
+  /** SkyMap Supporters, for the tag on their cards. */
+  private supporters: SupporterEntry[] = [];
+  setSupporters(list: SupporterEntry[]) {
+    this.supporters = list;
+  }
+
+  /** "SkyMap Supporter", and what that means when tapped. The explainer
+   * says plainly that they pay (a label alone doesn't), and carries the way
+   * to report a paid placement that App Review asks for (guideline 2.5.18). */
+  private supporterTag(p: Poi): HTMLElement[] {
+    const info = el("span", "ⓘ", "supporter-info");
+    info.setAttribute("aria-hidden", "true");
+    const tag = el("button", undefined, "supporter-tag");
+    tag.append(el("span", undefined, "supporter-mark"), "SkyMap Supporter", info);
+    tag.setAttribute("aria-label", "SkyMap Supporter. What does this mean?");
+    const explain = el("div", undefined, "supporter-explain");
+    explain.id = "supporter-explain";
+    tag.setAttribute("aria-controls", explain.id);
+    const report = el("button", "Report this", "supporter-report");
+    report.addEventListener("click", () => this.onReport?.({ name: p.name, id: p.id }));
+    const close = el("button", "Close", "supporter-close");
+    // The card has its own "Close" (the ×); this one needs a name of its own.
+    close.setAttribute("aria-label", "Close supporter info");
+    const actions = el("div", undefined, "supporter-explain-actions");
+    actions.append(report, close);
+    explain.append(
+      el("p", "SkyMap Supporters pay to help keep SkyMap free. Their pins are highlighted when a filter is on. Search and routes are never affected."),
+      actions,
+    );
+    // The card measured itself when it opened. Re-measure on open and
+    // close, or the explainer pushes the open badge, the access line and
+    // Directions below the card's edge with no way to scroll to them
+    // (found on Joey's phone in the prototype).
+    const setOpen = (open: boolean) => {
+      explain.hidden = !open;
+      tag.setAttribute("aria-expanded", String(open));
+      info.textContent = open ? "✕" : "ⓘ";
+      this.applyMode();
+    };
+    explain.hidden = true;
+    tag.setAttribute("aria-expanded", "false");
+    tag.addEventListener("click", () => setOpen(Boolean(explain.hidden)));
+    // Close hides itself, so focus goes back to the tag rather than
+    // dropping keyboard and VoiceOver users at the top of the page.
+    close.addEventListener("click", () => {
+      setOpen(false);
+      tag.focus();
+    });
+    return [tag, explain];
+  }
+
   get currentMode(): DrawerMode {
     return this.mode;
   }
@@ -837,6 +889,11 @@ export class Sheet {
     if (mark) head.append(mark);
     head.append(el("h2", p.name));
     this.content.append(head);
+    // Shown while the term runs, open or closed: the glow is about where to
+    // go now, the tag about who they are.
+    if (activeSupporters(this.supporters, when).some((s) => s.id === p.id)) {
+      this.content.append(...this.supporterTag(p));
+    }
 
     const where = [humanCategory(p.category)];
     // A `nearby` place isn't inside its host building — the host is just
