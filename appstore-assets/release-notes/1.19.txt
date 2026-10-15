@@ -1,0 +1,1 @@
+Turn-by-turn keeps following you, even if your GPS drops out for a moment. Routes never take you through a locked building, and if the app reloads mid-walk, your trip picks up where it left off.
