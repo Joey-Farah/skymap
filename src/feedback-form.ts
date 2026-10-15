@@ -97,7 +97,12 @@ export class FeedbackForm {
     this.session++; // any send still in flight belongs to the last opening
     this.root.hidden = false;
     this.backdrop.hidden = false;
-    this.message.focus();
+    // Focus the dialog, not the message box. On a phone, focusing a text
+    // field raises the keyboard at once, and the keyboard pushed the top of
+    // the form, its title and what to write, off the screen before anyone
+    // had read it (Joey, 2026-10-14). The keyboard now waits for a tap on a
+    // field; VoiceOver and keyboard users still land inside the dialog.
+    this.root.focus({ preventScroll: true });
   }
 
   close() {

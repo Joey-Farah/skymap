@@ -55,3 +55,24 @@ test("a slow send that was cancelled doesn't close the next draft (QA 003)", asy
   }));
   assert.deepEqual(r, { open: true, text: "a second thought" });
 });
+
+test("opening the form doesn't raise the keyboard, but focus still moves into it (Joey, 2026-10-14)", async (t) => {
+  // On a phone, focusing the message box on open brings the keyboard up at
+  // once, and the keyboard pushes the top of the form off screen. Nothing
+  // should be typed into until someone taps a field; focus still moves
+  // into the dialog, so VoiceOver and keyboard users land in it.
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  await openApp(page);
+  await openForm(page);
+  const focus = await page.evaluate(() => {
+    const el = document.activeElement;
+    return {
+      tag: el?.tagName,
+      id: el?.id,
+      inForm: !!el && document.getElementById("feedback-form").contains(el),
+    };
+  });
+  assert.ok(!["TEXTAREA", "INPUT"].includes(focus.tag), `focus went to a text field (${focus.tag}#${focus.id})`);
+  assert.ok(focus.inForm, `focus left the dialog (${focus.tag}#${focus.id})`);
+});

@@ -29,7 +29,7 @@ export function tipJarMode(env: { native: boolean; products: TipProduct[] }): Ti
  * the names are ours, so they read the same in every territory. */
 const TIPS = [
   { id: "app.skymap.ios.tip.small", label: "☕ Buy me a coffee" },
-  { id: "app.skymap.ios.tip.medium", label: "🥐 Coffee and a pastry" },
+  { id: "app.skymap.ios.tip.medium", label: "🍩 Coffee and a donut" },
   { id: "app.skymap.ios.tip.large", label: "🍽 Lunch in the skyway" },
 ] as const;
 
