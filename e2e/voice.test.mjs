@@ -24,3 +24,12 @@ test("GO says the first instruction, and each new banner line is said once", asy
   t.diagnostic(spoken.join(" → "));
   assert.equal(spoken.at(-1), "You've arrived");
 });
+
+test("End cuts the voice off mid-line", async (t) => {
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  assert.ok(await startTrip(page, FROM, TO));
+  await page.evaluate(() => (window.__spoken.length = 0));
+  await page.locator(".end-btn").click();
+  assert.deepEqual(await page.evaluate(() => window.__spoken), ["<stop>"]);
+});

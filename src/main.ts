@@ -523,8 +523,7 @@ async function boot() {
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;
-    // Not off the route: the line is about a step we're no longer sure of.
-    voice.say(offRoute ? null : info.spoken);
+    voice.say(info.spoken);
     // Off the route, the landmark cue is about a step we are no longer sure
     // the walker is on. Saying so beats naming a coffee shop they can't see.
     const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);
