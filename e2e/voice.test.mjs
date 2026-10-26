@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { launch, startTrip, walkRoute } from "./harness.mjs";
+import { launch, openApp, startTrip, walkRoute } from "./harness.mjs";
 
 const FROM = "517-marquette-garage-156912894";
 const TO = "state-theatre-156912879";
@@ -32,4 +32,23 @@ test("End cuts the voice off mid-line", async (t) => {
   await page.evaluate(() => (window.__spoken.length = 0));
   await page.locator(".end-btn").click();
   assert.deepEqual(await page.evaluate(() => window.__spoken), ["<stop>"]);
+});
+
+test("the speaker button mutes the voice, and it stays muted next time", async (t) => {
+  const { browser, page } = await launch();
+  t.after(() => browser.close());
+  assert.ok(await startTrip(page, FROM, TO));
+  const button = page.locator("#voice-toggle");
+  assert.equal(await button.getAttribute("aria-pressed"), "true", "on by default");
+  await button.click();
+  assert.equal(await button.getAttribute("aria-pressed"), "false");
+  await page.evaluate(() => (window.__spoken.length = 0));
+  await walkRoute(page);
+  assert.deepEqual(await said(page), [], "muted, but it spoke");
+
+  // Next launch: a new trip starts silent, and the button says so.
+  await openApp(page);
+  assert.ok(await startTrip(page, FROM, TO));
+  assert.equal(await button.getAttribute("aria-pressed"), "false");
+  assert.deepEqual(await said(page), []);
 });

@@ -70,6 +70,13 @@ async function boot() {
   void tipJar.load(Capacitor.isNativePlatform());
   // Says the nav banner's line out loud as it changes; see voice.ts.
   const voice = createVoice(speechEngine(), localStorage);
+  const voiceToggle = document.getElementById("voice-toggle")!;
+  const showVoice = () => voiceToggle.setAttribute("aria-pressed", String(voice.enabled()));
+  showVoice();
+  voiceToggle.addEventListener("click", () => {
+    voice.setEnabled(!voice.enabled());
+    showVoice();
+  });
   const app = document.getElementById("app")!;
   const routeEditor = document.getElementById("route-editor") as HTMLElement;
   const navBanner = document.getElementById("nav-banner") as HTMLElement;

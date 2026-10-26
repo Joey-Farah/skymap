@@ -1356,6 +1356,30 @@ a:focus-visible {
      it stayed dark on a light map, and in dark mode it landed a shade off
      --card while its subtitle faded into the background. */
   z-index: 11;
+  /* The voice button sits beside the instruction, across both its lines. */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 12px;
+  align-items: center;
+}
+
+#nav-instruction,
+#nav-instruction-sub {
+  grid-column: 1;
+}
+
+.voice-toggle {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.voice-toggle[aria-pressed="true"] .voice-off,
+.voice-toggle[aria-pressed="false"] .voice-on {
+  display: none;
+}
+
+.voice-toggle[aria-pressed="false"] {
+  color: var(--ink-600);
 }
 
 .nav-banner[hidden] {
