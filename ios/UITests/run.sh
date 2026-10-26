@@ -19,11 +19,12 @@ cd "$ROOT"
 # The app under test has to be the app people get. A node_modules older
 # than the lock file once carried the geolocation plugin from before the
 # 1.18 GPS-freeze fix, and the walk test's walker never moved.
-npm ls >/dev/null 2>&1 || { echo "node_modules doesn't match package-lock.json: run npm ci"; exit 1; }
+node scripts/check-node-modules.mjs >/dev/null
 # And the release build's web settings, read from Xcode Cloud's own script:
 # without VITE_FEEDBACK_ENDPOINT, Feedback hands off to Mail, which the
 # simulator doesn't have, instead of opening the form.
 eval "$(grep -E '^export VITE_' "$ROOT/ios/App/ci_scripts/ci_post_clone.sh")"
+[ -n "$VITE_FEEDBACK_ENDPOINT" ] || { echo "no VITE_FEEDBACK_ENDPOINT in ci_post_clone.sh"; exit 1; }
 npm run build --silent >/dev/null
 npx cap sync ios >/dev/null
 xcrun simctl boot "$SIM_ID" 2>/dev/null || true
