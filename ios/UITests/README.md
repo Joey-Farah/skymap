@@ -6,6 +6,10 @@ door. Nothing to click.
 
     sh ios/UITests/run.sh
 
+The app it builds is meant to be the one people get: it takes the release
+build's `VITE_` settings from `ios/App/ci_scripts/ci_post_clone.sh`, and it
+stops if `node_modules` doesn't match the lock file (run `npm ci`).
+
 This is a separate Xcode project on purpose: the tests attach to the installed
 app by bundle id, so `App.xcodeproj` and Xcode Cloud never see them.
 `project.yml` generates `SkyMapUITests.xcodeproj` (needs `brew install xcodegen`).
