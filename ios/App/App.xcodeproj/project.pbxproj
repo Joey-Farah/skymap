@@ -14,6 +14,7 @@
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
 		A71E00042FF0000100C0FFEE /* SkyMapBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E00032FF0000100C0FFEE /* SkyMapBridgeViewController.swift */; };
 		A71E00022FF0000100C0FFEE /* TipJarPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E00012FF0000100C0FFEE /* TipJarPlugin.swift */; };
+		A71E00062FF0000100C0FFEE /* SpeechPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E00052FF0000100C0FFEE /* SpeechPlugin.swift */; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
@@ -28,6 +29,7 @@
 		9582B6822FE993A50072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		A71E00032FF0000100C0FFEE /* SkyMapBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyMapBridgeViewController.swift; sourceTree = "<group>"; };
 		A71E00012FF0000100C0FFEE /* TipJarPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarPlugin.swift; sourceTree = "<group>"; };
+		A71E00052FF0000100C0FFEE /* SpeechPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechPlugin.swift; sourceTree = "<group>"; };
 		504EC30C1FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		504EC30E1FED79650016851F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				9582B6822FE993A50072D4E8 /* SceneDelegate.swift */,
 				A71E00032FF0000100C0FFEE /* SkyMapBridgeViewController.swift */,
 				A71E00012FF0000100C0FFEE /* TipJarPlugin.swift */,
+				A71E00052FF0000100C0FFEE /* SpeechPlugin.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -168,6 +171,7 @@
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
 				A71E00042FF0000100C0FFEE /* SkyMapBridgeViewController.swift in Sources */,
 				A71E00022FF0000100C0FFEE /* TipJarPlugin.swift in Sources */,
+				A71E00062FF0000100C0FFEE /* SpeechPlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

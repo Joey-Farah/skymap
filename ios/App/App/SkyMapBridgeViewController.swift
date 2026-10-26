@@ -6,5 +6,6 @@ import Capacitor
 class SkyMapBridgeViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(TipJarPlugin())
+        bridge?.registerPluginInstance(SpeechPlugin())
     }
 }
