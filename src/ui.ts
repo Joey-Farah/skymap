@@ -1094,7 +1094,7 @@ export class Sheet {
     stepIndex: number,
     now: Date,
     liveRemainingMeters?: number | null,
-  ): { title: string; sub: HTMLElement | null } | null {
+  ): { title: string; sub: HTMLElement | null; spoken: string } | null {
     if (!this.activeRoute || this.mode !== "nav") return null;
     const route = this.activeRoute;
     // "current" marks the building the banner is naming, not the one being
@@ -1127,9 +1127,10 @@ export class Sheet {
     if (this.navBarRemaining) {
       this.navBarRemaining.textContent = `arrival · ${remainingMin} min · ${formatDistance(remainingMeters)}`;
     }
-    if (hasArrived(stepIndex, route.steps.length)) return { title: "You've arrived", sub: null };
+    const arrived = { title: "You've arrived", sub: null, spoken: "You've arrived" };
+    if (hasArrived(stepIndex, route.steps.length)) return arrived;
     const next = route.steps[stepIndex + 1];
-    if (!next) return { title: "You've arrived", sub: null };
+    if (!next) return arrived;
     const crossing = next.viaCrossing ?? "";
     const generic = /^(minneapolis )?skyway$/i.test(crossing.trim());
     const verb = next.hasSteps
@@ -1138,7 +1139,13 @@ export class Sheet {
         ? "Head into"
         : `Cross over ${crossing} into`;
     const landmark = landmarkNear(this.routePois, next.building.id);
-    return { title: `${verb} ${next.building.name}`, sub: landmark ? landmarkCue(landmark) : null };
+    const title = `${verb} ${next.building.name}`;
+    return {
+      title,
+      sub: landmark ? landmarkCue(landmark) : null,
+      // The cue's text, not its element's: the chip is a logo, nothing to say.
+      spoken: landmark ? `${title}, past ${landmark.name}` : title,
+    };
   }
 
   showMessage(title: string, body: string) {

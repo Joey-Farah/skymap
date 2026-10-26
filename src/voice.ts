@@ -1,3 +1,4 @@
+import { Capacitor, registerPlugin } from "@capacitor/core";
 import type { KeyValueStore } from "./storage.ts";
 
 /**
@@ -61,5 +62,37 @@ export function createVoice(engine: SpeechEngine, store: KeyValueStore): Voice {
         engine.stop();
       }
     },
+  };
+}
+
+/** ios/App/App/SpeechPlugin.swift, registered by the app's own bridge. */
+const NativeSpeech = registerPlugin<{
+  speak(options: { text: string }): Promise<void>;
+  stop(): Promise<void>;
+}>("Speech");
+
+/**
+ * iOS's own synthesizer on the phone, through the app's plugin: only native
+ * code can set the audio session, which is what lets a prompt play with the
+ * ringer off and duck music instead of fighting it. The browser's Web
+ * Speech elsewhere, and silence where there is neither.
+ */
+export function speechEngine(): SpeechEngine {
+  if (Capacitor.isNativePlatform()) {
+    // A binary built before the plugin existed rejects; a missing voice
+    // must never surface as an error mid-walk.
+    return {
+      speak: (text) => void NativeSpeech.speak({ text }).catch(() => {}),
+      stop: () => void NativeSpeech.stop().catch(() => {}),
+    };
+  }
+  const synth = typeof window === "undefined" ? undefined : window.speechSynthesis;
+  if (!synth) return { speak() {}, stop() {} };
+  return {
+    speak(text) {
+      synth.cancel();
+      synth.speak(new SpeechSynthesisUtterance(text));
+    },
+    stop: () => synth.cancel(),
   };
 }

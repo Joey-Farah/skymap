@@ -37,6 +37,7 @@ import { renderPoiIconDataUrl } from "./poi-icons.ts";
 import { clearRetiredKeys } from "./storage.ts";
 import { forgetTrip, rememberTrip, takeTripToResume } from "./trip-resume.ts";
 import { UpdatePrompt } from "./update-prompt.ts";
+import { createVoice, speechEngine } from "./voice.ts";
 import supportersFile from "../data/supporters.json";
 import type { SupporterEntry } from "./supporters.ts";
 
@@ -67,6 +68,8 @@ async function boot() {
   // this early because the nav banner asks it about the arrival line.
   const tipJar = new TipJarCard(showToast);
   void tipJar.load(Capacitor.isNativePlatform());
+  // Says the nav banner's line out loud as it changes; see voice.ts.
+  const voice = createVoice(speechEngine(), localStorage);
   const app = document.getElementById("app")!;
   const routeEditor = document.getElementById("route-editor") as HTMLElement;
   const navBanner = document.getElementById("nav-banner") as HTMLElement;
@@ -205,6 +208,7 @@ async function boot() {
     }
     activeRoute = null;
     destination = null;
+    voice.stop();
     forgetTrip(localStorage); // however it ended, it's over
     view.setRoute(null);
     view.forgetCameraHold(); // nothing on screen is holding it now
@@ -519,6 +523,8 @@ async function boot() {
     const info = sheet.updateNav(stepIndex, new Date(), remaining);
     if (!info) return;
     navInstruction.textContent = info.title;
+    // Not off the route: the line is about a step we're no longer sure of.
+    voice.say(offRoute ? null : info.spoken);
     // Off the route, the landmark cue is about a step we are no longer sure
     // the walker is on. Saying so beats naming a coffee shop they can't see.
     const arrived = !!activeRoute && hasArrived(stepIndex, activeRoute.steps.length);

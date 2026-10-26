@@ -102,6 +102,24 @@ export async function launch(o = {}) {
       }
       return open.call(window, url, ...rest);
     };
+    // System Chrome speaks through macOS's own voice, headless or not, so
+    // every trip in every test would talk out loud. Recorded instead, in
+    // window.__spoken: each line said, and "<stop>" for each cancel.
+    window.__spoken = [];
+    const synth = {
+      speaking: false,
+      pending: false,
+      paused: false,
+      speak: (u) => window.__spoken.push(u.text),
+      cancel: () => window.__spoken.push("<stop>"),
+      getVoices: () => [],
+    };
+    Object.defineProperty(window, "speechSynthesis", { value: synth, configurable: true });
+    window.SpeechSynthesisUtterance = class {
+      constructor(text) {
+        this.text = text;
+      }
+    };
   });
   if (manualGeo) {
     // navigator.geolocation replaced by a fake the test drives. Nothing
