@@ -31,15 +31,15 @@ export interface Voice {
   setEnabled(on: boolean): void;
 }
 
-/** Present only while muted: on is the default, so a missing or unreadable
- * key means on. */
-export const MUTED_KEY = "skymap.voiceMuted";
+/** Present only while on: off is the default, so a missing or unreadable
+ * key means off. */
+export const ON_KEY = "skymap.voiceOn";
 
 export function createVoice(engine: SpeechEngine, store: KeyValueStore): Voice {
-  // The banner's line is tracked while muted too, so unmuting can say where
+  // The banner's line is tracked while off too, so turning it on can say where
   // things stand instead of waiting silently for the next building.
   let last: string | null = null;
-  let on = store.getItem(MUTED_KEY) === null;
+  let on = store.getItem(ON_KEY) !== null;
   return {
     say(line) {
       if (line === null || line === last) return;
@@ -55,10 +55,10 @@ export function createVoice(engine: SpeechEngine, store: KeyValueStore): Voice {
       if (next === on) return;
       on = next;
       if (on) {
-        store.removeItem(MUTED_KEY);
+        store.setItem(ON_KEY, "1");
         if (last !== null) engine.speak(last);
       } else {
-        store.setItem(MUTED_KEY, "1");
+        store.removeItem(ON_KEY);
         engine.stop();
       }
     },
