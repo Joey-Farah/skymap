@@ -15,6 +15,7 @@
 		A71E00042FF0000100C0FFEE /* SkyMapBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E00032FF0000100C0FFEE /* SkyMapBridgeViewController.swift */; };
 		A71E00022FF0000100C0FFEE /* TipJarPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E00012FF0000100C0FFEE /* TipJarPlugin.swift */; };
 		A71E00062FF0000100C0FFEE /* SpeechPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E00052FF0000100C0FFEE /* SpeechPlugin.swift */; };
+		A71E00082FF0000100C0FFEE /* VoiceChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E00072FF0000100C0FFEE /* VoiceChoice.swift */; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
@@ -30,6 +31,7 @@
 		A71E00032FF0000100C0FFEE /* SkyMapBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyMapBridgeViewController.swift; sourceTree = "<group>"; };
 		A71E00012FF0000100C0FFEE /* TipJarPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarPlugin.swift; sourceTree = "<group>"; };
 		A71E00052FF0000100C0FFEE /* SpeechPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechPlugin.swift; sourceTree = "<group>"; };
+		A71E00072FF0000100C0FFEE /* VoiceChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceChoice.swift; sourceTree = "<group>"; };
 		504EC30C1FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		504EC30E1FED79650016851F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				A71E00032FF0000100C0FFEE /* SkyMapBridgeViewController.swift */,
 				A71E00012FF0000100C0FFEE /* TipJarPlugin.swift */,
 				A71E00052FF0000100C0FFEE /* SpeechPlugin.swift */,
+				A71E00072FF0000100C0FFEE /* VoiceChoice.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -172,6 +175,7 @@
 				A71E00042FF0000100C0FFEE /* SkyMapBridgeViewController.swift in Sources */,
 				A71E00022FF0000100C0FFEE /* TipJarPlugin.swift in Sources */,
 				A71E00062FF0000100C0FFEE /* SpeechPlugin.swift in Sources */,
+				A71E00082FF0000100C0FFEE /* VoiceChoice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

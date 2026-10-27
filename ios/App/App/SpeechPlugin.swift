@@ -40,8 +40,11 @@ public class SpeechPlugin: CAPPlugin, CAPBridgedPlugin, AVSpeechSynthesizerDeleg
             try? session.setActive(true)
             let utterance = AVSpeechUtterance(string: text)
             // The instructions are written in English, whatever the phone's
-            // language; another language's voice would mangle them.
-            utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+            // language; another language's voice would mangle them. The
+            // default is the voice picked in Settings for US English, or
+            // iOS's basic one.
+            let fallback = AVSpeechSynthesisVoice(language: "en-US")
+            utterance.voice = VoiceChoice.best(AVSpeechSynthesisVoice.speechVoices(), preferring: fallback?.identifier) ?? fallback
             self.synthesizer.speak(utterance)
             call.resolve()
         }

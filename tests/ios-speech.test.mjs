@@ -31,3 +31,12 @@ test("prompts play with the ringer off, duck other audio, and hand it back", () 
   assert.match(plugin, /\.duckOthers/);
   assert.match(plugin, /notifyOthersOnDeactivation/);
 });
+
+test("it speaks in the best voice the phone has, picked by VoiceChoice.swift", () => {
+  // VoiceChoice is tested on its own (ios-voice-choice.test.mjs); this is
+  // what keeps it in the app and in use. Without it, every line is iOS's
+  // basic, robotic voice whatever the walker has downloaded.
+  const project = readFileSync("ios/App/App.xcodeproj/project.pbxproj", "utf8");
+  assert.match(project, /VoiceChoice\.swift in Sources \*\/,/, "VoiceChoice.swift is not in the Sources build phase");
+  assert.match(readFileSync(PLUGIN, "utf8"), /utterance\.voice = VoiceChoice\.best\(AVSpeechSynthesisVoice\.speechVoices\(\)/);
+});
