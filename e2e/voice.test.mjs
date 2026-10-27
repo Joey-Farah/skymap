@@ -15,6 +15,8 @@ test("the voice is off until the button turns it on, then it says each new banne
   const button = page.locator("#voice-toggle");
   assert.equal(await button.getAttribute("aria-pressed"), "false", "off by default");
   assert.deepEqual(await said(page), [], "GO spoke with the voice off");
+  // It says what it is: a speaker icon alone didn't (Joey, 2026-10-27).
+  assert.equal((await button.innerText()).trim(), "Voice");
 
   // Turned on, it says where things stand at once, then keeps up.
   await button.click();

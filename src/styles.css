@@ -1368,18 +1368,33 @@ a:focus-visible {
   grid-column: 1;
 }
 
+/* The word, not just an icon: a speaker alone didn't say what it was for
+   (Joey, 2026-10-27), and with the voice off by default the button has to
+   invite the tap. Solid blue while on. */
 .voice-toggle {
   grid-column: 2;
   grid-row: 1 / span 2;
-}
-
-.voice-toggle[aria-pressed="true"] .voice-off,
-.voice-toggle[aria-pressed="false"] .voice-on {
-  display: none;
-}
-
-.voice-toggle[aria-pressed="false"] {
+  width: auto;
+  height: 38px;
+  padding: 0 14px 0 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--ink-600);
+}
+
+.voice-toggle[aria-pressed="false"] .voice-waves {
+  opacity: 0.35;
+}
+
+.voice-toggle[aria-pressed="true"] {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(34, 88, 230, 0.35);
 }
 
 .nav-banner[hidden] {
